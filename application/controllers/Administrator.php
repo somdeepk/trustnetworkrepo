@@ -2,7 +2,8 @@
 class Administrator extends CI_Controller
 {
 
-	public function view($page = 'index'){
+	public function view($page = 'index')
+	{
 		if($this->session->userdata('login')) {
 			redirect('administrator/dashboard');
 			}
@@ -18,7 +19,8 @@ class Administrator extends CI_Controller
 		$this->load->view('administrator/footer');
 	}
 
-	public function home($page = 'home'){
+	public function home($page = 'home')
+	{
 		if (!file_exists(APPPATH.'views/administrator/'.$page.'.php')) {
 			show_404();
 		}
@@ -40,9 +42,7 @@ class Administrator extends CI_Controller
 	   $this->load->view('administrator/header-bottom');
 	   $this->load->view('administrator/'.$page, $data);
 	   $this->load->view('administrator/footer');
-	}
-
- 
+	} 
 
   // Log in Admin
 	public function adminLogin(){
@@ -393,8 +393,6 @@ class Administrator extends CI_Controller
 		exit;
 	}
 
-
-
 	public function grouplist()
 	{
 		$data=array();
@@ -538,7 +536,6 @@ class Administrator extends CI_Controller
 		echo json_encode($json_data); die();
 	}
 
-
 	public function addgroup($id=0)
 	{
 		$data=array();
@@ -629,6 +626,93 @@ class Administrator extends CI_Controller
 		echo $id;
 		exit;
 	}
+
+
+	public function addmember($id=0)
+	{
+		$data=array();
+
+		$churchMemberTypeData = $this->Administrator_Model->get_church_member_type();
+		$data['churchMemberTypeData'] = $churchMemberTypeData;
+		$data['id']=$id;
+
+		$this->load->view('administrator/header-script');
+		$this->load->view('administrator/header');
+		$this->load->view('administrator/header-bottom');
+		$this->load->view('administrator/churchmember/addmember', $data);
+		$this->load->view('administrator/footer');
+	}
+
+	public function ajaxaddupdatemember() 
+    {
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+
+        $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';
+        $middle_name=(isset($aryMemberData['middle_name']) && !empty($aryMemberData['middle_name']))? addslashes(trim($aryMemberData['middle_name'])):'';
+        $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
+        $gender=(isset($aryMemberData['gender']) && !empty($aryMemberData['gender']))? addslashes(trim($aryMemberData['gender'])):'';
+        $marital_status=(isset($aryMemberData['marital_status']) && !empty($aryMemberData['marital_status']))? addslashes(trim($aryMemberData['marital_status'])):'';
+        $blood_group=(isset($aryMemberData['blood_group']) && !empty($aryMemberData['blood_group']))? addslashes(trim($aryMemberData['blood_group'])):'';
+        $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d H:i:s',strtotime($aryMemberData['dob'])) :NULL;
+        $membership_type=(isset($aryMemberData['membership_type']) && !empty($aryMemberData['membership_type']))? addslashes(trim($aryMemberData['membership_type'])):'';
+        $church_id=(isset($aryMemberData['church_id']) && !empty($aryMemberData['church_id']))? addslashes(trim($aryMemberData['church_id'])):0;
+        $contact_email=(isset($aryMemberData['contact_email']) && !empty($aryMemberData['contact_email']))? addslashes(trim($aryMemberData['contact_email'])):'';
+        $contact_mobile=(isset($aryMemberData['contact_mobile']) && !empty($aryMemberData['contact_mobile']))? addslashes(trim($aryMemberData['contact_mobile'])):'';
+        $contact_alt_mobile=(isset($aryMemberData['contact_alt_mobile']) && !empty($aryMemberData['contact_alt_mobile']))? addslashes(trim($aryMemberData['contact_alt_mobile'])):'';
+
+        $address=(isset($aryMemberData['address']) && !empty($aryMemberData['address']))? addslashes(trim($aryMemberData['address'])):'';
+        $city=(isset($aryMemberData['city']) && !empty($aryMemberData['city']))? addslashes(trim($aryMemberData['city'])):'';
+        $country=(isset($aryMemberData['country']) && !empty($aryMemberData['country']))? addslashes(trim($aryMemberData['country'])):0;
+        $state=(isset($aryMemberData['state']) && !empty($aryMemberData['state']))? addslashes(trim($aryMemberData['state'])):0;
+        $postal_code=(isset($aryMemberData['postal_code']) && !empty($aryMemberData['postal_code']))? addslashes(trim($aryMemberData['postal_code'])):'';
+		
+		$password=rand(111111,999999);
+
+		$current_date=date('Y-m-d H:i:s');
+
+       	$menu_arr = array(
+            'first_name' => $first_name,
+            'middle_name'  =>$middle_name,
+            'last_name'  =>$last_name,
+            'gender'  =>$gender,
+            'marital_status'  =>$marital_status,
+            'blood_group'  =>$blood_group,
+            'dob'  =>$dob,
+            'membership_type'  =>$membership_type,
+            'church_id'  =>$church_id,
+            'contact_email'  =>$contact_email,
+            'contact_mobile'  =>$contact_mobile,
+            'contact_alt_mobile'  =>$contact_alt_mobile,
+            'address'  =>$address,
+            'city'  =>$city,
+            'country'  =>$country,
+            'state'  =>$state,
+            'postal_code'  =>$postal_code,
+        );
+
+        if(!empty($id))
+        {
+        	$strstatus="Updated";
+        	$menu_arr['update_date']=$current_date;
+        }else{
+        	$strstatus="Added";
+        	$menu_arr['create_date']=$current_date;
+        	$menu_arr['password']=$password;
+        }
+
+        $lastId = $this->Administrator_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Member '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
 
 }
 	

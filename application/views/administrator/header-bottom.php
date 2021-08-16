@@ -53,6 +53,17 @@
                 <li class="nav-item">
                     <a href="#!">
                         <i class="ti-layout"></i>
+                        <span>Membership</span>
+                    </a>
+                    <ul class="tree-1">
+                        <li><a href="<?php echo base_url(); ?>administrator/addmember">Add Member</a></li>
+                        <li><a href="<?php echo base_url(); ?>administrator/memberlist">All Member</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#!">
+                        <i class="ti-layout"></i>
                         <span>Group</span>
                     </a>
                     <ul class="tree-1">

@@ -78,6 +78,8 @@
     <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/trainingLogPages/selectize.default.css">
     <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/trainingLogPages/select.css"> -->
     <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchModule.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchMemberController.js"></script>
     <!-- <script type="text/javascript" src="orderProcessing/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
  -->
 <!-- 

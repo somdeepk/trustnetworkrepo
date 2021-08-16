@@ -21,7 +21,7 @@
     <div class="col-sm-10">
         <button type="button" ng-click="addChurch();" class="btn btn-primary">Add</button>
     </div>
-   
+
     <!-- Page-header end -->
     <!-- Page-body start -->
     <div class="page-body">

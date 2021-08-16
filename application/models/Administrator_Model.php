@@ -83,5 +83,25 @@ class Administrator_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
+	
+	public function get_church_member_type()
+	{
+		$aryReturn[1]="Free Membership";
+		$aryReturn[2]="Church Free Membership";
+		return $aryReturn;
+	}
+
+	public function addupdatemember($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			return $this->db->where('id',$id)->update('tn_members',$menu_arr);
+		}
+		else
+		{
+			$this->db->insert('tn_members',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
 }
 ?>
