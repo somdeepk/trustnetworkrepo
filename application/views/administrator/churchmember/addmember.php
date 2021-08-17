@@ -12,7 +12,7 @@
                 </li>
                 <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>administrator/memberlist">Member</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">Add Member</a>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Add Member</a>
                 </li>
             </ul>
         </div>
@@ -47,7 +47,7 @@
                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
                                                             <input class="form-control" ng-model="memberData.middle_name" id="middle_name" placeholder="Middle Name" type="text">
                                                         </div>
-                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.middle_name)==true)? 'Middle Name Required' : ''}}</div>
+                                                        <!-- <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.middle_name)==true)? 'Middle Name Required' : ''}}</div> -->
                                                     </div>
 
                                                     <div class="col-sm-4">
@@ -89,6 +89,8 @@
                                                                 <option value="">Select Blood Group</option>
                                                                 <option value="A+">A+</option>
                                                                 <option value="A-">A-</option>
+                                                                 <option value="B+">B+</option>
+                                                                <option value="B-">B-</option>
                                                                 <option value="AB+">AB+</option>
                                                                 <option value="AB-">AB-</option>
                                                                 <option value="O+">O+</option>
@@ -122,8 +124,17 @@
                                                         <div class="input-group">
                                                             <select ng-model="memberData.church_id" id="church_id" class="form-control form-control-primary">
                                                                 <option value="">Select Membership Type</option>
-                                                                <option value="RM">Regular Membership</option>
-                                                                <option value="CM">Church Membership</option>
+                                                                <?php 
+                                                                if(count($all_church_data)>0)
+                                                                {
+                                                                    foreach($all_church_data as $k=>$v)
+                                                                    {
+                                                                ?>
+                                                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+                                                                <?php 
+                                                                    }
+                                                                }
+                                                                ?>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && memberData.membership_type=='CM' && isNullOrEmptyOrUndefined(memberData.church_id)==true)? 'Church Required' : ''}}</div>
@@ -153,6 +164,7 @@
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
                                                                             <input class="form-control" ng-model="memberData.contact_mobile" id="contact_mobile" placeholder="Mobile" type="text">
                                                                         </div>
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.contact_mobile)==true)? 'Mobile Required' : ''}}</div>
                                                                     </div>
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">

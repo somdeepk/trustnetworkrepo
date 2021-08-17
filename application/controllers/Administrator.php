@@ -244,7 +244,7 @@ class Administrator extends CI_Controller
 		{
 			$activeInactiveLink='';
 
-			$activeInactiveLink.='<a title="Edit Survey" style="color:#40444a" href="'.base_url().'administrator/addchurch'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+			$activeInactiveLink.='<a title="Edit Church" style="color:#40444a" href="'.base_url().'administrator/addchurch'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
 
 			if($v['status']=='0')
 			{
@@ -258,9 +258,11 @@ class Administrator extends CI_Controller
 			$activeInactiveLink.='&nbsp;&nbsp;<a title="Delete" style="color:#ea1620" href="javascript:void(0);" ng-click="delete_status(\'Are you sure to Delete this Church?\','.$v['id'].')" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
 
 
+			$str_name='<a title="Show Members" style="color:#0400ff;" href="'.base_url().'administrator/memberlist'.'/'.$v['id'].'">'.ucwords($v['name']).'</a>';
+
 			$returnArray[]=array(
 				'id'=>$v['id'],
-				'name'=>(isset($v['name']) && !empty($v['name'])) ? $v['name'] : 'NA',
+				'name'=>$str_name,
 				'trustee_board'=>(isset($v['trustee_board']) && !empty($v['trustee_board'])) ? $v['trustee_board'] : 'NA',
 				'foundation_date'=>(isset($v['foundation_date']) && !empty($v['foundation_date']) && $v['foundation_date']!='0000-00-00 00:00:00') ? date('d/m/Y',strtotime($v['foundation_date'])) : 'NA',
 				'contact_person'=>(isset($v['contact_person']) && !empty($v['contact_person'])) ? $v['contact_person'] : 'NA',
@@ -482,7 +484,7 @@ class Administrator extends CI_Controller
 			if (empty($havingStr)) {
 				$havingStr.=" HAVING DATE_FORMAT(create_date,'%d/%m/%Y') LIKE '%".$searchcreateDate."%'";
 			} else {
-				$havingStr.=" AND DATE_FORMAT(create_date,'%d/%m/%Y' LIKE '%".$searchcreateDate."%'";
+				$havingStr.=" AND DATE_FORMAT(create_date,'%d/%m/%Y') LIKE '%".$searchcreateDate."%'";
 			}
 		}
 
@@ -500,7 +502,7 @@ class Administrator extends CI_Controller
 		{
 			$activeInactiveLink='';
 
-			$activeInactiveLink.='<a title="Edit Survey" style="color:#40444a" href="'.base_url().'administrator/addgroup'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+			$activeInactiveLink.='<a title="Edit Group" style="color:#40444a" href="'.base_url().'administrator/addgroup'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
 
 			if($v['status']=='0')
 			{
@@ -628,12 +630,233 @@ class Administrator extends CI_Controller
 	}
 
 
+
+	public function memberlist($church_id = 0)
+	{
+		$data=array();
+
+		$msg=$this->input->post_get('msg');
+		if(!empty($msg))
+		{
+			$msg=base64_decode($msg);
+			$this->session->set_flashdata('success', $msg);
+		}
+		$data['church_id']=$church_id;
+		$this->load->view('administrator/header-script');
+		$this->load->view('administrator/header');
+		$this->load->view('administrator/header-bottom');
+		$this->load->view('administrator/churchmember/memberlist', $data);
+		$this->load->view('administrator/footer');
+	}
+	public function ajaxGetMemberList()
+	{
+		$post_data=$_POST ;
+		$postData = array();
+		if(isset($post_data['iColumns']))
+		{
+		    $new_array=array();
+		    for ($i=0; $i<$post_data['iColumns']; $i++)
+		    {
+		        $new_array[$i]['data']=$i ;
+		        $new_array[$i]['name']=$post_data['mDataProp_'.$i] ;
+		        $new_array[$i]['searchable']=(isset($post_data['mDataProp_'.$i]) && !empty($post_data['mDataProp_'.$i])) ? $post_data['mDataProp_'.$i] : false ;
+		        $new_array[$i]['orderable']=(isset($post_data['bSortable_'.$i]) && !empty($post_data['bSortable_'.$i])) ? $post_data['bSortable_'.$i] : false ;
+		        $new_array[$i]['search']['value']='' ;
+		        $new_array[$i]['search']['regex']=$post_data['bRegex_'.$i] ;
+		    }
+		    $postData['columns']=$new_array ;
+		    $postData['order'][0]['column']=(isset($post_data['iSortCol_0']) && !empty($post_data['iSortCol_0'])) ? $post_data['iSortCol_0'] : '';
+		    $postData['order'][0]['dir']=(isset($post_data['sSortDir_0']) && !empty($post_data['sSortDir_0'])) ? $post_data['sSortDir_0'] : '';
+		    $postData['start']=$post_data['iDisplayStart'] ;
+		    $postData['length']=$post_data['iDisplayLength'] ;
+		}
+		
+		$search_full_name=(isset($post_data['search_full_name']) && $post_data['search_full_name']!='') ? addslashes($post_data['search_full_name']) : '' ;
+		$search_dob=(isset($post_data['search_dob']) && $post_data['search_dob']!='') ? addslashes($post_data['search_dob']) : '' ;
+		$search_contact_email=(isset($post_data['search_contact_email']) && $post_data['search_contact_email']!='') ? addslashes($post_data['search_contact_email']) : '' ;
+		$search_contact_mobile=(isset($post_data['search_contact_mobile']) && $post_data['search_contact_mobile']!='') ? addslashes($post_data['search_contact_mobile']) : '' ;
+		$search_membership_type=(isset($post_data['search_membership_type']) && $post_data['search_membership_type']!='') ? addslashes($post_data['search_membership_type']) : '' ;
+		$search_church_name=(isset($post_data['search_church_name']) && $post_data['search_church_name']!='') ? addslashes($post_data['search_church_name']) : '' ;
+		$filter_church_id=(isset($post_data['filter_church_id']) && $post_data['filter_church_id']!='') ? addslashes($post_data['filter_church_id']) : '' ;
+
+		$limit_str='';
+		$sort_str=' ORDER BY id DESC';
+
+		if (!empty($postData['columns'])) {
+			$columns=$postData['columns'] ;
+			foreach ($columns as $colkey=>$colval)
+			{
+				$colm_name=$colval['name'];
+				if ($colval['orderable']== true && !empty($postData['order'][0]['column'])) {
+					if ($postData['order'][0]['column']==1) {
+						$sort_str=' ORDER BY name '. $postData['order'][0]['dir'];
+					} else if ($postData['order'][0]['column']==2) {
+						$sort_str=' ORDER BY trustee_board '.$postData['order'][0]['dir'];
+					} else if ($postData['order'][0]['column']==3) {
+						$sort_str=' ORDER BY foundation_date '. $postData['order'][0]['dir'];
+					} else if ($postData['order'][0]['column']==4) {
+						$sort_str=' ORDER BY contact_person '. $postData['order'][0]['dir'];
+					}
+				}
+			}
+		}
+		if (!empty($postData))
+		{
+		    if (isset($postData['start']) && !empty($postData['length']))
+		    {
+		        $limit_str=' LIMIT '.$postData['start'].' , '.$postData['length'];
+		    }
+		}
+
+		$returnArray=array();
+		$searchStr="";
+		$havingStr="";
+		
+		if (!empty($search_full_name))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING (tm.first_name LIKE '%".$search_full_name."%' OR tm.middle_name LIKE '%".$search_full_name."%' OR tm.last_name LIKE '%".$search_full_name."%')";
+			} else {
+				$havingStr.=" AND (tm.first_name LIKE '%".$search_full_name."%' OR tm.middle_name LIKE '%".$search_full_name."%' OR tm.last_name LIKE '%".$search_full_name."%')";
+			}
+		}
+
+		if (!empty($search_dob))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING DATE_FORMAT(tm.dob,'%d/%m/%Y') LIKE '%".$search_dob."%'";
+			} else {
+				$havingStr.=" AND DATE_FORMAT(tm.dob,'%d/%m/%Y') LIKE '%".$search_dob."%'";
+			}
+		}
+
+		if (!empty($search_contact_email))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING tm.contact_email LIKE '%".$search_contact_email."%'";
+			} else {
+				$havingStr.=" AND tm.contact_email LIKE '%".$search_contact_email."%'";
+			}
+		}
+
+		if (!empty($search_contact_mobile))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING tm.contact_mobile LIKE '%".$search_contact_mobile."%'";
+			} else {
+				$havingStr.=" AND tm.contact_mobile LIKE '%".$search_contact_mobile."%'";
+			}
+		}
+
+		if (!empty($search_church_name))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING tc.name LIKE '%".$search_church_name."%'";
+			} else {
+				$havingStr.=" AND tc.name LIKE '%".$search_church_name."%'";
+			}
+		}
+
+		if (!empty($search_membership_type))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING tm.membership_type LIKE '%".$search_membership_type."%'";
+			} else {
+				$havingStr.=" AND tm.membership_type LIKE '%".$search_membership_type."%'";
+			}
+		}
+
+		if (!empty($filter_church_id) && $filter_church_id>0)
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING tm.church_id='".$filter_church_id."'";
+			} else {
+				$havingStr.=" AND tm.church_id='".$filter_church_id."'";
+			}
+		}
+		
+		$sql_main='SELECT 
+					tm.*,
+					tc.name as church_name
+					FROM tn_members as tm 
+					LEFT JOIN tn_church as tc On tc.id=tm.church_id
+					WHERE tm.deleted="0" '.$searchStr.' GROUP BY id '.$havingStr;
+
+		$sql_query=$sql_main.$sort_str.' '.$limit_str;
+		$query=$this->db->query($sql_query);
+		$resultData=$query->result_array();
+
+		$sql_query_total=$sql_main;
+		$query=$this->db->query($sql_query_total);
+		$result_total=$query->result_array();
+
+		foreach($resultData as $k=>$v)
+		{
+			$activeInactiveLink='';
+
+			$activeInactiveLink.='<a title="Edit Member" style="color:#40444a" href="'.base_url().'administrator/addmember'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+
+			if($v['status']=='0')
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Inactive" style="color:#ea1620" href="javascript:void(0);" ng-click="change_status(\'1\',\'Are you sure to Active this Member?\','.$v['id'].')" ><i class="fa fa-lock" aria-hidden="true"></i></a>';
+			}
+			else
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Active" style="color:#339933" href="javascript:void(0);" ng-click="change_status(\'0\',\'Are you sure to Inactive this Member?\','.$v['id'].')" ><i class="fa fa-unlock-alt" aria-hidden="true"></i></a>';
+			}
+
+			$activeInactiveLink.='&nbsp;&nbsp;<a title="Delete" style="color:#ea1620" href="javascript:void(0);" ng-click="delete_status(\'Are you sure to Delete this Member?\','.$v['id'].')" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
+
+			$str_full_name=$v['first_name']." ".$v['middle_name']." ".$v['last_name'];
+			if($v['membership_type']=="RM")
+			{
+				$str_membership_type="Regular Membership";
+			}
+			else
+			{
+				$str_membership_type="Church Membership";
+			}
+
+			$returnArray[]=array(
+				'id'=>$v['id'],
+				'full_name'=>$str_full_name,
+				'dob'=>(isset($v['dob']) && !empty($v['dob']) && $v['dob']!='0000-00-00 00:00:00') ? date('d/m/Y',strtotime($v['dob'])) : 'NA',
+				'contact_email'=>(isset($v['contact_email']) && !empty($v['contact_email'])) ? $v['contact_email'] : 'NA',
+				'contact_mobile'=>(isset($v['contact_mobile']) && !empty($v['contact_mobile'])) ? $v['contact_mobile'] : 'NA',
+				'membership_type'=>$str_membership_type,
+				'church_name'=>(isset($v['church_name']) && !empty($v['church_name'])) ? $v['church_name'] : 'NA',
+
+				'action'=>$activeInactiveLink
+			);
+		}
+
+		/*echo "<pre>";
+		print_r($returnArray);
+		exit;*/
+
+		$totcount=count($result_total);
+		$json_data = array('jsonData'=> array(
+		        "draw"            => intval($post_data['sEcho']),  // Just a Random Number for Draw
+		        "recordsTotal"    => intval($totcount), // Total records count without searching and limit
+		        "recordsFiltered" => intval($totcount), //records count after searching(if not search then equals totalcount)
+		        "aaData"          => $returnArray //This array contains all the datatable rows which will be shown in the front end
+		        ));
+		echo json_encode($json_data); die();
+	}
+
 	public function addmember($id=0)
 	{
 		$data=array();
 
 		$churchMemberTypeData = $this->Administrator_Model->get_church_member_type();
+		$all_church_data = $this->Administrator_Model->get_all_church_data();
 		$data['churchMemberTypeData'] = $churchMemberTypeData;
+		$data['all_church_data'] = $all_church_data;
+
+		/*echo "<pre>";
+		print_r($data['all_church_data']);
+		exit;*/
+
 		$data['id']=$id;
 
 		$this->load->view('administrator/header-script');
@@ -712,6 +935,48 @@ class Administrator extends CI_Controller
 
         echo json_encode($returnData);
         exit;    	
+    }
+
+    public function ajaxchangememberstatus()
+	{
+		$statusData = trim($this->input->post('statusData'));
+        $aryStatusData=json_decode($statusData, true);
+        
+		$id = $aryStatusData['id'];
+		$status = $aryStatusData['status'];
+
+		$menu_arr['status']=$status;
+		$this->db->where('id',$id)->update('tn_members',$menu_arr);
+		echo $id;
+		exit;
+	}
+
+	public function ajaxdeletemember()
+	{
+		$deleteData = trim($this->input->post('deleteData'));
+        $aryDeleteData=json_decode($deleteData, true);
+ 
+		$id = $aryDeleteData['id'];
+
+		$menu_arr['deleted']='1';
+		$this->db->where('id',$id)->update('tn_members',$menu_arr);
+		echo $id;
+		exit;
+	}
+
+
+    public function get_member_data() 
+    {
+    	$id=$this->input->get_post('id');
+		$memberData = $this->Administrator_Model->get_member_data($id);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('memberData'=>$memberData);
+       
+        echo json_encode($returnData);
+        exit;
     }
 
 }

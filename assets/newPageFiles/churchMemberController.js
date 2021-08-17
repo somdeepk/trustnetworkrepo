@@ -1,34 +1,37 @@
 mainApp.controller('churchMemberController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
-	$scope.searchChurch={};
-	$scope.churchData={};
+	$scope.searchMember={};
+	$scope.memberData={};
 
 
-	$scope.getChurchListInit = function() {
+	$scope.getMemberListInit = function() {
 		$timeout(function () {
-			$scope.getChurchList();
+			$scope.getMemberList();
 		}, 200);
 	};	
 
-	$scope.getChurchList = function()
+	$scope.getMemberList = function()
 	{
-		if (! $.fn.DataTable.isDataTable('#datatableChurchList'))
+		if (! $.fn.DataTable.isDataTable('#datatableMemberList'))
 		{
+			filter_church_id=$("#filter_church_id").val();
 			var passarray= [
 				{"data": "id", "name": "id", "bVisible": false, "bSearchable": false, "bSortable":true},
-				{"data": "name", "name": "name", "bVisible": true, "bSearchable": true, "bSortable":true},
-				{"data": "trustee_board", "name": "trustee_board", "bVisible": true, "bSearchable": true, "bSortable":true},
-				{"data": "foundation_date", "name": "foundation_date", "bVisible": true, "bSearchable": true, "bSortable":true},
-				{"data": "contact_person", "name": "contact_person", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "full_name", "name": "full_name", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "dob", "name": "dob", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "contact_email", "name": "contact_email", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "contact_mobile", "name": "contact_mobile", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "membership_type", "name": "membership_type", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "church_name", "name": "church_name", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "action", "name": "action", "bVisible": true, "bSearchable": false, "bSortable":false},
 			] ;
 
-			$scope.masterRollsContainer = $('#datatableChurchList').dataTable({
+			$scope.masterRollsContainer = $('#datatableMemberList').dataTable({
 				"dom": "frtlip",
 				"iDisplayLength":10,
 				"bProcessing": false,
 				"bServerSide": true,
-				"sAjaxSource":  varGlobalAdminBaseUrl+"ajaxGetChurchList",
+				"sAjaxSource":  varGlobalAdminBaseUrl+"ajaxGetMemberList",
 				"aoColumns": passarray,
 				"columnDefs": [
 					{"className": "dt-center", "targets": "_all"}
@@ -36,10 +39,13 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 				//"order": [[ 2, "desc" ]],
 				"fnServerData": function ( sSource, aoData, fnRowCallback, oSettings) {
 					aoData.push(
-						{"name": "searchchurchName","value":$scope.searchChurch.churchName},
-						{"name": "searchtrusteeBoard","value":$scope.searchChurch.trusteeBoard},
-						{"name": "searchfoundationDate","value":$scope.searchChurch.foundationDate},
-						{"name": "searchcontachPerson","value":$scope.searchChurch.contachPerson},
+						{"name": "search_full_name","value":$scope.searchMember.full_name},
+						{"name": "search_dob","value":$scope.searchMember.dob},
+						{"name": "search_contact_email","value":$scope.searchMember.contact_email},
+						{"name": "search_contact_mobile","value":$scope.searchMember.contact_mobile},
+						{"name": "search_membership_type","value":$scope.searchMember.membership_type},
+						{"name": "search_church_name","value":$scope.searchMember.church_name},
+						{"name": "filter_church_id","value":filter_church_id},
 					);
 					oSettings.jqXHR = $.ajax( {
 						"dataType": 'json',
@@ -65,32 +71,30 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 					$compile(nRow)($scope);
 				},
 			});
-			var data_table = $('#datatableChurchList').DataTable();
-			$('#datatableChurchList .zsearch_inputz').on('keyup',function(event)
+			var data_table = $('#datatableMemberList').DataTable();
+			$('#datatableMemberList .zsearch_inputz').on('keyup',function(event)
 			{
 				data_table.draw(); // by this process we can recall the datatable ajax with search value
 			});
-			$('#datatableChurchList_filter.dataTables_filter').hide();
-			var table = $('#datatableChurchList').DataTable();
-			$('#datatableChurchList tbody').on('click', 'tr', function () {
+			$('#datatableMemberList_filter.dataTables_filter').hide();
+			var table = $('#datatableMemberList').DataTable();
+			$('#datatableMemberList tbody').on('click', 'tr', function () {
 				var data = table.row( this ).data();
 			});
 		} else {
-			var dataTable = $('#datatableChurchList').DataTable();
+			var dataTable = $('#datatableMemberList').DataTable();
 			dataTable.draw();
 		}
     }	
 
-    $scope.getChurchData = function(id=0)
+    $scope.getMemberData = function(id=0)
 	{
-		$scope.churchData.churchType='0';
-
 		var formData = new FormData();
 		formData.append('id',id);
 
 		$http({
             method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"get_church_data",
+            url     : varGlobalAdminBaseUrl+"get_member_data",
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},                     
             data:formData, 
@@ -99,19 +103,11 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
         	aryreturnData=angular.fromJson(returnData);
         	if(aryreturnData.status=='1')
         	{
-        		var churchData=aryreturnData.data.churchData;
-
-        		$scope.churchData.id=churchData.id;
-        		$scope.churchData.churchName=churchData.name;
-        		$scope.churchData.churchType=churchData.type;
-        		$scope.churchData.contachPerson=churchData.contact_person;
-        		$scope.churchData.trusteeBoard=churchData.trustee_board;
-        		$scope.churchData.foundationDate=churchData.foundation_date;
-        		$scope.churchData.address=churchData.address;
-        		$scope.churchData.city=churchData.city;
-        		$scope.churchData.country=churchData.country_id;
-        		$scope.churchData.state=churchData.state_id;
-        		$scope.churchData.postalCode=churchData.postal_code;
+        		$scope.memberData=aryreturnData.data.memberData;
+        		if(aryreturnData.data.memberData.church_id==0)
+        		{
+        			$scope.memberData.church_id='';
+        		}
         	}
         	else
         	{
@@ -123,9 +119,15 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		});
     };
 
-	$scope.addChurch = function ()
+	$scope.addMember = function ()
 	{
-		window.location.href=varGlobalAdminBaseUrl+"addchurch";
+		window.location.href=varGlobalAdminBaseUrl+"addmember";
+	};
+
+	$scope.filte_membership_type = function ()
+	{
+		var dataTable = $('#datatableMemberList').DataTable();
+		dataTable.draw();
 	};
 
 	$scope.submitMember = function() {
@@ -178,6 +180,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 
 		if (Number(validator)==0)
 		{		
+			//alert(validator)
 			var formData = new FormData();
 			formData.append('memberData',angular.toJson($scope.memberData));	
 			$http({
@@ -191,7 +194,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1')
             	{
-            		window.location.href=varGlobalAdminBaseUrl+"churchlist?msg="+aryreturnData.msg;
+            		window.location.href=varGlobalAdminBaseUrl+"memberlist?msg="+aryreturnData.msg;
             	}
             	else
             	{
@@ -226,7 +229,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 	    	{
 		      $http({
 		            method  : 'POST',
-		            url     : varGlobalAdminBaseUrl+"ajaxchangechurchstatus",
+		            url     : varGlobalAdminBaseUrl+"ajaxchangememberstatus",
 		            transformRequest: angular.identity,
 		            headers: {'Content-Type': undefined},                     
 		            data:formData, 
@@ -238,13 +241,12 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		        		"success"
 		        	)
 		        	.then((willDelete) => {
-		        		var data_table = $('#datatableChurchList').DataTable();
+		        		var data_table = $('#datatableMemberList').DataTable();
 						data_table.draw();
 				    });
 				});
 		    }
 	    });
-
 	};
 
 	$scope.delete_status = function(msg,id)
@@ -267,7 +269,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 	    	{
 		      $http({
 		            method  : 'POST',
-		            url     : varGlobalAdminBaseUrl+"ajaxdeletechurch",
+		            url     : varGlobalAdminBaseUrl+"ajaxdeletemember",
 		            transformRequest: angular.identity,
 		            headers: {'Content-Type': undefined},                     
 		            data:formData, 
@@ -279,7 +281,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		        		"success"
 		        	)
 		        	.then((willDelete) => {
-		        		var data_table = $('#datatableChurchList').DataTable();
+		        		var data_table = $('#datatableMemberList').DataTable();
 						data_table.draw();
 				    });
 				});

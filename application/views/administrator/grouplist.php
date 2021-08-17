@@ -10,9 +10,9 @@
                         <i class="icofont icofont-home"></i>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">Group</a>
+                <li class="breadcrumb-item"><a href="javascript:void(0);">Group</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">List Group</a>
+                <li class="breadcrumb-item"><a href="javascript:void(0);">List Group</a>
                 </li>
             </ul>
         </div>
@@ -33,7 +33,7 @@
                         <thead>
                             <tr>
                                 <th width="2%" class="hiddenimportant">&nbsp;</th>
-                                <th width="10%">Group Name</th>
+                                <th width="10%" class="align-left">Group Name</th>
                                 <th width="15%">Create Date</th>
                                 <th width="4%">Action</th>
                             </tr>

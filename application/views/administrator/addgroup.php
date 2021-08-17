@@ -12,7 +12,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>administrator/grouplist">Group</a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#!">Add Group</a>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Add Group</a>
                         </li>
                     </ul>
                 </div>

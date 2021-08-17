@@ -17,7 +17,7 @@ exit;*/
                         </li>
                         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>administrator/churchlist">Church</a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#!">Add Church</a>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Add Church</a>
                         </li>
                     </ul>
                 </div>

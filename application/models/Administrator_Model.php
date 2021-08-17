@@ -63,6 +63,14 @@ class Administrator_Model extends CI_Model
 		return $resultData[0];
 	}
 
+	public function get_all_church_data()
+	{
+		$sql='SELECT * from tn_church WHERE deleted="0" and status="1"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
 	public function get_group_data($id)
 	{
 		$sql='SELECT * from tn_group WHERE id="'.$id.'"';
@@ -102,6 +110,14 @@ class Administrator_Model extends CI_Model
 			$this->db->insert('tn_members',$menu_arr);
 			return $this->db->insert_id();
 		}
+	}
+
+	public function get_member_data($id)
+	{
+		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData[0];
 	}
 }
 ?>
