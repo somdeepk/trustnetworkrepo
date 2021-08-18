@@ -35,6 +35,38 @@
                                         <div class="tab-content">
                                             <div class="tab-pane active" >
                                                 <div class="row">
+                                                    <!--left-->
+                                                    <div class="col-sm-3 padding-lr0 mb10">
+                                                      <div id="uploaded_image">
+                                                        <img src="<?php echo base_url();?>assets/images/member-no-imgage.jpg" class="img-responsive border-blk" ng-if="memberData.profile_image == '' || !memberData.profile_image" style="margin:0 auto; width:74%;">
+                                                        <img src="<?php echo base_url();?>assets/images/members/{{memberData.profile_image}}" class="img-responsive border-blk" ng-if="memberData.profile_image && memberData.profile_image != ''" style="margin:0 auto; width:74%; height:149px;">
+                                                      </div>
+                                                      <div class="clear50"></div>
+                                                      
+                                                      <span class="upload-img-cont"><strong>Note:</strong> Please Upload JPG, JPEG or PNG Image With a Dimension of 254 X 254 Pixel Only</span>
+                                                      <div class="clear20"></div>
+                                                      <div class="col-md-12 padding-lr0">
+
+                                                        <div class="input-group image-preview">
+                                                          <input type="text" class="form-control image-preview-filename" disabled="disabled"> 
+                                                          <span class="input-group-btn" style="position:relative;top:-2px;">
+                                                            <button type="button" class="btn btn-success image-preview-clear" style="display:none;" ng-click="clearProfileImage();">
+                                                              <i class="fa fa-times" aria-hidden="true"></i> 
+                                                            </button>
+                                                            <br><br>
+                                                            <div class="btn btn-success image-preview-input">
+                                                              <span class="glyphicon glyphicon-folder-open"></span>
+                                                              <span class="image-preview-input-title">Browse</span>
+                                                              <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" single-file-upload/> 
+                                                            </div>
+                                                          </span>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <!--/left-->
+
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
@@ -104,7 +136,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                            <input class="form-control" ng-model="memberData.dob" id="dob" placeholder="Date of Birth" type="text" bootstrap-date>
+                                                            <input class="form-control" ng-model="memberData.dob" id="dob" placeholder="Date of Birth" type="text" dobdate>
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date of Birth Required' : ''}}</div>
                                                     </div>
@@ -154,7 +186,7 @@
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_email" id="contact_email" placeholder="Email" type="text">
+                                                                            <input class="form-control" ng-model="memberData.contact_email" id="contact_email" placeholder="Email" type="text" emailvalidate>
                                                                         </div>
                                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.contact_email)==true)? 'Email Required' : ''}}</div>
                                                                     </div>
@@ -162,14 +194,14 @@
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_mobile" id="contact_mobile" placeholder="Mobile" type="text">
+                                                                            <input class="form-control" ng-model="memberData.contact_mobile" id="contact_mobile" placeholder="Mobile" type="text" maxlength="15" type="text" phone-masking valid-number>
                                                                         </div>
                                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.contact_mobile)==true)? 'Mobile Required' : ''}}</div>
                                                                     </div>
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_alt_mobile" id="contact_alt_mobile" placeholder="Alternate Mobile" type="text">
+                                                                            <input class="form-control" ng-model="memberData.contact_alt_mobile" id="contact_alt_mobile" placeholder="Alternate Mobile" maxlength="15" type="text" phone-masking valid-number>
                                                                         </div>
                                                                     </div>
 

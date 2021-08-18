@@ -90,43 +90,50 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
     $scope.getChurchData = function(id=0)
 	{
 		$scope.churchData.churchType='0';
+		if(id>0)
+		{
+			
 
-		var formData = new FormData();
-		formData.append('id',id);
+			var formData = new FormData();
+			formData.append('id',id);
 
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"get_church_data",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData)
-        {
-        	aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		var churchData=aryreturnData.data.churchData;
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"get_church_data",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		var churchData=aryreturnData.data.churchData;
 
-        		$scope.churchData.id=churchData.id;
-        		$scope.churchData.churchName=churchData.name;
-        		$scope.churchData.churchType=churchData.type;
-        		$scope.churchData.contachPerson=churchData.contact_person;
-        		$scope.churchData.trusteeBoard=churchData.trustee_board;
-        		$scope.churchData.foundationDate=churchData.foundation_date;
-        		$scope.churchData.address=churchData.address;
-        		$scope.churchData.city=churchData.city;
-        		$scope.churchData.country=churchData.country_id;
-        		$scope.churchData.state=churchData.state_id;
-        		$scope.churchData.postalCode=churchData.postal_code;
-        	}
-        	else
-        	{
-        		swal("Error!",
-	        		"No Data Found",
-	        		"error"
-	        	)
-        	}
-		});
+	        		$scope.churchData.id=churchData.id;
+	        		$scope.churchData.churchName=churchData.name;
+	        		$scope.churchData.churchType=churchData.type;
+	        		$scope.churchData.trusteeBoard=churchData.trustee_board;
+	        		$scope.churchData.foundationDate=churchData.foundation_date;
+	        		$scope.churchData.contachPerson=churchData.contact_person;
+	        		$scope.churchData.contact_email=churchData.contact_email;
+	        		$scope.churchData.contact_mobile=churchData.contact_mobile;
+	        		$scope.churchData.contact_alt_mobile=churchData.contact_alt_mobile;
+	        		$scope.churchData.address=churchData.address;
+	        		$scope.churchData.city=churchData.city;
+	        		$scope.churchData.country=churchData.country_id;
+	        		$scope.churchData.state=churchData.state_id;
+	        		$scope.churchData.postalCode=churchData.postal_code;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }
     };
 
     /*$scope.getGroupDataInit = function(id)
@@ -140,32 +147,35 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 
     $scope.getGroupData = function(id=0)
 	{
-		var formData = new FormData();
-		formData.append('id',id);	
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"get_group_data",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData)
-        {
-        	aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		var groupData=aryreturnData.data.groupData;
-        		$scope.groupData.id=groupData.id;
-        		$scope.groupData.groupName=groupData.name;
-        		$scope.groupData.groupDesc=groupData.group_desc;
-        	}
-        	else
-        	{
-        		swal("Error!",
-	        		"No Data Found",
-	        		"error"
-	        	)
-        	}
-		});
+		if(id>0)
+		{
+			var formData = new FormData();
+			formData.append('id',id);	
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"get_group_data",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		var groupData=aryreturnData.data.groupData;
+	        		$scope.groupData.id=groupData.id;
+	        		$scope.groupData.groupName=groupData.name;
+	        		$scope.groupData.groupDesc=groupData.group_desc;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }
     };
 
 
@@ -186,6 +196,17 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 		{
 			validator++ ;
 		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.churchData.contact_mobile)==true) || ($scope.churchData.contact_mobile=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.churchData.contact_email)==true) || ($scope.churchData.contact_email=='¿'))
+		{
+			validator++ ;
+		}
+
 
 		if (Number(validator)==0)
 		{		

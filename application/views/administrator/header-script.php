@@ -27,15 +27,15 @@
     <!-- ico font -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/icon/icofont/css/icofont.css">
     <!-- flag icon framework css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/flag-icon/flag-icon.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/flag-icon/flag-icon.min.css"> -->
     <!-- Menu-Search css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/menu-search/css/component.css">
+    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/menu-search/css/component.css"> -->
     <!-- Horizontal-Timeline css -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/dashboard/horizontal-timeline/css/style.css">
     <!-- amchart css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/dashboard/amchart/css/amchart.css">
+   <!--  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/dashboard/amchart/css/amchart.css"> -->
     <!-- flag icon framework css -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/flag-icon/flag-icon.min.css">
+   <!--  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/flag-icon/flag-icon.min.css"> -->
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/css/style.css">
     <!--color css-->
@@ -80,6 +80,7 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchModule.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchMemberController.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- <script type="text/javascript" src="orderProcessing/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
  -->
 <!-- 
@@ -94,4 +95,5 @@
 </div>
 <script>
 varGlobalAdminBaseUrl='<?php echo base_url();?>administrator/'
+varBaseUrl='<?php echo base_url();?>'
 </script>

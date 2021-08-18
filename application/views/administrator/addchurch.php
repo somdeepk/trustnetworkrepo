@@ -60,10 +60,11 @@ exit;*/
                                                             </div>
                                                         </div>
                                                         <div class="row">
+                                                            
                                                             <div class="col-sm-6">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                    <input class="form-control" ng-model="churchData.contachPerson" id="contachPerson" placeholder="Contact Person" type="text">
+                                                                    <input class="form-control" ng-model="churchData.foundationDate" id="foundationDate" placeholder="Foundation Date" type="text" dobdate>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
@@ -74,13 +75,53 @@ exit;*/
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                    <input class="form-control" ng-model="churchData.foundationDate" id="foundationDate" placeholder="Foundation Date" type="text" bootstrap-date>
+                                                            
+                                                        </div>
+
+
+                                                        <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Contact Information</h5>
+                                                            </div>
+                                                            <div class="card-block">
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
+                                                                            <input class="form-control" ng-model="churchData.contachPerson" id="contachPerson" placeholder="Contact Person" type="text">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
+                                                                            <input class="form-control" ng-model="churchData.contact_email" id="contact_email" placeholder="Email" type="text" emailvalidate>
+                                                                        </div>
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(churchDataCheck==true && isNullOrEmptyOrUndefined(churchData.contact_email)==true)? 'Email Required' : ''}}</div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
+                                                                            <input class="form-control" ng-model="churchData.contact_mobile" id="contact_mobile" placeholder="Mobile" type="text" maxlength="15" type="text" phone-masking valid-number>
+                                                                        </div>
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(churchDataCheck==true && isNullOrEmptyOrUndefined(churchData.contact_mobile)==true)? 'Mobile Required' : ''}}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
+                                                                            <input class="form-control" ng-model="churchData.contact_alt_mobile" id="contact_alt_mobile" placeholder="Alternate Mobile" maxlength="15" type="text" phone-masking valid-number>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
                                                         
 
                                                              

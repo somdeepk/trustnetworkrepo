@@ -16,3 +16,10 @@ body{background-color:#f3f3f3;font-size:.875em;overflow-x:hidden;font-family:"Op
 .hiddenimportant {display:none!important;}
 
 .zsearch_inputz{width:90%;}
+
+.redBorder{
+	border: 1px solid #ff0000;
+}
+.greenBorder{
+	border: 1px solid #1abc9c;
+}

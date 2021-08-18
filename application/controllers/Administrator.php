@@ -322,9 +322,13 @@ class Administrator extends CI_Controller
         $id=(isset($aryChurchData['id']) && !empty($aryChurchData['id']))? addslashes(trim($aryChurchData['id'])):0;
         $churchName=(isset($aryChurchData['churchName']) && !empty($aryChurchData['churchName']))? addslashes(trim($aryChurchData['churchName'])):'';
         $churchType=(isset($aryChurchData['churchType']) && !empty($aryChurchData['churchType']))? addslashes(trim($aryChurchData['churchType'])):'';
-        $contachPerson=(isset($aryChurchData['contachPerson']) && !empty($aryChurchData['contachPerson']))? addslashes(trim($aryChurchData['contachPerson'])):'';
         $trusteeBoard=(isset($aryChurchData['trusteeBoard']) && !empty($aryChurchData['trusteeBoard']))? addslashes(trim($aryChurchData['trusteeBoard'])):'';
         $foundationDate=(isset($aryChurchData['foundationDate']) && !empty($aryChurchData['foundationDate']))? date('Y-m-d H:i:s',strtotime($aryChurchData['foundationDate'])) :NULL;
+
+        $contachPerson=(isset($aryChurchData['contachPerson']) && !empty($aryChurchData['contachPerson']))? addslashes(trim($aryChurchData['contachPerson'])):'';
+        $contact_email=(isset($aryChurchData['contact_email']) && !empty($aryChurchData['contact_email']))? addslashes(trim($aryChurchData['contact_email'])):'';
+        $contact_mobile=(isset($aryChurchData['contact_mobile']) && !empty($aryChurchData['contact_mobile']))? addslashes(trim($aryChurchData['contact_mobile'])):'';
+        $contact_alt_mobile=(isset($aryChurchData['contact_alt_mobile']) && !empty($aryChurchData['contact_alt_mobile']))? addslashes(trim($aryChurchData['contact_alt_mobile'])):'';
 
         $address=(isset($aryChurchData['address']) && !empty($aryChurchData['address']))? addslashes(trim($aryChurchData['address'])):'';
         $city=(isset($aryChurchData['city']) && !empty($aryChurchData['city']))? addslashes(trim($aryChurchData['city'])):'';
@@ -337,9 +341,15 @@ class Administrator extends CI_Controller
        	$menu_arr = array(
             'name' => $churchName,
             'type'  =>$churchType,
-            'contact_person'  =>$contachPerson,
             'trustee_board'  =>$trusteeBoard,
             'foundation_date' => $foundationDate,
+
+            'contact_person'  =>$contachPerson,
+            'contact_email'  =>$contact_email,
+            'contact_mobile'  =>$contact_mobile,
+            'contact_alt_mobile'  =>$contact_alt_mobile,
+
+            
             'address' => $address,
             'city' => $city,
             'country_id' => $country,
@@ -893,7 +903,6 @@ class Administrator extends CI_Controller
         $postal_code=(isset($aryMemberData['postal_code']) && !empty($aryMemberData['postal_code']))? addslashes(trim($aryMemberData['postal_code'])):'';
 		
 		$password=rand(111111,999999);
-
 		$current_date=date('Y-m-d H:i:s');
 
        	$menu_arr = array(
@@ -915,6 +924,59 @@ class Administrator extends CI_Controller
             'state'  =>$state,
             'postal_code'  =>$postal_code,
         );
+
+        if (!empty($_FILES['file']['name']))
+        {
+            $profilepic = json_encode($_FILES);
+        } else {
+            $profilepic = "";
+        }
+
+        $imagename="";
+        if(!empty($profilepic))
+        {
+            $profilepic=json_decode($profilepic);
+            $this->load->library('upload');
+            $filename=$profilepic->file->name[0];
+            $imarr=explode(".",$filename);
+            $ext=end($imarr);
+
+           
+            if($ext=="jpg" or $ext=="jpeg" or $ext=="png" or $ext=="gif" or $ext=="bmp" or $ext=="tiff" or $ext=="exif")
+            {
+                $_FILES['file']['name']=$profilepic->file->name[0];
+                $_FILES['file']['type']=$profilepic->file->type[0];
+                $_FILES['file']['tmp_name']=$profilepic->file->tmp_name[0];
+                $_FILES['file']['error']=$profilepic->file->error[0];
+                $_FILES['file']['size']=$profilepic->file->size[0];
+
+                $config = array(
+                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
+                    'allowed_types' => '*',
+                    'upload_path' => FCPATH.'assets/images/members',
+                    'max_size' => 2000
+                );
+
+                $this->upload->initialize($config);
+                
+                if (!$this->upload->do_upload('file'))
+                {
+                    $errormsg=$this->upload->display_errors();
+                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
+                }
+                else
+                {
+                    $image_data = $this->upload->data();
+                    $imagename=$image_data['file_name'];
+                }
+                $menu_arr['profile_image']=$imagename;
+            }
+        }
+
+       /* echo FCPATH.$ext.$filename."<pre>";
+		print_r($profilepic);
+		exit;*/
+
 
         if(!empty($id))
         {

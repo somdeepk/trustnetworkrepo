@@ -89,34 +89,37 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 
     $scope.getMemberData = function(id=0)
 	{
-		var formData = new FormData();
-		formData.append('id',id);
+		if(id>0)
+		{
+			var formData = new FormData();
+			formData.append('id',id);
 
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"get_member_data",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData)
-        {
-        	aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		$scope.memberData=aryreturnData.data.memberData;
-        		if(aryreturnData.data.memberData.church_id==0)
-        		{
-        			$scope.memberData.church_id='';
-        		}
-        	}
-        	else
-        	{
-        		swal("Error!",
-	        		"No Data Found",
-	        		"error"
-	        	)
-        	}
-		});
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"get_member_data",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.memberData=aryreturnData.data.memberData;
+	        		if(aryreturnData.data.memberData.church_id==0)
+	        		{
+	        			$scope.memberData.church_id='';
+	        		}
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }
     };
 
 	$scope.addMember = function ()
@@ -182,7 +185,11 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		{		
 			//alert(validator)
 			var formData = new FormData();
-			formData.append('memberData',angular.toJson($scope.memberData));	
+			formData.append('memberData',angular.toJson($scope.memberData));
+			angular.forEach($scope.files,function(file){           
+				formData.append('file[]',file);
+			}); 
+
 			$http({
                 method  : 'POST',
                 url     : varGlobalAdminBaseUrl+"ajaxaddupdatemember",
@@ -205,6 +212,42 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
             	}
 			});
 		}
+	};
+
+	$scope.files = [];
+    
+    //listen for the file selected event
+    $scope.$on("fileSelected", function (event, args) {
+        $scope.$apply(function () {            
+            var img = $('<img/>', {
+              id: 'dynamic',
+              width:200,
+              height:150
+            });      
+            $scope.files[0] = args.file;
+            var reader = new FileReader();
+            // Set preview image into the popover data-content
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("Change");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val($scope.files[0].name);   
+                       img.attr('src', e.target.result);
+                $("#uploaded_image").html($(img)[0].outerHTML);
+            }        
+            reader.readAsDataURL($scope.files[0]);
+        });
+    });
+
+	$scope.clearProfileImage = function()
+	{
+		$scope.files = [];
+		$scope.memberData.profile_image = '';
+		$("#uploaded_image").html('<img src="'+varBaseUrl+'assets/images/member-no-imgage.jpg" class="img-responsive border-blk"  style="margin:0 auto; width:74%;">');
+		$('.image-preview').attr("data-content","").popover('hide');
+		$('.image-preview-filename').val("");
+		$('.image-preview-clear').hide();
+		$('.image-preview-input input:file').val("");
+		$(".image-preview-input-title").text("Browse"); 
 	};
 
 
@@ -359,4 +402,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 			}
 		}
 	};
+
+	 
+
 });
