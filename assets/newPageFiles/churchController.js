@@ -92,8 +92,6 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 		$scope.churchData.churchType='0';
 		if(id>0)
 		{
-			
-
 			var formData = new FormData();
 			formData.append('id',id);
 
