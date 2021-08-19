@@ -64,7 +64,7 @@ class Administrator extends CI_Controller
 			$encrypt_password = md5($this->input->post('password'));
 
 			$user_id = $this->Administrator_Model->adminLogin($email, $encrypt_password);
-			$sitelogo = $this->Administrator_Model->update_siteconfiguration(1);
+			//$sitelogo = $this->Administrator_Model->update_siteconfiguration(1);
 
 			if ($user_id && $user_id->role_id == 1) {
 				//Create Session
@@ -75,7 +75,7 @@ class Administrator extends CI_Controller
 			 				'login' => true,
 			 				'role' => $user_id->role_id,
 			 				'image' => $user_id->image,
-			 				'site_logo' => $sitelogo['logo_img']
+			 				'site_logo' =>'',// $sitelogo['logo_img']
 			 	);
 
 			 	$this->session->set_userdata($user_data);
@@ -1036,6 +1036,46 @@ class Administrator extends CI_Controller
         $returnData['status']='1';
         $returnData['msg']='';
         $returnData['data']=array('memberData'=>$memberData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function getcountrydata() 
+    {
+		$countryData = $this->Administrator_Model->getcountrydata();
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('countryData'=>$countryData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function getstatedata() 
+    {
+    	$countryId=$this->input->get_post('countryId');
+		$stateData = $this->Administrator_Model->getstatedata($countryId);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('stateData'=>$stateData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function getcitydata() 
+    {
+    	$stateId=$this->input->get_post('stateId');
+		$cityData = $this->Administrator_Model->getcitydata($stateId);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('cityData'=>$cityData);
        
         echo json_encode($returnData);
         exit;

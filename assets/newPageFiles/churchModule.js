@@ -1,6 +1,95 @@
 var mainApp = angular.module('trustApp',['ngSanitize', 'treasure-overlay-spinner', 'angularSpinners', 'ngMessages', 'ngDialog']);
 //var mainApp = angular.module('mainApp',['ngSanitize', 'ui.select', 'treasure-overlay-spinner', 'angularSpinners', 'ngMessages', 'ngDialog']);
 
+
+mainApp.run(function ($rootScope)
+{
+    $rootScope.getGlobalCountryData = function ($http) {        
+		var formData = new FormData();
+		formData.append('id','1');
+        $http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"getcountrydata",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		//alert("ss")
+	        		$rootScope.countryData =aryreturnData.data.countryData;
+
+	        		//console.log($rootScope.countryData)
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+    };
+
+
+    $rootScope.getGlobalStateData = function ($http,countryId) {        
+		var formData = new FormData();
+		formData.append('countryId',countryId);
+        $http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"getstatedata",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$rootScope.stateData =aryreturnData.data.stateData;
+	        		//console.log($rootScope.countryData)
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+    };
+
+    $rootScope.getGlobalCityData = function ($http,stateId) {        
+		var formData = new FormData();
+		formData.append('stateId',stateId);
+        $http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"getcitydata",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$rootScope.cityData =aryreturnData.data.cityData;
+	        		//console.log($rootScope.countryData)
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+    };
+});
+
+
 mainApp.directive('singleFileUpload', function () {
 	return {
 	    scope: true,        //create a new scope

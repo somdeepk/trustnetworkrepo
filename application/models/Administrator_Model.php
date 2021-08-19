@@ -119,5 +119,51 @@ class Administrator_Model extends CI_Model
 		$resultData=$query->result_array();
 		return $resultData[0];
 	}
+
+	public function getcountrydata()
+	{
+		$sql="select * from tn_countries";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	public function getstatedata($countryId)
+	{
+		$sql="select * from tn_states where country_id='".$countryId."'";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	public function getcitydata($stateId)
+	{
+		$sql="select * from tn_cities where state_id='".$stateId."'";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
 }
 ?>

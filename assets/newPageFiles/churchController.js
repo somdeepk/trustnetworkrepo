@@ -90,6 +90,12 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
     $scope.getChurchData = function(id=0)
 	{
 		$scope.churchData.churchType='0';
+		$scope.churchData.city='0';
+		$scope.churchData.country='0';
+		$scope.churchData.state='0';
+
+		$scope.getGlobalCountryData($http);
+
 		if(id>0)
 		{
 			var formData = new FormData();
@@ -122,6 +128,9 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 	        		$scope.churchData.country=churchData.country_id;
 	        		$scope.churchData.state=churchData.state_id;
 	        		$scope.churchData.postalCode=churchData.postal_code;
+
+	        		$scope.getGlobalStateData($http,$scope.churchData.country);
+	        		$scope.getGlobalCityData($http,$scope.churchData.state);
 	        	}
 	        	else
 	        	{
@@ -634,4 +643,15 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 			}
 		}
 	};
+
+
+	$scope.getStateData = function(countryId)
+	{
+		$scope.getGlobalStateData($http,countryId);
+    };
+
+    $scope.getCityData = function(stateId)
+	{
+		$scope.getGlobalCityData($http,stateId);
+    };
 });

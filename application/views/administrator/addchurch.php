@@ -142,24 +142,29 @@ exit;*/
                                                                             </div>
 
                                                                             <div class="row">
+
                                                                                 <div class="col-sm-6">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                                        <input class="form-control" ng-model="churchData.city" id="city" placeholder="City" type="text">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-sm-6">
-                                                                                    <select ng-model="churchData.country" id="country" class="form-control form-control-primary">
-                                                                                        <option value="">Select Country</option>
+                                                                                    <select ng-model="churchData.country" id="country" ng-change="getStateData(churchData.country)" class="form-control form-control-primary">
+                                                                                        <option value="0">Select Country</option>
+                                                                                        <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
                                                                                     </select>
                                                                                 </div>
+
+                                                                                <div class="col-sm-6">
+                                                                                    <select ng-disabled="!churchData.country" ng-model="churchData.state" id="state"  ng-change="getCityData(churchData.state)" class="form-control form-control-primary">
+                                                                                        <option value="0">Select State</option>
+                                                                                        <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
+                                                                                    </select>
+                                                                                </div>
+                                                                                
                                                                             </div>
 
                                                                             <div class="row">
                                                                                 
-                                                                                <div class="col-sm-6">
-                                                                                    <select ng-model="churchData.state" id="state" class="form-control form-control-primary">
-                                                                                        <option value="">Select State</option>
+                                                                                 <div class="col-sm-6">
+                                                                                    <select ng-disabled="!churchData.state" ng-model="churchData.city" id="city" class="form-control form-control-primary">
+                                                                                        <option value="0">Select City</option>
+                                                                                        <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
                                                                                     </select>
                                                                                 </div>
 

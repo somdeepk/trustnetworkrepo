@@ -229,24 +229,29 @@
                                                                 </div>
 
                                                                 <div class="row">
+
                                                                     <div class="col-sm-6">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.city" id="city" placeholder="City" type="text">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <select ng-model="memberData.country" id="country" class="form-control form-control-primary">
-                                                                            <option value="">Select Country</option>
+                                                                        <select ng-model="memberData.country" id="country" ng-change="getStateData(memberData.country)" class="form-control form-control-primary">
+                                                                            <option value="0">Select Country</option>
+                                                                            <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
                                                                         </select>
                                                                     </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <select ng-disabled="!memberData.country" ng-model="memberData.state" id="state"  ng-change="getCityData(memberData.state)" class="form-control form-control-primary">
+                                                                            <option value="0">Select State</option>
+                                                                            <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
+                                                                        </select>
+                                                                    </div>
+                                                                    
                                                                 </div>
 
                                                                 <div class="row">
                                                                     
                                                                     <div class="col-sm-6">
-                                                                        <select ng-model="memberData.state" id="state" class="form-control form-control-primary">
-                                                                            <option value="">Select State</option>
+                                                                        <select ng-disabled="!memberData.state" ng-model="memberData.city" id="city" class="form-control form-control-primary">
+                                                                            <option value="0">Select City</option>
+                                                                            <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
                                                                         </select>
                                                                     </div>
 
