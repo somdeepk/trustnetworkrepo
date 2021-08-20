@@ -166,7 +166,7 @@ class Administrator extends CI_Controller
 		$searchcontachPerson=(isset($post_data['searchcontachPerson']) && $post_data['searchcontachPerson']!='') ? addslashes($post_data['searchcontachPerson']) : '' ;
 
 		$limit_str='';
-		$sort_str=' ORDER BY id DESC';
+		$sort_str=' ORDER BY tc.id DESC';
 
 		if (!empty($postData['columns'])) {
 			$columns=$postData['columns'] ;
@@ -175,13 +175,15 @@ class Administrator extends CI_Controller
 				$colm_name=$colval['name'];
 				if ($colval['orderable']== true && !empty($postData['order'][0]['column'])) {
 					if ($postData['order'][0]['column']==1) {
-						$sort_str=' ORDER BY name '. $postData['order'][0]['dir'];
+						$sort_str=' ORDER BY tc.name '. $postData['order'][0]['dir'];
 					} else if ($postData['order'][0]['column']==2) {
-						$sort_str=' ORDER BY trustee_board '.$postData['order'][0]['dir'];
+						$sort_str=' ORDER BY tc.trustee_board '.$postData['order'][0]['dir'];
 					} else if ($postData['order'][0]['column']==3) {
-						$sort_str=' ORDER BY foundation_date '. $postData['order'][0]['dir'];
+						$sort_str=' ORDER BY tc.foundation_date '. $postData['order'][0]['dir'];
 					} else if ($postData['order'][0]['column']==4) {
-						$sort_str=' ORDER BY contact_person '. $postData['order'][0]['dir'];
+						$sort_str=' ORDER BY tc.contact_person '. $postData['order'][0]['dir'];
+					} else if ($postData['order'][0]['column']==5) {
+						$sort_str=' ORDER BY tot_members '. $postData['order'][0]['dir'];
 					}
 				}
 			}
@@ -201,38 +203,43 @@ class Administrator extends CI_Controller
 		if (!empty($searchchurchName))
 		{
 			if (empty($havingStr)) {
-				$havingStr.=" HAVING name LIKE '%".$searchchurchName."%'";
+				$havingStr.=" HAVING tc.name LIKE '%".$searchchurchName."%'";
 			} else {
-				$havingStr.=" AND name LIKE '%".$searchchurchName."%'";
+				$havingStr.=" AND tc.name LIKE '%".$searchchurchName."%'";
 			}
 		}
 		if (!empty($searchtrusteeBoard)) {
 			if (empty($havingStr)) {
-				$havingStr.=" HAVING trustee_board LIKE '%".$searchtrusteeBoard."%'";
+				$havingStr.=" HAVING tc.trustee_board LIKE '%".$searchtrusteeBoard."%'";
 			} else {
-				$havingStr.=" AND trustee_board LIKE '%".$searchtrusteeBoard."%'";
+				$havingStr.=" AND tc.trustee_board LIKE '%".$searchtrusteeBoard."%'";
 			}
 		}
 
 		if (!empty($searchfoundationDate))
 		{
 			if (empty($havingStr)) {
-				$havingStr.=" HAVING DATE_FORMAT(foundation_date,'%d/%m/%Y') LIKE '%".$searchfoundationDate."%'";
+				$havingStr.=" HAVING DATE_FORMAT(tc.foundation_date,'%d/%m/%Y') LIKE '%".$searchfoundationDate."%'";
 			} else {
-				$havingStr.=" AND DATE_FORMAT(foundation_date,'%d/%m/%Y' LIKE '%".$searchfoundationDate."%'";
+				$havingStr.=" AND DATE_FORMAT(tc.foundation_date,'%d/%m/%Y' LIKE '%".$searchfoundationDate."%'";
 			}
 		}
 
 		if (!empty($searchcontachPerson)) {
 			if (empty($havingStr)) {
-				$havingStr.=" HAVING contact_person LIKE '%".$searchcontachPerson."%'";
+				$havingStr.=" HAVING tc.contact_person LIKE '%".$searchcontachPerson."%'";
 			} else {
-				$havingStr.=" AND contact_person LIKE '%".$searchcontachPerson."%'";
+				$havingStr.=" AND tc.contact_person LIKE '%".$searchcontachPerson."%'";
 			}
 		}
 		
-		$sql_main='SELECT * from tn_church WHERE deleted="0" '.$searchStr.' GROUP BY id '.$havingStr;
+		$sql_main='SELECT tc.*,count(tm.id) as tot_members from tn_church as tc 
+		LEFT JOIN tn_members as tm ON tm.church_id=tc.id
+		WHERE tc.deleted="0" '.$searchStr.' GROUP BY tc.id '.$havingStr;
+
+
 		$sql_query=$sql_main.$sort_str.' '.$limit_str;
+
 		$query=$this->db->query($sql_query);
 		$resultData=$query->result_array();
 
@@ -242,6 +249,19 @@ class Administrator extends CI_Controller
 
 		foreach($resultData as $k=>$v)
 		{
+
+			$str_name=ucwords($v['name']);
+			$tot_members=(isset($v['tot_members']) && !empty($v['tot_members'])) ? $v['tot_members'] : '0';
+
+			
+			if($tot_members>0)
+			{
+				$churchLink='<a title="Show Members" style="color:#0400ff;" href="'.base_url().'administrator/memberlist'.'/'.$v['id'].'">'.$tot_members.'</a>';
+			}
+			else{
+				$churchLink=$tot_members;
+			}
+
 			$activeInactiveLink='';
 
 			$activeInactiveLink.='<a title="Edit Church" style="color:#40444a" href="'.base_url().'administrator/addchurch'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
@@ -258,7 +278,7 @@ class Administrator extends CI_Controller
 			$activeInactiveLink.='&nbsp;&nbsp;<a title="Delete" style="color:#ea1620" href="javascript:void(0);" ng-click="delete_status(\'Are you sure to Delete this Church?\','.$v['id'].')" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
 
 
-			$str_name='<a title="Show Members" style="color:#0400ff;" href="'.base_url().'administrator/memberlist'.'/'.$v['id'].'">'.ucwords($v['name']).'</a>';
+			
 
 			$returnArray[]=array(
 				'id'=>$v['id'],
@@ -266,6 +286,7 @@ class Administrator extends CI_Controller
 				'trustee_board'=>(isset($v['trustee_board']) && !empty($v['trustee_board'])) ? $v['trustee_board'] : 'NA',
 				'foundation_date'=>(isset($v['foundation_date']) && !empty($v['foundation_date']) && $v['foundation_date']!='0000-00-00 00:00:00') ? date('d/m/Y',strtotime($v['foundation_date'])) : 'NA',
 				'contact_person'=>(isset($v['contact_person']) && !empty($v['contact_person'])) ? $v['contact_person'] : 'NA',
+				'tot_members'=>$churchLink,
 				'action'=>$activeInactiveLink
 			);
 		}

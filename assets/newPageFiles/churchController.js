@@ -18,6 +18,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 				{"data": "trustee_board", "name": "trustee_board", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "foundation_date", "name": "foundation_date", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "contact_person", "name": "contact_person", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "tot_members", "name": "tot_members", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "action", "name": "action", "bVisible": true, "bSearchable": false, "bSortable":false},
 			] ;
 

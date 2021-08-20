@@ -37,6 +37,7 @@
                                 <th width="15%">Trustee Board</th>
                                 <th width="15%">Foundation Date</th>
                                 <th width="15%">Contact Person</th>
+                                <th width="15%">Total Members</th>
                                 <th width="4%">Action</th>
                             </tr>
                         </thead>
@@ -56,8 +57,13 @@
                                 </td>
 
                                 <td align="left" >
-                                    <input type="text" ng-model="searchChurch.contachPerson" maxlength="25" class="zsearch_inputz form-control" placeholder="Search">
+                                    <input type="text" ng-model="searchChurch.contachPerson" maxlength="25" class="zsearch_inputz form-control " placeholder="Search">
                                 </td> 
+
+                                <td align="left" >
+                                    <input type="text" ng-model="searchChurch.tot_members" maxlength="25" class="zsearch_inputz form-control hiddenimportant" placeholder="Search">
+                                </td>
+
 
                                 <td align="left" >&nbsp;</td>
                             </tr>
