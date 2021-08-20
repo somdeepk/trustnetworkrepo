@@ -19,7 +19,7 @@
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <!-- Required Fremwork -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components//bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- themify icon -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/icon/themify-icons/themify-icons.css">
      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/css/bootstrap.icon-large.css">
