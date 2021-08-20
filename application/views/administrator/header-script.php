@@ -42,44 +42,44 @@
     <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/css/color/color-2.css" id="color"/>
  -->
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/css/animate.css">
-   <!--  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/css/style.css"> -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/css/treasure-overlay-spinner.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/css/jquery.dataTables.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/css/message.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/ngDialog/css/ngDialog-theme-default.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/newPageFiles/ngDialog/css/ngDialog-theme-plain.css" />
-   <!--  <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/js/jquery.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/animate.css">
+   <!--  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/treasure-overlay-spinner.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/message.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog-theme-plain.css" />
+   <!--  <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery.min.js"></script> -->
     <script type="text/javascript" src="<?php echo base_url(); ?>admintemplate/bower_components/jquery/dist/jquery.min.js"></script>
 
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/js/jquery.dataTables.min.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/js/bootstrap.min.js"></script> -->
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery.dataTables.min.js"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/bootstrap.min.js"></script> -->
     <script type="text/javascript" src="<?php echo base_url(); ?>admintemplate/bower_components/tether/dist/js/tether.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>admintemplate/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular158/angular.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular158/angular-sanitize.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular158/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-sanitize.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-sanitize.min.js"></script>
     <!--<script type="text/javascript" src="https://angular-ui.github.io/ui-select/dist/select.js"></script>-->
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular158/angular-messages.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular158/angular-animate.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/angular-spinners.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/spinner-service.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/treasure-overlay-spinner.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/spinner-directive.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/ngDialog/js/ngDialog.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-messages.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-animate.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular-spinners.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/spinner-service.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/treasure-overlay-spinner.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/spinner-directive.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/js/ngDialog.js"></script>
 
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>assets/trainingLogPages/bootstrap_3.3.1_css_bootstrap.min.css" /> -->
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>assets/trainingLogPages/bootstrap-datetimepicker.css" > -->
-    <script type="text/javascript" src="<?php echo base_url();?>assets/trainingLogPages/moment.js_2.9.0_moment-with-locales.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/trainingLogPages/src_js_bootstrap-datetimepicker.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/trainingLogPages/select.js"></script>
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/trainingLogPages/select2.css">    
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/trainingLogPages/selectize.default.css">
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/trainingLogPages/select.css"> -->
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchModule.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/newPageFiles/churchMemberController.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/bootstrap_3.3.1_css_bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/bootstrap-datetimepicker.css" > -->
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/moment.js_2.9.0_moment-with-locales.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/src_js_bootstrap-datetimepicker.js"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/select.js"></script>
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/select2.css">    
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/selectize.default.css">
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/select.css"> -->
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchModule.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchMemberController.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- <script type="text/javascript" src="orderProcessing/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
  -->
