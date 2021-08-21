@@ -1,50 +1,90 @@
 <?php
-	class User_Model extends CI_Model{
-		public function register($encrypt_password){
-
-			$data = array('name' => $this->input->post('name'), 
-						  'email' => $this->input->post('email'),
-						  'password' => $encrypt_password,
-						  'username' => $this->input->post('username'),
-						  'zipcode' => $this->input->post('zipcode')
-						  );
-
-			return $this->db->insert('users', $data);
+class User_Model extends CI_Model
+{
+	public function __construct()
+	{
+		$this->load->database();
+	}
+	public function ajaxcheckuserlogin($email, $password)
+	{
+		$sql="SELECT * FROM tn_members WHERE user_email='".$email."' AND password='".$password."' AND status='1' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+		if(count($result)>0)
+		{
+			return $result[0];
 		}
-
-		public function login($username, $encrypt_password){
-			//Validate
-			$this->db->where('username', $username);
-			$this->db->where('password', $encrypt_password);
-
-			$result = $this->db->get('users');
-
-			if ($result->num_rows() == 1) {
-				return $result->row(0);
-			}else{
-				return false;
-			}
-		}
-
-		// Check Username exists
-		public function check_username_exists($username){
-			$query = $this->db->get_where('users', array('username' => $username));
-
-			if(empty($query->row_array())){
-				return true;
-			}else{
-				return false;
-			}
-		}
-
-		// Check email exists
-		public function check_email_exists($email){
-			$query = $this->db->get_where('users', array('email' => $email));
-
-			if(empty($query->row_array())){
-				return true;
-			}else{
-				return false;
-			}
+		else
+		{
+			return array();
 		}
 	}
+
+	public function addupdatemember($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			return $this->db->where('id',$id)->update('tn_members',$menu_arr);
+		}
+		else
+		{
+			$this->db->insert('tn_members',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function get_all_church()
+	{
+		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function check_dup_email($email='')
+	{
+		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public function getstatedata($countryId)
+	{
+		$sql="select * from tn_states where country_id='".$countryId."'";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	public function getcitydata($stateId)
+	{
+		$sql="select * from tn_cities where state_id='".$stateId."'";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+}
+?>
