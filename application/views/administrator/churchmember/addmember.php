@@ -69,8 +69,8 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                            <input class="form-control" ng-model="memberData.first_name" id="first_name" placeholder="First Name" type="text">
+                                                            <span class="input-group-addon"ng-model="memberData.first_name" id="first_name"><i class="icofont icofont-ui-user"></i></span>
+                                                            <input class="form-control"  placeholder="First Name" type="text">
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.first_name)==true)? 'First Name Required' : ''}}</div>
                                                     </div>
@@ -186,9 +186,9 @@
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_email" id="contact_email" placeholder="Email" type="text" emailvalidate>
+                                                                            <input class="form-control" ng-model="memberData.user_email" id="user_email" placeholder="Email" type="text" emailvalidate>
                                                                         </div>
-                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.contact_email)==true)? 'Email Required' : ''}}</div>
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.user_email)==true)? 'Email Required' : ''}}</div>
                                                                     </div>
 
                                                                     <div class="col-sm-4">

@@ -347,7 +347,7 @@ class Administrator extends CI_Controller
         $foundationDate=(isset($aryChurchData['foundationDate']) && !empty($aryChurchData['foundationDate']))? date('Y-m-d H:i:s',strtotime($aryChurchData['foundationDate'])) :NULL;
 
         $contachPerson=(isset($aryChurchData['contachPerson']) && !empty($aryChurchData['contachPerson']))? addslashes(trim($aryChurchData['contachPerson'])):'';
-        $contact_email=(isset($aryChurchData['contact_email']) && !empty($aryChurchData['contact_email']))? addslashes(trim($aryChurchData['contact_email'])):'';
+        $user_email=(isset($aryChurchData['user_email']) && !empty($aryChurchData['user_email']))? addslashes(trim($aryChurchData['user_email'])):'';
         $contact_mobile=(isset($aryChurchData['contact_mobile']) && !empty($aryChurchData['contact_mobile']))? addslashes(trim($aryChurchData['contact_mobile'])):'';
         $contact_alt_mobile=(isset($aryChurchData['contact_alt_mobile']) && !empty($aryChurchData['contact_alt_mobile']))? addslashes(trim($aryChurchData['contact_alt_mobile'])):'';
 
@@ -366,7 +366,7 @@ class Administrator extends CI_Controller
             'foundation_date' => $foundationDate,
 
             'contact_person'  =>$contachPerson,
-            'contact_email'  =>$contact_email,
+            'user_email'  =>$user_email,
             'contact_mobile'  =>$contact_mobile,
             'contact_alt_mobile'  =>$contact_alt_mobile,
 
@@ -704,7 +704,7 @@ class Administrator extends CI_Controller
 		
 		$search_full_name=(isset($post_data['search_full_name']) && $post_data['search_full_name']!='') ? addslashes($post_data['search_full_name']) : '' ;
 		$search_dob=(isset($post_data['search_dob']) && $post_data['search_dob']!='') ? addslashes($post_data['search_dob']) : '' ;
-		$search_contact_email=(isset($post_data['search_contact_email']) && $post_data['search_contact_email']!='') ? addslashes($post_data['search_contact_email']) : '' ;
+		$search_user_email=(isset($post_data['search_user_email']) && $post_data['search_user_email']!='') ? addslashes($post_data['search_user_email']) : '' ;
 		$search_contact_mobile=(isset($post_data['search_contact_mobile']) && $post_data['search_contact_mobile']!='') ? addslashes($post_data['search_contact_mobile']) : '' ;
 		$search_membership_type=(isset($post_data['search_membership_type']) && $post_data['search_membership_type']!='') ? addslashes($post_data['search_membership_type']) : '' ;
 		$search_church_name=(isset($post_data['search_church_name']) && $post_data['search_church_name']!='') ? addslashes($post_data['search_church_name']) : '' ;
@@ -761,12 +761,12 @@ class Administrator extends CI_Controller
 			}
 		}
 
-		if (!empty($search_contact_email))
+		if (!empty($search_user_email))
 		{
 			if (empty($havingStr)) {
-				$havingStr.=" HAVING tm.contact_email LIKE '%".$search_contact_email."%'";
+				$havingStr.=" HAVING tm.user_email LIKE '%".$search_user_email."%'";
 			} else {
-				$havingStr.=" AND tm.contact_email LIKE '%".$search_contact_email."%'";
+				$havingStr.=" AND tm.user_email LIKE '%".$search_user_email."%'";
 			}
 		}
 
@@ -852,7 +852,7 @@ class Administrator extends CI_Controller
 				'id'=>$v['id'],
 				'full_name'=>$str_full_name,
 				'dob'=>(isset($v['dob']) && !empty($v['dob']) && $v['dob']!='0000-00-00 00:00:00') ? date('d/m/Y',strtotime($v['dob'])) : 'NA',
-				'contact_email'=>(isset($v['contact_email']) && !empty($v['contact_email'])) ? $v['contact_email'] : 'NA',
+				'user_email'=>(isset($v['user_email']) && !empty($v['user_email'])) ? $v['user_email'] : 'NA',
 				'contact_mobile'=>(isset($v['contact_mobile']) && !empty($v['contact_mobile'])) ? $v['contact_mobile'] : 'NA',
 				'membership_type'=>$str_membership_type,
 				'church_name'=>(isset($v['church_name']) && !empty($v['church_name'])) ? $v['church_name'] : 'NA',
@@ -913,7 +913,7 @@ class Administrator extends CI_Controller
         $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d H:i:s',strtotime($aryMemberData['dob'])) :NULL;
         $membership_type=(isset($aryMemberData['membership_type']) && !empty($aryMemberData['membership_type']))? addslashes(trim($aryMemberData['membership_type'])):'';
         $church_id=(isset($aryMemberData['church_id']) && !empty($aryMemberData['church_id']))? addslashes(trim($aryMemberData['church_id'])):0;
-        $contact_email=(isset($aryMemberData['contact_email']) && !empty($aryMemberData['contact_email']))? addslashes(trim($aryMemberData['contact_email'])):'';
+        $user_email=(isset($aryMemberData['user_email']) && !empty($aryMemberData['user_email']))? addslashes(trim($aryMemberData['user_email'])):'';
         $contact_mobile=(isset($aryMemberData['contact_mobile']) && !empty($aryMemberData['contact_mobile']))? addslashes(trim($aryMemberData['contact_mobile'])):'';
         $contact_alt_mobile=(isset($aryMemberData['contact_alt_mobile']) && !empty($aryMemberData['contact_alt_mobile']))? addslashes(trim($aryMemberData['contact_alt_mobile'])):'';
 
@@ -936,7 +936,7 @@ class Administrator extends CI_Controller
             'dob'  =>$dob,
             'membership_type'  =>$membership_type,
             'church_id'  =>$church_id,
-            'contact_email'  =>$contact_email,
+            'user_email'  =>$user_email,
             'contact_mobile'  =>$contact_mobile,
             'contact_alt_mobile'  =>$contact_alt_mobile,
             'address'  =>$address,

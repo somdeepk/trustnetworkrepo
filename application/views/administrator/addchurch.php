@@ -98,9 +98,9 @@ exit;*/
                                                                     <div class="col-sm-6">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="churchData.contact_email" id="contact_email" placeholder="Email" type="text" emailvalidate>
+                                                                            <input class="form-control" ng-model="churchData.user_email" id="user_email" placeholder="Email" type="text" emailvalidate>
                                                                         </div>
-                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(churchDataCheck==true && isNullOrEmptyOrUndefined(churchData.contact_email)==true)? 'Email Required' : ''}}</div>
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(churchDataCheck==true && isNullOrEmptyOrUndefined(churchData.user_email)==true)? 'Email Required' : ''}}</div>
                                                                     </div>
 
                                                                     <div class="col-sm-6">

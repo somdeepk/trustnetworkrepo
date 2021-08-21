@@ -19,7 +19,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 				{"data": "id", "name": "id", "bVisible": false, "bSearchable": false, "bSortable":true},
 				{"data": "full_name", "name": "full_name", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "dob", "name": "dob", "bVisible": true, "bSearchable": true, "bSortable":true},
-				{"data": "contact_email", "name": "contact_email", "bVisible": true, "bSearchable": true, "bSortable":true},
+				{"data": "user_email", "name": "user_email", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "contact_mobile", "name": "contact_mobile", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "membership_type", "name": "membership_type", "bVisible": true, "bSearchable": true, "bSortable":true},
 				{"data": "church_name", "name": "church_name", "bVisible": true, "bSearchable": true, "bSortable":true},
@@ -41,7 +41,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 					aoData.push(
 						{"name": "search_full_name","value":$scope.searchMember.full_name},
 						{"name": "search_dob","value":$scope.searchMember.dob},
-						{"name": "search_contact_email","value":$scope.searchMember.contact_email},
+						{"name": "search_user_email","value":$scope.searchMember.user_email},
 						{"name": "search_contact_mobile","value":$scope.searchMember.contact_mobile},
 						{"name": "search_membership_type","value":$scope.searchMember.membership_type},
 						{"name": "search_church_name","value":$scope.searchMember.church_name},
@@ -184,7 +184,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 			validator++ ;
 		}
 
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.contact_email)==true) || ($scope.memberData.contact_email=='¿'))
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.user_email)==true) || ($scope.memberData.user_email=='¿'))
 		{
 			validator++ ;
 		}
@@ -223,7 +223,6 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 	};
 
 	$scope.files = [];
-    
     //listen for the file selected event
     $scope.$on("fileSelected", function (event, args) {
         $scope.$apply(function () {            
@@ -360,11 +359,61 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 	$scope.isObjectOrNot = function (val) {
 		return angular.isObject(val);
 	};
+
+
+	$scope.getStateData = function(countryId)
+	{
+		$scope.getGlobalStateData($http,countryId);
+    };
+
+    $scope.getCityData = function(stateId)
+	{
+		$scope.getGlobalCityData($http,stateId);
+    };
+    
 	
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
 	
+	$scope.smallNotify = function (text, callback, close_callback, style, typ) {
+		var time = '4000';
+		var $container = $('.'+typ);
+		var icon = '<i class="fa fa-info-circle "></i>';
+		var styler= ($scope.isNullOrEmptyOrUndefined(style)==false)? style : 'danger' ;
+		var html = $('<div class="alert alert-' + styler + '  hide"><div class="clear"></div>' + icon +  " " + text + '</div>');
+		$('<a>',{
+			text: '×',
+			class: 'button close',
+			style: 'padding-left: 10px;',
+			href: '#',
+			click: function(e){
+				e.preventDefault()
+				close_callback && close_callback()
+				remove_notice()
+			}
+		}).prependTo(html)
+		$container.prepend(html)
+		html.removeClass('hide').hide().fadeIn('slow')
+
+		function remove_notice() {
+			html.stop().fadeOut('slow').remove()
+		}
+	
+		var timer =  setInterval(remove_notice, time);
+
+		$(html).hover(function(){
+			clearInterval(timer);
+		}, function(){
+			timer = setInterval(remove_notice, time);
+		});
+	
+		html.on('click', function () {
+			clearInterval(timer)
+			callback && callback()
+			remove_notice()
+		});
+	};
 	
 	$scope.checkDate = function (s) {
 		console.log(s);
@@ -411,16 +460,5 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		}
 	};
 
-	$scope.getStateData = function(countryId)
-	{
-		$scope.getGlobalStateData($http,countryId);
-    };
-
-    $scope.getCityData = function(stateId)
-	{
-		$scope.getGlobalCityData($http,stateId);
-    };
-
-	 
 
 });

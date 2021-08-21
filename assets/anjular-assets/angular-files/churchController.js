@@ -78,14 +78,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 			var dataTable = $('#datatableChurchList').DataTable();
 			dataTable.draw();
 		}
-    }	
-
-   /* $scope.getChurchDataInit = function(id)
-    {
-		$timeout(function () {
-			$scope.getChurchData(id);
-		}, 200);
-	};	*/
+    }
 
 
     $scope.getChurchData = function(id=0)
@@ -121,7 +114,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 	        		$scope.churchData.trusteeBoard=churchData.trustee_board;
 	        		$scope.churchData.foundationDate=churchData.foundation_date;
 	        		$scope.churchData.contachPerson=churchData.contact_person;
-	        		$scope.churchData.contact_email=churchData.contact_email;
+	        		$scope.churchData.user_email=churchData.user_email;
 	        		$scope.churchData.contact_mobile=churchData.contact_mobile;
 	        		$scope.churchData.contact_alt_mobile=churchData.contact_alt_mobile;
 	        		$scope.churchData.address=churchData.address;
@@ -143,49 +136,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 			});
 	    }
     };
-
-    /*$scope.getGroupDataInit = function(id)
-    {
-		$timeout(function()
-		{
-			$scope.getGroupData(id);
-		}, 200);
-	};	
-*/
-
-    $scope.getGroupData = function(id=0)
-	{
-		if(id>0)
-		{
-			var formData = new FormData();
-			formData.append('id',id);	
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"get_group_data",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData)
-	        {
-	        	aryreturnData=angular.fromJson(returnData);
-	        	if(aryreturnData.status=='1')
-	        	{
-	        		var groupData=aryreturnData.data.groupData;
-	        		$scope.groupData.id=groupData.id;
-	        		$scope.groupData.groupName=groupData.name;
-	        		$scope.groupData.groupDesc=groupData.group_desc;
-	        	}
-	        	else
-	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
-	        	}
-			});
-	    }
-    };
-
+    
 
 	$scope.addChurch = function ()
 	{
@@ -210,7 +161,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		if (($scope.isNullOrEmptyOrUndefined($scope.churchData.contact_email)==true) || ($scope.churchData.contact_email=='¿'))
+		if (($scope.isNullOrEmptyOrUndefined($scope.churchData.user_email)==true) || ($scope.churchData.user_email=='¿'))
 		{
 			validator++ ;
 		}
@@ -328,8 +279,6 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 
 	};
 
-
-
 	$scope.searchGroup={};
 	$scope.groupData={};
 	$scope.getGroupListInit = function() {
@@ -404,6 +353,39 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 		}
     };
 
+    $scope.getGroupData = function(id=0)
+	{
+		if(id>0)
+		{
+			var formData = new FormData();
+			formData.append('id',id);	
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"get_group_data",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData)
+	        {
+	        	aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		var groupData=aryreturnData.data.groupData;
+	        		$scope.groupData.id=groupData.id;
+	        		$scope.groupData.groupName=groupData.name;
+	        		$scope.groupData.groupDesc=groupData.group_desc;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"No Data Found",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }
+    };
+
     $scope.addGroup = function ()
 	{
 		window.location.href=varGlobalAdminBaseUrl+"addgroup";
@@ -452,7 +434,6 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 			});
 		}
 	};
-
 
 	$scope.change_group_status = function(status,msg,id)
 	{
@@ -534,117 +515,7 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 				});
 		    }
 	    });
-
 	};
-
-
-	$scope.toJSDate = function ( dateTime ) {
-		var dateTime = dateTime.split(" ");//dateTime[0] = date, dateTime[1] = time
-		var date = dateTime[0].split("-");
-		var time = dateTime[1].split(":");
-		return new Date(date[2], (date[1]-1), date[0], time[0], time[1], time[2], 0).getTime();
-	};
-	
-	$scope.getObjectLength = function (paramObj) {
-		var keys = Object.keys(paramObj);
-		var len = keys.length;
-		return len ;
-	};
-	
-	$scope.parseInt = parseInt ;
-	$scope.parseFloat = parseFloat ;
-	$scope.isObjectOrNot = function (val) {
-		return angular.isObject(val);
-	};
-	
-	$scope.isNullOrEmptyOrUndefined = function (value) {
-		return !value;
-	};
-	
-	$scope.smallNotify = function (text, callback, close_callback, style, typ) {
-		var time = '4000';
-		var $container = $('.'+typ);
-		var icon = '<i class="fa fa-info-circle "></i>';
-		var styler= ($scope.isNullOrEmptyOrUndefined(style)==false)? style : 'danger' ;
-		var html = $('<div class="alert alert-' + styler + '  hide"><div class="clear"></div>' + icon +  " " + text + '</div>');
-		$('<a>',{
-			text: '×',
-			class: 'button close',
-			style: 'padding-left: 10px;',
-			href: '#',
-			click: function(e){
-				e.preventDefault()
-				close_callback && close_callback()
-				remove_notice()
-			}
-		}).prependTo(html)
-		$container.prepend(html)
-		html.removeClass('hide').hide().fadeIn('slow')
-
-		function remove_notice() {
-			html.stop().fadeOut('slow').remove()
-		}
-	
-		var timer =  setInterval(remove_notice, time);
-
-		$(html).hover(function(){
-			clearInterval(timer);
-		}, function(){
-			timer = setInterval(remove_notice, time);
-		});
-	
-		html.on('click', function () {
-			clearInterval(timer)
-			callback && callback()
-			remove_notice()
-		});
-	};
-	
-	$scope.checkDate = function (s) {
-		console.log(s);
-		var currVal = s;
-		var dateformat = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
-		var Val_date=currVal;
-		if	(Val_date.match(dateformat)) {
-			var seperator1 = Val_date.split('/');
-			var seperator2 = Val_date.split('-');
-			if (seperator1.length>1) {
-				var splitdate = Val_date.split('/');
-			} else if (seperator2.length>1) {
-				var splitdate = Val_date.split('-');
-			}
-			var dd = parseInt(splitdate[0]);
-			var mm  = parseInt(splitdate[1]);
-			var yy = parseInt(splitdate[2]);
-			var ListofDays = [31,28,31,30,31,30,31,31,30,31,30,31];
-			//console.log(yy);
-			if(yy<=1980) {
-				console.log('Invalid date format0!');
-				return false;
-			}
-			if (mm==1 || mm>2) {
-				if (dd>ListofDays[mm-1]) {
-					console.log('Invalid date format1!');
-					return false;
-				}
-			}
-			if (mm==2) {
-				var lyear = false;
-				if ( (!(yy % 4) && yy % 100) || !(yy % 400)) {
-					lyear = true;
-				}
-				if ((lyear==false) && (dd>=29)) {
-					console.log('Invalid date format2!');
-					return false;
-				}
-				if ((lyear==true) && (dd>29)) {
-					console.log('Invalid date format3!');
-					return false;
-				}
-			}
-		}
-	};
-
 
 	$scope.getStateData = function(countryId)
 	{
@@ -655,4 +526,10 @@ mainApp.controller('churchController', function ($rootScope, $timeout, $interval
 	{
 		$scope.getGlobalCityData($http,stateId);
     };
+    
+	$scope.isNullOrEmptyOrUndefined = function (value) {
+		return !value;
+	};
+
+	
 });

@@ -55,7 +55,7 @@
                                     <input type="text" ng-model="searchMember.dob" maxlength="25" class="zsearch_inputz form-control" placeholder="Search">
                                 </td>
                                 <td align="left" >
-                                    <input type="text" ng-model="searchMember.contact_email" maxlength="25" class="zsearch_inputz form-control" placeholder="Search">
+                                    <input type="text" ng-model="searchMember.user_email" maxlength="25" class="zsearch_inputz form-control" placeholder="Search">
                                 </td>
                                 <td align="left" >
                                     <input type="text" ng-model="searchMember.contact_mobile" maxlength="25" class="zsearch_inputz form-control" placeholder="Search">
