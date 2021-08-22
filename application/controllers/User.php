@@ -76,6 +76,7 @@ class User extends CI_Controller
 				$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
 
 				$userLoginData['login']=true;
+				$userLoginData['user_auto_id']=$userLoginData['id'];
 			 	$userLoginData['user_email']=$user_email;
 			 	$userLoginData['email']=$user_email;
 				$this->session->set_userdata($userLoginData);
@@ -133,6 +134,7 @@ class User extends CI_Controller
 			if(count($userLoginData))
 			{			 	
 			 	$userLoginData['login']=true;
+			 	$userLoginData['user_auto_id']=$userLoginData['id'];
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
 
@@ -160,6 +162,138 @@ class User extends CI_Controller
         exit;	
 
 	}
+
+	public function get_member_data() 
+    {
+    	$id=$this->input->get_post('id');
+		$memberData = $this->User_Model->get_member_data($id);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('memberData'=>$memberData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxupdateeditprofile() 
+    {
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+        $membership_type=(isset($aryMemberData['membership_type']) && !empty($aryMemberData['membership_type']))? addslashes(trim($aryMemberData['membership_type'])):'';
+
+        $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';
+
+        $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
+
+        $type=(isset($aryMemberData['type']) && !empty($aryMemberData['type']))? addslashes(trim($aryMemberData['type'])):'';
+
+        $church_name=(isset($aryMemberData['church_name']) && !empty($aryMemberData['church_name']))? addslashes(trim($aryMemberData['church_name'])):'';
+        $gender=(isset($aryMemberData['gender']) && !empty($aryMemberData['gender']))? addslashes(trim($aryMemberData['gender'])):'';
+        $marital_status=(isset($aryMemberData['marital_status']) && !empty($aryMemberData['marital_status']))? addslashes(trim($aryMemberData['marital_status'])):'';
+     
+        $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d H:i:s',strtotime($aryMemberData['dob'])) :NULL;
+       	$trustee_board=(isset($aryMemberData['trustee_board']) && !empty($aryMemberData['trustee_board']))? addslashes(trim($aryMemberData['trustee_board'])):'';
+
+        $address=(isset($aryMemberData['address']) && !empty($aryMemberData['address']))? addslashes(trim($aryMemberData['address'])):'';
+        $city=(isset($aryMemberData['city']) && !empty($aryMemberData['city']))? addslashes(trim($aryMemberData['city'])):'';
+        $country=(isset($aryMemberData['country']) && !empty($aryMemberData['country']))? addslashes(trim($aryMemberData['country'])):0;
+        $state=(isset($aryMemberData['state']) && !empty($aryMemberData['state']))? addslashes(trim($aryMemberData['state'])):0;
+        $postal_code=(isset($aryMemberData['postal_code']) && !empty($aryMemberData['postal_code']))? addslashes(trim($aryMemberData['postal_code'])):'';
+		
+		$current_date=date('Y-m-d H:i:s');   
+
+        if($membership_type=="CM")
+		{
+			$first_name=$church_name;
+		}
+/*
+		echo IMAGE_PATH;
+		exit;*/
+
+       	$menu_arr = array(
+            'first_name' => $first_name,
+            'last_name'  =>$last_name,
+            'type'  =>$type,
+            'trustee_board'  =>$trustee_board,
+            'gender'  =>$gender,
+            'marital_status'  =>$marital_status,
+            'dob'  =>$dob,
+            'address'  =>$address,
+            'city'  =>$city,
+            'country'  =>$country,
+            'state'  =>$state,
+            'postal_code'  =>$postal_code,
+            'update_date'  =>$current_date,
+        );
+
+        if (!empty($_FILES['file']['name']))
+        {
+            $profilepic = json_encode($_FILES);
+        } else {
+            $profilepic = "";
+        }
+
+        $imagename="";
+        if(!empty($profilepic))
+        {
+            $profilepic=json_decode($profilepic);
+            $this->load->library('upload');
+            $filename=$profilepic->file->name[0];
+            $imarr=explode(".",$filename);
+            $ext=end($imarr);
+          
+            if($ext=="jpg" or $ext=="jpeg" or $ext=="png" or $ext=="gif" or $ext=="bmp" or $ext=="tiff" or $ext=="exif")
+            {
+                $_FILES['file']['name']=$profilepic->file->name[0];
+                $_FILES['file']['type']=$profilepic->file->type[0];
+                $_FILES['file']['tmp_name']=$profilepic->file->tmp_name[0];
+                $_FILES['file']['error']=$profilepic->file->error[0];
+                $_FILES['file']['size']=$profilepic->file->size[0];
+
+                $config = array(
+                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
+                    'allowed_types' => '*',
+                    'upload_path' => IMAGE_PATH.'images/members',
+                    'max_size' => 2000
+                );
+
+                $this->upload->initialize($config);
+                
+                if (!$this->upload->do_upload('file'))
+                {
+                    $errormsg=$this->upload->display_errors();
+                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
+                }
+                else
+                {
+                    $image_data = $this->upload->data();
+                    $imagename=$image_data['file_name'];
+                }
+                $menu_arr['profile_image']=$imagename;
+            }
+        }
+
+       /* echo FCPATH.$ext.$filename."<pre>";
+		print_r($profilepic);
+		exit;*/
+
+
+        $strstatus="Updated";
+
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Member '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
 
 	// log admin out
 	public function logout(){
@@ -217,8 +351,11 @@ class User extends CI_Controller
 			$msg=base64_decode($msg);
 			$this->session->set_flashdata('success', $msg);
 		}
+		//$data['member_id']=$member_id;
 
-		$data['member_id']=$member_id;
+		$churchTypeData = $this->User_Model->get_church_type();
+		$data['churchTypeData'] = $churchTypeData;
+
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');
 		$this->load->view('user/profileedit', $data);
@@ -226,10 +363,22 @@ class User extends CI_Controller
 		$this->load->view('user/footer');
 	}
 	
+    public function getcountrydata() 
+    {
+		$countryData = $this->User_Model->getcountrydata();
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('countryData'=>$countryData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
     public function getstatedata() 
     {
     	$countryId=$this->input->get_post('countryId');
-		$stateData = $this->user_Model->getstatedata($countryId);
+		$stateData = $this->User_Model->getstatedata($countryId);
 
 		$returnData=array();
         $returnData['status']='1';
@@ -243,7 +392,7 @@ class User extends CI_Controller
     public function getcitydata() 
     {
     	$stateId=$this->input->get_post('stateId');
-		$cityData = $this->user_Model->getcitydata($stateId);
+		$cityData = $this->User_Model->getcitydata($stateId);
 
 		$returnData=array();
         $returnData['status']='1';

@@ -33,6 +33,14 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function get_member_data($id)
+	{
+		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData[0];
+	}
+
 	public function get_all_church()
 	{
 		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
@@ -54,6 +62,32 @@ class User_Model extends CI_Model
 		{
 			return 0;
 		}
+	}
+
+	public function getcountrydata()
+	{
+		$sql="select * from tn_countries";
+		$query=$this->db->query($sql);
+		$result=$query->result();
+		if(!empty($result))
+		{
+			return $result;
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	public function get_church_type()
+	{
+		$arrayChurchType[1]="Basilica";
+		$arrayChurchType[2]="Pilgrimage Church";
+		$arrayChurchType[3]="Conventual Church";
+		$arrayChurchType[4]="Collegiate Church";
+		$arrayChurchType[5]="Evangelical Church Structures";
+		$arrayChurchType[6]="Alternative Buildings";
+		return $arrayChurchType;
 	}
 
 	public function getstatedata($countryId)
@@ -85,6 +119,7 @@ class User_Model extends CI_Model
 			return array();
 		}
 	}
+	
 
 }
 ?>

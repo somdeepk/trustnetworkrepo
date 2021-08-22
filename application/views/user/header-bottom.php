@@ -5,13 +5,18 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 }
 
 $memberIsApproved=$this->session -> userdata('is_approved');
+//$user_auto_id=$this->session -> userdata('user_auto_id');
+/*echo $user_auto_id."ss<pre>";
+print_r($this->session -> userdata);
+exit;*/
 ?>
  <!-- Wrapper START -->
 <div class="wrapper">
     <!-- Sidebar  -->
-    <?php //if ($memberIsApproved=="Y"){ ?>
+    
       <div class="iq-sidebar">
           <div id="sidebar-scrollbar">
+             <?php if ($memberIsApproved=="Y"){ ?>
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
                    <li class="active"><a href="index.html" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
@@ -47,9 +52,10 @@ $memberIsApproved=$this->session -> userdata('is_approved');
 
              </nav>
              <div class="p-3"></div>
+             <?php } ?>
           </div>
       </div>
-    <?php //} ?>
+    
     <!-- TOP Nav Bar -->
     
     <div class="iq-top-navbar">
@@ -59,7 +65,11 @@ $memberIsApproved=$this->session -> userdata('is_approved');
 
               <div class="iq-navbar-logo d-flex justify-content-between " >
 
-                <?php //if ($memberIsApproved=="Y"){ ?>
+                <a href="javascript:void(0);">
+                 <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
+                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of this Panel. Thank you for your cooperation.</span>
+                 </a>
+                <?php if ($memberIsApproved=="Y"){ ?>
                  <a href="index.html">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
                  <span>Follow Me</span>
@@ -69,20 +79,21 @@ $memberIsApproved=$this->session -> userdata('is_approved');
                       <div class="main-circle"><i class="ri-menu-line"></i></div>
                    </div>
                 </div>
-                <?php //} ?>
+                <?php } ?>
               </div>
               <div class="iq-search-bar">
-                 <?php //if ($memberIsApproved=="Y"){ ?>
+                 <?php if ($memberIsApproved=="Y"){ ?>
                  <form action="#" class="searchbox">
                     <input type="text" class="text search-input" placeholder="Type here to search...">
                     <a class="search-link" href="#"><i class="ri-search-line"></i></a>
                  </form>
-                <?php //} ?>
+                <?php } ?>
               </div>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
               <i class="ri-menu-3-line"></i>
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                 <?php if ($memberIsApproved=="Y"){ ?>
                  <ul class="navbar-nav ml-auto navbar-list">
                     <li>
                        <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
@@ -314,6 +325,7 @@ $memberIsApproved=$this->session -> userdata('is_approved');
                        </div>
                     </li>
                  </ul>
+                 <?php } ?>
                  <ul class="navbar-list">
                     <li>
                        <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
@@ -322,6 +334,7 @@ $memberIsApproved=$this->session -> userdata('is_approved');
                        <div class="iq-sub-dropdown iq-user-dropdown">
                           <div class="iq-card shadow-none m-0">
                              <div class="iq-card-body p-0 ">
+                                <?php if ($memberIsApproved=="Y"){ ?>
                                 <div class="bg-primary p-3 line-height">
                                    <h5 class="mb-0 text-white line-height">Hello Bni Cyst</h5>
                                    <span class="text-white font-size-12">Available</span>
@@ -370,6 +383,7 @@ $memberIsApproved=$this->session -> userdata('is_approved');
                                       </div>
                                    </div>
                                 </a>
+                                <?php } ?>
                                 <div class="d-inline-block w-100 text-center p-3">
                                    <a class="bg-primary iq-sign-btn" href="<?php echo base_url();?>user/logout" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
                                 </div>
@@ -387,6 +401,7 @@ $memberIsApproved=$this->session -> userdata('is_approved');
     <div class="right-sidebar-mini right-sidebar">
         <div class="right-sidebar-panel p-0">
            <div class="iq-card shadow-none">
+              <?php if ($memberIsApproved=="Y"){ ?>
               <div class="iq-card-body p-0">
                  <div class="media-height p-3">
                     <div class="media align-items-center mb-4">
@@ -485,6 +500,7 @@ $memberIsApproved=$this->session -> userdata('is_approved');
                     <i class="ri-arrow-right-line side-right-icon"><span class="ml-3 d-inline-block">Close Menu</span></i>
                  </div>
               </div>
+              <?php } ?>
            </div>
         </div>
     </div>
