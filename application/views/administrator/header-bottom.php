@@ -39,7 +39,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="#!">
                         <i class="ti-layout"></i>
                         <span>Churchs</span>
@@ -48,7 +48,7 @@
                         <li><a href="<?php echo base_url(); ?>administrator/addchurch">Add Churchs</a></li>
                         <li><a href="<?php echo base_url(); ?>administrator/churchlist">All Church</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a href="#!">

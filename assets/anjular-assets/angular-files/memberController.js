@@ -2,7 +2,8 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		
 	$scope.searchMember={};
 	$scope.memberData={};
-
+	$scope.InvalidEmailCheck=false ;
+	$scope.memberDataEmailDupCheck=false ;
 
 	$scope.getMemberListInit = function() {
 		$timeout(function () {
@@ -89,44 +90,34 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 
     $scope.getMemberData = function(id=0)
 	{
+		$scope.memberData.type='0';
 		$scope.memberData.city='0';
 		$scope.memberData.country='0';
 		$scope.memberData.state='0';
+		$scope.memberData.membership_type='RM';
 		
 		$scope.getGlobalCountryData($http);
 
 		if(id>0)
 		{
-			var formData = new FormData();
-			formData.append('id',id);
+			jsonMemberData=$('.zjsonMemberDataz').html();
+			$scope.memberData=angular.fromJson(jsonMemberData);
+    		if($scope.memberData.membership_type=='CM')
+    		{
+    			$scope.memberData.church_name=$scope.memberData.first_name;
+    		}
+    		if($scope.memberData.parent_id==0)
+    		{
+    			$scope.memberData.church_id='';
+    		}
+    		else
+    		{
+    			$scope.memberData.church_id=$scope.memberData.parent_id;
+    		}
 
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"get_member_data",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData)
-	        {
-	        	aryreturnData=angular.fromJson(returnData);
-	        	if(aryreturnData.status=='1')
-	        	{
-	        		$scope.memberData=aryreturnData.data.memberData;
-	        		$scope.getGlobalStateData($http,$scope.memberData.country);
-	        		$scope.getGlobalCityData($http,$scope.memberData.state);
-	        		if(aryreturnData.data.memberData.church_id==0)
-	        		{
-	        			$scope.memberData.church_id='';
-	        		}
-	        	}
-	        	else
-	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
-	        	}
-			});
+    		$scope.getGlobalStateData($http,$scope.memberData.country);
+    		$scope.getGlobalCityData($http,$scope.memberData.state);
+			
 	    }
     };
 
@@ -149,49 +140,58 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		},2000);
 
 		var validator=0;
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.first_name)==true) || ($scope.memberData.first_name=='¿'))
-		{
-			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.last_name)==true) || ($scope.memberData.last_name=='¿'))
-		{
-			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.gender)==true) || ($scope.memberData.gender=='¿'))
-		{
-			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.marital_status)==true) || ($scope.memberData.marital_status=='¿'))
-		{
-			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.dob)==true) || ($scope.memberData.dob=='¿'))
-		{
-			validator++ ;
-		}
+
 		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.membership_type)==true) || ($scope.memberData.membership_type=='¿'))
 		{
 			validator++ ;
 		}
 
-		if (($scope.memberData.membership_type=='CM') && ($scope.isNullOrEmptyOrUndefined($scope.memberData.church_id)==true))
+		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.church_id)==true) || ($scope.memberData.church_id=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.contact_mobile)==true) || ($scope.memberData.contact_mobile=='¿'))
+		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.first_name)==true) || ($scope.memberData.first_name=='¿')))
 		{
 			validator++ ;
 		}
 
+		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.last_name)==true) || ($scope.memberData.last_name=='¿')))
+		{
+			validator++ ;
+		}
+
+		if (($scope.memberData.membership_type=='CM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.church_name)==true) || ($scope.memberData.church_name=='¿')))
+		{
+			validator++ ;
+		}
+
+		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.gender)==true) || ($scope.memberData.gender=='¿')))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.dob)==true) || ($scope.memberData.dob=='¿'))
+		{
+			validator++ ;
+		}
+		
+
+		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.user_email)==true) || ($scope.memberData.user_email=='¿'))
 		{
 			validator++ ;
-		}
-
+		}else if (!regex.test($scope.memberData.user_email))
+        {
+        	$scope.InvalidEmailCheck=true ;
+			$timeout(function()
+			{
+				$scope.InvalidEmailCheck=false ;
+			},2000);
+            validator++ ;
+        }
 		if (Number(validator)==0)
 		{		
-			//alert(validator)
 			var formData = new FormData();
 			formData.append('memberData',angular.toJson($scope.memberData));
 			angular.forEach($scope.files,function(file){           
@@ -207,14 +207,22 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
             }).success(function(returnData) {
 				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
-            	if(aryreturnData.status=='1')
+            	if(aryreturnData.status==2)
             	{
-            		window.location.href=varGlobalAdminBaseUrl+"memberlist?msg="+aryreturnData.msg;
+            		$scope.memberDataEmailDupCheck=true ;
+					$timeout(function()
+					{
+						$scope.memberDataEmailDupCheck=false ;
+					},2000);
+            	}
+            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+            	{
+            		window.location.href=varGlobalAdminBaseUrl+"memberlist?msg="+aryreturnData.msgstring;
             	}
             	else
             	{
             		swal("Error!",
-		        		"Member addition Failed!",
+		        		"Registration Failed!",
 		        		"error"
 		        	)
             	}
@@ -288,6 +296,53 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 		        	swal(
 		        		"Confirm!",
 		        		"Status Changes Successfully!",
+		        		"success"
+		        	)
+		        	.then((willDelete) => {
+		        		var data_table = $('#datatableMemberList').DataTable();
+						data_table.draw();
+				    });
+				});
+		    }
+	    });
+	};
+
+	$scope.change_approve_status = function(is_approved,msg,id)
+	{
+		$scope.statusData={};
+		$scope.statusData.is_approved=is_approved;
+		$scope.statusData.id=id;
+		var formData = new FormData();
+		formData.append('statusData',angular.toJson($scope.statusData));
+
+		swal({
+	      title: "Attention",
+	      text: msg,
+	      icon: "warning",
+	      buttons: true,
+	      dangerMode: true,
+	    })
+	    .then((willDelete) =>
+	    {
+	    	if (willDelete)
+	    	{
+		      $http({
+		            method  : 'POST',
+		            url     : varGlobalAdminBaseUrl+"ajaxchangememberapprovestatus",
+		            transformRequest: angular.identity,
+		            headers: {'Content-Type': undefined},                     
+		            data:formData, 
+		        }).success(function(data)
+		        {
+		        	strtext="Disapproved";
+		        	if(is_approved=='Y')
+		        	{
+		        		strtext="Approved";
+		        	}
+		        	
+		        	swal(
+		        		"Confirm!",
+		        		strtext+" Successfully!",
 		        		"success"
 		        	)
 		        	.then((willDelete) => {

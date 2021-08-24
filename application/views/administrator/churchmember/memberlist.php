@@ -30,14 +30,13 @@
             <div class="card-block">
                 <div class="table-responsive dt-responsive">
                     <table class="table table-striped table-bordered nowrap" width="98%" id="datatableMemberList">
-                        <input id="filter_church_id" value="<?php echo $church_id; ?>" type="hidden">
                         <thead>
                             <tr>
                                 <th width="2%" class="hiddenimportant">&nbsp;</th>
                                 <th width="10%">Name</th>
-                                <th width="15%">Birth Date</th>
+                                <th width="15%">Birth/Foundation Date</th>
                                 <th width="15%">Email</th>
-                                <th width="15%">Mobile</th>
+                                <th width="15%">Contact</th>
                                 <th width="15%">Membership Type</th>
                                 <th width="15%">Church</th>
                                 <th width="4%">Action</th>

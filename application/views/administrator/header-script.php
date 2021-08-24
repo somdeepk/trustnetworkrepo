@@ -15,7 +15,7 @@
 
 
     <link href="<?php echo base_url();?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/sweetalert.min.js"></script>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <!-- Required Fremwork -->
@@ -78,9 +78,9 @@
     <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/selectize.default.css">
     <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/select.css"> -->
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchModule.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchMemberController.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/groupController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/memberController.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
     <!-- <script type="text/javascript" src="orderProcessing/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
  -->
 <!-- 

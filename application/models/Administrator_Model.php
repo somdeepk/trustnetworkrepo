@@ -42,30 +42,9 @@ class Administrator_Model extends CI_Model
 		return $arrayChurchType;
 	}
 
-	public function addupdatechurch($id=NULL,$menu_arr=NULL)
+	public function get_all_approve_church()
 	{
-		if(!empty($id))
-		{
-			return $this->db->where('id',$id)->update('tn_church',$menu_arr);
-		}
-		else
-		{
-			$this->db->insert('tn_church',$menu_arr);
-			return $this->db->insert_id();
-		}
-	}	
-
-	public function get_church_data($id)
-	{
-		$sql='SELECT * from tn_church WHERE id="'.$id.'"';
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData[0];
-	}
-
-	public function get_all_church_data()
-	{
-		$sql='SELECT * from tn_church WHERE deleted="0" and status="1"';
+		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -97,6 +76,26 @@ class Administrator_Model extends CI_Model
 		$aryReturn[1]="Free Membership";
 		$aryReturn[2]="Church Free Membership";
 		return $aryReturn;
+	}
+
+	public function check_dup_email($email='',$id=0)
+	{
+		$strParam='';
+		if($id>0)
+		{
+			$strParam=' AND id!="'.$id.'"';
+		}
+		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0' ".$strParam;
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public function addupdatemember($id=NULL,$menu_arr=NULL)

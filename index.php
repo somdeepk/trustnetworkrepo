@@ -269,6 +269,24 @@ switch (ENVIRONMENT)
 
 	define('APPPATH', $application_folder.DIRECTORY_SEPARATOR);
 
+	if(isset($_SERVER['HTTPS']))
+	{
+	    $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+	}
+	else{
+	    $protocol = 'http';
+	}
+
+	$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
+
+	defined('IMAGE_URL') OR define('IMAGE_URL', $IMAGE_URL);
+	
+	$IMAGE_PATH=str_replace("trust-network\\","",FCPATH);
+	$IMAGE_PATH=str_replace("trust-network//","",$IMAGE_PATH);
+	$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads\\";
+	//exit;
+	defined('IMAGE_PATH') OR define('IMAGE_PATH', $IMAGE_PATH);
+
 	// The path to the "views" directory
 	if ( ! isset($view_folder[0]) && is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR))
 	{

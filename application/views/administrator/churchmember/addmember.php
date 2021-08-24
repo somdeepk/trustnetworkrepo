@@ -30,6 +30,7 @@
                     <div class="card-block">
                             <div class="row">
                                 <input ng-model="memberData.id" id="id" type="hidden">
+                                <div class="zjsonMemberDataz hiddenimportant"><?php echo $jsonMemberData; ?></div>
                                 <div class="col-sm-12">
                                     <div class="product-edit">
                                         <div class="tab-content">
@@ -38,8 +39,8 @@
                                                     <!--left-->
                                                     <div class="col-sm-3 padding-lr0 mb10">
                                                       <div id="uploaded_image">
-                                                        <img src="<?php echo base_url();?>assets/images/member-no-imgage.jpg" class="img-responsive border-blk" ng-if="memberData.profile_image == '' || !memberData.profile_image" style="margin:0 auto; width:74%;">
-                                                        <img src="<?php echo base_url();?>assets/images/members/{{memberData.profile_image}}" class="img-responsive border-blk" ng-if="memberData.profile_image && memberData.profile_image != ''" style="margin:0 auto; width:74%; height:149px;">
+                                                        <img ng-if="memberData.profile_image == '' || !memberData.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" class="img-responsive border-blk"  style="margin:0 auto; width:74%;">
+                                                        <img ng-if="memberData.profile_image && memberData.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" class="img-responsive border-blk"  style="margin:0 auto; width:74%; height:149px;">
                                                       </div>
                                                       <div class="clear50"></div>
                                                       
@@ -66,32 +67,83 @@
                                                     <!--/left-->
 
                                                 </div>
+
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-12">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon"ng-model="memberData.first_name" id="first_name"><i class="icofont icofont-ui-user"></i></span>
-                                                            <input class="form-control"  placeholder="First Name" type="text">
+                                                            <select ng-disabled="memberData.id>0" ng-model="memberData.membership_type" id="membership_type" class="form-control form-control-primary">
+                                                                <option value="">Select Membership Type</option>
+                                                                <option value="RM">Regular Membership</option>
+                                                                <option value="CM">Church Membership</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.membership_type)==true)? 'Membership Type Required' : ''}}</div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                        <div class="input-group">
+                                                            
+                                                            <input class="form-control" ng-model="memberData.first_name" id="first_name" placeholder="First Name" type="text">
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.first_name)==true)? 'First Name Required' : ''}}</div>
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                            <input class="form-control" ng-model="memberData.middle_name" id="middle_name" placeholder="Middle Name" type="text">
-                                                        </div>
-                                                        <!-- <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.middle_name)==true)? 'Middle Name Required' : ''}}</div> -->
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
+                                                            
                                                             <input class="form-control" ng-model="memberData.last_name" id="last_name" placeholder="Last Name" type="text">
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.last_name)==true)? 'Last Name Required' : ''}}</div>
                                                     </div>
+
+                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                        <div class="input-group">
+                                                            <select ng-model="memberData.church_id" id="church_id" class="form-control form-control-primary">
+                                                                <option value="">Select Church</option>
+                                                                <?php 
+                                                                if(count($all_church_data)>0)
+                                                                {
+                                                                    foreach($all_church_data as $k=>$v)
+                                                                    {
+                                                                ?>
+                                                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['first_name']; ?></option>
+                                                                <?php 
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && memberData.membership_type=='RM' && isNullOrEmptyOrUndefined(memberData.church_id)==true)? 'Church Required' : ''}}</div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+
+                                                    <div class="col-sm-6" ng-if="memberData.membership_type=='CM'">
+                                                        <div class="input-group">
+                                                            
+                                                            <input class="form-control" ng-model="memberData.church_name" id="church_name" placeholder="Church Name" type="text">
+                                                        </div>
+                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.church_name)==true)? 'Church Name Required' : ''}}</div>
+                                                    </div>
+
+                                                    
+
+
+                                                    <div class="col-sm-6" ng-if="memberData.membership_type=='CM'">
+                                                        <select ng-model="memberData.type" id="type" class="form-control form-control-primary">
+                                                            <option value="0">Select Church Type</option>
+                                                            <?php foreach($churchTypeData as $key=>$val) : ?>
+                                                                 <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
+                                                             <?php endforeach; ?>
+
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
                                                         <div class="input-group">
                                                             <select ng-model="memberData.gender" id="gender" class="form-control form-control-primary">
                                                                 <option value="">Select Gender</option>
@@ -103,76 +155,39 @@
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.gender)==true)? 'Gender Required' : ''}}</div>
                                                     </div>
 
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
                                                         <div class="input-group">
                                                             <select ng-model="memberData.marital_status" id="marital_status" class="form-control form-control-primary">
                                                                 <option value="">Select Marital Status</option>
-                                                                <option value="Unmarried">Unmarried</option>
+                                                                <option value="Single">Single</option>
                                                                 <option value="Married">Married</option>
-                                                                <option value="Divorcee">Divorcee</option>
+                                                                <option value="Widowed">Widowed</option>
+                                                                <option value="Divorced">Divorced</option>
+                                                                <option value="Separated">Separated </option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.marital_status)==true)? 'Marital Status Required' : ''}}</div>
+                                                        
                                                     </div>
 
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
                                                         <div class="input-group">
-                                                            <select ng-model="memberData.blood_group" id="blood_group" class="form-control form-control-primary">
-                                                                <option value="">Select Blood Group</option>
-                                                                <option value="A+">A+</option>
-                                                                <option value="A-">A-</option>
-                                                                 <option value="B+">B+</option>
-                                                                <option value="B-">B-</option>
-                                                                <option value="AB+">AB+</option>
-                                                                <option value="AB-">AB-</option>
-                                                                <option value="O+">O+</option>
-                                                                <option value="O-">O-</option>
-                                                            </select>
+                                                            <input class="form-control" autocomplete="off" ng-model="memberData.dob" id="dob" readonly="true" placeholder="{{(memberData.membership_type=='RM')? 'Date Of Birth' : 'Foundation Date'}}" type="text" dobdate>
                                                         </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                            <input class="form-control" ng-model="memberData.dob" id="dob" placeholder="Date of Birth" type="text" dobdate>
-                                                        </div>
-                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date of Birth Required' : ''}}</div>
+                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='RM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
+                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='CM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Foundation Date Required' : ''}}</div>
+
                                                     </div>
 
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6" ng-if="memberData.membership_type=='CM'">
                                                         <div class="input-group">
-                                                            <select ng-model="memberData.membership_type" id="membership_type" class="form-control form-control-primary">
-                                                                <option value="">Select Membership Type</option>
-                                                                <option value="RM">Regular Membership</option>
-                                                                <option value="CM">Church Membership</option>
-                                                            </select>
+                                                            
+                                                            <input class="form-control" ng-model="memberData.trustee_board" id="trustee_board" placeholder="Trustee Board" type="text">
                                                         </div>
-                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.membership_type)==true)? 'Membership Type Required' : ''}}</div>
-                                                    </div>
-
-                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='CM'">
-                                                        <div class="input-group">
-                                                            <select ng-model="memberData.church_id" id="church_id" class="form-control form-control-primary">
-                                                                <option value="">Select Membership Type</option>
-                                                                <?php 
-                                                                if(count($all_church_data)>0)
-                                                                {
-                                                                    foreach($all_church_data as $k=>$v)
-                                                                    {
-                                                                ?>
-                                                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
-                                                                <?php 
-                                                                    }
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && memberData.membership_type=='CM' && isNullOrEmptyOrUndefined(memberData.church_id)==true)? 'Church Required' : ''}}</div>
                                                     </div>
 
                                                 </div>
+
 
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -185,26 +200,48 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.user_email" id="user_email" placeholder="Email" type="text" emailvalidate>
+                                                                            
+                                                                            <input class="form-control" ng-disabled="memberData.id>0" ng-model="memberData.user_email" id="user_email" placeholder="Email" type="text" emailvalidate>
                                                                         </div>
                                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.user_email)==true)? 'Email Required' : ''}}</div>
+
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(InvalidEmailCheck==true)? 'Invalid Email' : ''}}</div>
+
+                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataEmailDupCheck==true)? 'This Email already Exist' : ''}}</div>
+                                                                    </div>
+
+
+                                                                    <div class="col-sm-6" ng-if="memberData.membership_type=='CM'">
+                                                                        <div class="input-group">
+                                                                            
+                                                                            <input class="form-control" ng-model="memberData.contact_person" id="contact_person" placeholder="Contact Person" type="text">
+                                                                        </div>
                                                                     </div>
 
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_mobile" id="contact_mobile" placeholder="Mobile" type="text" maxlength="15" type="text" phone-masking valid-number>
+                                                                            
+                                                                            <input class="form-control" ng-model="memberData.contact_mobile" id="contact_mobile" placeholder="Contact Number" type="text" maxlength="15" type="text" phone-masking valid-number>
                                                                         </div>
-                                                                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.contact_mobile)==true)? 'Mobile Required' : ''}}</div>
                                                                     </div>
                                                                     <div class="col-sm-4">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.contact_alt_mobile" id="contact_alt_mobile" placeholder="Alternate Mobile" maxlength="15" type="text" phone-masking valid-number>
+                                                                            
+                                                                            <input class="form-control" ng-model="memberData.contact_alt_mobile" id="contact_alt_mobile" placeholder="Alt. Contact Number" maxlength="15" type="text" phone-masking valid-number>
                                                                         </div>
                                                                     </div>
 
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                            <input class="form-control" ng-model="memberData.alt_email" id="alt_email" placeholder="Alt. Email" type="text" emailvalidate>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='CM'">
+                                                                        <div class="input-group">
+                                                                            
+                                                                            <input type="text" ng-model="memberData.website" id="website" class="form-control" placeholder="Website">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -257,8 +294,8 @@
 
                                                                     <div class="col-sm-6">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon"><i class="icofont icofont-ui-user"></i></span>
-                                                                            <input class="form-control" ng-model="memberData.postal_code" id="postal_code" placeholder="Post Code" type="text">
+                                                                            
+                                                                            <input class="form-control" ng-model="memberData.postal_code" id="postal_code" placeholder="Postal Code" type="text">
                                                                         </div>
                                                                     </div>
                                                                 </div>
