@@ -81,7 +81,7 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" ng-model="signupData.password" id="password" class="form-control mb-0" placeholder="Password">
+                                    <input type="password" ng-model="signupData.password" id="password" maxlength="15" class="form-control mb-0" placeholder="Password">
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.password)==true)? 'Password Required' : ''}}</div>
                                 </div>
 

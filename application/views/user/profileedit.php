@@ -44,12 +44,15 @@
                          <div class="iq-card-body">
                             <form autocomplete="off">
                                <input ng-model="memberData.id" id="id" type="hidden">
+                               <div class="zjsonMemberDataz hiddenimportant"><?php echo $jsonMemberData; ?></div>
+                               
+
                                <div class="form-group row align-items-center">
                                   <div class="col-md-12">
                                      <div class="profile-img-edit">
                                           <div id="uploaded_image">
-                                            <img src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" class="profile-pic" ng-if="memberData.profile_image == '' || !memberData.profile_image" style="margin:0 auto; width:74%;">
-                                            <img src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" class="profile-pic" ng-if="memberData.profile_image && memberData.profile_image != ''" style="margin:0 auto; width:74%; height:149px;">
+                                            <img class="profile-pic" ng-if="memberData.profile_image == '' || !memberData.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto; width:74%;">
+                                            <img class="profile-pic" ng-if="memberData.profile_image && memberData.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" style="margin:0 auto; width:74%; height:149px;">
                                           </div>
                                           <div class="clear50"></div>
                                           
@@ -136,11 +139,11 @@
                                      <label for="marital_status">Marital Status:</label>
                                      <select ng-model="memberData.marital_status" id="marital_status" class="form-control form-control-primary">
                                         <option value="">Select Marital Status</option>
-                                        <option >Single</option>
-                                        <option>Married</option>
-                                        <option>Widowed</option>
-                                        <option>Divorced</option>
-                                        <option>Separated </option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Divorced">Divorced</option>
+                                        <option value="Separated">Separated </option>
                                       </select>
                                   </div>
 
@@ -177,7 +180,7 @@
                                   </div>
                                   
                                </div>
-                               <button type="subbuttonmit" class="btn btn-primary mr-2" ng-click="submitMember();">Submit</button>
+                               <button type="button" class="btn btn-primary mr-2" ng-click="submitMember();">Submit</button>
                                <button type="button" ng-click="resetForm();" class="btn iq-bg-danger">Reset</button>
                             </form>
                          </div>
@@ -193,20 +196,29 @@
                          <div class="iq-card-body">
                             <form>
                                <div class="form-group">
-                                  <label for="cpass">Current Password:</label>
-                                  <a href="javascripe:void();" class="float-right">Forgot Password</a>
-                                  <input type="Password" class="form-control" id="cpass" value="">
+                                  <label for="current_password">Current Password:</label>
+                                  <!-- <a href="javascripe:void();" class="float-right">Forgot Password</a> -->
+                                  <input type="password" ng-model="memberData.current_password" id="current_password" maxlength="15" class="form-control">
+                                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'Current Password Required' : ''}}</div>
+                                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataOldNotMtchCheck==true)? 'Old Password doesnt match!' : ''}}</div>
                                </div>
+                               
                                <div class="form-group">
                                   <label for="npass">New Password:</label>
-                                  <input type="Password" class="form-control" id="npass" value="">
+                                  <input type="password" ng-model="memberData.new_password" id="new_password" maxlength="15" class="form-control">
+                                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'New Password Required' : ''}}</div>
                                </div>
+
                                <div class="form-group">
                                   <label for="vpass">Verify Password:</label>
-                                  <input type="Password" class="form-control" id="vpass" value="">
+                                  <input type="Password" ng-model="memberData.verify_password" id="verify_password" maxlength="15" class="form-control">
+                                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'Verify Password Required' : ''}}</div>
+
+                                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</div>
                                </div>
-                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                               <button type="reset" class="btn iq-bg-danger">Cancle</button>
+
+                               <button type="button" class="btn btn-primary mr-2" ng-click="submitChangePasswordInfo();">Submit</button>
+                               <button type="button" ng-click="resetChangePasswordForm();" class="btn iq-bg-danger">Reset</button>
                             </form>
                          </div>
                       </div>
@@ -283,20 +295,29 @@
                          </div>
                          <div class="iq-card-body">
                             <form>
+                               <div class="form-group" ng-if="memberData.membership_type=='CM'">
+                                  <label for="contact_person">Contact Person:</label>
+                                  <input type="text"  ng-model="memberData.contact_person" id="contact_person" class="form-control">
+                               </div>
+
                                <div class="form-group">
-                                  <label for="cno">Contact Number:</label>
-                                  <input type="text" class="form-control" id="cno" value="001 2536 123 458">
+                                  <label for="contact_mobile">Contact Number:</label>
+                                  <input type="text" ng-model="memberData.contact_mobile" id="contact_mobile" maxlength="15" class="form-control" phone-masking valid-number>
                                </div>
                                <div class="form-group">
-                                  <label for="email">Email:</label>
-                                  <input type="text" class="form-control" id="email" value="Bnijone@demo.com">
+                                  <label for="contact_alt_mobile">Alt. Contact Number:</label>
+                                  <input type="text" ng-model="memberData.contact_alt_mobile" id="contact_alt_mobile" maxlength="15" class="form-control" phone-masking valid-number>
                                </div>
                                <div class="form-group">
-                                  <label for="url">Url:</label>
-                                  <input type="text" class="form-control" id="url" value="https://getbootstrap.com/">
+                                  <label for="alt_email">Alt. Email:</label>
+                                  <input type="text" ng-model="memberData.alt_email" id="alt_email" class="form-control" emailvalidate >
                                </div>
-                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                               <button type="reset" class="btn iq-bg-danger">Cancle</button>
+                               <div class="form-group" ng-if="memberData.membership_type=='CM'">
+                                  <label for="website">Website:</label>
+                                  <input type="text" ng-model="memberData.website" id="website" class="form-control">
+                               </div>
+                               <button type="button" class="btn btn-primary mr-2" ng-click="submitContactInfo();">Submit</button>
+                               <button type="button" ng-click="resetConatctForm();" class="btn iq-bg-danger">Reset</button>
                             </form>
                          </div>
                       </div>

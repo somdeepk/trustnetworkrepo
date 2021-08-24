@@ -65,10 +65,13 @@ exit;*/
 
               <div class="iq-navbar-logo d-flex justify-content-between " >
 
-                <a href="javascript:void(0);">
+                 <?php if ($memberIsApproved=="N"){ ?>
+                 <a href="javascript:void(0);">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
-                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of this Panel. Thank you for your cooperation.</span>
+                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</span>
                  </a>
+                <?php } ?>
+
                 <?php if ($memberIsApproved=="Y"){ ?>
                  <a href="index.html">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">

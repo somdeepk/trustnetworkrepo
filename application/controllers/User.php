@@ -8,7 +8,7 @@ class User extends CI_Controller
 			redirect('user/index');
 		}
 
-		$all_church_data = $this->User_Model->get_all_church();
+		$all_church_data = $this->User_Model->get_all_approve_church();
 
 		$data['all_church_data'] = $all_church_data;
 		$data['title'] = ucfirst($page);
@@ -195,7 +195,7 @@ class User extends CI_Controller
         $gender=(isset($aryMemberData['gender']) && !empty($aryMemberData['gender']))? addslashes(trim($aryMemberData['gender'])):'';
         $marital_status=(isset($aryMemberData['marital_status']) && !empty($aryMemberData['marital_status']))? addslashes(trim($aryMemberData['marital_status'])):'';
      
-        $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d H:i:s',strtotime($aryMemberData['dob'])) :NULL;
+        $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d',strtotime($aryMemberData['dob'])) :NULL;
        	$trustee_board=(isset($aryMemberData['trustee_board']) && !empty($aryMemberData['trustee_board']))? addslashes(trim($aryMemberData['trustee_board'])):'';
 
         $address=(isset($aryMemberData['address']) && !empty($aryMemberData['address']))? addslashes(trim($aryMemberData['address'])):'';
@@ -295,6 +295,97 @@ class User extends CI_Controller
         exit;    	
     }
 
+
+
+    public function ajaxupdatecontactinfo() 
+    {
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+        $membership_type=(isset($aryMemberData['membership_type']) && !empty($aryMemberData['membership_type']))? addslashes(trim($aryMemberData['membership_type'])):'';
+
+        $contact_person=(isset($aryMemberData['contact_person']) && !empty($aryMemberData['contact_person']))? addslashes(trim($aryMemberData['contact_person'])):'';
+        $contact_mobile=(isset($aryMemberData['contact_mobile']) && !empty($aryMemberData['contact_mobile']))? addslashes(trim($aryMemberData['contact_mobile'])):'';
+        $contact_alt_mobile=(isset($aryMemberData['contact_alt_mobile']) && !empty($aryMemberData['contact_alt_mobile']))? addslashes(trim($aryMemberData['contact_alt_mobile'])):'';
+        $alt_email=(isset($aryMemberData['alt_email']) && !empty($aryMemberData['alt_email']))? addslashes(trim($aryMemberData['alt_email'])):'';
+        $website=(isset($aryMemberData['website']) && !empty($aryMemberData['website']))? addslashes(trim($aryMemberData['website'])):'';
+
+       	$menu_arr = array(
+            'contact_person' => $contact_person,
+            'contact_mobile'  =>$contact_mobile,
+            'contact_alt_mobile'  =>$contact_alt_mobile,
+            'alt_email'  =>$alt_email,
+            'website'  =>$website,
+        );
+
+        
+        $strstatus="Updated";
+
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Contact '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+    public function ajaxupdatechangepassword() 
+    {
+    	$returnData=array();
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+        $current_password=(isset($aryMemberData['current_password']) && !empty($aryMemberData['current_password']))? addslashes(trim($aryMemberData['current_password'])):'';
+       	$encrypt_password = $current_password;
+
+        $new_password=(isset($aryMemberData['new_password']) && !empty($aryMemberData['new_password']))? addslashes(trim($aryMemberData['new_password'])):'';
+
+        $verify_password=(isset($aryMemberData['verify_password']) && !empty($aryMemberData['verify_password']))? addslashes(trim($aryMemberData['verify_password'])):'';
+
+        $flagPasswordCheck = $this->User_Model->check_current_password($id,$encrypt_password);
+
+            
+		if($flagPasswordCheck==0)
+		{
+			$returnData['status']='2';
+			$returnData['msg']='old_password_doesnt_match';
+			$returnData['msgstring']='Old Password doesnt match!';
+			$returnData['data']=array();
+		}
+		else
+		{
+			$menu_arr = array(
+	            'password' => $new_password
+	        );
+
+			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+			if($lastId>0)
+			{
+		        $returnData['status']='1';
+		        $returnData['msg']='success';
+		        $returnData['msgstring']='Password Changed Successfully';
+		        $returnData['data']=array();
+			}
+			else
+			{
+				$returnData['status']='0';
+		        $returnData['msg']='error';
+		        $returnData['msgstring']='Password Changed Failed';
+		        $returnData['data']=array();
+			}
+		}
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
 	// log admin out
 	public function logout(){
 		// unset user data
@@ -341,7 +432,7 @@ class User extends CI_Controller
 	}
 
 
-	public function profileedit($member_id = 0)
+	public function profileedit()
 	{
 		$data=array();
 
@@ -354,7 +445,17 @@ class User extends CI_Controller
 		//$data['member_id']=$member_id;
 
 		$churchTypeData = $this->User_Model->get_church_type();
+
+		$user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+		$jsonMemberData = json_encode($memberData);
+
+		/*echo "ss<pre>";
+		print_r($memberData);
+		exit;*/
+
 		$data['churchTypeData'] = $churchTypeData;
+		$data['jsonMemberData'] = $jsonMemberData;
 
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');

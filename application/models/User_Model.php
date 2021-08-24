@@ -24,7 +24,8 @@ class User_Model extends CI_Model
 	{
 		if(!empty($id))
 		{
-			return $this->db->where('id',$id)->update('tn_members',$menu_arr);
+			$this->db->where('id',$id)->update('tn_members',$menu_arr);
+			return $id;
 		}
 		else
 		{
@@ -41,7 +42,16 @@ class User_Model extends CI_Model
 		return $resultData[0];
 	}
 
-	public function get_all_church()
+	public function check_current_password($id,$encrypt_password)
+	{
+		$sql='SELECT count(id) as totrow from tn_members WHERE id="'.$id.'" AND password="'.$encrypt_password.'" and deleted="0"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		return $rowData->totrow;
+	}
+
+
+	public function get_all_approve_church()
 	{
 		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
 		$query=$this->db->query($sql);

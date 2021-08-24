@@ -2,49 +2,29 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		
 	$scope.searchMember={};
 	$scope.memberData={};
-   
+   	$scope.memberDataPassNotMtchCheck=false;
+   	$scope.memberDataOldNotMtchCheck=false;
+
 	$scope.getMemberData = function(id=0)
 	{
 		$scope.memberData.type='0';
 		$scope.memberData.city='0';
 		$scope.memberData.country='0';
-		$scope.memberData.state='0';
+		$scope.memberData.state='0';	
 		
 		$scope.getGlobalCountryData($http);
 
 		if(id>0)
 		{
-			var formData = new FormData();
-			formData.append('id',id);
-
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"get_member_data",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData)
-	        {
-	        	aryreturnData=angular.fromJson(returnData);
-	        	if(aryreturnData.status=='1')
-	        	{
-	        		$scope.memberData=aryreturnData.data.memberData;
-
-	        		if(aryreturnData.data.memberData.membership_type=='CM')
-	        		{
-	        			$scope.memberData.church_name=aryreturnData.data.memberData.first_name;
-	        		}
-	        		$scope.getGlobalStateData($http,$scope.memberData.country);
-	        		$scope.getGlobalCityData($http,$scope.memberData.state);
-	        	}
-	        	else
-	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
-	        	}
-			});
+			jsonMemberData=$('.zjsonMemberDataz').html();
+			$scope.memberData=angular.fromJson(jsonMemberData);
+    		if($scope.memberData.membership_type=='CM')
+    		{
+    			$scope.memberData.church_name=$scope.memberData.first_name;
+    		}
+    		$scope.getGlobalStateData($http,$scope.memberData.country);
+    		$scope.getGlobalCityData($http,$scope.memberData.state);
+			
 	    }
     };
 
@@ -114,6 +94,106 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	};
 
 
+	$scope.submitContactInfo = function()
+    {	
+		var formData = new FormData();
+		formData.append('memberData',angular.toJson($scope.memberData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxupdatecontactinfo",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			$scope.memberDataCheck=false ;
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		window.location.href=varGlobalAdminBaseUrl+"profileedit";
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Member addition Failed!",
+	        		"error"
+	        	)
+        	}
+		});
+	};
+
+
+	$scope.submitChangePasswordInfo = function()
+    {
+		$scope.memberDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.memberDataCheck=false ;
+		},2000);
+
+		var validator=0;
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.current_password)==true) || ($scope.memberData.current_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==true) || ($scope.memberData.new_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==true) || ($scope.memberData.verify_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if ( (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==false) && ($scope.memberData.new_password!='¿')) && (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==false) && ($scope.memberData.verify_password!='¿')) && ($scope.memberData.new_password!=$scope.memberData.verify_password) )
+		{
+
+				$scope.memberDataPassNotMtchCheck=true ;
+				$timeout(function()
+				{
+					$scope.memberDataPassNotMtchCheck=false ;
+				},2000);				
+				validator++;
+		}
+
+
+		if (Number(validator)==0)
+		{		
+			var formData = new FormData();
+			formData.append('memberData',angular.toJson($scope.memberData));
+			$http({
+                method  : 'POST',
+                url     : varGlobalAdminBaseUrl+"ajaxupdatechangepassword",
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined},                     
+                data:formData, 
+            }).success(function(returnData) {
+				$scope.memberDataCheck=false ;
+				aryreturnData=angular.fromJson(returnData);
+            	if(aryreturnData.status==2)
+            	{
+            		$scope.memberDataOldNotMtchCheck=true ;
+					$timeout(function()
+					{
+						$scope.memberDataOldNotMtchCheck=false ;
+					},2000);
+            	}
+            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+            	{
+            		window.location.href=varGlobalAdminBaseUrl+"profileedit";
+            	}
+            	else
+            	{
+            		swal("Error!",
+		        		"Password Changed Failed!",
+		        		"error"
+		        	)
+            	}
+			});
+		}
+	};
+
 	$scope.files = [];
     //listen for the file selected event
     $scope.$on("fileSelected", function (event, args) {
@@ -164,6 +244,22 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$scope.memberData.state='';
 		$scope.memberData.city='';
 		$scope.memberData.postal_code='';
+	};
+
+	$scope.resetConatctForm = function()
+	{
+		$scope.memberData.contact_person='';
+		$scope.memberData.contact_mobile='';
+		$scope.memberData.contact_alt_mobile='';
+		$scope.memberData.alt_email='';
+		$scope.memberData.website='';
+	};
+
+	$scope.resetChangePasswordForm = function()
+	{
+		$scope.memberData.current_password='';
+		$scope.memberData.new_password='';
+		$scope.memberData.verify_password='';
 	};
 
 	$scope.getStateData = function(countryId)
