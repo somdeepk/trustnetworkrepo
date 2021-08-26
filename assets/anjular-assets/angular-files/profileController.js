@@ -18,10 +18,18 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		{
 			jsonMemberData=$('.zjsonMemberDataz').html();
 			$scope.memberData=angular.fromJson(jsonMemberData);
+
+    		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.notification_data))
+    		{
+    			var $notification_data=angular.fromJson($scope.memberData.notification_data);
+    			$scope.memberData = $.extend({}, $scope.memberData, $notification_data);
+    		}    		
+
     		if($scope.memberData.membership_type=='CM')
     		{
     			$scope.memberData.church_name=$scope.memberData.first_name;
     		}
+
     		$scope.getGlobalStateData($http,$scope.memberData.country);
     		$scope.getGlobalCityData($http,$scope.memberData.state);
 			
@@ -115,6 +123,35 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
         	{
         		swal("Error!",
 	        		"Member addition Failed!",
+	        		"error"
+	        	)
+        	}
+		});
+	};
+
+	$scope.submitNotification = function()
+    {	
+		var formData = new FormData();
+		formData.append('memberData',angular.toJson($scope.memberData));
+		/*return true;*/
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxupdatenotification",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			$scope.memberDataCheck=false ;
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		//$scope.getMemberData($scope.memberData.id)
+        		window.location.href=varGlobalAdminBaseUrl+"profileedit";
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Notification Updation Failed!",
 	        		"error"
 	        	)
         	}

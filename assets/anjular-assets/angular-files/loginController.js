@@ -4,6 +4,21 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 	$scope.loginDataCheck=false;
 	$scope.loginDataInvalidCheck=false;
    
+   	$scope.getLoginData = function()
+	{
+		jsonRememberMe=$('.zjsonCookieRememberMez').html();			
+		if(!$scope.isNullOrEmptyOrUndefined(jsonRememberMe))
+		{
+			$rememberMeData=angular.fromJson(jsonRememberMe);
+			if(!$scope.isNullOrEmptyOrUndefined($rememberMeData.trust_member_remember_me))
+			{
+				$scope.loginData.email=$rememberMeData.trust_member_remember_me;
+				$scope.loginData.password='';
+				$scope.loginData.remember_me=true;
+			}
+		}
+    };
+
 	$scope.submitLogin = function(){
 		$scope.loginDataCheck=true ;
 		$timeout(function()

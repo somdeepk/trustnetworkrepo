@@ -1,4 +1,4 @@
-<section class="sign-in-page" ng-controller="loginController">
+<section class="sign-in-page" ng-controller="loginController" ng-init="getLoginData();">
     <div class="container">
         <div class="row no-gutters">
             <div class="col-md-6 text-center">
@@ -15,6 +15,8 @@
                     <p>Enter your email address and password to access admin panel.</p>
                     <form class="mt-4">
                         <div class="form-group">
+                            <div class="zjsonCookieRememberMez hiddenimportant"><?php echo $jsonCookieRememberMe; ?></div>
+
                             <label for="exampleInputEmail1">Email address</label>
                             <input class="form-control  mb-0" ng-model="loginData.email" id="email" placeholder="Enter email" type="text" emailvalidate>
                             <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.email)==true)? 'Email Required' : ''}}</div>
@@ -30,8 +32,8 @@
                         </div>
                         <div class="d-inline-block w-100">
                             <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Remember Me</label>
+                                <input type="checkbox" class="custom-control-input" ng-model="loginData.remember_me" id="remember_me" ng-checked="loginData.remember_me == true" ng-value="false">
+                                <label class="custom-control-label" for="remember_me">Remember Me</label>
                             </div>
                             <button type="button" class="btn btn-primary float-right" ng-click="submitLogin();">Sign in</button>
                         </div>

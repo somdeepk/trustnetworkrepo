@@ -111,6 +111,11 @@ class User extends CI_Controller
 			show_404();
 		}
 		$data['title'] = ucfirst($page);
+
+		$ary_cockie['trust_member_remember_me'] = $_COOKIE["trust_member_remember_me"];
+		$jsonCookieRememberMe = json_encode($ary_cockie);
+		$data['jsonCookieRememberMe'] = $jsonCookieRememberMe;
+
 		$this->load->view('user/header-script');
 		$this->load->view('user/login', $data);
 		$this->load->view('user/footer');
@@ -125,6 +130,7 @@ class User extends CI_Controller
 
 		$email = $aryLoginData['email'];
 		$password = $aryLoginData['password'];
+		$remember_me = (isset($aryLoginData['remember_me']) && !empty($aryLoginData['remember_me']))? $aryLoginData['remember_me']:false;
 		$encrypt_password = $password;
 
 		if(!empty(trim($email)) && !empty(trim($password)))
@@ -139,6 +145,18 @@ class User extends CI_Controller
 			 	$userLoginData['email']=$userLoginData['user_email'];
 
 			 	$this->session->set_userdata($userLoginData);
+
+			 	// Start Remember Me block
+			 	if($remember_me){
+					setcookie("trust_member_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
+				}else{
+					if(isset($_COOKIE["trust_member_remember_me"])){
+						setcookie ("trust_member_remember_me","");
+					}
+				}
+				// END Remember Me block
+
+
 			 	
 			 	$returnData['status']='1';
 				$returnData['msg']='success';
@@ -327,6 +345,45 @@ class User extends CI_Controller
         $returnData=array();
         $returnData['status']='1';
         $returnData['msg']=base64_encode('Contact '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+    public function ajaxupdatenotification() 
+    {
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+       /* echo "<pre>";
+        print_r($aryMemberData);
+        exit;*/
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+   
+        $ary_notify['email_notify']=(isset($aryMemberData['email_notify']) && !empty($aryMemberData['email_notify']))? $aryMemberData['email_notify']:false;
+        $ary_notify['sms_notify']=(isset($aryMemberData['sms_notify']) && !empty($aryMemberData['sms_notify']))? $aryMemberData['sms_notify']:false;
+        $ary_notify['email_on_new_notify']=(isset($aryMemberData['email_on_new_notify']) && !empty($aryMemberData['email_on_new_notify']))? $aryMemberData['email_on_new_notify']:false;
+        $ary_notify['email_on_direcr_msg']=(isset($aryMemberData['email_on_direcr_msg']) && !empty($aryMemberData['email_on_direcr_msg']))? $aryMemberData['email_on_direcr_msg']:false;
+        $ary_notify['email_on_add_cnction']=(isset($aryMemberData['email_on_add_cnction']) && !empty($aryMemberData['email_on_add_cnction']))? $aryMemberData['email_on_add_cnction']:false;
+        $ary_notify['escalate_email_on_new_order']=(isset($aryMemberData['escalate_email_on_new_order']) && !empty($aryMemberData['escalate_email_on_new_order']))? $aryMemberData['escalate_email_on_new_order']:false;
+        $ary_notify['escalate_email_on_new_member_approval']=(isset($aryMemberData['escalate_email_on_new_member_approval']) && !empty($aryMemberData['escalate_email_on_new_member_approval']))? $aryMemberData['escalate_email_on_new_member_approval']:false;
+
+        $ary_notify['escalate_email_on_member_registration']=(isset($aryMemberData['escalate_email_on_member_registration']) && !empty($aryMemberData['escalate_email_on_member_registration']))? $aryMemberData['escalate_email_on_member_registration']:false;
+
+       	$menu_arr = array(
+            'notification_data' => json_encode($ary_notify),
+        );
+
+        
+        $strstatus="Updated";
+
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Notification '.$strstatus.' Successfully.');
         $returnData['data']=array('id'=>$lastId);
 
         echo json_encode($returnData);

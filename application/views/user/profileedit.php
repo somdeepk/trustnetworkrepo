@@ -233,33 +233,33 @@
                          <div class="iq-card-body">
                             <form>
                                <div class="form-group row align-items-center">
-                                  <label class="col-md-3" for="emailnotification">Email Notification:</label>
+                                  <label class="col-md-3" for="email_notify">Email Notification:</label>
                                   <div class="col-md-9 custom-control custom-switch">
-                                     <input type="checkbox" class="custom-control-input" id="emailnotification" checked="">
-                                     <label class="custom-control-label" for="emailnotification"></label>
+                                     <input type="checkbox" class="custom-control-input" ng-model="memberData.email_notify" id="email_notify" ng-checked="memberData.email_notify == true" ng-value="false">
+                                     <label class="custom-control-label" for="email_notify"></label>
                                   </div>
                                </div>
                                <div class="form-group row align-items-center">
-                                  <label class="col-md-3" for="smsnotification">SMS Notification:</label>
+                                  <label class="col-md-3" for="sms_notify">SMS Notification:</label>
                                   <div class="col-md-9 custom-control custom-switch">
-                                     <input type="checkbox" class="custom-control-input" id="smsnotification" checked="">
-                                     <label class="custom-control-label" for="smsnotification"></label>
+                                     <input type="checkbox" class="custom-control-input" ng-model="memberData.sms_notify" id="sms_notify" ng-checked="memberData.sms_notify == true" ng-value="false">
+                                     <label class="custom-control-label" for="sms_notify"></label>
                                   </div>
                                </div>
                                <div class="form-group row align-items-center">
-                                  <label class="col-md-3" for="npass">When To Email</label>
+                                  <label class="col-md-3">When To Email</label>
                                   <div class="col-md-9">
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email01">
-                                        <label class="custom-control-label" for="email01">You have new notifications.</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.email_on_new_notify" id="email_on_new_notify" ng-checked="memberData.email_on_new_notify == true" ng-value="false">
+                                        <label class="custom-control-label" for="email_on_new_notify">You have new notifications.</label>
                                      </div>
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email02">
-                                        <label class="custom-control-label" for="email02">You're sent a direct message</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.email_on_direcr_msg" id="email_on_direcr_msg" ng-checked="memberData.email_on_direcr_msg == true" ng-value="false">
+                                        <label class="custom-control-label" for="email_on_direcr_msg">You're sent a direct message</label>
                                      </div>
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email03" checked="">
-                                        <label class="custom-control-label" for="email03">Someone adds you as a connection</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.email_on_add_cnction" id="email_on_add_cnction" ng-checked="memberData.email_on_add_cnction== true" ng-value="false">
+                                        <label class="custom-control-label" for="email_on_add_cnction">Someone adds you as a connection</label>
                                      </div>
                                   </div>
                                </div>
@@ -267,21 +267,21 @@
                                   <label class="col-md-3" for="npass">When To Escalate Emails</label>
                                   <div class="col-md-9">
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email04">
-                                        <label class="custom-control-label" for="email04"> Upon new order.</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.escalate_email_on_new_order" id="escalate_email_on_new_order" ng-checked="memberData.escalate_email_on_new_order == true'" ng-value="false">
+                                        <label class="custom-control-label" for="escalate_email_on_new_order"> Upon new order.</label>
                                      </div>
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email05">
-                                        <label class="custom-control-label" for="email05"> New membership approval</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.escalate_email_on_new_member_approval" id="escalate_email_on_new_member_approval" ng-checked="memberData.escalate_email_on_new_member_approval == true" ng-value="false">
+                                        <label class="custom-control-label" for="escalate_email_on_new_member_approval"> New membership approval</label>
                                      </div>
                                      <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="email06" checked="">
-                                        <label class="custom-control-label" for="email06"> Member registration</label>
+                                        <input type="checkbox" class="custom-control-input" ng-model="memberData.escalate_email_on_member_registration" id="escalate_email_on_member_registration" ng-checked="memberData.escalate_email_on_member_registration == true" ng-value="false">
+                                        <label class="custom-control-label" for="escalate_email_on_member_registration"> Member registration</label>
                                      </div>
                                   </div>
                                </div>
-                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                               <button type="reset" class="btn iq-bg-danger">Cancle</button>
+                               <button type="button" class="btn btn-primary mr-2" ng-click="submitNotification();">Submit</button>
+                               <!-- <button type="button" ng-click="resetNotification();" class="btn iq-bg-danger">Reset</button> -->
                             </form>
                          </div>
                       </div>
