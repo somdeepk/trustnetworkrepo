@@ -4,6 +4,18 @@ var mainApp = angular.module('trustApp',['ngSanitize', 'treasure-overlay-spinner
 
 mainApp.run(function ($rootScope)
 {
+	$rootScope.buttonSavingAnimation = function ($where,strtext,what)
+	{        
+		if(what=='loader')
+		{
+			$('.'+$where).html('<div style="position:relative;"><div class="loader"  style="position:absolute;">Loading...</div><div  style="position:relative;z-index: 999">'+strtext+'</div></div>');
+		}
+		else
+		{
+			$('.'+$where).html(strtext);
+		}		
+    };
+
     $rootScope.getGlobalCountryData = function ($http) {        
 		var formData = new FormData();
 		formData.append('id','1');

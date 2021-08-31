@@ -100,7 +100,7 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
             	}
             	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{
-            		window.location.href=varGlobalAdminBaseUrl+"index";
+            		window.location.href=varGlobalAdminBaseUrl+"profileedit";
             	}
             	else
             	{

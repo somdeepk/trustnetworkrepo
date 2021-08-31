@@ -70,92 +70,122 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		}
 
 		if (Number(validator)==0)
-		{		
-			var formData = new FormData();
-			formData.append('memberData',angular.toJson($scope.memberData));
-			angular.forEach($scope.files,function(file){           
-				formData.append('file[]',file);
-			}); 
+		{	
+			$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+				formData.append('memberData',angular.toJson($scope.memberData));
+				angular.forEach($scope.files,function(file){           
+					formData.append('file[]',file);
+				}); 
 
-			$http({
-                method  : 'POST',
-                url     : varGlobalAdminBaseUrl+"ajaxupdateeditprofile",
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined},                     
-                data:formData, 
-            }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
-				aryreturnData=angular.fromJson(returnData);
-            	if(aryreturnData.status=='1')
-            	{
-            		window.location.href=varGlobalAdminBaseUrl+"profileedit";
-            	}
-            	else
-            	{
-            		swal("Error!",
-		        		"Member addition Failed!",
-		        		"error"
-		        	)
-            	}
-			});
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditprofile",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.memberDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	            		swal("Error!",
+			        		"Member addition Failed!",
+			        		"error"
+			        	)
+	            	}
+				});
+			},1200);
 		}
 	};
 
 
+
 	$scope.submitContactInfo = function()
     {	
-		var formData = new FormData();
-		formData.append('memberData',angular.toJson($scope.memberData));
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"ajaxupdatecontactinfo",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData) {
-			$scope.memberDataCheck=false ;
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		window.location.href=varGlobalAdminBaseUrl+"profileedit";
-        	}
-        	else
-        	{
-        		swal("Error!",
-	        		"Member addition Failed!",
-	        		"error"
-	        	)
-        	}
-		});
+    	$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+		
+		$timeout(function()
+		{
+			var formData = new FormData();
+			formData.append('memberData',angular.toJson($scope.memberData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatecontactinfo",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				$scope.memberDataCheck=false ;
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Member addition Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
 	};
 
 	$scope.submitNotification = function()
     {	
-		var formData = new FormData();
-		formData.append('memberData',angular.toJson($scope.memberData));
-		/*return true;*/
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"ajaxupdatenotification",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData) {
-			$scope.memberDataCheck=false ;
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		//$scope.getMemberData($scope.memberData.id)
-        		window.location.href=varGlobalAdminBaseUrl+"profileedit";
-        	}
-        	else
-        	{
-        		swal("Error!",
-	        		"Notification Updation Failed!",
-	        		"error"
-	        	)
-        	}
-		});
+		
+		$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+		$timeout(function()
+		{
+			var formData = new FormData();
+			formData.append('memberData',angular.toJson($scope.memberData));
+			/*return true;*/
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatenotification",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				$scope.memberDataCheck=false ;
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Notification Updation Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
 	};
 
 
@@ -186,48 +216,61 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		if ( (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==false) && ($scope.memberData.new_password!='¿')) && (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==false) && ($scope.memberData.verify_password!='¿')) && ($scope.memberData.new_password!=$scope.memberData.verify_password) )
 		{
 
-				$scope.memberDataPassNotMtchCheck=true ;
-				$timeout(function()
-				{
-					$scope.memberDataPassNotMtchCheck=false ;
-				},2000);				
-				validator++;
+			$scope.memberDataPassNotMtchCheck=true ;
+			$timeout(function()
+			{
+				$scope.memberDataPassNotMtchCheck=false ;
+			},2000);				
+			validator++;
 		}
 
 
 		if (Number(validator)==0)
-		{		
-			var formData = new FormData();
-			formData.append('memberData',angular.toJson($scope.memberData));
-			$http({
-                method  : 'POST',
-                url     : varGlobalAdminBaseUrl+"ajaxupdatechangepassword",
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined},                     
-                data:formData, 
-            }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
-				aryreturnData=angular.fromJson(returnData);
-            	if(aryreturnData.status==2)
-            	{
-            		$scope.memberDataOldNotMtchCheck=true ;
-					$timeout(function()
-					{
-						$scope.memberDataOldNotMtchCheck=false ;
-					},2000);
-            	}
-            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-            	{
-            		window.location.href=varGlobalAdminBaseUrl+"profileedit";
-            	}
-            	else
-            	{
-            		swal("Error!",
-		        		"Password Changed Failed!",
-		        		"error"
-		        	)
-            	}
-			});
+		{	
+			$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+				formData.append('memberData',angular.toJson($scope.memberData));
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdatechangepassword",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.memberDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status==2)
+	            	{
+	            		$scope.memberDataOldNotMtchCheck=true ;
+						$timeout(function()
+						{
+							$scope.memberDataOldNotMtchCheck=false ;
+						},2000);
+
+						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');	            		
+	            	}
+	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+
+	            		swal("Error!",
+			        		"Password Changed Failed!",
+			        		"error"
+			        	)
+	            	}
+				});
+			},1200);
 		}
 	};
 

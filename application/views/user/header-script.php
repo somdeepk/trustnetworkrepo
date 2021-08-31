@@ -42,6 +42,7 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/loginController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/signupController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/profileController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/peopleYouMayNowController.js"></script>
 
     <!-- <script type="text/javascript" src="<?php //echo base_url();?>assets/anjular-assets/angular-pages/moment.js_2.9.0_moment-with-locales.js"></script>
     <script type="text/javascript" src="<?php //echo base_url();?>assets/anjular-assets/angular-pages/src_js_bootstrap-datetimepicker.js"></script>  -->   

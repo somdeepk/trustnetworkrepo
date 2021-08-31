@@ -62,7 +62,7 @@ class User extends CI_Controller
 	            'gender'  =>$gender,
 	            'marital_status'  =>'',
 	            'membership_type'  =>$membership_type,
-	            'church_id'  =>$church_id,
+	            //'church_id'  =>$church_id,
 	            'user_email'  =>$user_email,
 	            'password'  =>$password,
 	            'is_approved'  =>'N',
@@ -73,12 +73,12 @@ class User extends CI_Controller
 
 			if($lastId>0)
 			{
-				$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
+				$userLoginData = $this->User_Model->get_member_data($lastId);
 
 				$userLoginData['login']=true;
 				$userLoginData['user_auto_id']=$userLoginData['id'];
-			 	$userLoginData['user_email']=$user_email;
-			 	$userLoginData['email']=$user_email;
+			 	$userLoginData['user_email']=$userLoginData['user_email'];
+			 	$userLoginData['email']=$userLoginData['user_email'];
 				$this->session->set_userdata($userLoginData);
 
 		        $returnData['status']='1';
@@ -143,7 +143,6 @@ class User extends CI_Controller
 			 	$userLoginData['user_auto_id']=$userLoginData['id'];
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
-
 			 	$this->session->set_userdata($userLoginData);
 
 			 	// Start Remember Me block
@@ -155,8 +154,6 @@ class User extends CI_Controller
 					}
 				}
 				// END Remember Me block
-
-
 			 	
 			 	$returnData['status']='1';
 				$returnData['msg']='success';
@@ -181,7 +178,11 @@ class User extends CI_Controller
 
 	}
 
-	public function get_member_data() 
+
+	
+
+
+	/*public function get_member_data() 
     {
     	$id=$this->input->get_post('id');
 		$memberData = $this->User_Model->get_member_data($id);
@@ -193,7 +194,228 @@ class User extends CI_Controller
        
         echo json_encode($returnData);
         exit;
+    }*/
+
+	public function ajaxgetPeopleYouMayNowData() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+
+		$friendData = $this->User_Model->ajaxgetPeopleYouMayNowData($user_auto_id);
+
+/*		echo "<pre>";
+		print_r($memberData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('friendData'=>$friendData);
+       
+        echo json_encode($returnData);
+        exit;
     }
+
+	public function ajaxGetAllFriendRequest() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+
+		$friendData = $this->User_Model->ajaxGetAllFriendRequest($user_auto_id);
+
+/*		echo "<pre>";
+		print_r($memberData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('friendData'=>$friendData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGetAllFriendList() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+
+		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id);
+
+		/*echo "ss<pre>";
+		print_r($friendListData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('friendListData'=>$friendListData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+
+
+    public function ajaxSendFriendRequest() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+    	$aryFriendData['tn_member_friends']=0;
+        
+        //$member_friends_aid=(isset($aryFriendData['member_friends_aid']) && !empty($aryFriendData['member_friends_aid']))? addslashes(trim($aryFriendData['member_friends_aid'])):0;
+		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $friend_id=(isset($aryFriendData['friend_id']) && !empty($aryFriendData['friend_id']))? addslashes(trim($aryFriendData['friend_id'])):0;
+        $current_date=date('Y-m-d H:i:s');
+
+        $menu_arr = array(
+            'member_id' => $user_auto_id,
+            'friend_id'  =>$friend_id,
+            'request_status'  =>'1', //Requser Send
+            'request_date'  =>$current_date
+        );
+
+		$member_friends_aid = $this->User_Model->ajaxAddUpdateMemberFriends($menu_arr);
+
+		$returnData=array();
+ 		if($member_friends_aid>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Request Send';
+	        $returnData['data']=array('member_friends_aid'=>$member_friends_aid);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Request Send Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxRemoveFromSuggestion() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+    	$aryFriendData['tn_member_friends']=0;
+        
+		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $friend_id=(isset($aryFriendData['friend_id']) && !empty($aryFriendData['friend_id']))? addslashes(trim($aryFriendData['friend_id'])):0;
+        $current_date=date('Y-m-d H:i:s');
+
+        $menu_arr = array(
+            'member_id' => $user_auto_id,
+            'friend_id'  =>$friend_id,
+            'request_status'  =>'3', //Requser Send
+            'remove_date'  =>$current_date
+        );
+
+		$member_friends_aid = $this->User_Model->ajaxAddUpdateMemberFriends($menu_arr);
+
+		$returnData=array();
+ 		if($member_friends_aid>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Removed From Suggestion';
+	        $returnData['data']=array('member_friends_aid'=>$member_friends_aid);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Removal Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxConfirmFriendRequest() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+    	$aryFriendData['tn_member_friends']=0;
+        
+		$member_friends_aid=(isset($aryFriendData['member_friends_aid']) && !empty($aryFriendData['member_friends_aid']))? addslashes(trim($aryFriendData['member_friends_aid'])):0;
+        $current_date=date('Y-m-d H:i:s');
+
+        $menu_arr = array(
+            'request_status'  =>'2', //Requser Send
+            'confirm_date'  =>$current_date
+        );
+
+		$member_friends_aid = $this->User_Model->ajaxConfirmDeleteFriendRequest($menu_arr,$member_friends_aid);
+
+		$returnData=array();
+ 		if($member_friends_aid>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Added As Friend';
+	        $returnData['data']=array('member_friends_aid'=>$member_friends_aid);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Confirmation Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxDeleteFromFriendRequest() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+    	$aryFriendData['tn_member_friends']=0;
+        
+		$member_friends_aid=(isset($aryFriendData['member_friends_aid']) && !empty($aryFriendData['member_friends_aid']))? addslashes(trim($aryFriendData['member_friends_aid'])):0;
+        $current_date=date('Y-m-d H:i:s');
+
+        $menu_arr = array(
+            'request_status'  =>'4', //Requser Send
+            'deletion_date'  =>$current_date
+        );
+
+		$member_friends_aid = $this->User_Model->ajaxConfirmDeleteFriendRequest($menu_arr,$member_friends_aid);
+
+		$returnData=array();
+ 		if($member_friends_aid>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Request Deleted';
+	        $returnData['data']=array('member_friends_aid'=>$member_friends_aid);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Deletion Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+    
 
     public function ajaxupdateeditprofile() 
     {
@@ -228,9 +450,6 @@ class User extends CI_Controller
 		{
 			$first_name=$church_name;
 		}
-/*
-		echo IMAGE_PATH;
-		exit;*/
 
        	$menu_arr = array(
             'first_name' => $first_name,
@@ -294,11 +513,6 @@ class User extends CI_Controller
                 $menu_arr['profile_image']=$imagename;
             }
         }
-
-       /* echo FCPATH.$ext.$filename."<pre>";
-		print_r($profilepic);
-		exit;*/
-
 
         $strstatus="Updated";
 
@@ -444,16 +658,12 @@ class User extends CI_Controller
 
 
 	// log admin out
-	public function logout(){
+	public function logout()
+	{
 		// unset user data
 		$this->session->unset_userdata('login');
-		$this->session->unset_userdata('user_id');
-		$this->session->unset_userdata('username');
-		$this->session->unset_userdata('role_id');
 		$this->session->unset_userdata('email');
-		$this->session->unset_userdata('image');
-		$this->session->unset_userdata('site_logo');
-
+		$this->session->unset_userdata('user_auto_id');
 		//Set Message
 		$this->session->set_flashdata('success', 'You are logged out.');
 		redirect(base_url().'user/login');
@@ -469,9 +679,13 @@ class User extends CI_Controller
 		$this->load->view('user/'.$page, $data);
 		$this->load->view('user/footer');
 	}
+	
 
-	public function index($church_id = 0)
+	public function index()
 	{
+
+		authenticate_user();
+
 		$data=array();
 
 		$msg=$this->input->post_get('msg');
@@ -480,10 +694,29 @@ class User extends CI_Controller
 			$msg=base64_decode($msg);
 			$this->session->set_flashdata('success', $msg);
 		}
-		$data['church_id']=$church_id;
+		//$data['church_id']=$church_id;
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');
 		$this->load->view('user/index', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
+	}
+
+	public function friendrequest()
+	{
+		authenticate_user();
+		$data=array();
+
+		$data['profileTab']=$this->input->post_get('tab');
+		$msg=$this->input->post_get('msg');
+		if(!empty($msg))
+		{
+			$msg=base64_decode($msg);
+			$this->session->set_flashdata('success', $msg);
+		}
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profile', $data);
 		$this->load->view('user/footer-top');
 		$this->load->view('user/footer');
 	}
@@ -492,7 +725,6 @@ class User extends CI_Controller
 	public function profileedit()
 	{
 		$data=array();
-
 		$msg=$this->input->post_get('msg');
 		if(!empty($msg))
 		{
@@ -507,9 +739,7 @@ class User extends CI_Controller
 		$memberData = $this->User_Model->get_member_data($user_auto_id);
 		$jsonMemberData = json_encode($memberData);
 
-		/*echo "ss<pre>";
-		print_r($memberData);
-		exit;*/
+		$this->session->set_userdata('is_approved', $memberData['is_approved']);
 
 		$data['churchTypeData'] = $churchTypeData;
 		$data['jsonMemberData'] = $jsonMemberData;

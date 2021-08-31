@@ -53,20 +53,15 @@
                                           <div id="uploaded_image">
                                             <img class="profile-pic" ng-if="memberData.profile_image == '' || !memberData.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto; width:74%;">
                                             <img class="profile-pic" ng-if="memberData.profile_image && memberData.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" style="margin:0 auto; width:74%; height:149px;">
-                                          </div>
-                                          <div class="clear50"></div>
-                                          
+                                          </div>                                          
                                           <span class="upload-img-cont"><strong>Note:</strong> Please Upload JPG, JPEG or PNG Image With a Dimension of 254 X 254 Pixel Only</span>
-                                          <div class="clear20"></div>
                                           <div class="col-md-12 padding-lr0">
-
                                             <div class="input-group image-preview">
                                               <input type="text" class="form-control image-preview-filename" disabled="disabled"> 
                                               <span class="input-group-btn" style="position:relative;top:-2px;">
                                                 <button type="button" class="btn btn-success image-preview-clear" style="display:none;" ng-click="clearProfileImage();">
                                                   <i class="fa fa-times" aria-hidden="true">DELETE</i> 
                                                 </button>
-                                                <br><br>
                                                 <div class="btn btn-success image-preview-input">
                                                   <span class="glyphicon glyphicon-folder-open"></span>
                                                   <span class="image-preview-input-title">Browse</span>
@@ -79,7 +74,9 @@
 
                                   </div>
                                </div>
-                               <div class="row align-items-center">
+
+
+                               <div style="padding-top:200px;"class="row align-items-center">
                                   <div class="form-group col-sm-6" ng-if="memberData.membership_type=='RM'">
                                      <label for="first_name">First Name:</label>
                                      <input type="text" ng-model="memberData.first_name" id="first_name" class="form-control">
@@ -180,8 +177,9 @@
                                   </div>
                                   
                                </div>
-                               <button type="button" class="btn btn-primary mr-2" ng-click="submitMember();">Submit</button>
+                               <button type="button" class="btn btn-primary mr-2 zsubmitMemberz" style="width:80px" ng-click="submitMember();">Submit</button>
                                <button type="button" ng-click="resetForm();" class="btn iq-bg-danger">Reset</button>
+
                             </form>
                          </div>
                       </div>
@@ -217,7 +215,7 @@
                                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</div>
                                </div>
 
-                               <button type="button" class="btn btn-primary mr-2" ng-click="submitChangePasswordInfo();">Submit</button>
+                               <button type="button" class="btn btn-primary mr-2 zsubmitMemberz" style="width:80px" ng-click="submitChangePasswordInfo();">Submit</button>
                                <button type="button" ng-click="resetChangePasswordForm();" class="btn iq-bg-danger">Reset</button>
                             </form>
                          </div>
@@ -280,7 +278,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <button type="button" class="btn btn-primary mr-2" ng-click="submitNotification();">Submit</button>
+                               <button type="button" class="btn btn-primary mr-2 zsubmitMemberz" style="width:80px"  ng-click="submitNotification();">Submit</button>
                                <!-- <button type="button" ng-click="resetNotification();" class="btn iq-bg-danger">Reset</button> -->
                             </form>
                          </div>
@@ -316,7 +314,7 @@
                                   <label for="website">Website:</label>
                                   <input type="text" ng-model="memberData.website" id="website" class="form-control">
                                </div>
-                               <button type="button" class="btn btn-primary mr-2" ng-click="submitContactInfo();">Submit</button>
+                               <button type="button" class="btn btn-primary mr-2 zsubmitMemberz" style="width:80px"  ng-click="submitContactInfo();">Submit</button>
                                <button type="button" ng-click="resetConatctForm();" class="btn iq-bg-danger">Reset</button>
                             </form>
                          </div>

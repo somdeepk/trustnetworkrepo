@@ -34,12 +34,122 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function ajaxAddUpdateMemberFriends($menu_arr=NULL,$member_friends_aid=0)
+	{
+		$member_id=$menu_arr['member_id'];
+		$friend_id=$menu_arr['friend_id'];
+		$sql='SELECT * from tn_member_friends WHERE member_id="'.$member_id.'" AND friend_id="'.$friend_id.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		$member_friends_aid=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$member_friends_aid=$rowData->id;
+		}
+		if(!empty($member_friends_aid) && $member_friends_aid>0)
+		{
+			$this->db->where('id',$member_friends_aid)->update('tn_member_friends',$menu_arr);
+			return $member_friends_aid;
+		}
+		else
+		{
+			$this->db->insert('tn_member_friends',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function ajaxConfirmDeleteFriendRequest($menu_arr=NULL,$member_friends_aid=0)
+	{
+		if(!empty($member_friends_aid) && $member_friends_aid>0)
+		{
+			$this->db->where('id',$member_friends_aid)->update('tn_member_friends',$menu_arr);
+			return $member_friends_aid;
+		}
+		else
+		{
+			$this->db->insert('tn_member_friends',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
 	public function get_member_data($id)
 	{
 		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData[0];
+	}
+
+	public function ajaxgetPeopleYouMayNowData($user_auto_id)
+	{
+
+		$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status 
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id
+				WHERE 
+				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1' )
+
+    			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND (tmf.request_status='1' OR tmf.request_status='2'))
+
+    			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status!='1' )
+
+    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+//AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status='1' )
+	/*$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status,
+				(SELECT GROUP_CONCAT(friend_id) FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status='1' ) AS tempFriend
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id
+				WHERE 
+				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1' )
+    			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' )
+    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";*/
+    	
+
+
+	public function ajaxGetAllFriendRequest($user_auto_id)
+	{
+		$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status 
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
+				WHERE tm.id IN 
+    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function ajaxGetAllFriendList($user_auto_id)
+	{
+		$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status 
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
+				WHERE 
+				(
+					tm.id IN
+    				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status='2') OR tm.id IN 
+    				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='2')
+    			)
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
 	}
 
 	public function check_current_password($id,$encrypt_password)

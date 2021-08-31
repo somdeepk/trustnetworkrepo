@@ -1,9 +1,8 @@
 <?php
 if ($this->session -> userdata('email') == "" && $this->session -> userdata('login') != true)
 {
-    redirect('user/login');
+  redirect('user/login');
 }
-
 $memberIsApproved=$this->session -> userdata('is_approved');
 //$user_auto_id=$this->session -> userdata('user_auto_id');
 /*echo $user_auto_id."ss<pre>";
@@ -19,10 +18,10 @@ exit;*/
              <?php if ($memberIsApproved=="Y"){ ?>
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
-                   <li class="active"><a href="index.html" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
+                   <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
                    <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
                    <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
-                   <li><a href="friend-request.html" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
+                   <li><a href="<?php echo base_url();?>user/friendrequest?tab=friendrequestTab" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
                    <li><a href="friend-list.html" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
                    <li><a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
                    
@@ -73,7 +72,7 @@ exit;*/
                 <?php } ?>
 
                 <?php if ($memberIsApproved=="Y"){ ?>
-                 <a href="index.html">
+                 <a href="<?php echo base_url();?>user/index">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
                  <span>Follow Me</span>
                  </a>
@@ -100,14 +99,14 @@ exit;*/
                  <ul class="navbar-nav ml-auto navbar-list">
                     <li>
                        <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
-                          <img src="<?php echo base_url();?>assets/images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
+                          <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
                           <div class="caption">
-                             <h6 class="mb-0 line-height">Howard</h6>
+                             <h6 class="mb-0 line-height"><?php echo $this->session->userdata('first_name'); ?></h6>
                           </div>
                        </a>
                     </li>
                     <li>
-                       <a href="index.html" class="iq-waves-effect d-flex align-items-center">
+                       <a href="<?php echo base_url();?>user/index" class="iq-waves-effect d-flex align-items-center">
                        <i class="ri-home-line"></i>
                        </a>
                     </li>
@@ -353,7 +352,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="profile-edit.html" class="iq-sub-card iq-bg-warning-hover">
+                                <a href="<?php echo base_url();?>user/profileedit" class="iq-sub-card iq-bg-warning-hover">
                                    <div class="media align-items-center">
                                       <div class="rounded iq-card-icon iq-bg-warning">
                                          <i class="ri-profile-line"></i>
