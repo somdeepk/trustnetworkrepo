@@ -201,12 +201,17 @@ class User extends CI_Controller
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
 
+    	/*echo "<pre>";
+		print_r($aryFriendData);
+        exit;*/
+
         $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
 
-		$friendData = $this->User_Model->ajaxgetPeopleYouMayNowData($user_auto_id);
+		$friendData = $this->User_Model->ajaxgetPeopleYouMayNowData($user_auto_id,$clickProfileTab);
 
-/*		echo "<pre>";
-		print_r($memberData);
+		/*echo "<pre>";
+		print_r($friendData);
         exit;*/
 
 		$returnData=array();
@@ -224,11 +229,12 @@ class User extends CI_Controller
     	$aryFriendData=json_decode($friendData, true);
 
         $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
 
-		$friendData = $this->User_Model->ajaxGetAllFriendRequest($user_auto_id);
+		$friendData = $this->User_Model->ajaxGetAllFriendRequest($user_auto_id,$clickProfileTab);
 
-/*		echo "<pre>";
-		print_r($memberData);
+		/*echo "<pre>";
+		print_r($aryFriendData);
         exit;*/
 
 		$returnData=array();
@@ -246,8 +252,9 @@ class User extends CI_Controller
     	$aryFriendData=json_decode($friendData, true);
 
         $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
 
-		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id);
+		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab);
 
 		/*echo "ss<pre>";
 		print_r($friendListData);
@@ -257,6 +264,24 @@ class User extends CI_Controller
         $returnData['status']='1';
         $returnData['msg']='';
         $returnData['data']=array('friendListData'=>$friendListData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+    public function ajaxGetAllChurchMember() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+		$churchMemberListData = $this->User_Model->ajaxGetAllChurchMember($aryFriendData);
+
+		/*echo "ss<pre>";
+		print_r($churchMemberListData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('churchMemberListData'=>$churchMemberListData);
        
         echo json_encode($returnData);
         exit;
@@ -299,6 +324,56 @@ class User extends CI_Controller
 	        $returnData['msg']='error';
 	        $returnData['msgstring']='Request Send Failed';
 	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function toggleChurchAdmin() 
+    {
+    	$returnData=array();
+
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+  
+  		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+		$adminid=(isset($aryFriendData['adminid']) && !empty($aryFriendData['adminid']))? addslashes(trim($aryFriendData['adminid'])):0;
+		$strAdmin=(isset($aryFriendData['strAdmin']) && !empty($aryFriendData['strAdmin']))? addslashes(trim($aryFriendData['strAdmin'])):'N';
+        $current_date=date('Y-m-d H:i:s');
+
+        $flagAdminExist = $this->User_Model->check_admin_exist($user_auto_id,$adminid);
+
+		if($flagAdminExist==1)
+		{
+			$returnData['status']='2';
+			$returnData['msg']='admin_aleady_exist';
+			$returnData['msgstring']='Admin already Exist For This Church';
+			$returnData['data']=array();
+		}
+		else
+		{
+			$menu_arr = array(
+	            'is_admin'  =>$strAdmin,
+	            'admin_create_date'  =>$current_date
+	        );
+
+			$lastId = $this->User_Model->addupdatemember($adminid,$menu_arr);
+
+	 		if($lastId>0)
+			{
+		        $returnData['status']='1';
+		        $returnData['msg']='success';
+		        $returnData['msgstring']='Admin Created Successfully';
+		        $returnData['data']=array('userLoginData'=>$userLoginData);
+			}
+			else
+			{
+				$returnData['status']='0';
+		        $returnData['msg']='error';
+		        $returnData['msgstring']='Admin Creation Failed';
+		        $returnData['data']=array();
+			}
 		}
        
         echo json_encode($returnData);
@@ -443,6 +518,10 @@ class User extends CI_Controller
         $country=(isset($aryMemberData['country']) && !empty($aryMemberData['country']))? addslashes(trim($aryMemberData['country'])):0;
         $state=(isset($aryMemberData['state']) && !empty($aryMemberData['state']))? addslashes(trim($aryMemberData['state'])):0;
         $postal_code=(isset($aryMemberData['postal_code']) && !empty($aryMemberData['postal_code']))? addslashes(trim($aryMemberData['postal_code'])):'';
+        $hidden_image_encode=(isset($aryMemberData['hidden_image_encode']) && !empty($aryMemberData['hidden_image_encode']))? addslashes(trim($aryMemberData['hidden_image_encode'])):'';
+        $profile_image=(isset($aryMemberData['profile_image']) && !empty($aryMemberData['profile_image']))? addslashes(trim($aryMemberData['profile_image'])):'';
+
+  
 		
 		$current_date=date('Y-m-d H:i:s');   
 
@@ -467,7 +546,7 @@ class User extends CI_Controller
             'update_date'  =>$current_date,
         );
 
-        if (!empty($_FILES['file']['name']))
+        /*if (!empty($_FILES['file']['name']))
         {
             $profilepic = json_encode($_FILES);
         } else {
@@ -512,7 +591,25 @@ class User extends CI_Controller
                 }
                 $menu_arr['profile_image']=$imagename;
             }
-        }
+        }*/
+
+        $imagename='';
+        if(!empty($hidden_image_encode))
+        {
+	        $image_array_1 = explode(";", $hidden_image_encode);
+	        $image_array_2 = explode(",", $image_array_1[1]);
+
+	        $imagebase64Data = base64_decode($image_array_2[1]);
+	        $imagename = time().'.png';
+
+			$image_name_with_path = IMAGE_PATH.'images/members/'.time() . '.png';
+			file_put_contents($image_name_with_path, $imagebase64Data);
+
+			$menu_arr['profile_image']=$imagename;
+			$this->session->set_userdata('profile_image',$imagename);
+
+			unlink( IMAGE_PATH.'images/members/'.$profile_image); // correct
+		}
 
         $strstatus="Updated";
 
@@ -521,7 +618,7 @@ class User extends CI_Controller
         $returnData=array();
         $returnData['status']='1';
         $returnData['msg']=base64_encode('Member '.$strstatus.' Successfully.');
-        $returnData['data']=array('id'=>$lastId);
+        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
 
         echo json_encode($returnData);
         exit;    	
@@ -679,15 +776,12 @@ class User extends CI_Controller
 		$this->load->view('user/'.$page, $data);
 		$this->load->view('user/footer');
 	}
-	
 
 	public function index()
 	{
-
 		authenticate_user();
 
 		$data=array();
-
 		$msg=$this->input->post_get('msg');
 		if(!empty($msg))
 		{
@@ -702,24 +796,199 @@ class User extends CI_Controller
 		$this->load->view('user/footer');
 	}
 
+	public function churchrequest()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="CM")
+		{
+			$data['profileTab']='churchrequestTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+	public function churchlist()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="CM")
+		{
+			$data['profileTab']='churchlistTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+	public function memberrequest()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="CM")
+		{
+
+			$data['profileTab']='memberrequestTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+	public function memberlist()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="CM")
+		{
+			$data['profileTab']='memberlistTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
 	public function friendrequest()
 	{
 		authenticate_user();
 		$data=array();
 
-		$data['profileTab']=$this->input->post_get('tab');
-		$msg=$this->input->post_get('msg');
-		if(!empty($msg))
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="RM")
 		{
-			$msg=base64_decode($msg);
-			$this->session->set_flashdata('success', $msg);
+			$data['profileTab']='friendrequestTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
 		}
-		$this->load->view('user/header-script');
-		$this->load->view('user/header-bottom');
-		$this->load->view('user/profile', $data);
-		$this->load->view('user/footer-top');
-		$this->load->view('user/footer');
+		else
+		{
+			redirect('user/index');
+		}
 	}
+
+	public function friendlist()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="RM")
+		{
+			$data['profileTab']='friendlistTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+	public function churchmember()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		$isAdmin=$this->session->userdata('is_admin');
+
+		if($membershipType=="CM" || $isAdmin=="Y")
+		{
+			$data['profileTab']='churchmemberTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+
 
 
 	public function profileedit()

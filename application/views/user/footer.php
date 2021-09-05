@@ -4,6 +4,10 @@
     <!--  <script src="<?php echo base_url();?>assets/js/jquery.min.js"></script> -->
     <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+
+    <script src="<?php echo base_url();?>assets/crop-image/croppie.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/crop-image/croppie.css">
+    
     <!-- Appear JavaScript -->
     <script src="<?php echo base_url();?>assets/js/jquery.appear.js"></script>
     <!-- Countdown JavaScript -->

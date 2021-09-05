@@ -280,15 +280,38 @@ switch (ENVIRONMENT)
 	    $protocol = 'http';
 	}
 
-	$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
+	
+
+	$IS_LOCAL_HOST=1;
+	$whitelist = array(
+	    '127.0.0.1',
+	    '::1'
+	);
+	if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+		$IS_LOCAL_HOST=0;
+	}
+	defined('IS_LOCAL_HOST') OR define('IS_LOCAL_HOST', $IS_LOCAL_HOST);
+
+	if(IS_LOCAL_HOST==1)
+	{
+		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
+
+		$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
+		$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);
+		$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads\\";
+
+	}else{
+		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/demo/trust-member-uploads/";
+
+		$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
+		$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);
+		$IMAGE_PATH=str_replace("trust-member/","",$IMAGE_PATH);
+		$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads/";
+	}
 
 	defined('IMAGE_URL') OR define('IMAGE_URL', $IMAGE_URL);
-	
-	$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
-	$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);
-	$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads\\";
-	//exit;
 	defined('IMAGE_PATH') OR define('IMAGE_PATH', $IMAGE_PATH);
+
 	
 	// The path to the "views" directory
 	if ( ! isset($view_folder[0]) && is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR))

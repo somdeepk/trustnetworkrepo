@@ -97,6 +97,12 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 						{
 							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
 						},1200);
+						if(!$scope.isNullOrEmptyOrUndefined(aryreturnData.data.imagename))
+				    	{
+				    		$scope.memberData.profile_image=aryreturnData.data.imagename;
+				    		$scope.memberData.hidden_image_encode='';
+							$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
+						}
 	            	}
 	            	else
 	            	{
@@ -274,39 +280,60 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		}
 	};
 
-	$scope.files = [];
-    //listen for the file selected event
-    $scope.$on("fileSelected", function (event, args) {
-        $scope.$apply(function () {            
-            var img = $('<img/>', {
-              id: 'dynamic',
-              width:200,
-              height:150
-            });      
-            $scope.files[0] = args.file;
-            var reader = new FileReader();
-            // Set preview image into the popover data-content
-            reader.onload = function (e) {
-                $(".image-preview-input-title").text("Change");
-                $(".image-preview-clear").show();
-                $(".image-preview-filename").val($scope.files[0].name);   
-                       img.attr('src', e.target.result);
-                $("#uploaded_image").html($(img)[0].outerHTML);
-            }        
-            reader.readAsDataURL($scope.files[0]);
-        });
-    });
+
+	$image_crop = $('#image_demo').croppie({
+		enableExif: true,
+		viewport: {
+		  width:200,
+		  height:200,
+		  type:'square' //circle
+		},
+		boundary:{
+		  width:300,
+		  height:300
+		}
+	});
+
+	$('#upload_image').on('change', function()
+	{
+		var reader = new FileReader();
+		reader.onload = function (event)
+		{
+			$image_crop.croppie('bind', {
+			url: event.target.result
+			}).then(function()
+			{
+				console.log('jQuery bind complete');
+			});
+		}
+		reader.readAsDataURL(this.files[0]);
+		$('#uploadimageModal').modal('show');
+	});
+
+	$('.zCropImagez').click(function(event)
+	{
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			$scope.memberData.hidden_image_encode=response;
+			data='<img class="profile-pic" src="'+response+'" style="margin:0 auto; height:149px;">';
+			$('#uploadimageModal').modal('hide');
+			$('#uploaded_image').html(data);
+		})
+	});
 
 	$scope.clearProfileImage = function()
 	{
-		$scope.files = [];
-		$scope.memberData.profile_image = '';
-		$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="img-responsive border-blk"  style="margin:0 auto; width:74%;">');
-		$('.image-preview').attr("data-content","").popover('hide');
-		$('.image-preview-filename').val("");
-		$('.image-preview-clear').hide();
-		$('.image-preview-input input:file').val("");
-		$(".image-preview-input-title").text("Browse"); 
+		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.profile_image))
+    	{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.memberData.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
+		else
+		{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
 	};
 
     $scope.resetForm = function()

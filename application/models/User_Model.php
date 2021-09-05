@@ -80,23 +80,36 @@ class User_Model extends CI_Model
 		return $resultData[0];
 	}
 
-	public function ajaxgetPeopleYouMayNowData($user_auto_id)
+	public function ajaxgetPeopleYouMayNowData($user_auto_id,$clickProfileTab="")
 	{
+		$strWhereParam="";
+		if(!empty($clickProfileTab))
+		{
+			if($clickProfileTab=="churchrequestTab")
+			{
+				$strWhereParam=" AND tm.membership_type='CM'";
+			}
+			elseif($clickProfileTab=="memberrequestTab")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+		}
 
 		$sql="SELECT 
 				tm.*,
 				tmf.id as member_friends_aid, 
-				tmf.request_status 
+				tmf.request_status ,
+				tmf.member_id 
 				FROM tn_members as tm
-				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id AND tmf.member_id ='".$user_auto_id."'
 				WHERE 
-				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1' )
+				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1')
 
     			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND (tmf.request_status='1' OR tmf.request_status='2'))
 
-    			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status!='1' )
+    			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status!='1')
 
-    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -117,8 +130,21 @@ class User_Model extends CI_Model
     	
 
 
-	public function ajaxGetAllFriendRequest($user_auto_id)
+	public function ajaxGetAllFriendRequest($user_auto_id,$clickProfileTab="")
 	{
+		$strWhereParam="";
+		if(!empty($clickProfileTab))
+		{
+			if($clickProfileTab=="churchrequestTab")
+			{
+				$strWhereParam=" AND tm.membership_type='CM'";
+			}
+			elseif($clickProfileTab=="memberrequestTab")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+		}
+
 		$sql="SELECT 
 				tm.*,
 				tmf.id as member_friends_aid, 
@@ -126,27 +152,63 @@ class User_Model extends CI_Model
 				FROM tn_members as tm
 				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
 				WHERE tm.id IN 
-    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
 	}
 
-	public function ajaxGetAllFriendList($user_auto_id)
+	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="")
 	{
+		$strWhereParam="";
+		if(!empty($clickProfileTab))
+		{
+			if($clickProfileTab=="churchlistTab")
+			{
+				$strWhereParam=" AND tm.membership_type='CM'";
+			}
+			if($clickProfileTab=="memberlistTab")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+		}
+
 		$sql="SELECT 
-				tm.*,
-				tmf.id as member_friends_aid, 
-				tmf.request_status 
+				tm.* 
 				FROM tn_members as tm
-				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
 				WHERE 
 				(
 					tm.id IN
     				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status='2') OR tm.id IN 
     				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='2')
     			)
-    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function ajaxGetAllChurchMember($aryFriendData)
+	{
+		$clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
+		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+		$parent_id=(isset($aryFriendData['parent_id']) && !empty($aryFriendData['parent_id']))? addslashes(trim($aryFriendData['parent_id'])):0;
+		$membership_type=(isset($aryFriendData['membership_type']) && !empty($aryFriendData['membership_type']))? addslashes(trim($aryFriendData['membership_type'])):'N';        
+		
+		if($membership_type=='CM')
+		{
+			$strParamWhere=" AND tm.parent_id='".$user_auto_id."'";
+		}
+		else
+		{
+			$strParamWhere=" AND tm.parent_id='".$parent_id."' AND tm.id!='".$user_auto_id."'";
+		}
+
+		$sql="SELECT 
+				tm.* 
+				FROM tn_members as tm
+				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." order by first_name ASC";
+
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -172,6 +234,21 @@ class User_Model extends CI_Model
 	public function check_dup_email($email='')
 	{
 		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public function check_admin_exist($user_auto_id,$adminid)
+	{
+		$sql="SELECT * from tn_members WHERE is_admin='Y' AND parent_id='".$user_auto_id."' and id!='".$adminid."' AND deleted='0'";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		if(count($resultData)>0)

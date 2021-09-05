@@ -23,7 +23,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+if(IS_LOCAL_HOST==1)
+{
+	$config['base_url'] = '';
+}
+else
+{
+	$config['base_url'] = 'http://followmenow.org/demo/trust-member';
+}
 //$config['image_url'] = '';
 
 /*

@@ -4,6 +4,8 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
   redirect('user/login');
 }
 $memberIsApproved=$this->session -> userdata('is_approved');
+$membershipType=$this->session -> userdata('membership_type');
+$isAdmin=$this->session -> userdata('is_admin');
 //$user_auto_id=$this->session -> userdata('user_auto_id');
 /*echo $user_auto_id."ss<pre>";
 print_r($this->session -> userdata);
@@ -21,13 +23,24 @@ exit;*/
                    <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
                    <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
                    <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
-                   <li><a href="<?php echo base_url();?>user/friendrequest?tab=friendrequestTab" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
-                   <li><a href="friend-list.html" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
+
+                   <?php if($membershipType=="RM"){ ?>
+                     <li><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
+                     <li><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
+                   <?php }else{ ?>
+                        <li><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
+                        <li><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
+                        <li><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
+                        <li><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
+                   <?php } ?>
+
                    <li><a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
                    
                    <li><a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="group" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                               <li><a href="#"><i class="ri-tablet-line"></i>Church Members</a></li>
+                               <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
+                               <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
+                               <?php } ?>
                                <li><a href="#"><i class="ri-device-line"></i>School Friends</a></li>
                                <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
                                <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
@@ -99,7 +112,7 @@ exit;*/
                  <ul class="navbar-nav ml-auto navbar-list">
                     <li>
                        <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
-                          <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
+                          <img id="header_profile_images" src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
                           <div class="caption">
                              <h6 class="mb-0 line-height"><?php echo $this->session->userdata('first_name'); ?></h6>
                           </div>

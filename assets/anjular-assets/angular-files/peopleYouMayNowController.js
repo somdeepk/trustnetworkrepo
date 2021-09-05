@@ -3,14 +3,13 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 	$scope.peopleYouMayNowObj={};
 	$scope.allFriendRequestObj={};
 	$scope.allFriendListObj={};
-	$scope.clickProfileTab='timelineTab';
+	$scope.allChurchMemberListObj={};
+	$scope.friendData.clickProfileTab='timelineTab';
 
-	$scope.peopleYouMayNowData = function(user_auto_id)
+	$scope.peopleYouMayNowData = function()
 	{
-		if(user_auto_id>0)
+		if($scope.friendData.user_auto_id>0)
 		{
-			$scope.friendData.user_auto_id=user_auto_id;
-
 			var formData = new FormData();
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
@@ -66,7 +65,7 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 						//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
 						/*alert("ss")
 						alert($scope.friendData.friend_id);*/
-						$scope.peopleYouMayNowData($scope.friendData.user_auto_id);
+						$scope.peopleYouMayNowData();
 
 						
 					},1200);
@@ -106,7 +105,7 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 	        		/*$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Removed!','onlytext');
 	        		$timeout(function()
 					{*/
-						$scope.peopleYouMayNowData($scope.friendData.user_auto_id);						
+						$scope.peopleYouMayNowData();						
 					//},1200);
 	        	}
 	        	else
@@ -121,14 +120,82 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 		},600);
 	};
 
+	$scope.toggleChurchAdmin = function(adminobj)
+    {	
+    	var adminid=adminobj.id;
+    	var is_admin=adminobj.is_admin;
 
+    	if($(".zmakeChurchAdminz_"+adminid).hasClass('btn-success')){
+    		strText="Removing..";
+    		strAdmin='N';
+    	}else{
+    		strText="Creating..";
+    		strAdmin='Y';
+    	}
 
-	$scope.getAllFriendRequest = function(user_auto_id)
-	{
-		if(user_auto_id>0)
+    	$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,strText,'loader');		
+		$timeout(function()
 		{
-			$scope.friendData.user_auto_id=user_auto_id;
+			$scope.friendData.adminid=adminid;
+			$scope.friendData.strAdmin=strAdmin;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"toggleChurchAdmin",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		if(strAdmin=='Y'){
+	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-primary');
+    					$(".zmakeChurchAdminz_"+adminid).addClass('btn-success');
+						$(".zmakeChurchAdminz_"+adminid).css("background-color",'#49f0d3');
+						$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#49f0d3');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-admin-line"></i>Church Admin');
+	        		}else{
+	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-success');
+	        			$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
+	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
+	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')
+	        		};     		
+	        	}
+	        	else if(aryreturnData.status=='2')
+	        	{
+	        		$(".zmakeChurchAdminz_"+adminid).removeClass('btn-primary');
+					$(".zmakeChurchAdminz_"+adminid).css("background-color",'#ff9b8a');
+	        		$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#ff9b8a');
+					$(".zmakeChurchAdminz_"+adminid).addClass('btn-danger');
+					$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Admin already exist ','onlytext');
+	        		$timeout(function()
+					{
+						$(".zmakeChurchAdminz_"+adminid).removeClass('btn-danger');
+	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
+	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
+						$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')	       
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Create Admin','onlytext');
+	        		swal("Error!",
+		        		"Admin Creation Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
+	};
 
+	$scope.getAllFriendRequest = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
 			var formData = new FormData();
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
@@ -178,7 +245,7 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirmed!','onlytext');
 	        		$timeout(function()
 					{
-						$scope.getAllFriendRequest($scope.friendData.user_auto_id);						
+						$scope.getAllFriendRequest();						
 					},1200);
 	        	}
 	        	else
@@ -213,7 +280,7 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
-	        		$scope.getAllFriendRequest($scope.friendData.user_auto_id);	
+	        		$scope.getAllFriendRequest();	
 	        	}
 	        	else
 	        	{
@@ -232,11 +299,31 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 	};
 
 
-	$scope.selectprofileTab = function (user_auto_id)
+	$scope.selectprofileTab = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
 		$scope.friendData.user_auto_id=user_auto_id;
-		hidden_profile_tab=$('#hidden_profile_tab').val();
-		$scope.clickProfileTab=hidden_profile_tab;
+		$scope.friendData.membership_type=membership_type;
+		$scope.friendData.is_admin=is_admin;
+		$scope.friendData.parent_id=parent_id;
+
+		hidden_profile_tab=$('#hidden_profile_tab').val();	
+		//alert(hidden_profile_tab)	
+		$scope.friendData.clickProfileTab=hidden_profile_tab;
+
+		if(hidden_profile_tab=='friendlistTab' || hidden_profile_tab=='churchlistTab' || hidden_profile_tab=='memberlistTab')
+		{
+			$scope.getAllFriendList();
+		}
+		else if(hidden_profile_tab=='friendrequestTab' || hidden_profile_tab=='churchrequestTab' || hidden_profile_tab=='memberrequestTab')
+		{
+			$scope.getAllFriendRequest();
+			$scope.peopleYouMayNowData();
+		}
+		else if(hidden_profile_tab=='churchmemberTab')
+		{
+			$scope.getAllChurchMember()
+		}
+		//alert($scope.friendData.clickProfileTab)
 	};
 
 	$scope.getAllFriendList = function()
@@ -267,8 +354,37 @@ mainApp.controller('peopleYouMayNowController', function ($rootScope, $timeout, 
 		        		"error"
 		        	)
 	        	}
-			});
-			
+			});			
+	    }
+    };
+
+    $scope.getAllChurchMember = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllChurchMember",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allChurchMemberListObj=aryreturnData.data.churchMemberListData;
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
 	    }
     };
 
