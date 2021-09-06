@@ -294,6 +294,10 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		}
 	});
 
+	$('#upload_image').click(function(){
+	    $(this).val('');
+	})  
+
 	$('#upload_image').on('change', function()
 	{
 		var reader = new FileReader();
