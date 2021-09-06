@@ -321,8 +321,10 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 			size: 'viewport'
 		}).then(function(response)
 		{
-			$scope.memberData.hidden_image_encode=response;
 			data='<img class="profile-pic" src="'+response+'" style="margin:0 auto; height:149px;">';
+			response=response.replace(";", "colone");
+			response=response.replace(",", "comma");
+			$scope.memberData.hidden_image_encode=response;
 			$('#uploadimageModal').modal('hide');
 			$('#uploaded_image').html(data);
 		})

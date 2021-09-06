@@ -596,6 +596,8 @@ class User extends CI_Controller
         $imagename='';
         if(!empty($hidden_image_encode))
         {
+        	$hidden_image_encode=str_replace('colone', ';', $hidden_image_encode);
+        	$hidden_image_encode=str_replace('comma', ',', $hidden_image_encode);        	
 	        $image_array_1 = explode(";", $hidden_image_encode);
 	        $image_array_2 = explode(",", $image_array_1[1]);
 
