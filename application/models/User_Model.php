@@ -316,7 +316,124 @@ class User_Model extends CI_Model
 			return array();
 		}
 	}
-	
 
+	public function addUpdateTaskLevel($menu_arr=NULL)
+	{
+		$current_date=date('Y-m-d H:i:s');
+		$church_id=$menu_arr['church_id'];
+		$church_admin_id=$menu_arr['church_admin_id'];
+		$sql='SELECT * from tn_task_level WHERE church_id="'.$church_id.'" AND church_admin_id="'.$church_admin_id.'" AND deleted="0"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		$task_level_id=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$task_level_id=$rowData->id;
+		}
+		if(!empty($task_level_id) && $task_level_id>0)
+		{
+			$menu_arr['update_date']  =$current_date;
+			$this->db->where('id',$task_level_id)->update('tn_task_level',$menu_arr);
+			return $task_level_id;
+		}
+		else
+		{
+			$menu_arr['create_date']  =$current_date;
+			$this->db->insert('tn_task_level',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function addUpdatTaskLevelVideo($menu_arr=NULL,$id=NULL)
+	{
+		$current_date=date('Y-m-d H:i:s');
+		$task_level_id=$menu_arr['task_level_id'];
+		$video_number=$menu_arr['video_number'];
+
+		$sql='SELECT * from tn_task_level_video WHERE task_level_id="'.$task_level_id.'" AND video_number="'.$video_number.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		$task_level_video_id=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$task_level_video_id=$rowData->id;
+		}
+
+		if(!empty($task_level_video_id) && $task_level_video_id>0)
+		{
+			$menu_arr['update_date']  =$current_date;
+			$this->db->where('id',$task_level_video_id)->update('tn_task_level_video',$menu_arr);
+			return $task_level_video_id;
+		}
+		else
+		{
+			$menu_arr['create_date']  =$current_date;
+			$this->db->insert('tn_task_level_video',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+
+	public function get_task_video_by_level($argument)
+	{
+		$membershipType=$argument['membershipType'];
+		$user_auto_id=$argument['user_auto_id'];
+		$parent_id=$argument['parent_id'];
+		$task_level=$argument['task_level'];
+
+		if($membershipTyp=="CM")
+		{
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND task_level='".$task_level."'";
+		}
+		else
+		{
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND task_level='".$task_level."'";
+		}
+		$sql="SELECT 
+				tl.*,
+				tlv.video_number, 
+				tlv.video_name, 
+				tlv.video_size,
+				tlv.video_type
+				FROM tn_task_level as tl
+				LEFT JOIN tn_task_level_video as tlv ON tlv.task_level_id=tl.id
+				WHERE tl.deleted='0' ".$strWhereParam." order by tlv.video_number";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function get_task_min_three_video_by_level($argument)
+	{
+		$task_level=$argument['task_level'];
+
+		$taskVideoLevelData=$this->get_task_video_by_level($argument);
+		$finalTaskVideoLevelData=array();
+
+		for ($k = 0; $k <= 2; $k++)
+		{
+			$finalTaskVideoLevelData[$k]['video_number']=0;
+			$finalTaskVideoLevelData[$k]['video_name']='';
+			$finalTaskVideoLevelData[$k]['video_size']='';
+			$finalTaskVideoLevelData[$k]['video_type']='';
+			$finalTaskVideoLevelData[$k]['video_path_with_video']='';
+		}
+
+		if(count($taskVideoLevelData)>0)
+		{
+			foreach($taskVideoLevelData as $k=>$v)
+			{
+				$finalTaskVideoLevelData[$k]['video_number']=$v['video_number'];
+				$finalTaskVideoLevelData[$k]['video_name']=$v['video_name'];
+				$finalTaskVideoLevelData[$k]['video_size']=$v['video_size'];
+				$finalTaskVideoLevelData[$k]['video_type']=$v['video_type'];
+				$finalTaskVideoLevelData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/'.$v['video_name'];
+			}
+		}
+
+		return $finalTaskVideoLevelData;
+
+	}
+	
 }
 ?>

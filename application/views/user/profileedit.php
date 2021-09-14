@@ -1,4 +1,4 @@
-<div id="content-page" class="content-page" ng-controller="profileController" ng-init="getMemberData('<?php echo $this->session->userdata('user_auto_id'); ?>');">
+<div id="content-page" class="content-page" ng-controller="editProfileController" ng-init="getMemberData('<?php echo $this->session->userdata('user_auto_id'); ?>');">
   <!-- Start Image Croping Modal -->
   <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
     <div class="modal-dialog">

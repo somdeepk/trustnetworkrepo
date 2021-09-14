@@ -1,154 +1,80 @@
 mainApp.controller('profileController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
-		
-	$scope.searchMember={};
-	$scope.memberData={};
-   	$scope.memberDataPassNotMtchCheck=false;
-   	$scope.memberDataOldNotMtchCheck=false;
+	$scope.friendData={};
+	$scope.peopleYouMayNowObj={};
+	$scope.allFriendRequestObj={};
+	$scope.allFriendListObj={};
+	$scope.allChurchMemberListObj={};
+	$scope.friendData.clickProfileTab='timelineTab';
 
-	$scope.getMemberData = function(id=0)
+	$scope.peopleYouMayNowData = function()
 	{
-		$scope.memberData.type='0';
-		$scope.memberData.city='0';
-		$scope.memberData.country='0';
-		$scope.memberData.state='0';	
-		
-		$scope.getGlobalCountryData($http);
-
-		if(id>0)
+		if($scope.friendData.user_auto_id>0)
 		{
-			jsonMemberData=$('.zjsonMemberDataz').html();
-			$scope.memberData=angular.fromJson(jsonMemberData);
-
-    		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.notification_data))
-    		{
-    			var $notification_data=angular.fromJson($scope.memberData.notification_data);
-    			$scope.memberData = $.extend({}, $scope.memberData, $notification_data);
-    		}    		
-
-    		if($scope.memberData.membership_type=='CM')
-    		{
-    			$scope.memberData.church_name=$scope.memberData.first_name;
-    		}
-
-    		$scope.getGlobalStateData($http,$scope.memberData.country);
-    		$scope.getGlobalCityData($http,$scope.memberData.state);
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxgetPeopleYouMayNowData",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.peopleYouMayNowObj=aryreturnData.data.friendData;
+	        		/*console.log('PYMK')
+	        		console.log($scope.peopleYouMayNowObj)*/
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});
 			
 	    }
     };
 
-
-    $scope.submitMember = function()
-    {
-		$scope.memberDataCheck=true ;
-		$timeout(function()
-		{
-			$scope.memberDataCheck=false ;
-		},2000);
-
-		var validator=0;
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.first_name)==true) || ($scope.memberData.first_name=='¿')))
-		{
-			validator++ ;
-		}
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.last_name)==true) || ($scope.memberData.last_name=='¿')))
-		{
-			validator++ ;
-		}
-
-		if (($scope.memberData.membership_type=='CM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.church_name)==true) || ($scope.memberData.church_name=='¿')))
-		{
-			validator++ ;
-		}
-
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.gender)==true) || ($scope.memberData.gender=='¿')))
-		{
-			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.dob)==true) || ($scope.memberData.dob=='¿'))
-		{
-			validator++ ;
-		}
-
-		if (Number(validator)==0)
-		{	
-			$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
-		
-			$timeout(function()
-			{	
-				var formData = new FormData();
-				formData.append('memberData',angular.toJson($scope.memberData));
-				angular.forEach($scope.files,function(file){           
-					formData.append('file[]',file);
-				}); 
-
-				$http({
-	                method  : 'POST',
-	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditprofile",
-	                transformRequest: angular.identity,
-	                headers: {'Content-Type': undefined},                     
-	                data:formData, 
-	            }).success(function(returnData) {
-					$scope.memberDataCheck=false ;
-					aryreturnData=angular.fromJson(returnData);
-	            	if(aryreturnData.status=='1')
-	            	{
-	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
-	            		$timeout(function()
-						{
-							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-						},1200);
-						if(!$scope.isNullOrEmptyOrUndefined(aryreturnData.data.imagename))
-				    	{
-				    		$scope.memberData.profile_image=aryreturnData.data.imagename;
-				    		$scope.memberData.hidden_image_encode='';
-							$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
-						}
-	            	}
-	            	else
-	            	{
-	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	            		swal("Error!",
-			        		"Member addition Failed!",
-			        		"error"
-			        	)
-	            	}
-				});
-			},1200);
-		}
-	};
-
-
-
-	$scope.submitContactInfo = function()
+    $scope.sendFriendRequest = function(friend_id)
     {	
-    	$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+
+    	$scope.buttonSavingAnimation('zsendFriendRequestz_'+friend_id,'Requesting..','loader');
 		
 		$timeout(function()
 		{
+			$scope.friendData.friend_id=friend_id;
 			var formData = new FormData();
-			formData.append('memberData',angular.toJson($scope.memberData));
+			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
 	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxupdatecontactinfo",
+	            url     : varGlobalAdminBaseUrl+"ajaxSendFriendRequest",
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': undefined},                     
 	            data:formData, 
 	        }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	        		$scope.buttonSavingAnimation('zsendFriendRequestz_'+friend_id,'Request Send!','onlytext');
 	        		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						/*alert("ss")
+						alert($scope.friendData.friend_id);*/
+						$scope.peopleYouMayNowData();
+
+						
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		$scope.buttonSavingAnimation('zsendFriendRequestz_'+friend_id,'Add Friend','onlytext');
 	        		swal("Error!",
-		        		"Member addition Failed!",
+		        		"Request Send Failed!",
 		        		"error"
 		        	)
 	        	}
@@ -156,37 +82,109 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		},1200);
 	};
 
-	$scope.submitNotification = function()
+	$scope.removeFromSuggestion = function(friend_id)
     {	
+
+    	$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Removing..','loader');
 		
-		$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
 		$timeout(function()
 		{
+			$scope.friendData.friend_id=friend_id;
 			var formData = new FormData();
-			formData.append('memberData',angular.toJson($scope.memberData));
-			/*return true;*/
+			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
 	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxupdatenotification",
+	            url     : varGlobalAdminBaseUrl+"ajaxRemoveFromSuggestion",
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': undefined},                     
 	            data:formData, 
 	        }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	        		/*$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Removed!','onlytext');
+	        		$timeout(function()
+					{*/
+						$scope.peopleYouMayNowData();						
+					//},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Remove','onlytext');
+	        		swal("Error!",
+		        		"Removal Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},600);
+	};
+
+	$scope.toggleChurchAdmin = function(adminobj)
+    {	
+    	var adminid=adminobj.id;
+    	var is_admin=adminobj.is_admin;
+
+    	if($(".zmakeChurchAdminz_"+adminid).hasClass('btn-success')){
+    		strText="Removing..";
+    		strAdmin='N';
+    	}else{
+    		strText="Creating..";
+    		strAdmin='Y';
+    	}
+
+    	$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,strText,'loader');		
+		$timeout(function()
+		{
+			$scope.friendData.adminid=adminid;
+			$scope.friendData.strAdmin=strAdmin;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"toggleChurchAdmin",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		if(strAdmin=='Y'){
+	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-primary');
+    					$(".zmakeChurchAdminz_"+adminid).addClass('btn-success');
+						$(".zmakeChurchAdminz_"+adminid).css("background-color",'#49f0d3');
+						$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#49f0d3');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-admin-line"></i>Church Admin');
+	        		}else{
+	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-success');
+	        			$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
+	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
+	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')
+	        		};     		
+	        	}
+	        	else if(aryreturnData.status=='2')
+	        	{
+	        		$(".zmakeChurchAdminz_"+adminid).removeClass('btn-primary');
+					$(".zmakeChurchAdminz_"+adminid).css("background-color",'#ff9b8a');
+	        		$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#ff9b8a');
+					$(".zmakeChurchAdminz_"+adminid).addClass('btn-danger');
+					$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Admin already exist ','onlytext');
 	        		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						$(".zmakeChurchAdminz_"+adminid).removeClass('btn-danger');
+	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
+	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
+						$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')	       
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Create Admin','onlytext');
 	        		swal("Error!",
-		        		"Notification Updation Failed!",
+		        		"Admin Creation Failed!",
 		        		"error"
 		        	)
 	        	}
@@ -194,199 +192,200 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		},1200);
 	};
 
+	$scope.getAllFriendRequest = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendRequest",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allFriendRequestObj=aryreturnData.data.friendData;
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});
+			
+	    }
+    };
 
-	$scope.submitChangePasswordInfo = function()
+	$scope.confirmFriendRequest = function(member_friends_aid)
     {
-		$scope.memberDataCheck=true ;
+    	$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirming..','loader');
+
 		$timeout(function()
 		{
-			$scope.memberDataCheck=false ;
-		},2000);
-
-		var validator=0;
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.current_password)==true) || ($scope.memberData.current_password=='¿'))
-		{
-			validator++ ;
-		}
-
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==true) || ($scope.memberData.new_password=='¿'))
-		{
-			validator++ ;
-		}
-
-		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==true) || ($scope.memberData.verify_password=='¿'))
-		{
-			validator++ ;
-		}
-
-		if ( (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==false) && ($scope.memberData.new_password!='¿')) && (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==false) && ($scope.memberData.verify_password!='¿')) && ($scope.memberData.new_password!=$scope.memberData.verify_password) )
-		{
-
-			$scope.memberDataPassNotMtchCheck=true ;
-			$timeout(function()
-			{
-				$scope.memberDataPassNotMtchCheck=false ;
-			},2000);				
-			validator++;
-		}
-
-
-		if (Number(validator)==0)
-		{	
-			$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
-		
-			$timeout(function()
-			{	
-				var formData = new FormData();
-				formData.append('memberData',angular.toJson($scope.memberData));
-				$http({
-	                method  : 'POST',
-	                url     : varGlobalAdminBaseUrl+"ajaxupdatechangepassword",
-	                transformRequest: angular.identity,
-	                headers: {'Content-Type': undefined},                     
-	                data:formData, 
-	            }).success(function(returnData) {
-					$scope.memberDataCheck=false ;
-					aryreturnData=angular.fromJson(returnData);
-	            	if(aryreturnData.status==2)
-	            	{
-	            		$scope.memberDataOldNotMtchCheck=true ;
-						$timeout(function()
-						{
-							$scope.memberDataOldNotMtchCheck=false ;
-						},2000);
-
-						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');	            		
-	            	}
-	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-	            	{
-	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
-	            		$timeout(function()
-						{
-							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-						},1200);
-	            	}
-	            	else
-	            	{
-	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-
-	            		swal("Error!",
-			        		"Password Changed Failed!",
-			        		"error"
-			        	)
-	            	}
-				});
-			},1200);
-		}
-	};
-
-
-	$image_crop = $('#image_demo').croppie({
-		enableExif: true,
-		viewport: {
-		  width:200,
-		  height:200,
-		  type:'square' //circle
-		},
-		boundary:{
-		  width:300,
-		  height:300
-		}
-	});
-
-	$('#upload_image').click(function(){
-	    $(this).val('');
-	})  
-
-	$('#upload_image').on('change', function()
-	{
-		var reader = new FileReader();
-		reader.onload = function (event)
-		{
-			$image_crop.croppie('bind', {
-			url: event.target.result
-			}).then(function()
-			{
-				console.log('jQuery bind complete');
+			$scope.friendData.member_friends_aid=member_friends_aid;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxConfirmFriendRequest",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirmed!','onlytext');
+	        		$timeout(function()
+					{
+						$scope.getAllFriendRequest();						
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirm','onlytext');
+	        		swal("Error!",
+		        		"Confirmation Failed!",
+		        		"error"
+		        	)
+	        	}
 			});
-		}
-		reader.readAsDataURL(this.files[0]);
-		$('#uploadimageModal').modal('show');
-	});
+		},600);
+	};
 
-	$('.zCropImagez').click(function(event)
-	{
-		$image_crop.croppie('result', {
-			type: 'canvas',
-			size: 'viewport'
-		}).then(function(response)
+
+	$scope.deleteFromFriendRequest = function(member_friends_aid)
+    {
+    	$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Deleting..','loader');
+
+		$timeout(function()
 		{
-			data='<img class="profile-pic" src="'+response+'" style="margin:0 auto; height:149px;">';
-			response=response.replace(";", "colone");
-			response=response.replace(",", "comma");
-			$scope.memberData.hidden_image_encode=response;
-			$('#uploadimageModal').modal('hide');
-			$('#uploaded_image').html(data);
-		})
-	});
-
-	$scope.clearProfileImage = function()
-	{
-		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.profile_image))
-    	{
-			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.memberData.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
-		}
-		else
-		{
-			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
-		}
+			$scope.friendData.member_friends_aid=member_friends_aid;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxDeleteFromFriendRequest",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.getAllFriendRequest();	
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
+	        		swal("Error!",
+		        		"Deletion Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},600);
 	};
-
-    $scope.resetForm = function()
-	{
-		$scope.memberData.first_name='';
-		$scope.memberData.last_name='';
-		$scope.memberData.church_name='';
-		$scope.memberData.type='';
-		$scope.memberData.gender='';
-		$scope.memberData.dob='';
-		$scope.memberData.trustee_board='';
-		$scope.memberData.marital_status='';
-		$scope.memberData.address='';
-		$scope.memberData.country='';
-		$scope.memberData.state='';
-		$scope.memberData.city='';
-		$scope.memberData.postal_code='';
-	};
-
-	$scope.resetConatctForm = function()
-	{
-		$scope.memberData.contact_person='';
-		$scope.memberData.contact_mobile='';
-		$scope.memberData.contact_alt_mobile='';
-		$scope.memberData.alt_email='';
-		$scope.memberData.website='';
-	};
-
-	$scope.resetChangePasswordForm = function()
-	{
-		$scope.memberData.current_password='';
-		$scope.memberData.new_password='';
-		$scope.memberData.verify_password='';
-	};
-
-	$scope.getStateData = function(countryId)
-	{
-		$scope.getGlobalStateData($http,countryId);
-    };
-
-    $scope.getCityData = function(stateId)
-	{
-		$scope.getGlobalCityData($http,stateId);
-    };
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
-	
+
+
+	$scope.selectprofileTab = function (user_auto_id,membership_type,is_admin,parent_id)
+	{
+		$scope.friendData.user_auto_id=user_auto_id;
+		$scope.friendData.membership_type=membership_type;
+		$scope.friendData.is_admin=is_admin;
+		$scope.friendData.parent_id=parent_id;
+
+		hidden_profile_tab=$('#hidden_profile_tab').val();	
+		//alert(hidden_profile_tab)	
+		$scope.friendData.clickProfileTab=hidden_profile_tab;
+
+		if(hidden_profile_tab=='friendlistTab' || hidden_profile_tab=='churchlistTab' || hidden_profile_tab=='memberlistTab')
+		{
+			$scope.getAllFriendList();
+		}
+		else if(hidden_profile_tab=='friendrequestTab' || hidden_profile_tab=='churchrequestTab' || hidden_profile_tab=='memberrequestTab')
+		{
+			$scope.getAllFriendRequest();
+			$scope.peopleYouMayNowData();
+		}
+		else if(hidden_profile_tab=='churchmemberTab')
+		{
+			$scope.getAllChurchMember()
+		}
+		//alert($scope.friendData.clickProfileTab)
+	};
+
+	$scope.getAllFriendList = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allFriendListObj=aryreturnData.data.friendListData;
+	        		/*console.log('FLIST')
+	        		console.log($scope.allFriendListObj)*/
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+    };
+
+    $scope.getAllChurchMember = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllChurchMember",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allChurchMemberListObj=aryreturnData.data.churchMemberListData;
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+    };
+
 });

@@ -626,8 +626,6 @@ class User extends CI_Controller
         exit;    	
     }
 
-
-
     public function ajaxupdatecontactinfo() 
     {
         $memberData = trim($this->input->post('memberData'));
@@ -990,8 +988,141 @@ class User extends CI_Controller
 		}
 	}
 
+	public function settask($task_level='')
+	{
+		authenticate_user();
+		$data=array();
+		$membershipType=$this->session->userdata('membership_type');
+		$isAdmin=$this->session->userdata('is_admin');
+		$user_auto_id=$this->session->userdata('user_auto_id');
+		$parent_id=$this->session->userdata('parent_id');
+
+		if(!empty($task_level) && ($membershipType=="CM" || $isAdmin=="Y"))
+		{
+			$argument['membershipType']=$membershipType;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['task_level']=$task_level;
+			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
 
 
+
+			/*echo "<pre>";
+			print_r($taskMin3VideoLevelData);
+			exit;*/
+
+
+			$data['task_level']=$task_level;
+			$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/settask', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+	public function ajaxaddupdatevideo() 
+    {
+        $taskData = trim($this->input->post('taskData'));
+        $aryTaskData=json_decode($taskData, true);
+
+        $user_auto_id=(isset($aryTaskData['user_auto_id']) && !empty($aryTaskData['user_auto_id']))? addslashes(trim($aryTaskData['user_auto_id'])):0;
+        $parent_id=(isset($aryTaskData['parent_id']) && !empty($aryTaskData['parent_id']))? addslashes(trim($aryTaskData['parent_id'])):0;
+        $task_level=(isset($aryTaskData['task_level']) && !empty($aryTaskData['task_level']))? addslashes(trim($aryTaskData['task_level'])):'';
+        $video_number=(isset($aryTaskData['video_number']) && !empty($aryTaskData['video_number']))? addslashes(trim($aryTaskData['video_number'])):1;
+		$current_date=date('Y-m-d H:i:s');   
+
+		$menu_arr = array(
+            'task_level' => $task_level,
+            'church_id'  =>$parent_id,
+            'church_admin_id'  =>$user_auto_id            
+        );
+
+        $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
+
+        if (!empty($_FILES['file']['name']))
+        {
+            $videofile = json_encode($_FILES);
+        } else {
+            $videofile = "";
+        }
+
+        $video_name="";
+        if(!empty($videofile))
+        {
+            $videofile=json_decode($videofile);
+            $this->load->library('upload');
+            $filename=$videofile->file->name[0];
+            $imarr=explode(".",$filename);
+            $ext=end($imarr);
+          
+            if($ext=="mp4" or $ext=="wmv" or $ext=="avi" or $ext=="3gp" or $ext=="mov" or $ext=="mpeg")
+            {
+                $_FILES['file']['name']=$videofile->file->name[0];
+                $_FILES['file']['type']=$video_type=$videofile->file->type[0];
+                $_FILES['file']['tmp_name']=$videofile->file->tmp_name[0];
+                $_FILES['file']['error']=$videofile->file->error[0];
+                $_FILES['file']['size']=$video_size=$videofile->file->size[0];
+
+                $config = array(
+                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
+                    'allowed_types' => '*',
+                    'upload_path' => IMAGE_PATH.'taskvideo/'.$task_level,
+                    //'max_size' => 2000
+                );
+
+                $this->upload->initialize($config);
+                
+                if (!$this->upload->do_upload('file'))
+                {
+                    $errormsg=$this->upload->display_errors();
+                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
+                }
+                else
+                {
+                    $image_data = $this->upload->data();
+                    $video_name=$image_data['file_name'];
+                }
+
+                $menu_arr = array(
+		            'task_level_id'=>$task_level_id,
+		            'video_number'   =>$video_number,
+		            'video_name'   =>$video_name,
+		            'video_size'   =>$video_size,        
+		            'video_type'   =>$video_type       
+		        );
+
+                $task_level_video_id = $this->User_Model->addUpdatTaskLevelVideo($menu_arr,0);
+
+                //unlink( IMAGE_PATH.'images/members/'.$profile_image); // correct
+            }
+        }
+
+
+        $returnData=array();
+ 		if($task_level_video_id>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Video Added Successfully';
+	        $returnData['data']=array('id'=>$task_level_video_id,'video_name'=>$video_name);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Video Addition Failed';
+	        $returnData['data']=array();
+		}
+
+        echo json_encode($returnData);
+        exit;
+    }
 
 	public function profileedit()
 	{

@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //admin routs
 $route['user'] = 'user/login';
 $route['user/login'] = 'user/login';
+$route['user/settask/(:any)'] = "user/settask/$1";
 
 $route['user/forget-password'] = 'user/forget_password';
 

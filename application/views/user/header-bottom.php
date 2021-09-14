@@ -15,53 +15,56 @@ exit;*/
 <div class="wrapper">
     <!-- Sidebar  -->
     
-      <div class="iq-sidebar">
+      <div class="iq-sidebar" ng-controller="leftMenuController">
           <div id="sidebar-scrollbar">
              <?php if ($memberIsApproved=="Y"){ ?>
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
-                   <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
-                   <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
-                   <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
+                  <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
+                  <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
+                  <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
-                   <?php if($membershipType=="RM"){ ?>
-                     <li><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
-                     <li><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
-                   <?php }else{ ?>
-                        <li><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
-                        <li><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
-                        <li><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
-                        <li><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
-                   <?php } ?>
+                  <?php if($membershipType=="RM"){ ?>
+                  <li><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
+                  <li><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
+                  <?php }else{ ?>
+                      <li><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
+                      <li><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
+                      <li><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
+                      <li><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
+                  <?php } ?>
 
                    <li><a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
                    
-                   <li><a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li>
+                    <a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="group" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                               <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
-                               <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
-                               <?php } ?>
-                               <li><a href="#"><i class="ri-device-line"></i>School Friends</a></li>
-                               <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
-                               <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
-                               <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li>
-                            </ul>
-                         </li>
-                     <li><a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>Task Assigned</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                       <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
+                       <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
+                       <?php } ?>
+                       <li><a href="#"><i class="ri-device-line"></i>School Friends</a></li>
+                       <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
+                       <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
+                       <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
+                    <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>Set Task <!-- Assigned --></span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                               <li><a href="#"><i class="ri-tablet-line"></i>Level 1</a></li>
-                               <li><a href="#"><i class="ri-tablet-line"></i>Level 2</a></li>
-                               <li><a href="#"><i class="ri-tablet-line"></i>Level 3</a></li>
-                               <li><a href="#"><i class="ri-tablet-line"></i>Level 4</a></li>
-                               <li><a href="#"><i class="ri-tablet-line"></i>Level 5</a></li>
-                            </ul>
-                         </li>    
-                       <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
-                       <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
-                       <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li>
-                       <li><a href="#" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
-                   </ul>
-
+                       <li><a href="javascript:void(0);" ng-click="set_task('levelone')"><i class="ri-tablet-line"></i>Level 1</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('leveltwo')"><i class="ri-tablet-line"></i>Level 2</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('levelthree')"><i class="ri-tablet-line"></i>Level 3</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('levelfour')"><i class="ri-tablet-line"></i>Level 4</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('levelfive')"><i class="ri-tablet-line"></i>Level 5</a></li>
+                    </ul>
+                    <?php } ?>
+                  </li>    
+                  <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
+                  <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
+                  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li>
+                  <li><a href="#" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
+                </ul>
              </nav>
              <div class="p-3"></div>
              <?php } ?>
