@@ -63,7 +63,7 @@
                                       <div class="btn btn-success image-preview-input mt-3" style="width: 160px;">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title_1">Browse</span>
-                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload/ class="w-100 video-upload-input"> 
+                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload class="w-100 video-upload-inputX"> 
                                       </div>
                                     </span>
                                   </div>
