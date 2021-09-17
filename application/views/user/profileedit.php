@@ -1,19 +1,18 @@
 <div id="content-page" class="content-page" ng-controller="profileController" ng-init="getMemberData('<?php echo $this->session->userdata('user_auto_id'); ?>');">
   <!-- Start Image Croping Modal -->
   <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm">
       <div class="modal-content">
-            <div class="modal-header"><!-- 
+            <!-- <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Upload & Crop Images</h4> -->
-            </div>
+              <h4 class="modal-title">Upload & Crop Images</h4> 
+            </div> -->
             <div class="modal-body">
               <div class="row">
-              <div class="col-md-8 text-center">
-                <div id="image_demo" style="width:350px; margin-top:30px"></div>
+              <div class="col-md-12 text-center">
+                <div id="image_demo" style="width:100%; margin-top:30px"></div>
               </div>
-              <div class="col-md-4" style="padding-top:30px;">
-            </div>
+              
           </div>
             </div>
             <div class="modal-footer">
