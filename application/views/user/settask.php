@@ -1,4 +1,4 @@
-<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getTaskData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>');">
+<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getTaskData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>');">
   
   
 
@@ -29,7 +29,7 @@
          </div>
       </div>
 
-      <div ng-repeat="(key, value) in allVideoListObj" class="col-md-4"> <!-- "  -->
+      <div ng-repeat="(key, value) in allVideoListObj" class="col-md-4"> <!-- ng-if="taskData.membership_type!='CM'"  -->
          <div class="iq-card">
             <div class="iq-card-body profile-page p-0">
                <div class="profile-header-image">
@@ -40,7 +40,7 @@
                            <div class="profile-detail d-flex">
                               <!--left-->
                               <div class="col-sm-3 padding-lr0 mb10">
-                                <div id="uploaded_image">                                  
+                                <div id="uploaded_image">
                                   <video ng-if="value.video_number>0" width="300" height="200" controls>
                                     <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
                                   </video>
@@ -54,8 +54,7 @@
                                 <div class="clear20"></div>
                                 <div class="col-md-12 padding-lr0">
 
-                                  <div class="input-group image-preview">
-                                    <input type="text" class="form-control image-preview-filename" disabled="disabled"> 
+                                  <div class="input-group image-preview"> 
                                     <span class="input-group-btn" style="position:relative;top:-2px;">
                                       <button type="button" class="btn btn-success image-preview-clear" style="display:none;" ng-click="clearProfileImage();">
                                         <i class="fa fa-times" aria-hidden="true"></i> 
@@ -64,7 +63,7 @@
                                       <div class="btn btn-success image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title_1">Browse</span>
-                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_1" id="input_file_upload_1" single-file-upload/> 
+                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload/> 
                                       </div>
                                     </span>
                                   </div>
@@ -72,11 +71,11 @@
                               </div>
                               <!--/left-->
                            </div>
-                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && emptyVideoCheck==true)? 'Video Required' : ''}}</div>
+                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && videoIncree== (key+1) && emptyVideoCheck==true)? 'Video Required' : ''}}</div>
 
-                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && videoExtensionCheck==true)? 'Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only' : ''}}</div>
+                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && videoIncree== (key+1) && videoExtensionCheck==true)? 'Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only' : ''}}</div>
 
-                           <button type="button" ng-click="uploadVideo(1)" class="btn btn-primary zuploadtaskvideonz_1">Upload</button>
+                           <button type="button" ng-click="uploadVideo(key+1)" class="btn btn-primary zuploadtaskvideonz_{{key+1}}">Upload</button>
                         </div>
                      </div>
                   </div>

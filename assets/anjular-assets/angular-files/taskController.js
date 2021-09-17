@@ -1,13 +1,14 @@
 mainApp.controller('taskController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
     $scope.taskData={};
+    $scope.videoIncree=0;
     $scope.videoDataCheck=false ;
     $scope.emptyVideoCheck=false ;
     $scope.videoExtensionCheck=false ;
     $scope.allVideoListObj={};
     $scope.files = [];
 
-    $scope.getTaskData = function (user_auto_id,parent_id)
+    $scope.getTaskData = function (user_auto_id,parent_id,membership_type)
 	{
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
@@ -19,6 +20,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.taskData.task_level=hidden_task_level;
 		$scope.taskData.user_auto_id=user_auto_id;
 		$scope.taskData.parent_id=parent_id;
+		$scope.taskData.membership_type=membership_type;
 	};
 
 
@@ -44,8 +46,9 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         });
     });
 
-    $scope.uploadVideo = function(video_number) {
-
+    $scope.uploadVideo = function(video_number)
+    {
+		$scope.videoIncree=video_number ;
 		$scope.videoDataCheck=true ;
 		$timeout(function()
 		{
@@ -83,6 +86,8 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		
 		if (Number(validator)==0)
 		{	
+
+			$scope.taskData.old_video=$scope.allVideoListObj[(video_number-1)].video_name;
 			$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Uploading..','loader');
 			$scope.taskData.video_number=video_number;
 
@@ -99,12 +104,14 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{
             		$scope.files = [];
-            		$('#input_file_upload_1').val("");
+            		$('#input_file_upload_'+video_number).val("");
+
+            		$scope.allVideoListObj=aryreturnData.data.taskMin3VideoLevelData;
+
             		$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Uploaded!','onlytext');
             		$timeout(function()
 					{
@@ -113,9 +120,11 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             	}
             	else
             	{
+            		$scope.files = [];
+            		$('#input_file_upload_'+video_number).val("");
             		$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Upload','onlytext');
             		swal("Error!",
-		        		"Video Addition Failed!",
+		        		"Video Set Failed!",
 		        		"error"
 		        	)
             	}

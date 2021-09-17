@@ -999,18 +999,15 @@ class User extends CI_Controller
 
 		if(!empty($task_level) && ($membershipType=="CM" || $isAdmin=="Y"))
 		{
+			$argument=array();
 			$argument['membershipType']=$membershipType;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
 			$argument['task_level']=$task_level;
 			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
-
-
-
 			/*echo "<pre>";
 			print_r($taskMin3VideoLevelData);
 			exit;*/
-
 
 			$data['task_level']=$task_level;
 			$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
@@ -1034,7 +1031,13 @@ class User extends CI_Controller
         $user_auto_id=(isset($aryTaskData['user_auto_id']) && !empty($aryTaskData['user_auto_id']))? addslashes(trim($aryTaskData['user_auto_id'])):0;
         $parent_id=(isset($aryTaskData['parent_id']) && !empty($aryTaskData['parent_id']))? addslashes(trim($aryTaskData['parent_id'])):0;
         $task_level=(isset($aryTaskData['task_level']) && !empty($aryTaskData['task_level']))? addslashes(trim($aryTaskData['task_level'])):'';
+        $membership_type=(isset($aryTaskData['membership_type']) && !empty($aryTaskData['membership_type']))? addslashes(trim($aryTaskData['membership_type'])):'';
         $video_number=(isset($aryTaskData['video_number']) && !empty($aryTaskData['video_number']))? addslashes(trim($aryTaskData['video_number'])):1;
+        $old_video=(isset($aryTaskData['old_video']) && !empty($aryTaskData['old_video']))? addslashes(trim($aryTaskData['old_video'])):'';
+
+        //exit;
+
+
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
@@ -1053,6 +1056,8 @@ class User extends CI_Controller
         }
 
         $video_name="";
+        $task_level_video_id=0;
+
         if(!empty($videofile))
         {
             $videofile=json_decode($videofile);
@@ -1087,19 +1092,21 @@ class User extends CI_Controller
                 {
                     $image_data = $this->upload->data();
                     $video_name=$image_data['file_name'];
-                }
+                    $menu_arr = array(
+			            'task_level_id'=>$task_level_id,
+			            'video_number'   =>$video_number,
+			            'video_name'   =>$video_name,
+			            'video_size'   =>$video_size,        
+			            'video_type'   =>$video_type       
+			        );
 
-                $menu_arr = array(
-		            'task_level_id'=>$task_level_id,
-		            'video_number'   =>$video_number,
-		            'video_name'   =>$video_name,
-		            'video_size'   =>$video_size,        
-		            'video_type'   =>$video_type       
-		        );
+	                $task_level_video_id = $this->User_Model->addUpdatTaskLevelVideo($menu_arr,0);
 
-                $task_level_video_id = $this->User_Model->addUpdatTaskLevelVideo($menu_arr,0);
-
-                //unlink( IMAGE_PATH.'images/members/'.$profile_image); // correct
+	                if(!empty($old_video))
+	                {
+	                	unlink( IMAGE_PATH.'taskvideo/'.$task_level."/".$old_video); // correct
+	                }
+                }                
             }
         }
 
@@ -1107,16 +1114,23 @@ class User extends CI_Controller
         $returnData=array();
  		if($task_level_video_id>0)
 		{
+			$argument=array();
+			$argument['membershipType']=$membership_type;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['task_level']=$task_level;
+			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
+			//$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
 	        $returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Video Added Successfully';
-	        $returnData['data']=array('id'=>$task_level_video_id,'video_name'=>$video_name);
+	        $returnData['data']=array('id'=>$task_level_video_id,'video_name'=>$video_name,'taskMin3VideoLevelData'=>$taskMin3VideoLevelData);
 		}
 		else
 		{
 			$returnData['status']='0';
 	        $returnData['msg']='error';
-	        $returnData['msgstring']='Video Addition Failed';
+	        $returnData['msgstring']='Video Set Failed';
 	        $returnData['data']=array();
 		}
 

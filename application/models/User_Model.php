@@ -320,9 +320,10 @@ class User_Model extends CI_Model
 	public function addUpdateTaskLevel($menu_arr=NULL)
 	{
 		$current_date=date('Y-m-d H:i:s');
+		$task_level=$menu_arr['task_level'];
 		$church_id=$menu_arr['church_id'];
 		$church_admin_id=$menu_arr['church_admin_id'];
-		$sql='SELECT * from tn_task_level WHERE church_id="'.$church_id.'" AND church_admin_id="'.$church_admin_id.'" AND deleted="0"';
+		$sql='SELECT * from tn_task_level WHERE task_level="'.$task_level.'" AND church_id="'.$church_id.'" AND church_admin_id="'.$church_admin_id.'" AND deleted="0"';
 		$query=$this->db->query($sql);
 		$rowData=$query->row();
 		$task_level_id=0;
@@ -381,7 +382,7 @@ class User_Model extends CI_Model
 		$parent_id=$argument['parent_id'];
 		$task_level=$argument['task_level'];
 
-		if($membershipTyp=="CM")
+		if($membershipType=="CM")
 		{
 			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND task_level='".$task_level."'";
 		}
@@ -405,6 +406,7 @@ class User_Model extends CI_Model
 
 	public function get_task_min_three_video_by_level($argument)
 	{
+
 		$task_level=$argument['task_level'];
 
 		$taskVideoLevelData=$this->get_task_video_by_level($argument);
@@ -423,16 +425,18 @@ class User_Model extends CI_Model
 		{
 			foreach($taskVideoLevelData as $k=>$v)
 			{
-				$finalTaskVideoLevelData[$k]['video_number']=$v['video_number'];
-				$finalTaskVideoLevelData[$k]['video_name']=$v['video_name'];
-				$finalTaskVideoLevelData[$k]['video_size']=$v['video_size'];
-				$finalTaskVideoLevelData[$k]['video_type']=$v['video_type'];
-				$finalTaskVideoLevelData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/'.$v['video_name'];
+				if (file_exists(IMAGE_PATH."/taskvideo/".$task_level."/".$v['video_name']))
+				{
+					$key=($v['video_number']-1);
+					$finalTaskVideoLevelData[$key]['video_number']=$v['video_number'];
+					$finalTaskVideoLevelData[$key]['video_name']=$v['video_name'];
+					$finalTaskVideoLevelData[$key]['video_size']=$v['video_size'];
+					$finalTaskVideoLevelData[$key]['video_type']=$v['video_type'];
+					$finalTaskVideoLevelData[$key]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/'.$v['video_name'];
+				}
 			}
 		}
-
 		return $finalTaskVideoLevelData;
-
 	}
 	
 }
