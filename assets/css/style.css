@@ -4085,3 +4085,7 @@ Add User Page
     transform: rotate(360deg);
   }
 }
+
+
+.image-preview-input{position: relative; overflow: hidden;}
+.video-upload-input{opacity: 0; position: absolute; width: 100%;}
