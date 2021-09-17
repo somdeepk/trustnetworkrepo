@@ -9,10 +9,10 @@
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title">
-                  <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hiddens">
-                  <input ng-model="taskData.parent_id" id="parent_id" type="hiddens">
-                  <input type="hiddens" id="hidden_task_level" value="<?php echo $task_level; ?>">
-                  <div id="jsonTaskVideoLevelData"><?php echo $taskMin3VideoLevelData; ?></div>
+                  <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
+                  <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
+                  <input type="hidden" id="hidden_task_level" value="<?php echo $task_level; ?>">
+                  <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <h4 class="card-title">Set Task</h4>
                </div>
             </div>
