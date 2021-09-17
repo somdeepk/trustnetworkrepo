@@ -4086,6 +4086,6 @@ Add User Page
   }
 }
 
-
+.profile-page-wrap{min-height: 400px;}
 .image-preview-input{position: relative; overflow: hidden;}
 .video-upload-input{opacity: 0; position: absolute; width: 100%;}
