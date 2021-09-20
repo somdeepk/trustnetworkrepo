@@ -286,8 +286,8 @@ mainApp.filter('nl2br2', function ($sce) {
 		return $sce.trustAsHtml(msg);
 	};
 });*/
-/*
-mainApp.directive('startDateTime', function() {
+
+mainApp.directive('startdatetime', function() {
 	return {
 		restrict : 'A',
 		require : 'ngModel',			
@@ -390,5 +390,5 @@ mainApp.directive('endDateTime', function() {
 			}
 		}
 	}
-});*/
+});
 

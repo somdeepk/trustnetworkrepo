@@ -57,6 +57,7 @@ exit;*/
                        <li><a href="javascript:void(0);" ng-click="set_task('levelthree')"><i class="ri-tablet-line"></i>Level 3</a></li>
                        <li><a href="javascript:void(0);" ng-click="set_task('levelfour')"><i class="ri-tablet-line"></i>Level 4</a></li>
                        <li><a href="javascript:void(0);" ng-click="set_task('levelfive')"><i class="ri-tablet-line"></i>Level 5</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('levelsix')"><i class="ri-tablet-line"></i>Level 6</a></li>
                     </ul>
                     <?php } ?>
                   </li>    

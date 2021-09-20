@@ -438,6 +438,62 @@ class User_Model extends CI_Model
 		}
 		return $finalTaskVideoLevelData;
 	}
+
+	public function addUpdatLiveStreamVideo($menu_arr=NULL,$id=NULL)
+	{
+		$current_date=date('Y-m-d H:i:s');
+		if(!empty($id) && $id>0)
+		{
+			$menu_arr['update_date']  =$current_date;
+			$this->db->where('id',$id)->update('tn_task_level_stream_video',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$menu_arr['create_date']  =$current_date;
+			$this->db->insert('tn_task_level_stream_video',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function get_live_stream_video_by_level($argument)
+	{
+		$task_level=$argument['task_level'];
+		$membershipType=$argument['membershipType'];
+		$user_auto_id=$argument['user_auto_id'];
+		$parent_id=$argument['parent_id'];
+		$task_level=$argument['task_level'];
+
+		if($membershipType=="CM")
+		{
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND task_level='".$task_level."'";
+		}
+		else
+		{
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND task_level='".$task_level."'";
+		}
+		$sql="SELECT 
+				tlsv.*,
+				tl.task_level
+				FROM tn_task_level as tl
+				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
+				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.star_time";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+
+		if(count($resultData)>0)
+		{
+			foreach($resultData as $k=>$v)
+			{				
+				$resultData[$k]['display_star_time']=date('m-d-Y h:i A',strtotime($v['star_time']));
+				$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
+				$resultData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/streamvideo/'.$v['video_name'];
+			}
+		}
+
+		//return array();
+		return $resultData;
+	}
 	
 }
 ?>

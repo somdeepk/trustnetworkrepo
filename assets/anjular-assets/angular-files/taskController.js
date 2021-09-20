@@ -12,8 +12,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	{
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
+		jsonLiveStreamVideoData=$('#jsonLiveStreamVideoData').html();	
 
 		$scope.allVideoListObj=jQuery.parseJSON(jsonTaskVideoLevelData);
+		$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
 		//console.log('dsd')
 		//console.log($scope.allVideoListObj)
 		//alert(hidden_task_level)	
@@ -143,6 +145,116 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$('.image-preview-input_1 input:file').val("");
 		$(".image-preview-input-title_1").text("Browse"); 
 	};	*/
+
+
+	$scope.uploadliveStreamVideo = function()
+	{
+		$('#uploadliveStreamVideoModal').modal('show');
+	};
+
+	$scope.submitLiveStreamVideo = function()
+    {
+		$scope.liveStreamDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.liveStreamDataCheck=false ;
+		},2000);
+
+		var validator=0;
+		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.video_title)==true) || ($scope.liveStreamData.video_title=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.star_time)==true) || ($scope.liveStreamData.star_time=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.end_time)==true) || ($scope.liveStreamData.end_time=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.files[0])==true))
+		{
+			$scope.emptyLiveStreamVideoCheck=true ;
+			$timeout(function()
+			{
+				$scope.emptyLiveStreamVideoCheck=false ;
+			},2000);
+            validator++ ;
+		}
+		else
+		{
+			$validExtenson=0;
+			if ($scope.files[0].type=='video/mp4' || $scope.files[0].type=='video/wmv' || $scope.files[0].type=='video/avi' || $scope.files[0].type=='video/3gp' || $scope.files[0].type=='video/mov' || $scope.files[0].type=='video/mpeg')
+			{
+				$validExtenson=1;
+			}
+			
+			if($validExtenson==0)
+			{
+				$scope.emptyLiveStreamVideoExtensionCheck=true ;
+				$timeout(function()
+				{
+					$scope.emptyLiveStreamVideoExtensionCheck=false ;
+				},3500);
+	            validator++ ;
+			}
+		}
+		
+		if (Number(validator)==0)
+		{
+			$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploading..','loader');
+			$scope.liveStreamData.task_level=$scope.taskData.task_level;
+			$scope.liveStreamData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.liveStreamData.parent_id=$scope.taskData.parent_id;
+			$scope.liveStreamData.membership_type=$scope.taskData.membership_type;
+
+			var formData = new FormData();
+			formData.append('LSVideoData',angular.toJson($scope.liveStreamData));
+			angular.forEach($scope.files,function(file){           
+				formData.append('file[]',file);
+			}); 
+
+			$http({
+                method  : 'POST',
+                url     : varGlobalAdminBaseUrl+"ajaxaddupdatestreamvideo",
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined},                     
+                data:formData, 
+            }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+            	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+            	{
+            		$scope.files = [];
+            		$scope.liveStreamData={}
+            		$('#file_ls_video_upload').val("");
+            		//$scope.allVideoListObj=aryreturnData.data.taskMin3VideoLevelData;
+            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploaded!','onlytext');
+            		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Upload','onlytext');
+					},1200);
+
+					$timeout(function()
+					{
+						$('#uploadliveStreamVideoModal').modal('hide');
+					},1800);
+            	}
+            	else
+            	{
+            		$scope.files = [];
+            		$scope.liveStreamData={}
+            		$('#file_ls_video_upload').val("");
+            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Upload','onlytext');
+            		$('#uploadliveStreamVideoModal').modal('hide');
+            		swal("Error!",
+		        		"Live Stream Video Set Failed!",
+		        		"error"
+		        	)		        	
+            	}
+			});
+		}
+	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;

@@ -1005,12 +1005,50 @@ class User extends CI_Controller
 			$argument['parent_id']=$parent_id;
 			$argument['task_level']=$task_level;
 			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
+			$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
 			/*echo "<pre>";
 			print_r($taskMin3VideoLevelData);
 			exit;*/
-
 			$data['task_level']=$task_level;
-			$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+
+			if($task_level=='levelone')
+			{
+				$str_task_level='Level 1';
+			}
+			elseif($task_level=='leveltwo')
+			{
+				$str_task_level='Level 2';
+			}
+			elseif($task_level=='levelthree')
+			{
+				$str_task_level='Level 3';
+			}
+			elseif($task_level=='levelfour')
+			{
+				$str_task_level='Level 4';
+			}
+			elseif($task_level=='levelfive')
+			{
+				$str_task_level='Level 5';
+			}
+			elseif($task_level=='levelsix')
+			{
+				$str_task_level='Level 6';
+			}			
+			$data['str_task_level']=$str_task_level;
+
+			$argument=array();
+			$argument['membershipType']=$membershipType;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['task_level']=$task_level;
+			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+			$data['liveStreamVideoData']=json_encode($liveStreamVideoData);
+
+			/*echo "ss<pre>";
+			print_r($liveStreamVideoData);
+			exit;*/
+
 			$this->load->view('user/header-script');
 			$this->load->view('user/header-bottom');
 			$this->load->view('user/settask', $data);
@@ -1131,6 +1169,121 @@ class User extends CI_Controller
 			$returnData['status']='0';
 	        $returnData['msg']='error';
 	        $returnData['msgstring']='Video Set Failed';
+	        $returnData['data']=array();
+		}
+
+        echo json_encode($returnData);
+        exit;
+    }
+
+	public function ajaxaddupdatestreamvideo() 
+    {
+
+        $LSVideoData = trim($this->input->post('LSVideoData'));
+        $aryLSVideoData=json_decode($LSVideoData, true);
+
+        $user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+        $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
+        $star_time=(isset($aryLSVideoData['star_time']) && !empty($aryLSVideoData['star_time']))? addslashes(trim($aryLSVideoData['star_time'])):'';
+        $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';
+        //exit;
+		$current_date=date('Y-m-d H:i:s');   
+
+		$menu_arr = array(
+            'task_level' => $task_level,
+            'church_id'  =>$parent_id,
+            'church_admin_id'  =>$user_auto_id            
+        );
+
+        $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
+
+        if (!empty($_FILES['file']['name']))
+        {
+            $videofile = json_encode($_FILES);
+        } else {
+            $videofile = "";
+        }
+
+        $video_name="";
+        $ls_video_id=0;
+
+        if(!empty($videofile) && $task_level_id>0)
+        {
+            $videofile=json_decode($videofile);
+            $this->load->library('upload');
+            $filename=$videofile->file->name[0];
+            $imarr=explode(".",$filename);
+            $ext=end($imarr);
+          
+            if($ext=="mp4" or $ext=="wmv" or $ext=="avi" or $ext=="3gp" or $ext=="mov" or $ext=="mpeg")
+            {
+                $_FILES['file']['name']=$videofile->file->name[0];
+                $_FILES['file']['type']=$video_type=$videofile->file->type[0];
+                $_FILES['file']['tmp_name']=$videofile->file->tmp_name[0];
+                $_FILES['file']['error']=$videofile->file->error[0];
+                $_FILES['file']['size']=$video_size=$videofile->file->size[0];
+
+                $config = array(
+                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
+                    'allowed_types' => '*',
+                    'upload_path' => IMAGE_PATH.'taskvideo/'.$task_level."/streamvideo",
+                    //'max_size' => 2000
+                );
+
+                $this->upload->initialize($config);
+                
+                if (!$this->upload->do_upload('file'))
+                {
+                    $errormsg=$this->upload->display_errors();
+                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
+                }
+                else
+                {
+                    $image_data = $this->upload->data();
+                    $video_name=$image_data['file_name'];
+                    $menu_arr = array(
+			            'task_level_id'=>$task_level_id,
+			            'video_title'   =>$video_title,
+			            'star_time'   =>date('Y-m-d H:i:s',strtotime($star_time)),
+			            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
+			            'video_name'   =>$video_name,
+			            'video_size'   =>$video_size,        
+			            'video_type'   =>$video_type		            
+			        );
+
+	                $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,0);
+	                /*if(!empty($old_video))
+	                {
+	                	unlink( IMAGE_PATH.'taskvideo/'.$task_level."/streamvideo/".$old_video); // correct
+	                }*/
+                }                
+            }
+        }
+
+
+        $returnData=array();
+ 		if($ls_video_id>0)
+		{
+			$argument=array();
+			$argument['membershipType']=$membership_type;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['task_level']=$task_level;
+			$liveStreamVideData = $this->User_Model->get_live_stream_video_by_level($argument);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Video Added Successfully';
+	        $returnData['data']=array('id'=>$ls_video_id,'video_name'=>$video_name,'liveStreamVideData'=>$liveStreamVideData);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Live Stream Video Set Failed';
 	        $returnData['data']=array();
 		}
 
