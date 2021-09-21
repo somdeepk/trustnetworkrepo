@@ -324,44 +324,57 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.deleteStreamVideo = function(valobj)
     {	
-    	var id=valobj.id;
+    	swal({
+	      title: "Attention",
+	      text: "Are you sure to delete this schedule",
+	      icon: "warning",
+	      buttons: true,
+	      dangerMode: true,
+	    })
+	    .then((willDelete) =>
+	    {
+	    	if (willDelete)
+	    	{
+		    	var id=valobj.id;
 
-    	$scope.buttonSavingAnimation('zdeleteStreamVideoz_'+id,"Deleting..",'loader');		
-		$timeout(function()
-		{
+		    	$scope.buttonSavingAnimation('zdeleteStreamVideoz_'+id,"Deleting..",'loader');		
+				$timeout(function()
+				{
 
-			$scope.liveStreamStatusData={}
-			$scope.liveStreamStatusData.id=id;
-			$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
-			$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
-			$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
-			$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+					$scope.liveStreamStatusData={}
+					$scope.liveStreamStatusData.id=id;
+					$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+					$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+					$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+					$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
 
-			var formData = new FormData();
-			formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
-			//alert("fd")
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxDeleteStreamVideo",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData){
-				aryreturnData=angular.fromJson(returnData);
-	        	if(aryreturnData.status=='1')
-	        	{
-	        		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
-	        	}
-	        	else
-	        	{
-	        		$(".zdeleteStreamVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
-	        	}
-			});
-		},1200);
+					var formData = new FormData();
+					formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+					//alert("fd")
+					$http({
+			            method  : 'POST',
+			            url     : varGlobalAdminBaseUrl+"ajaxDeleteStreamVideo",
+			            transformRequest: angular.identity,
+			            headers: {'Content-Type': undefined},                     
+			            data:formData, 
+			        }).success(function(returnData){
+						aryreturnData=angular.fromJson(returnData);
+			        	if(aryreturnData.status=='1')
+			        	{
+			        		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+			        	}
+			        	else
+			        	{
+			        		$(".zdeleteStreamVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
+			        		swal("Error!",
+				        		"Deletion Failed!",
+				        		"error"
+				        	)
+			        	}
+					});
+				},1200);
+			}
+		});
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {

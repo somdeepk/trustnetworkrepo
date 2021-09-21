@@ -157,12 +157,12 @@
                            <div class="profile-detail d-flex">
                               <!--left-->
                               <div class="col-sm-12 padding-lr0 mb10">
-                                <div id="uploaded_image">
+                                <div id="uploaded_image" ng-class="(value.video_number==0) ? 'height209' : ''">
                                   <video ng-if="value.video_number>0" width="100%" height="200" controls>
                                     <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
                                   </video>
 
-                                  <div class="text-center"><img ng-if="value.video_number==0" class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:149px; margin: 0 auto;"></div>
+                                  <div class="text-center" ng-class="(value.video_number==0) ? 'ptop33' : ''"><img ng-if="value.video_number==0" class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:149px; margin: 0 auto;"></div>
                                 </div>
 
                                 <div class="clear50"></div>
