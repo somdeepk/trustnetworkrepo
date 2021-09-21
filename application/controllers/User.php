@@ -1182,6 +1182,8 @@ class User extends CI_Controller
         $LSVideoData = trim($this->input->post('LSVideoData'));
         $aryLSVideoData=json_decode($LSVideoData, true);
 
+        
+        $id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
         $user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
         $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
         $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
@@ -1189,7 +1191,9 @@ class User extends CI_Controller
         $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
         $star_time=(isset($aryLSVideoData['star_time']) && !empty($aryLSVideoData['star_time']))? addslashes(trim($aryLSVideoData['star_time'])):'';
         $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';
-        //exit;
+        $description=(isset($aryLSVideoData['description']) && !empty($aryLSVideoData['description']))? trim($aryLSVideoData['description']):'';
+        $old_video=(isset($aryLSVideoData['old_video']) && !empty($aryLSVideoData['old_video']))? addslashes(trim($aryLSVideoData['old_video'])):'';
+
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
@@ -1249,17 +1253,18 @@ class User extends CI_Controller
 			            'video_title'   =>$video_title,
 			            'star_time'   =>date('Y-m-d H:i:s',strtotime($star_time)),
 			            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
+			            'description'   =>$description,
 			            'video_name'   =>$video_name,
 			            'video_size'   =>$video_size,        
 			            'video_type'   =>$video_type,		            
 			            'create_date'   =>$current_date		            
 			        );
 
-	                $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,0);
-	                /*if(!empty($old_video))
+	                $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+	                if(!empty($old_video))
 	                {
 	                	unlink( IMAGE_PATH.'taskvideo/'.$task_level."/streamvideo/".$old_video); // correct
-	                }*/
+	                }
                 }                
             }
         }
@@ -1273,12 +1278,12 @@ class User extends CI_Controller
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
 			$argument['task_level']=$task_level;
-			$liveStreamVideData = $this->User_Model->get_live_stream_video_by_level($argument);
+			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
 
 	        $returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Video Added Successfully';
-	        $returnData['data']=array('id'=>$ls_video_id,'video_name'=>$video_name,'liveStreamVideData'=>$liveStreamVideData);
+	        $returnData['data']=array('id'=>$ls_video_id,'video_name'=>$video_name,'liveStreamVideoData'=>$liveStreamVideoData);
 		}
 		else
 		{

@@ -7,6 +7,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.videoExtensionCheck=false ;
     $scope.allVideoListObj={};
     $scope.allLiveStreamVideoData={};
+    $scope.liveStreamData={};
     $scope.files = [];
 
     $scope.getTaskData = function (user_auto_id,parent_id,membership_type)
@@ -150,6 +151,12 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.uploadliveStreamVideo = function()
 	{
+		$scope.files = [];
+		$scope.liveStreamData={}
+		$scope.liveStreamData.id=0;
+
+		$('#file_ls_video_upload').val("");
+		$('.zheadslz').html("Add Stream Schedule");
 		$('#uploadliveStreamVideoModal').modal('show');
 	};
 
@@ -225,21 +232,20 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             }).success(function(returnData) {
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-            	{
-            		$scope.files = [];
-            		$scope.liveStreamData={}
-            		$('#file_ls_video_upload').val("");
-            		//$scope.allVideoListObj=aryreturnData.data.taskMin3VideoLevelData;
+            	{            		
             		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploaded!','onlytext');
             		$timeout(function()
 					{
 						$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Upload','onlytext');
+						$scope.files = [];
+	            		$scope.liveStreamData={}
+	            		$('#file_ls_video_upload').val("");
+	            		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
 					},1200);
-
 					$timeout(function()
 					{
 						$('#uploadliveStreamVideoModal').modal('hide');
-					},1800);
+					},1800);					
             	}
             	else
             	{
@@ -255,6 +261,22 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             	}
 			});
 		}
+	};
+
+	$scope.editStreamVideo = function(valobj)
+    {	
+    	$scope.files = [];
+		$scope.liveStreamData={}
+		$('#file_ls_video_upload').val("");
+		$('.zheadslz').html("Edit Stream Schedule");
+
+    	$scope.liveStreamData.id=valobj.id;
+    	$scope.liveStreamData.old_video=valobj.video_name;
+    	$scope.liveStreamData.video_title=valobj.video_title;
+    	$scope.liveStreamData.star_time=valobj.star_time;
+    	$scope.liveStreamData.end_time=valobj.end_time;
+    	$scope.liveStreamData.description=valobj.description;
+    	$('#uploadliveStreamVideoModal').modal('show');    	
 	};
 
 	$scope.activeInactiveStreamVideo = function(valobj)

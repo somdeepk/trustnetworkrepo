@@ -5,10 +5,9 @@
   <div id="uploadliveStreamVideoModal" class="modal" role="dialog" style="z-index:999999 ">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
-            <!-- <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Upload & Crop Images</h4> 
-            </div> -->
+            <div class="modal-header">
+              <h4 class="modal-title zheadslz">Add Stream Schedule</h4> 
+            </div>
             <div class="modal-body">
               <div class="row">
                   <!--left-->
@@ -29,12 +28,17 @@
                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.end_time)==true)? 'End Time Required' : ''}}</div>
                   </div>
 
+                  <div class="form-group col-sm-12">
+                     <label for="address">Description:</label>
+                     <textarea class="form-control" ng-model="liveStreamData.description" id="description" autocomplete="off" rows="3" style="line-height: 22px;"></textarea>
+                  </div>
+
                   <div class="col-sm-12 padding-lr0 mb10">
                     <div id="uploaded_image">
                       <video ng-if="value.video_number>0" width="100%" height="200" controls>
                         <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
                       </video>
-                      <div class="text-center"><img class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:149px; margin: 0 auto;"></div> <!-- ng-if="value.video_number==0" -->
+                      <div class="text-center"><img class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:80px; margin: 0 auto;"></div> <!-- ng-if="value.video_number==0" -->
                     </div>
 
                     <div class="clear50"></div>
@@ -123,7 +127,7 @@
                         
                         <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
-                        <a href="javascript:void();" ng-click="editStreamVideo(value.id);" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i class="ri-edit-2-fill"></i>Edit</a>
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i class="ri-edit-2-fill"></i>Edit</a>
 
                         <a href="javascript:void();" ng-click="deleteStreamVideo(value);" class="mr-3 btn btn-danger rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
@@ -154,9 +158,10 @@
                   <div class="profile-info p-4">
                      <div class="user-detail">
                         <div class="d-flex flex-wrap justify-content-between align-items-start">
-                           <div class="profile-detail d-flex">
+                           <div class="profile-detail d-flex"> 
                               <!--left-->
                               <div class="col-sm-12 padding-lr0 mb10">
+                                <strong>Video {{key+1}}</strong>
                                 <div id="uploaded_image" ng-class="(value.video_number==0) ? 'height209' : ''">
                                   <video ng-if="value.video_number>0" width="100%" height="200" controls>
                                     <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
