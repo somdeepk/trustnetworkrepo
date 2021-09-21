@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Upload Video</button>
+              <button class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Schedule</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -78,7 +78,7 @@
                   <input type="hidden" id="hidden_task_level" value="<?php echo $task_level; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
-                  <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> <a href="javascript:void();"  ng-click="uploadliveStreamVideo();" class="mr-3 btn btn-primary rounded"><i class="ri-video-line"></i>Upload Live Stream Video</a>
+                  <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> <a href="javascript:void();"  ng-click="uploadliveStreamVideo();" class="mr-3 btn btn-primary rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
                </div>
             </div>
          </div>
@@ -121,11 +121,11 @@
                      </div>
                      <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="activeDeactiveStreamVideo(value.id,value.status);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveDeactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Deactive'}}</a>
+                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
                         <a href="javascript:void();" ng-click="editStreamVideo(value.id);" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i class="ri-edit-2-fill"></i>Edit</a>
 
-                        <a href="javascript:void();" ng-click="deleteStreamVideo(value.id);" class="mr-3 btn btn-danger rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" class="mr-3 btn btn-danger rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
@@ -180,7 +180,7 @@
                                       <div class="btn btn-success image-preview-input" style="width: 160px;">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title_1">Browse</span>
-                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload class="w-100 video-upload-inputX"> 
+                                        <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload class="w-100 video-upload-input"> 
                                       </div>
                                     </span>
                                   </div>

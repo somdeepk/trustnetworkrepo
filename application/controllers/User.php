@@ -1251,7 +1251,8 @@ class User extends CI_Controller
 			            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
 			            'video_name'   =>$video_name,
 			            'video_size'   =>$video_size,        
-			            'video_type'   =>$video_type		            
+			            'video_type'   =>$video_type,		            
+			            'create_date'   =>$current_date		            
 			        );
 
 	                $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,0);
@@ -1356,6 +1357,86 @@ class User extends CI_Controller
         $returnData['msg']='';
         $returnData['data']=array('cityData'=>$cityData);
        
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxActiveInactiveStreamVideo() 
+    {
+
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+  		$id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
+		$strStatus=(isset($aryLSVideoData['strStatus']) && !empty($aryLSVideoData['strStatus']))? addslashes(trim($aryLSVideoData['strStatus'])):'0';
+		
+		$menu_arr = array(
+            'status'  =>$strStatus
+        );
+
+		$lastId = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Status Changed Successfully';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Status Changed Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxDeleteStreamVideo() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+  		$id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
+		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+
+		$menu_arr = array(
+            'deleted'  =>'1'
+        );
+        /*echo $id."ss<pre>";
+        print_r($menu_arr);
+        exit;*/
+		$lastId = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+
+ 		if($lastId>0)
+		{			
+			$argument=array();
+			$argument['membershipType']=$membership_type;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['task_level']=$task_level;
+			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Deleted Successfully';
+	        $returnData['data']=array('lastId'=>$lastId,'liveStreamVideoData'=>$liveStreamVideoData);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Deletion Failed';
+	        $returnData['data']=array();
+		}
         echo json_encode($returnData);
         exit;
     }

@@ -441,16 +441,13 @@ class User_Model extends CI_Model
 
 	public function addUpdatLiveStreamVideo($menu_arr=NULL,$id=NULL)
 	{
-		$current_date=date('Y-m-d H:i:s');
 		if(!empty($id) && $id>0)
 		{
-			$menu_arr['update_date']  =$current_date;
 			$this->db->where('id',$id)->update('tn_task_level_stream_video',$menu_arr);
 			return $id;
 		}
 		else
-		{
-			$menu_arr['create_date']  =$current_date;
+		{			
 			$this->db->insert('tn_task_level_stream_video',$menu_arr);
 			return $this->db->insert_id();
 		}

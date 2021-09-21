@@ -6,6 +6,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.emptyVideoCheck=false ;
     $scope.videoExtensionCheck=false ;
     $scope.allVideoListObj={};
+    $scope.allLiveStreamVideoData={};
     $scope.files = [];
 
     $scope.getTaskData = function (user_auto_id,parent_id,membership_type)
@@ -254,6 +255,113 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             	}
 			});
 		}
+	};
+
+	$scope.activeInactiveStreamVideo = function(valobj)
+    {	
+    	var id=valobj.id;
+    	var status=valobj.status;
+
+    	if($(".zactiveInactiveStreamVideoz_"+id).hasClass('btn-success')){
+    		strText="Inactivating..";
+    		strStatus='0';
+    	}else{
+    		strText="Activating..";
+    		strStatus='1';
+    	}
+
+    	$scope.buttonSavingAnimation('zactiveInactiveStreamVideoz_'+id,strText,'loader');		
+		$timeout(function()
+		{
+			$scope.liveStreamStatusData={}
+			$scope.liveStreamStatusData.id=id;
+			$scope.liveStreamStatusData.strStatus=strStatus;
+			var formData = new FormData();
+			formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+			//alert("fd")
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxActiveInactiveStreamVideo",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		if(strStatus=='1')
+	        		{
+	        			$(".zactiveInactiveStreamVideoz_"+id).removeClass('btn-primary');
+    					$(".zactiveInactiveStreamVideoz_"+id).addClass('btn-success');
+						$(".zactiveInactiveStreamVideoz_"+id).css("background-color",'#49f0d3');
+						$(".zactiveInactiveStreamVideoz_"+id).css("bordr-color",'#49f0d3');
+	        			$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active');
+	        		}else{
+	        			$(".zactiveInactiveStreamVideoz_"+id).removeClass('btn-success');
+	        			$(".zactiveInactiveStreamVideoz_"+id).addClass('btn-primary');
+	        			$(".zactiveInactiveStreamVideoz_"+id).css("background-color",'#50b5ff');
+	        			$(".zactiveInactiveStreamVideoz_"+id).css("bordr-color",'#2aa3fb');
+	        			$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+	        		};     		
+	        	}
+	        	else
+	        	{
+	        		if($(".zactiveInactiveStreamVideoz_"+id).hasClass('btn-success'))
+	        		{
+			    		$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active')
+			    	}else{
+			    		$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+			    	}
+	        		swal("Error!",
+		        		"Status Changed Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
+	};
+
+
+	$scope.deleteStreamVideo = function(valobj)
+    {	
+    	var id=valobj.id;
+
+    	$scope.buttonSavingAnimation('zdeleteStreamVideoz_'+id,"Deleting..",'loader');		
+		$timeout(function()
+		{
+
+			$scope.liveStreamStatusData={}
+			$scope.liveStreamStatusData.id=id;
+			$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+			$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+			$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+
+			var formData = new FormData();
+			formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+			//alert("fd")
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxDeleteStreamVideo",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+	        	}
+	        	else
+	        	{
+	        		$(".zdeleteStreamVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
+	        		swal("Error!",
+		        		"Deletion Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
