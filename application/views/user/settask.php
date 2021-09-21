@@ -171,20 +171,20 @@
                                 <div class="clear20"></div>
                                 <div class="d-flex align-items-center">
 
-                                  <div class="input-group image-preview"> 
+                                  <div class="input-group image-preview mt-3"> 
                                     <span class="input-group-btn" style="position:relative;top:-2px;">
                                       <button type="button" class="btn btn-success image-preview-clear" style="display:none;" ng-click="clearProfileImage();">
                                         <i class="fa fa-times" aria-hidden="true"></i> 
                                       </button>
                                       
-                                      <div class="btn btn-success image-preview-input mt-3" style="width: 160px;">
+                                      <div class="btn btn-success image-preview-input" style="width: 160px;">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title_1">Browse</span>
                                         <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload class="w-100 video-upload-inputX"> 
                                       </div>
                                     </span>
                                   </div>
-                                  <button type="button" ng-click="uploadVideo(key+1)" class="btn btn-primary zuploadtaskvideonz_{{key+1}}" style="height: 30px;">Upload</button>
+                                  <button type="button" ng-click="uploadVideo(key+1)" class="btn btn-primary mt-3 zuploadtaskvideonz_{{key+1}}" style="height: 36px;">Upload</button>
                                 </div>
                               </div>
                               <!--/left-->
