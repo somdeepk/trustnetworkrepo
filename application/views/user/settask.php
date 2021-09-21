@@ -121,11 +121,11 @@
                      </div>
                      <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="confirmFriendRequest(value.member_friends_aid);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zconfirmFriendRequestz_{{value.member_friends_aid}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Deactive'}}</a>
+                        <a href="javascript:void();" ng-click="activeDeactiveStreamVideo(value.id,value.status);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveDeactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Deactive'}}</a>
                         
-                        <a href="javascript:void();" ng-click="confirmFriendRequest(value.member_friends_aid);" class="mr-3 btn btn-primary rounded zconfirmFriendRequestz_{{value.member_friends_aid}}"><i class="ri-edit-2-fill"></i>Edit</a>
-                        
-                        <a href="javascript:void();" ng-click="deleteFromFriendRequest(value.member_friends_aid);" class="mr-3 btn btn-danger rounded zdeleteFromFriendRequestz_{{value.member_friends_aid}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                        <a href="javascript:void();" ng-click="editStreamVideo(value.id);" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i class="ri-edit-2-fill"></i>Edit</a>
+
+                        <a href="javascript:void();" ng-click="deleteStreamVideo(value.id);" class="mr-3 btn btn-danger rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">

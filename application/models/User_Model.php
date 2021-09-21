@@ -477,7 +477,7 @@ class User_Model extends CI_Model
 				tl.task_level
 				FROM tn_task_level as tl
 				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
-				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.star_time";
+				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.id DESC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 
