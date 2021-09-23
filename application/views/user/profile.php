@@ -264,7 +264,7 @@
                            </div>
                            <div class="d-flex align-items-center">
                               <a ng-if="friendData.membership_type == 'CM'" href="javascript:void();" ng-click="toggleChurchAdmin(value);" ng-class="(value.is_admin=='Y') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zmakeChurchAdminz_{{value.id}}"><i ng-if="value.is_admin == 'N'" class="ri-user-add-line"></i> <i ng-if="value.is_admin == 'Y'" class="ri-admin-line"></i>{{(value.is_admin=='Y')? 'Church Admin' : 'Create Admin'}}</a>
-                              <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Remove From Level' : 'Set To Level'}}</a>
+                              <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level ('+value.maxmemberlevel+')' : 'Set Level'}}</a>
                            </div>
                         </li>
                         <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">

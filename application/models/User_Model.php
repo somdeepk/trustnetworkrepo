@@ -535,6 +535,22 @@ class User_Model extends CI_Model
 		}
 
 	}
+
+	public function get_member_max_level($member_id)
+	{
+		$sql="SELECT IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
+				FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$member_id."'";
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		if(!empty($rowData) && $rowData->maxmemberlevel>0)
+		{
+			return $rowData->maxmemberlevel;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 	
 }
 ?>

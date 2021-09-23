@@ -223,27 +223,28 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
+	        		member_max_level=aryreturnData.data.member_max_level
 	        		if(setlevel=='Y'){
 	        			$(".ztoggleSetMemberLevelz_"+member_id).removeClass('btn-primary');
     					$(".ztoggleSetMemberLevelz_"+member_id).addClass('btn-success');
 						$(".ztoggleSetMemberLevelz_"+member_id).css("background-color",'#49f0d3');
 						$(".ztoggleSetMemberLevelz_"+member_id).css("bordr-color",'#49f0d3');
-	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Remove From Level');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Unset Level ('+member_max_level+')');
 	        		}else{
 	        			$(".ztoggleSetMemberLevelz_"+member_id).removeClass('btn-success');
 	        			$(".ztoggleSetMemberLevelz_"+member_id).addClass('btn-primary');
 	        			$(".ztoggleSetMemberLevelz_"+member_id).css("background-color",'#50b5ff');
 	        			$(".ztoggleSetMemberLevelz_"+member_id).css("bordr-color",'#2aa3fb');
-	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Set To Level')
+	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Set Level')
 	        		};     		
 	        	}
 	        	else
 	        	{
 	        		if($(".ztoggleSetMemberLevelz_"+member_id).hasClass('btn-success'))
 	        		{
-			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Set To Level')
+			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Set Level')
 			    	}else{
-			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Remove From Level')
+			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Unset Level')
 			    	}
 
 	        		swal("Error!",

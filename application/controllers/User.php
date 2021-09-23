@@ -1482,10 +1482,12 @@ class User extends CI_Controller
 				$flagSet = $this->User_Model->revert_assign_member_level($member_id,$menu_arr,'insert');	
 			}
 
+			$member_max_level = $this->User_Model->get_member_max_level($member_id);
+
 			$returnData['status']='1';
 			$returnData['msg']='success';
 			$returnData['msgstring']='Level Set Successfullyh';
-			$returnData['data']=array();
+			$returnData['data']=array('member_max_level'=>$member_max_level);
         }
         else
         {
