@@ -5,12 +5,13 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.videoDataCheck=false ;
     $scope.emptyVideoCheck=false ;
     $scope.videoExtensionCheck=false ;
+    $scope.session_is_admin='N';
     $scope.allVideoListObj={};
     $scope.allLiveStreamVideoData={};
     $scope.liveStreamData={};
     $scope.files = [];
 
-    $scope.getTaskData = function (user_auto_id,parent_id,membership_type)
+    $scope.getTaskData = function (user_auto_id,parent_id,membership_type,is_admin)
 	{
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
@@ -21,6 +22,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		//console.log('dsd')
 		//console.log($scope.allVideoListObj)
 		//alert(hidden_task_level)	
+		$scope.session_is_admin=is_admin;
 		$scope.taskData.task_level=hidden_task_level;
 		$scope.taskData.user_auto_id=user_auto_id;
 		$scope.taskData.parent_id=parent_id;
@@ -268,7 +270,15 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     	$scope.files = [];
 		$scope.liveStreamData={}
 		$('#file_ls_video_upload').val("");
-		$('.zheadslz').html("Edit Stream Schedule");
+		if(valobj.is_admin=="Y")
+		{
+			$('.zheadslz').html("Edit Stream Schedule");
+		}
+		else
+		{
+			$('.zheadslz').html("View Stream Schedule");
+		}
+		
 
     	$scope.liveStreamData.id=valobj.id;
     	$scope.liveStreamData.old_video=valobj.video_name;

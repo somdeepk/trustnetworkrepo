@@ -1,4 +1,4 @@
-<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getTaskData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>');">
+<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getTaskData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>');">
   
   
   <!-- Start Image Croping Modal -->
@@ -33,7 +33,7 @@
                      <textarea class="form-control" ng-model="liveStreamData.description" id="description" autocomplete="off" rows="3" style="line-height: 22px;"></textarea>
                   </div>
 
-                  <div class="col-sm-12 padding-lr0 mb10">
+                  <div ng-if="session_is_admin=='Y'" class="col-sm-12 padding-lr0 mb10">
                     <div id="uploaded_image">
                       <video ng-if="value.video_number>0" width="100%" height="200" controls>
                         <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
@@ -62,7 +62,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Schedule</button>
+              <button ng-if="session_is_admin=='Y'" class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Schedule</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -82,7 +82,10 @@
                   <input type="hidden" id="hidden_task_level" value="<?php echo $task_level; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
-                  <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> <a href="javascript:void();"  ng-click="uploadliveStreamVideo();" class="mr-3 btn btn-primary rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
+                  <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> 
+                  <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
+
+
                </div>
             </div>
          </div>
@@ -125,11 +128,13 @@
                      </div>
                      <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
+                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i class="ri-edit-2-fill"></i>Edit</a>
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-class="(value.status=='1' || value.status=='0') ? 'btn-primary' : 'btn-primary'" class="mr-3 btn rounded zeditStreamVideoz_{{value.id}}">
+                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> <i ng-if="session_is_admin=='N'" class="ri-eye-line"></i>{{(session_is_admin=='Y')? 'Edit' : 'View'}}
+                        </a>
 
-                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" class="mr-3 btn btn-danger rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1' || value.status=='0') ? 'btn-danger' : 'btn-danger'" class="mr-3 btn rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
@@ -170,11 +175,11 @@
                                   <div class="text-center" ng-class="(value.video_number==0) ? 'ptop33' : ''"><img ng-if="value.video_number==0" class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:149px; margin: 0 auto;"></div>
                                 </div>
 
-                                <div class="clear50"></div>
+                                <div ng-if="session_is_admin=='Y'" class="clear50"></div>
                                 
-                                <span class="upload-img-cont"><strong>Note:</strong> Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only</span>
+                                <span ng-if="session_is_admin=='Y'" class="upload-img-cont"><strong>Note:</strong> Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only</span>
                                 <div class="clear20"></div>
-                                <div class="d-flex align-items-center">
+                                <div ng-if="session_is_admin=='Y'" class="d-flex align-items-center">
 
                                   <div class="input-group image-preview mt-3"> 
                                     <span class="input-group-btn" style="position:relative;top:-2px;">
@@ -182,14 +187,14 @@
                                         <i class="fa fa-times" aria-hidden="true"></i> 
                                       </button>
                                       
-                                      <div class="btn btn-success image-preview-input" style="width: 160px;">
+                                      <div ng-class="(session_is_admin=='Y') ? 'btn-success' : ''" class="btn  image-preview-input" style="width: 160px;">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title_1">Browse</span>
                                         <input type="file" accept="video/mp4, video/wmv, video/avi, video/3gp, video/mov, video/mpeg" name="input_file_upload_{{key+1}}" id="input_file_upload_{{key+1}}" single-file-upload class="w-100 video-upload-input"> 
                                       </div>
                                     </span>
                                   </div>
-                                  <button type="button" ng-click="uploadVideo(key+1)" class="btn btn-primary mt-3 zuploadtaskvideonz_{{key+1}}" style="height: 36px;">Upload</button>
+                                  <button type="button" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" ng-click="uploadVideo(key+1)" class="btn mt-3 zuploadtaskvideonz_{{key+1}}" style="height: 36px;">Upload</button>
                                 </div>
                               </div>
                               <!--/left-->

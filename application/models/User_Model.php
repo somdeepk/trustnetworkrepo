@@ -205,10 +205,16 @@ class User_Model extends CI_Model
 		}
 
 		$sql="SELECT 
+				tm.* ,
+				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
+
+				FROM tn_members as tm
+				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
+				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." group by tm.id order by first_name ASC";
+		/*$sql="SELECT 
 				tm.* 
 				FROM tn_members as tm
-				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." order by first_name ASC";
-
+				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." order by first_name ASC";*/
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -408,12 +414,14 @@ class User_Model extends CI_Model
 	{
 
 		$task_level=$argument['task_level'];
+		$str_is_admin=$this->session->userdata('is_admin');
 
 		$taskVideoLevelData=$this->get_task_video_by_level($argument);
 		$finalTaskVideoLevelData=array();
 
 		for ($k = 0; $k <= 2; $k++)
 		{
+			$finalTaskVideoLevelData[$k]['is_admin']=$str_is_admin;
 			$finalTaskVideoLevelData[$k]['video_number']=0;
 			$finalTaskVideoLevelData[$k]['video_name']='';
 			$finalTaskVideoLevelData[$k]['video_size']='';
@@ -428,6 +436,8 @@ class User_Model extends CI_Model
 				if (file_exists(IMAGE_PATH."/taskvideo/".$task_level."/".$v['video_name']))
 				{
 					$key=($v['video_number']-1);
+	
+					$finalTaskVideoLevelData[$key]['is_admin']=$str_is_admin;
 					$finalTaskVideoLevelData[$key]['video_number']=$v['video_number'];
 					$finalTaskVideoLevelData[$key]['video_name']=$v['video_name'];
 					$finalTaskVideoLevelData[$key]['video_size']=$v['video_size'];
@@ -460,6 +470,7 @@ class User_Model extends CI_Model
 		$user_auto_id=$argument['user_auto_id'];
 		$parent_id=$argument['parent_id'];
 		$task_level=$argument['task_level'];
+		$str_is_admin=$this->session->userdata('is_admin');
 
 		if($membershipType=="CM")
 		{
@@ -471,9 +482,11 @@ class User_Model extends CI_Model
 		}
 		$sql="SELECT 
 				tlsv.*,
-				tl.task_level
+				tl.task_level,
+				tm.is_admin
 				FROM tn_task_level as tl
 				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
+				LEFT JOIN tn_members as tm ON tm.id='".$user_auto_id."'
 				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.id DESC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
@@ -481,7 +494,8 @@ class User_Model extends CI_Model
 		if(count($resultData)>0)
 		{
 			foreach($resultData as $k=>$v)
-			{				
+			{	
+				$resultData[$k]['is_admin']=$str_is_admin;
 				$resultData[$k]['display_star_time']=date('m-d-Y h:i A',strtotime($v['star_time']));
 				$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
 				$resultData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/streamvideo/'.$v['video_name'];
@@ -490,6 +504,36 @@ class User_Model extends CI_Model
 
 		//return array();
 		return $resultData;
+	}
+
+	public function check_member_level_exist($member_id)
+	{
+		$sql="SELECT * from tn_member_level WHERE member_id='".$member_id."'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public function revert_assign_member_level($member_id,$menu_arr=NULL,$is_revert="")
+	{
+		if(!empty($member_id) && $member_id>0 && $is_revert=='revert')
+		{
+			$this->db->where('member_id',$member_id)->update('tn_member_level',$menu_arr);
+			return $member_id;
+		}
+		else
+		{			
+			$this->db->insert('tn_member_level',$menu_arr);
+			return $this->db->insert_id();
+		}
+
 	}
 	
 }

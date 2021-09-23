@@ -192,6 +192,69 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		},1200);
 	};
 
+	$scope.toggleSetMemberLevel = function(adminobj)
+    {	
+    	var member_id=adminobj.id;
+    	var maxmemberlevel=adminobj.maxmemberlevel;
+
+
+    	if($(".ztoggleSetMemberLevelz_"+member_id).hasClass('btn-success')){
+    		strText="Removing..";
+    		setlevel="N";
+    	}else{
+    		strText="Assigning..";
+    		setlevel="Y";
+    	}
+
+    	$scope.buttonSavingAnimation('ztoggleSetMemberLevelz_'+member_id,strText,'loader');		
+		$timeout(function()
+		{
+			$scope.friendData.member_id=member_id;
+			$scope.friendData.setlevel=setlevel;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"toggleSetMemberLevel",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		if(setlevel=='Y'){
+	        			$(".ztoggleSetMemberLevelz_"+member_id).removeClass('btn-primary');
+    					$(".ztoggleSetMemberLevelz_"+member_id).addClass('btn-success');
+						$(".ztoggleSetMemberLevelz_"+member_id).css("background-color",'#49f0d3');
+						$(".ztoggleSetMemberLevelz_"+member_id).css("bordr-color",'#49f0d3');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Remove From Level');
+	        		}else{
+	        			$(".ztoggleSetMemberLevelz_"+member_id).removeClass('btn-success');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).addClass('btn-primary');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).css("background-color",'#50b5ff');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).css("bordr-color",'#2aa3fb');
+	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Set To Level')
+	        		};     		
+	        	}
+	        	else
+	        	{
+	        		if($(".ztoggleSetMemberLevelz_"+member_id).hasClass('btn-success'))
+	        		{
+			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-fill"></i>Set To Level')
+			    	}else{
+			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Remove From Level')
+			    	}
+
+	        		swal("Error!",
+		        		"Set To Level Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
+	};
+
 	$scope.getAllFriendRequest = function()
 	{
 		if($scope.friendData.user_auto_id>0)

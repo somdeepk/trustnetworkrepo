@@ -7,11 +7,11 @@
               <div class="iq-card-body profile-page p-0">
                  <div class="profile-header">
                     <div class="cover-container">
-                        <input ng-model="friendData.user_auto_id" id="user_auto_id" type="hiddens">
-                        <input ng-model="friendData.membership_type" id="membership_type" type="hiddens">
-                        <input ng-model="friendData.is_admin" id="is_admin" type="hiddens">
-                        <input ng-model="friendData.parent_id" id="parent_id" type="hiddens">
-                        <input id="hidden_profile_tab" type="hiddens" value="<?php echo $profileTab; ?>">
+                        <input ng-model="friendData.user_auto_id" id="user_auto_id" type="hidden">
+                        <input ng-model="friendData.membership_type" id="membership_type" type="hidden">
+                        <input ng-model="friendData.is_admin" id="is_admin" type="hidden">
+                        <input ng-model="friendData.parent_id" id="parent_id" type="hidden">
+                        <input id="hidden_profile_tab" type="hidden" value="<?php echo $profileTab; ?>">
                        <img src="<?php echo base_url();?>assets/images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
                        <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
                           <li><a href="javascript:void();"><i class="ri-pencil-line"></i></a></li>
@@ -264,7 +264,7 @@
                            </div>
                            <div class="d-flex align-items-center">
                               <a ng-if="friendData.membership_type == 'CM'" href="javascript:void();" ng-click="toggleChurchAdmin(value);" ng-class="(value.is_admin=='Y') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zmakeChurchAdminz_{{value.id}}"><i ng-if="value.is_admin == 'N'" class="ri-user-add-line"></i> <i ng-if="value.is_admin == 'Y'" class="ri-admin-line"></i>{{(value.is_admin=='Y')? 'Church Admin' : 'Create Admin'}}</a>
-                              <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" class="mr-3 btn btn-primary rounded"><i class="ri-key-2-fill"></i>Assign Task</a>
+                              <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Remove From Level' : 'Set To Level'}}</a>
                            </div>
                         </li>
                         <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">

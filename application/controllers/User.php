@@ -1446,6 +1446,66 @@ class User extends CI_Controller
         exit;
     }
 
+    public function toggleSetMemberLevel() 
+    {
+    	$returnData=array();
+
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+  
+  		$member_id=(isset($aryFriendData['member_id']) && !empty($aryFriendData['member_id']))? addslashes(trim($aryFriendData['member_id'])):0;
+  		$setlevel=(isset($aryFriendData['setlevel']) && !empty($aryFriendData['setlevel']))? addslashes(trim($aryFriendData['setlevel'])):'N';		
+        $current_date=date('Y-m-d H:i:s');
+
+       /* echo "ss<pre>";
+		print_r($aryFriendData);
+        exit;
+*/
+        if($setlevel=='Y')
+        {
+        	$flagLevelExist = $this->User_Model->check_member_level_exist($member_id);
+        	if($flagLevelExist==1)
+			{
+				$menu_arr = array(
+		            'status'  =>'1'
+		        );
+				$flagSet = $this->User_Model->revert_assign_member_level($member_id,$menu_arr,'revert');			
+			}
+			else
+			{
+				$menu_arr = array(
+		            'task_level'  =>1,
+		            'member_id'  =>$member_id,
+		            'promote_date'  =>$current_date,
+		            'status'  =>'1'
+		        );
+				$flagSet = $this->User_Model->revert_assign_member_level($member_id,$menu_arr,'insert');	
+			}
+
+			$returnData['status']='1';
+			$returnData['msg']='success';
+			$returnData['msgstring']='Level Set Successfullyh';
+			$returnData['data']=array();
+        }
+        else
+        {
+        	$menu_arr = array(
+		            'status'  =>'0',
+		            'remove_date'=>$current_date,
+		        );
+			$flagSet = $this->User_Model->revert_assign_member_level($member_id,$menu_arr,'revert');
+
+			$returnData['status']='1';
+			$returnData['msg']='success';
+			$returnData['msgstring']='Remove From Level Successfullyh';
+			$returnData['data']=array();
+        }       
+
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
 }
 	
 
