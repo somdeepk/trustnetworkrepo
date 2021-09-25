@@ -18,7 +18,7 @@
             </div>
             <div class="page-body">
                 <div class="row">
-                    <div class="col-md-12 col-xl-4">
+                    <?php /*<div class="col-md-12 col-xl-4">
                         <!-- table card start -->
                         <div class="card table-card">
                             <div class="">
@@ -200,31 +200,34 @@
                           
                         </div>
                     </div>
+                    */ ?>
                    
-                    <div class="col-md-6 col-xl-3">
-                        <div class="card social-widget-card">
-                            <div class="card-block-big bg-facebook">
-                                <h3>1165 +</h3>
-                                <span class="m-t-10">Facebook Users</span>
-                                <i class="icofont icofont-social-facebook"></i>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-6 col-xl-3">
                         <div class="card social-widget-card">
                             <div class="card-block-big bg-twitter">
                                 <h3>780 +</h3>
-                                <span class="m-t-10">Twitter Users</span>
-                                <i class="icofont icofont-social-twitter"></i>
+                                <span class="m-t-10">Church Member</span>
+                                <i class="icofont icofont-home"></i>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card social-widget-card">
+                            <div class="card-block-big bg-facebook">
+                                <h3>1165 +</h3>
+                                <span class="m-t-10">Regular Member</span>
+                                <i class="icofont icofont-ui-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="col-md-6 col-xl-3">
                         <div class="card social-widget-card">
                             <div class="card-block-big bg-linkein">
                                 <h3>998 +</h3>
-                                <span class="m-t-10">Linked In Users</span>
-                                <i class="icofont icofont-brand-linkedin"></i>
+                                <span class="m-t-10">Church Admin</span>
+                                <i class="icofont icofont-key"></i>
                             </div>
                         </div>
                     </div>
@@ -232,8 +235,8 @@
                         <div class="card social-widget-card">
                             <div class="card-block-big bg-google-plus">
                                 <h3>650 +</h3>
-                                <span class="m-t-10">Google Plus Users</span>
-                                <i class="icofont icofont-social-google-plus"></i>
+                                <span class="m-t-10">Award Winer</span>
+                                <i class="icofont icofont-award"></i>
                             </div>
                         </div>
                     </div>

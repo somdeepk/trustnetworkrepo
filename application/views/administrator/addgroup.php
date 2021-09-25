@@ -47,7 +47,7 @@
                                                            <div class="col-sm-6">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="icofont icofont-copy-alt"></i></span>
-                                                                    <textarea class="form-control" ng-model="groupData.groupDesc" id="groupDesc" placeholder="Address"></textarea>
+                                                                    <textarea class="form-control" ng-model="groupData.groupDesc" id="groupDesc" placeholder="Group Description"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>

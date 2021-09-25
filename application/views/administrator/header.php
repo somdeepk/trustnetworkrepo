@@ -15,14 +15,8 @@
                 <a class="mobile-search morphsearch-search" href="#">
                     <i class="ti-search"></i>
                 </a>
-                <a href="<?php echo base_url(); ?>administrator/dashboard">
-                 <?php if($this->session->userdata('image') != ""){ ?>
-                        <img src="<?php echo base_url(); ?>assets/images/<?php echo $this->session->userdata('site_logo'); ?>" alt="Site Logo" class="img-fluid" style="width: auto; height: 30px;" >
-                    <?php }else{ ?>
-                         <img class="img-fluid" src="<?php echo base_url(); ?>admintemplate/assets/images/logo.png" alt="Theme-Logo" />
-                    <?php } ?>
-
-                   
+                <a href="<?php echo base_url(); ?>administrator/dashboard">Follow Me Now
+                    <!-- <img class="img-fluid" src="<?php echo base_url(); ?>admintemplate/assets/images/logo.pngXX" alt="Follow Me Now" /> -->
                 </a>
                 <a class="mobile-options">
                     <i class="ti-more"></i>
@@ -36,12 +30,11 @@
                                 <i class="ti-menu"></i>
                             </a>
                         </li>
-                        <li>
+                       <!--  <li>
                             <a class="main-search morphsearch-search" href="#">
-                                <!-- themify icon -->
                                 <i class="ti-search"></i>
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="#!" onclick="javascript:toggleFullScreen()">
                                 <i class="ti-fullscreen"></i>
@@ -225,21 +218,21 @@
                          
                         <li class="user-profile header-notification">
                             <a href="#!">
-                            <?php if($this->session->userdata('image')){ ?>
+                            <?php /*if($this->session->userdata('image')){ ?>
                                 <img src="<?php echo base_url(); ?>assets/images/<?php echo $this->session->userdata('image'); ?>" alt="User-Profile-Image" style="border-radius: 25px;">
-                            <?php }else{ ?>
+                            <?php }else{ */ ?>
                                 <img src="<?php echo base_url(); ?>admintemplate/assets/images/user.png" alt="User-Profile-Image">
-                            <?php } ?>
+                            <?php // } ?>
                                 <span><?php echo $this->session->userdata('username'); ?></span>
                                 <i class="ti-angle-down"></i>
                             </a>
                             <ul class="show-notification profile-notification">
                                 
-                                <li>
+                               <!--  <li>
                                     <a href="<?php echo base_url(); ?>administrator/update-profile">
                                         <i class="ti-user"></i> Profile
                                     </a>
-                                </li>
+                                </li> -->
                                 
                                 <li>
                                     <a href="<?php echo base_url(); ?>administrator/change-password">
