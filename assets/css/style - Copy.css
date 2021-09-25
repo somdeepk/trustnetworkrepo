@@ -941,7 +941,6 @@ display: none;
 .navbar-list li:last-child>a {
 	padding-right: 20px;
 }
-.navbar-list li:last-child>a .ri-arrow-down-s-fill:before{border: 1px solid var(--iq-border-light);}
 .menu-tag {
 	position: absolute;
 	background: var(--iq-dark-body-text);
