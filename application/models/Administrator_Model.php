@@ -31,6 +31,40 @@ class Administrator_Model extends CI_Model
 		return $query->row_array();
 	}
 
+	public function get_admin_data()
+	{
+		$id = $this->session -> userdata('user_id');
+		if($id === FALSE){
+			$query = $this->db->get('users');
+			return $query->result_array(); 
+		}
+
+		$query = $this->db->get_where('users', array('id' => $id));
+		return $query->row_array();
+	}
+
+	public function change_password($new_password){
+
+		$data = array(
+			'password' => md5($new_password)
+		    );
+		$this->db->where('id', $this->session->userdata('user_id'));
+		return $this->db->update('users', $data);
+	}
+
+	public function match_old_password($password)
+	{
+		$id = $this->session -> userdata('user_id');
+		if($id === FALSE){
+			$query = $this->db->get('users');
+			return $query->result_array(); 
+		}
+
+		$query = $this->db->get_where('users', array('password' => $password));
+		return $query->row_array();
+	}
+
+
 	public function get_church_type()
 	{
 		$arrayChurchType[1]="Basilica";

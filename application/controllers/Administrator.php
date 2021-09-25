@@ -857,6 +857,65 @@ class Administrator extends CI_Controller
         exit;
     }
 
+    public function get_admin_data()
+	{
+		$data['changePassword'] = $this->Administrator_Model->get_admin_data();
+		$data['title'] = 'Change Password';
+
+		$this->load->view('administrator/header-script');
+		$this->load->view('administrator/header');
+		$this->load->view('administrator/header-bottom');
+		$this->load->view('administrator/change-password', $data);
+		$this->load->view('administrator/footer');
+	}
+
+	public function change_password($page = 'change-password')
+	{
+		if (!file_exists(APPPATH.'views/administrator/'.$page.'.php')) {
+	    show_404();
+	   }
+		// Check login
+		if(!$this->session->userdata('login')) {
+			redirect('administrator/index');
+		}
+
+		$data['title'] = 'Change password';
+
+		//$data['add-user'] = $this->Administrator_Model->get_categories();
+
+		$this->form_validation->set_rules('old_password', 'Old Password', 'required|callback_match_old_password');
+		$this->form_validation->set_rules('new_password', 'New Password Field', 'required');
+		$this->form_validation->set_rules('confirm_new_password', 'Confirm New Password', 'matches[new_password]');
+
+		if($this->form_validation->run() === FALSE){
+			 $this->load->view('administrator/header-script');
+	 	 	 $this->load->view('administrator/header');
+	  		 $this->load->view('administrator/header-bottom');
+	   		 $this->load->view('administrator/'.$page, $data);
+	  		 $this->load->view('administrator/footer');
+		}else{
+
+
+			$this->Administrator_Model->change_password($this->input->post('new_password'));
+
+			//Set Message
+			$this->session->set_flashdata('success', 'Password Has Been Changed Successfull.');
+			redirect('administrator/change-password');
+		}
+		
+	}
+
+	public function match_old_password($old_password)
+	{			
+		$this->form_validation->set_message('match_old_password', 'Current Password Does not matched, Please Try Again.');
+		$password = md5($old_password);
+		$que = $this->Administrator_Model->match_old_password($password);
+		if ($que) {
+			return true; 
+		}else{
+			return false;
+		}
+	}
 }
 	
 
