@@ -56,7 +56,7 @@
 
    </head>
    
-   <body ng-app="trustApp" class="right-column-fixed ng-scope sidebar-main">
+   <body ng-app="trustApp" class="right-column-fixed ng-scope "> <!-- sidebar-main -->
    
 
     <script>
