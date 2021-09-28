@@ -1,6 +1,4 @@
 var mainApp = angular.module('trustApp',['ngSanitize', 'treasure-overlay-spinner', 'angularSpinners', 'ngMessages', 'ngDialog']);
-//var mainApp = angular.module('mainApp',['ngSanitize', 'ui.select', 'treasure-overlay-spinner', 'angularSpinners', 'ngMessages', 'ngDialog']);
-
 
 mainApp.run(function ($rootScope)
 {
@@ -115,28 +113,6 @@ mainApp.directive('singleFileUpload', function () {
 	        });
 	    }
 	};	
-});
-
-mainApp.directive('dobdate', function() {
-	return {
-		require: 'ngModel',
-		link: function (scope, element, attrs, ngModelCtrl) {
-			//alert(element);
-			element.datepicker({
-				dateFormat:'yy-mm-dd',
-				changeYear: true,
-				changeMonth: true,
-				yearRange: "-100:+0",
-				maxDate: 0,
-				onSelect: function (date) {
-					ngModelCtrl.$setViewValue(date);
-					ngModelCtrl.$render();
-					scope.$apply();
-				},
-				
-			});
-		}
-	}
 });
 
 mainApp.directive('emailvalidate',function() {
@@ -287,7 +263,63 @@ mainApp.filter('nl2br2', function ($sce) {
 	};
 });*/
 
-mainApp.directive('startdatetime', function() {
+mainApp.directive('dobdate', function() {
+	return {
+		require: 'ngModel',
+		link: function (scope, element, attrs, ngModelCtrl) {
+			//alert(element);
+			element.datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-100:+0",
+				maxDate: 0,
+				onSelect: function (date) {
+					ngModelCtrl.$setViewValue(date);
+					ngModelCtrl.$render();
+					scope.$apply();
+				},
+				
+			});
+		}
+	}
+});
+
+mainApp.directive('dateandtimepicker', function(){
+  return {
+    require: 'ngModel',
+    restrict: 'A',
+    link: function(scope, element, attrs){ 
+      console.log('fired directive'); 
+      element.datetimepicker({ 
+        allowInputToggle: true,
+        //calendarWeeks: true,  
+        showTodayButton: true,
+        showClose: true, //close the picker
+        showClear: true, //clear selection 
+        format: 'YYYY-MM-DD hh:mm A',
+       // autoClose:1,
+        inline: false, 
+        sideBySide: true,
+        toolbarPlacement: 'default',
+        widgetPositioning: {
+          horizontal: 'auto',
+          vertical: 'bottom'
+        }
+      });
+      /*
+      element.on("dp.show", function (e) {  
+        $('[data-action="today"] span').removeClass('glyphicon-screenshot').addClass('glyphicon-calendar');
+        $('[data-action="close"]').attr('title', 'Save');
+        $('[data-action="close"] span').removeClass('glyphicon-remove').addClass('glyphicon-ok');
+      });  */
+          
+    } 
+  };
+  
+});
+
+mainApp.directive('onlytime', function() {
 	return {
 		restrict : 'A',
 		require : 'ngModel',			
@@ -327,7 +359,7 @@ mainApp.directive('startdatetime', function() {
 						}
 						var tArr=thisId.split('_');
 						var indx=tArr[1];
-						scope.taskObj.taskDetails[indx].startTimeStr=modstr ;
+						//scope.taskObj.taskDetails[indx].startTimeStr=modstr ;
 						if ($('#'+thisId)) {
 							ngModelCtrl.$setViewValue($('#'+thisId).val());
 						}

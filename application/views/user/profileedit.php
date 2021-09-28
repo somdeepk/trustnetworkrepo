@@ -135,7 +135,7 @@
                                   </div>
                                   <div class="form-group col-sm-6">
                                     <label for="dob">{{(memberData.membership_type=='RM')? 'Date Of Birth' : 'Foundation Date'}}:</label>
-                                    <input class="form-control" readonly="true" style="background: transparent;" ng-model="memberData.dob" id="dob" type="text" autocomplete="false"  dobdate>
+                                    <input class="form-control" readonly="true" style="background: transparent;" ng-model="memberData.dob" id="dob" type="text" autocomplete="off"  dobdate>
 
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='RM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
                                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='CM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Foundation Date Required' : ''}}</div>

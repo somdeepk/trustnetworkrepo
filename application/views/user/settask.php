@@ -17,14 +17,22 @@
                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.video_title)==true)? 'Video Title Required' : ''}}</div>
                   </div>
                   <div class="form-group col-sm-6">
+                    <!-- <datetimepicker data-ng-model="data.date"></datetimepicker> -->
+
+                  <!--   <input class="form-control"
+       ng-model="ctrl.input"
+       ng-model-options="{ updateOn: 'blur' }"
+       placeholder="Select a date..."
+       moment-picker="ctrl.input"> -->
+
                     <label for="dob">Start Time:</label>
-                    <input class="form-control" readonly="true" style="background: transparent;" ng-model="liveStreamData.star_time" id="liveStreamStartTime" type="text" autocomplete="false" dobdate>
+                    <input class="form-control" style="background: transparent;" ng-model="liveStreamData.star_time" id="liveStreamStartTime" type="text" autocomplete="off" dateandtimepicker>
                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.star_time)==true)? 'Start Time Required' : ''}}</div>
                   </div>
 
                   <div class="form-group col-sm-6">
                     <label for="dob">End Time:</label>
-                    <input class="form-control" readonly="true" style="background: transparent;" ng-model="liveStreamData.end_time" id="liveStreamEndTime" type="text" autocomplete="false" dobdate>
+                    <input class="form-control"  style="background: transparent;" ng-model="liveStreamData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" dateandtimepicker > <!-- datetimepicker -->
                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.end_time)==true)? 'End Time Required' : ''}}</div>
                   </div>
 
