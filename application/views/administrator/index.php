@@ -23,7 +23,7 @@
                             </div>
                               	
                             <div class="auth-box">
-
+                                <img width="150" src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="">
                                 <div class="row m-b-20">
                                     <div class="col-md-12">
                                         <h3 class="text-left txt-primary">Sign In</h3>
@@ -65,7 +65,7 @@
                                     <span class="md-line"></span>
                                 </div>
                                 <div class="row m-t-25 text-left">
-                                    <div class="col-sm-7 col-xs-12">
+                                    <div class="col-sm-6 col-xs-12">
                                         <div class="checkbox-fade fade-in-primary">
                                             <label>
                                                 <input type="checkbox" value="">
@@ -74,7 +74,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 col-xs-12 forgot-phone text-right">
+                                    <div class="col-sm-6 col-xs-12 forgot-phone text-right">
                                         <a href="<?php echo base_url(); ?>administrator/forget-password" class="text-right f-w-600 text-inverse"> Forgot Your Password?</a>
                                     </div>
                                 </div>
@@ -83,10 +83,10 @@
                                         <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Sign in</button>
                                     </div>
                                 </div>
-                                <hr/>
+                                <!-- <hr/> -->
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Thanking You.</p>
+                                        <!-- <p class="text-inverse text-left m-b-0">Thanking You.</p> -->
                                         <p class="text-inverse text-left"><b>Follow Me Now Team</b></p>
                                     </div>
                                     <div class="col-md-2">

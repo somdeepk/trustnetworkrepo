@@ -46,10 +46,10 @@
                                                       
                                                       <span class="upload-img-cont"><strong>Note:</strong> Please Upload JPG, JPEG or PNG Image With a Dimension of 254 X 254 Pixel Only</span>
                                                       <div class="clear20"></div>
-                                                      <div class="col-md-12 padding-lr0">
+                                                      <div class="padding-lr0 mt-3">
 
                                                         <div class="input-group image-preview">
-                                                          <input type="text" class="form-control image-preview-filename" disabled="disabled"> 
+                                                         <!--  <input type="text" class="form-control image-preview-filename" disabled="disabled">  -->
                                                           <span class="input-group-btn" style="position:relative;top:-2px;">
                                                             <button type="button" class="btn btn-success image-preview-clear" style="display:none;" ng-click="clearProfileImage();">
                                                               <i class="fa fa-times" aria-hidden="true"></i> 
@@ -169,8 +169,9 @@
                                                         
                                                     </div>
 
-                                                    <div class="col-sm-6">
-                                                        <div class="input-group">
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group birth-date">
+                                                            <i class="far fa-calendar-alt calendar-icon"></i>
                                                             <input class="form-control" autocomplete="off" ng-model="memberData.dob" id="dob" readonly="true" placeholder="{{(memberData.membership_type=='RM')? 'Date Of Birth' : 'Foundation Date'}}" type="text" dobdate>
                                                         </div>
 
@@ -242,6 +243,54 @@
                                                                             <input type="text" ng-model="memberData.website" id="website" class="form-control" placeholder="Website">
                                                                         </div>
                                                                     </div>
+
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                            <select ng-model="memberData.country" id="country" ng-change="getStateData(memberData.country)" class="form-control form-control-primary">
+                                                                            <option value="0">Select Country</option>
+                                                                            <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
+                                                                        </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                            <select ng-disabled="!memberData.country" ng-model="memberData.state" id="state"  ng-change="getCityData(memberData.state)" class="form-control form-control-primary">
+                                                                            <option value="0">Select State</option>
+                                                                            <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
+                                                                        </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                            <select ng-disabled="!memberData.state" ng-model="memberData.city" id="city" class="form-control form-control-primary">
+                                                                            <option value="0">Select City</option>
+                                                                            <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
+                                                                        </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                             <input class="form-control" ng-model="memberData.postal_code" id="postal_code" placeholder="Postal Code" type="text">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-4">
+                                                                        <div class="input-group">
+                                                                            <textarea class="form-control" ng-model="memberData.address" id="address" placeholder="Address"></textarea>
+                                                                        </div>
+                                                                    </div>
+
+                                                                     <div class="col-sm-4">
+                                                                        <div class="form-group">
+                                                                            <button type="button" ng-click="submitMember();" class="btn btn-primary">Submit</button>
+                                                                        </div>
+                                                                     </div>
+
+                                                                    
+                                                                   
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -249,7 +298,7 @@
                                                 </div>
 
 
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="card">
                                                             <div class="card-header">
@@ -303,12 +352,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                 
-                                                <div class="form-group">
-                                                        <button type="button" ng-click="submitMember();" class="btn btn-primary">Submit</button>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

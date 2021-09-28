@@ -1,7 +1,7 @@
 <div ng-controller="churchMemberController" ng-init="getMemberListInit();">
     <div class="page-header">
         <div class="page-header-title">
-            <h4>List Member</h4>
+            <h4>Member List</h4>
         </div>
         <div class="page-header-breadcrumb">
             <ul class="breadcrumb-title">
@@ -12,7 +12,7 @@
                 </li>
                 <li class="breadcrumb-item"><a href="javascript:void(0);">Member</a>
                 </li>
-                <li class="breadcrumb-item"><a href="javascript:void(0);">List Member</a>
+                <li class="breadcrumb-item"><a href="javascript:void(0);">Member List</a>
                 </li>
             </ul>
         </div>

@@ -32,7 +32,7 @@
         </div> -->
         <div class="main-menu-content">
             <ul class="main-navigation">
-                <li class="nav-item has-class">
+                <li class="nav-item">
                     <a href="<?php echo base_url(); ?>administrator/dashboard">
                         <i class="ti-home"></i>
                         <span>Dashboard</span>
@@ -50,7 +50,7 @@
                     </ul>
                 </li> -->
 
-                <li class="nav-item">
+                <li class="nav-item  has-class">
                     <a href="#!">
                         <i class="ti-layout"></i>
                         <span>Membership</span>

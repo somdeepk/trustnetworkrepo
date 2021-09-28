@@ -15,8 +15,8 @@
                 <a class="mobile-search morphsearch-search" href="#">
                     <i class="ti-search"></i>
                 </a>
-                <a href="<?php echo base_url(); ?>administrator/dashboard">Follow Me Now
-                    <!-- <img class="img-fluid" src="<?php echo base_url(); ?>admintemplate/assets/images/logo.pngXX" alt="Follow Me Now" /> -->
+                <a href="<?php echo base_url(); ?>administrator/dashboard">
+                    <img class="img-fluid" src="<?php echo base_url(); ?>assets/images/logo-full.png" alt="Follow Me Now" />
                 </a>
                 <a class="mobile-options">
                     <i class="ti-more"></i>

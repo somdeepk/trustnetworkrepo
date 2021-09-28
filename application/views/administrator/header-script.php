@@ -13,6 +13,8 @@
     <!-- Favicon icon -->
     <link rel="icon" href="<?php echo base_url(); ?>admintemplate/assets/images/favicon.ico" type="image/x-icon">
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
 
     <link href="<?php echo base_url();?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/sweetalert.min.js"></script>

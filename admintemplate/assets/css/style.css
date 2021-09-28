@@ -23,3 +23,18 @@ body{background-color:#f3f3f3;font-size:.875em;overflow-x:hidden;font-family:"Op
 .greenBorder{
 	border: 1px solid #1abc9c;
 }
+
+
+.main-menu .main-menu-content .nav-item:first-child:after{}
+
+.main-navigation .nav-item:first-child>a:after{display: none;}
+
+.image-preview input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.birth-date{position: relative;}
+.birth-date .calendar-icon{position: absolute; right: 10px; top: 10px; z-index: 99;}
