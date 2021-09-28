@@ -3,7 +3,7 @@
   
   <!-- Start Image Croping Modal -->
   <div id="uploadliveStreamVideoModal" class="modal" role="dialog" style="z-index:999999 ">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title zheadslz">Add Stream Schedule</h4> 
@@ -76,14 +76,16 @@
       <div class="col-sm-12">
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
-               <div class="iq-header-title">
+               <div class="iq-header-title w-100">
                   <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
                   <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
                   <input type="hidden" id="hidden_task_level" value="<?php echo $task_level; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
+                  <div class="d-flex justify-content-between w-100">
                   <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
+                </div>
 
 
                </div>
