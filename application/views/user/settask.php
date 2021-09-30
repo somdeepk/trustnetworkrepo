@@ -11,42 +11,35 @@
             <div class="modal-body">
               <div class="row">
                   <!--left-->
-                  <div class="form-group col-sm-12">
+                  <div class="form-group col-sm-6">
                      <label for="first_name">Video Title:</label>
                      <input type="text" ng-model="liveStreamData.video_title" id="video_title" maxlength="100" class="form-control">
                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.video_title)==true)? 'Video Title Required' : ''}}</div>
                   </div>
                   <div class="form-group col-sm-6">
-                    <!-- <datetimepicker data-ng-model="data.date"></datetimepicker> -->
-
-                  <!--   <input class="form-control"
-       ng-model="ctrl.input"
-       ng-model-options="{ updateOn: 'blur' }"
-       placeholder="Select a date..."
-       moment-picker="ctrl.input"> -->
 
                     <label for="dob">Start Time:</label>
                     <input class="form-control" style="background: transparent;" ng-model="liveStreamData.star_time" id="liveStreamStartTime" type="text" autocomplete="off" dateandtimepicker>
                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.star_time)==true)? 'Start Time Required' : ''}}</div>
                   </div>
 
-                  <div class="form-group col-sm-6">
+                  <!-- <div class="form-group col-sm-6">
                     <label for="dob">End Time:</label>
-                    <input class="form-control"  style="background: transparent;" ng-model="liveStreamData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" dateandtimepicker > <!-- datetimepicker -->
+                    <input class="form-control"  style="background: transparent;" ng-model="liveStreamData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" dateandtimepicker >
                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.end_time)==true)? 'End Time Required' : ''}}</div>
-                  </div>
+                  </div> -->
 
                   <div class="form-group col-sm-12">
                      <label for="address">Description:</label>
                      <textarea class="form-control" ng-model="liveStreamData.description" id="description" autocomplete="off" rows="3" style="line-height: 22px;"></textarea>
                   </div>
 
-                  <div ng-if="session_is_admin=='Y'" class="col-sm-12 padding-lr0 mb10">
+                 <!--  <div ng-if="session_is_admin=='Y'" class="col-sm-12 padding-lr0 mb10">
                     <div id="uploaded_image">
                       <video ng-if="value.video_number>0" width="100%" height="200" controls>
                         <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
                       </video>
-                      <div class="text-center"><img class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:80px; margin: 0 auto;"></div> <!-- ng-if="value.video_number==0" -->
+                      <div class="text-center"><img class="profile-pic" src="<?php echo IMAGE_URL;?>taskvideo/no-video.png" alt="No Video" style="width:;height:80px; margin: 0 auto;"></div> 
                     </div>
 
                     <div class="clear50"></div>
@@ -65,7 +58,7 @@
                     </div>
                   </div>
                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && emptyLiveStreamVideoCheck==true)? 'Video Required' : ''}}</div>
-                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && emptyLiveStreamVideoExtensionCheck==true)? 'Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only' : ''}}</div>
+                  <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && emptyLiveStreamVideoExtensionCheck==true)? 'Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only' : ''}}</div> -->
                   <!--/left-->                  
               </div>
             </div>
@@ -112,30 +105,30 @@
                <ul class="request-list list-inline m-0 p-0">
 
                   <li class="d-flex align-items-center">
-                     <div class="media-support-info ml-3">
+                     <div class="media-support-info ml-4">
                         <h6>Title</h6>
                      </div>
-                     <div class="media-support-info ml-3">
+                     <div class="media-support-info ml-4">
                         <h6>Star Time</h6>
                      </div>
-                     <div class="media-support-info ml-3">
+                    <!--  <div class="media-support-info ml-3">
                         <h6>End Time</h6>
-                     </div>
+                     </div> -->
                      <div class="d-flex align-items-center">
                         Action
                      </div>
                   </li>
 
                   <li ng-repeat="(key, value) in allLiveStreamVideoData" class="d-flex align-items-center">
-                     <div class="media-support-info ml-3">
+                     <div class="media-support-info ml-4">
                         <h6>{{value.video_title}}</h6>
                      </div>
-                     <div class="media-support-info ml-3">
+                     <div class="media-support-info ml-4">
                         <h6>{{value.display_star_time}}</h6>
                      </div>
-                      <div class="media-support-info ml-3">
+                    <!-- <div class="media-support-info ml-3">
                         <h6>{{value.display_end_time}}</h6>
-                     </div>
+                     </div> -->
                      <div class="d-flex align-items-center">
                         
                         <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
@@ -212,7 +205,6 @@
                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && videoIncree== (key+1) && emptyVideoCheck==true)? 'Video Required' : ''}}</div>
 
                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(videoDataCheck==true && videoIncree== (key+1) && videoExtensionCheck==true)? 'Please Upload mp4, wmv, avi, 3gp, mov, mpeg Only' : ''}}</div>
-
                            
                         </div>
                      </div>
@@ -221,12 +213,7 @@
             </div>
          </div>
       </div>
-
-
-
     </div>
   </div>
   <!-- End Video Section-->
-
-
 </div>

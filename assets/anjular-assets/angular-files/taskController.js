@@ -93,7 +93,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		if (Number(validator)==0)
 		{	
 
-			$scope.taskData.old_video=$scope.allVideoListObj[(video_number-1)].video_name;
+			//$scope.taskData.old_video=$scope.allVideoListObj[(video_number-1)].video_name;
 			$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Uploading..','loader');
 			$scope.taskData.video_number=video_number;
 
@@ -170,6 +170,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			$scope.liveStreamDataCheck=false ;
 		},2000);
 
+		//alert($scope.liveStreamData.star_time)
 		var validator=0;
 		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.video_title)==true) || ($scope.liveStreamData.video_title=='¿'))
 		{
@@ -179,11 +180,11 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		{
 			validator++ ;
 		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.end_time)==true) || ($scope.liveStreamData.end_time=='¿'))
+		/*if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.end_time)==true) || ($scope.liveStreamData.end_time=='¿'))
 		{
 			validator++ ;
-		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.files[0])==true))
+		}*/
+		/*if (($scope.isNullOrEmptyOrUndefined($scope.files[0])==true))
 		{
 			$scope.emptyLiveStreamVideoCheck=true ;
 			$timeout(function()
@@ -210,7 +211,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	            validator++ ;
 			}
 		}
-		
+		*/
 		if (Number(validator)==0)
 		{
 			$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploading..','loader');
@@ -235,10 +236,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{            		
-            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploaded!','onlytext');
+            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Submited!','onlytext');
             		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Upload','onlytext');
+						$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Submit Schedule','onlytext');
 						$scope.files = [];
 	            		$scope.liveStreamData={}
 	            		$('#file_ls_video_upload').val("");
@@ -254,7 +255,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             		$scope.files = [];
             		$scope.liveStreamData={}
             		$('#file_ls_video_upload').val("");
-            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Upload','onlytext');
+            		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Submit Schedule','onlytext');
             		$('#uploadliveStreamVideoModal').modal('hide');
             		swal("Error!",
 		        		"Live Stream Video Set Failed!",
@@ -281,10 +282,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		
 
     	$scope.liveStreamData.id=valobj.id;
-    	$scope.liveStreamData.old_video=valobj.video_name;
+    	//$scope.liveStreamData.old_video=valobj.video_name;
     	$scope.liveStreamData.video_title=valobj.video_title;
     	$scope.liveStreamData.star_time=valobj.star_time;
-    	$scope.liveStreamData.end_time=valobj.end_time;
+    	//$scope.liveStreamData.end_time=valobj.end_time;
     	$scope.liveStreamData.description=valobj.description;
     	$('#uploadliveStreamVideoModal').modal('show');    	
 	};

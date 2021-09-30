@@ -287,9 +287,6 @@ class User extends CI_Controller
         exit;
     }
 
-
-
-
     public function ajaxSendFriendRequest() 
     {
     	$friendData=$this->input->get_post('friendData');
@@ -1055,6 +1052,14 @@ class User extends CI_Controller
 			$this->load->view('user/footer-top');
 			$this->load->view('user/footer');
 		}
+		elseif(!empty($task_level) && ($membershipType=="RM" && $isAdmin=="N"))
+		{
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/settask', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
 		else
 		{
 			redirect('user/index');
@@ -1072,9 +1077,7 @@ class User extends CI_Controller
         $membership_type=(isset($aryTaskData['membership_type']) && !empty($aryTaskData['membership_type']))? addslashes(trim($aryTaskData['membership_type'])):'';
         $video_number=(isset($aryTaskData['video_number']) && !empty($aryTaskData['video_number']))? addslashes(trim($aryTaskData['video_number'])):1;
         $old_video=(isset($aryTaskData['old_video']) && !empty($aryTaskData['old_video']))? addslashes(trim($aryTaskData['old_video'])):'';
-
         //exit;
-
 
 		$current_date=date('Y-m-d H:i:s');   
 
@@ -1190,9 +1193,9 @@ class User extends CI_Controller
         $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
         $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
         $star_time=(isset($aryLSVideoData['star_time']) && !empty($aryLSVideoData['star_time']))? addslashes(trim($aryLSVideoData['star_time'])):'';
-        $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';
+       /* $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';*/
         $description=(isset($aryLSVideoData['description']) && !empty($aryLSVideoData['description']))? trim($aryLSVideoData['description']):'';
-        $old_video=(isset($aryLSVideoData['old_video']) && !empty($aryLSVideoData['old_video']))? addslashes(trim($aryLSVideoData['old_video'])):'';
+        //$old_video=(isset($aryLSVideoData['old_video']) && !empty($aryLSVideoData['old_video']))? addslashes(trim($aryLSVideoData['old_video'])):'';
 
 		$current_date=date('Y-m-d H:i:s');   
 
@@ -1204,7 +1207,25 @@ class User extends CI_Controller
 
         $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
 
-        if (!empty($_FILES['file']['name']))
+        $ls_video_id=0;
+        if($task_level_id>0)
+        {
+	        $menu_arr = array(
+	            'task_level_id'=>$task_level_id,
+	            'video_title'   =>$video_title,
+	            'star_time'   =>date('Y-m-d H:i:s',strtotime($star_time)),
+	            'description'   =>$description,            
+	            'create_date'   =>$current_date		            
+	        );
+
+	        /*echo $id."ss<pre>";
+        print_r($menu_arr);
+        exit;*/
+
+	        $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+	    }
+        
+        /*if (!empty($_FILES['file']['name']))
         {
             $videofile = json_encode($_FILES);
         } else {
@@ -1267,7 +1288,7 @@ class User extends CI_Controller
 	                }
                 }                
             }
-        }
+        }*/
 
 
         $returnData=array();
@@ -1507,6 +1528,91 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+    public function ajaxGetAllNotification() 
+    {
+    	$notificationData=$this->input->get_post('notificationData');
+    	$aryNotificationData=json_decode($notificationData, true);
+		$aryLiveStreamScheduleNotification = $this->User_Model->ajaxGetLiveStreamScheduleNotification($aryNotificationData);
+		$allNotificationData=array();
+		if(count($aryLiveStreamScheduleNotification))
+		{
+			foreach($aryLiveStreamScheduleNotification as $k=>$v)
+			{
+				$allNotificationData[$k]['strtext']="Next Live Streaming on ".date('m-d-Y h:i A',strtotime($v['star_time']));
+				$allNotificationData[$k]['strdate']=date('m-d-Y h:i A',strtotime($v['create_date']));
+				$allNotificationData[$k]['stricon']='ri-broadcast-fill';
+			}
+		}
+
+		/*echo "ss<pre>";
+		print_r($allNotificationData);
+        exit;*/
+
+		//$allNotificationData[0]=$aryLiveStreamScheduleNotification;
+		/*echo "ss<pre>";
+		print_r($allNotificationData);
+        exit;*/
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('allNotificationData'=>$allNotificationData);
+
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGetAllGroup() 
+    {
+ 		$allGroupData = $this->User_Model->get_group_data();
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('allGroupData'=>$allGroupData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGenerateSetTaskMenu() 
+    {
+    	$leftMenuData=$this->input->get_post('leftMenuData');
+    	$aryLeftMenuData=json_decode($leftMenuData, true);
+
+    	$member_id=$aryLeftMenuData['user_auto_id'];
+    	$membership_type=$aryLeftMenuData['membership_type'];
+    	$is_admin=$aryLeftMenuData['is_admin'];
+
+    	$allTaskLevelData=array();
+    	if($membership_type=='RM' && $is_admin=='N')
+    	{
+    		$member_max_level = $this->User_Model->get_member_max_level($member_id);
+			for ($k = 1; $k <= $member_max_level; $k++)
+			{
+				$allTaskLevelData[$k]['is_disabled']='Y';
+				if($k==$member_max_level)
+				{
+					$allTaskLevelData[$k]['is_disabled']='N';
+				}
+			}
+    	}
+
+		/*
+		echo "ss<pre>";
+		print_r($allTaskLevelData);
+        exit;
+        */
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('allTaskLevelData'=>$allTaskLevelData);
+
+        echo json_encode($returnData);
+        exit;
+    }
+
 
 }
 	

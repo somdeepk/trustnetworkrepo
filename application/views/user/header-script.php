@@ -44,6 +44,7 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/editProfileController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/profileController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/leftMenuController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/notificationController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/taskController.js"></script>
 
 

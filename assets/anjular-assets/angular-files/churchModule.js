@@ -297,7 +297,7 @@ mainApp.directive('dateandtimepicker', function(){
         showTodayButton: true,
         showClose: true, //close the picker
         showClear: true, //clear selection 
-        format: 'YYYY-MM-DD hh:mm A',
+        format: 'YYYY-MM-DD HH:mm',
        // autoClose:1,
         inline: false, 
         sideBySide: true,
@@ -306,7 +306,40 @@ mainApp.directive('dateandtimepicker', function(){
           horizontal: 'auto',
           vertical: 'bottom'
         }
-      });
+      }).on('dp.change', function(dttm) {
+			var thisId=attrs.id;
+			if (dttm.date._d!=undefined) {
+				/*var res = thisId.replace("start", "finish");
+				if ($('#'+res).data("DateTimePicker")) {
+					$('#'+res).data("DateTimePicker").minDate(dttm.date);
+				}*/
+				var selectDate=dttm.date._d.getDate();
+				var str = selectDate.toString();
+				var newSelectedDate=(str.length<2)? "0" + str : str ;
+				var selectYear=dttm.date._d.getFullYear();
+				var mstr=(Number(dttm.date._d.getMonth())+1).toString();
+				var newSelectedMonth=(mstr.length<2)? "0" + mstr : mstr ;
+				var hstr=(dttm.date._d.getHours()).toString();
+				var newSelectedHour=(hstr.length<2)? "0" + hstr : hstr ;
+				var mistr=(dttm.date._d.getMinutes()).toString();
+				var newSelectedMinute=(mistr.length<2)? "0" + mistr : mistr ;
+				var sstr=(dttm.date._d.getSeconds()).toString();
+				var newSelectedSecond=(sstr.length<2)? "0" + sstr : sstr ;
+				var modstr=selectYear+'-'+newSelectedMonth+'-'+newSelectedDate+' '+newSelectedHour+':'+newSelectedMinute; //+':'+newSelectedSecond ;
+			} else {
+				var modstr='';
+			}
+			$('#'+thisId).val(modstr);
+			scope.liveStreamData.star_time=modstr;
+			//alert(modstr)
+			/*var tArr=thisId.split('_');
+			var indx=tArr[1];*/
+			//scope.taskObj.taskDetails[indx].startTimeStr=modstr ;
+			/*if ($('#'+thisId)) {
+				ngModelCtrl.$setViewValue($('#'+thisId).val());
+			}*/
+			//$(this).data('DateTimePicker').hide();
+		});
       /*
       element.on("dp.show", function (e) {  
         $('[data-action="today"] span').removeClass('glyphicon-screenshot').addClass('glyphicon-calendar');

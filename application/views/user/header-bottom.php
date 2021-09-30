@@ -15,7 +15,7 @@ exit;*/
 <div class="wrapper">
     <!-- Sidebar  -->
     
-      <div class="iq-sidebar" ng-controller="leftMenuController">
+      <div class="iq-sidebar" ng-controller="leftMenuController" ng-init="init_left_menu(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>')">
           <div id="sidebar-scrollbar">
              <?php if ($memberIsApproved=="Y"){ ?>
              <nav class="iq-sidebar-menu">
@@ -42,15 +42,17 @@ exit;*/
                        <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
                        <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
                        <?php } ?>
-                       <li><a href="#"><i class="ri-device-line"></i>School Friends</a></li>
+                       <li ng-repeat="(key, value) in allGroupObj"><a href="#"><i class="ri-device-line"></i>{{value.name}}</a></li>
+                       <!-- <li><a href="#"><i class="ri-toggle-line"></i>School Friends</a></li>
                        <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
                        <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
-                       <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li>
+                       <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li> -->
                     </ul>
                   </li>
                   <li>
-                    <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
+                    
                     <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>Set Task <!-- Assigned --></span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
                     <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                        <li><a href="javascript:void(0);" ng-click="set_task('levelone')"><i class="ri-tablet-line"></i>Level 1</a></li>
                        <li><a href="javascript:void(0);" ng-click="set_task('leveltwo')"><i class="ri-tablet-line"></i>Level 2</a></li>
@@ -59,7 +61,13 @@ exit;*/
                        <li><a href="javascript:void(0);" ng-click="set_task('levelfive')"><i class="ri-tablet-line"></i>Level 5</a></li>
                        <li><a href="javascript:void(0);" ng-click="set_task('levelsix')"><i class="ri-tablet-line"></i>Level 6</a></li>
                     </ul>
+                    <?php }elseif($membershipType=="RM" && $isAdmin=="N"){ ?>
+                    <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                       <li ng-repeat="(key, value) in allTaskLevelObj" ><a ng-class="(value.is_disabled == 'Y') ? 'cssdisabled' : ''" href="javascript:void(0);" ng-click="set_task(key)"><i class="ri-tablet-line"></i>Level {{key}}</a></li>
+                    </ul>
                     <?php } ?>
+
+                     <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
                   <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
                   <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
@@ -215,25 +223,28 @@ exit;*/
                           <div id="lottie-beil"></div>
                           <span class="bg-danger dots"></span>
                        </a>
-                       <div class="iq-sub-dropdown">
+
+                      <!--  ng-repeat="(key, value) in allVideoListObj" -->
+                       <div class="iq-sub-dropdown" ng-controller="notificationController" ng-init="get_all_notifiction(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>');">
                           <div class="iq-card shadow-none m-0">
                              <div class="iq-card-body p-0 ">
                                 <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">4</small></h5>
+                                   <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">{{allNotificationObj.length}}</small></h5>
                                 </div>
-                                <a href="#" class="iq-sub-card" >
+                                <a ng-repeat="(key, value) in allNotificationObj" href="#" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
+                                        <i class="{{value.stricon}}"></i>
+                                         <!-- <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt=""> -->
                                       </div>
                                       <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Emma Watson Bni</h6>
-                                         <small class="float-right font-size-12">Just Now</small>
-                                         <p class="mb-0">95 MB</p>
+                                         <h6 class="mb-0 ">{{value.strtext}}</h6>
+                                         <small class="float-right font-size-12">{{value.strdate}}</small>
+                                        <!--  <p class="mb-0">95s MB</p> -->
                                       </div>
                                    </div>
                                 </a>
-                                <a href="#" class="iq-sub-card" >
+                                <!-- <a href="#" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
@@ -268,7 +279,7 @@ exit;*/
                                          <p class="mb-0">Cyst Bni</p>
                                       </div>
                                    </div>
-                                </a>
+                                </a> -->
                              </div>
                           </div>
                        </div>
