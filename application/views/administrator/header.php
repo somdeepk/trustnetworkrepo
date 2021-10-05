@@ -16,7 +16,7 @@
                     <i class="ti-search"></i>
                 </a>
                 <a href="<?php echo base_url(); ?>administrator/dashboard">
-                    <img class="img-fluid" src="<?php echo base_url(); ?>assets/images/logo-full.png" alt="Follow Me Now" />
+                    <img class="sidebar-logo" src="<?php echo base_url(); ?>assets/images/logo-full.png" alt="Follow Me Now 2" />
                 </a>
                 <a class="mobile-options">
                     <i class="ti-more"></i>
