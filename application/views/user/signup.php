@@ -1,17 +1,11 @@
 <section class="sign-in-page" ng-controller="signupController">
             <div class="container">
+                 <div class="sign-up-inner">
                 <div class="row no-gutters">
-                    <div class="col-md-6 text-center">
-                        <div class="sign-in-detail text-white">
-                            <a class="sign-in-logo" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
-                            <p style="color:#000;">Successful ministry in the 21st Century is evolving at a rapid rate. We believe it will take a delicate combination of both technolgy and biblical teaching to continuing growing body the body of Christ and the individuals who attend the local church.</p>
-                            <p  style="color:#000;"><em style="color:#0391c0; font-weight:400;">The FOLLOW ME NOW-Making Disciples</em> web-based six-month module systems help churches disciple individuals.</p>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6 bg-white">
+                    <div class="col-md-6 order-md-2 pt-0">
                         <div class="sign-in-from">
-                            <h8 class="mb-0">Sign Up</h8>
+                             <a class="sign-in-logo d-block d-md-none" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
+                            <h2 class="mb-0"><strong>Sign Up</strong></h2>
                             <form class="mt-4">
                             
                                 <div class="form-group">
@@ -92,23 +86,34 @@
                                 <div class="d-inline-block w-100">
                                     <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
                                         <input type="checkbox" ng-model="signupData.toc" id="toc" class="custom-control-input">
-                                        <label class="custom-control-label" for="toc">I accept <a href="#" >Terms and Conditions</a></label>
+                                        <label class="custom-control-label" for="toc">I accept <a href="#" ><strong>Terms and Conditions</strong></a></label>
                                     </div>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.toc)==true)? 'Please Accept  T&C' : ''}}</div>
+                                    
                                     <button type="submit" class="btn btn-primary float-right"  ng-click="submitSignup();">Sign Up</button>
+                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.toc)==true)? 'Please Accept  T&C' : ''}}</div>
                                 </div>
                                 <div class="sign-info">
-                                    <span class="dark-color d-inline-block line-height-2">Already Have Account ? <a href="<?php echo base_url();?>user/login">Log In</a></span>
+                                    <span class="dark-color d-inline-block line-height-2">Already Have Account ? <a href="<?php echo base_url();?>user/login"><strong>Log In</strong></a></span>
                                     <ul class="iq-social-media">
                                         <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                         <li><a href="#"><i class="ri-google-line"></i></a></li>
                                         <li><a href="#"><i class="ri-twitter-line"></i></a></li>
-                                        <li><a href="#"><i class="ri-instagram-line"></i></a></li>
+                                        <!-- <li><a href="#"><i class="ri-instagram-line"></i></a></li> -->
                                     </ul>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    <div class="col-md-6 text-center">
+                        <div class="sign-in-detail text-white">
+                            <a class="sign-in-logo" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
+                            <p style="color:#000;">Successful ministry in the 21st Century is evolving at a rapid rate. We believe it will take a delicate combination of both technolgy and biblical teaching to continuing growing body the body of Christ and the individuals who attend the local church.</p>
+                            <p  style="color:#000;"><em style="color:#0391c0; font-weight:400;">The FOLLOW ME NOW-Making Disciples</em> web-based six-month module systems help churches disciple individuals.</p>
+                        </div>
+
+                    </div>
+                    
                 </div>
+            </div>
             </div>
 </section>

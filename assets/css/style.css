@@ -427,13 +427,17 @@ color: var(--iq-white);
 .sign-in-detail {
 	color: var(--iq-white);
 }
+.sign-up-inner{background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 8px 9px 3px rgba(0,0,0,.5)}
+.sign-up-inner h2{color: #0073aa}
 .sign-in-page {
 	height: 100vh;
-	background: var(--iq-primary)
+	background: var(--iq-primary); position: relative;
 }
+.sign-in-page:before{content: ""; background: rgb(1,163,203,.8);
+background: linear-gradient(180deg, rgba(1,163,203,.8) 0%, rgba(7,73,202,.8) 100%); width: 100%; height: 100%; position: fixed;}
 .sign-in-detail {
-	padding: 80px 0px ;
-	height: 100vh;
+	padding: 30px 0px ;
+	/*height: 100vh;*/
 }
 .sign-in-logo {
 	display: inline-block;
@@ -443,7 +447,7 @@ color: var(--iq-white);
 	height: 70px;
 }
 .sign-in-from {
-	padding: 0 60px;
+	padding: 0 20px 0 20px;
 }
 .sign-info {
 	border-top: 1px solid var(--iq-border-dark);
@@ -488,12 +492,22 @@ section.sign-in-page .bg-white {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	display: flex; align-items: center;
 }
+.sign-in-from{border-left: 1px solid #3393bd;}
+@media (max-width: 768px) {
+
+	.sign-in-page .container {
+	align-items: start; margin-top: 50px;}
+
+	.sign-in-from{border-left: 1px solid #fff;}
+}
+
 .sign-in-page {
 	background: url(../images/bg-3.jpg);
 	position: relative;
-	overflow: hidden;
-	height: 100vh;
+	/*overflow: hidden;
+	height: 100vh;*/
 	width: 100%;
 	margin: 0px auto;
 	padding: 0px auto;
@@ -698,7 +712,7 @@ opacity: 0;
 	border-radius: 5px;
 }
 .iq-sidebar-menu .iq-menu li a {
-	font-size: 14px;
+	font-size: 15px;
 	white-space: nowrap;
 	display: block;
 	color: var(--iq-dark-body-text);
