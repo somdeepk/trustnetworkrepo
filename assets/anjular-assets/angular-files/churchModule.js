@@ -285,6 +285,28 @@ mainApp.directive('dobdate', function() {
 	}
 });
 
+mainApp.directive('dobdatesignup', function() {
+	return {
+		require: 'ngModel',
+		link: function (scope, element, attrs, ngModelCtrl) {
+			//alert(element);
+			element.datepicker({
+				dateFormat:'yy-mm-dd',
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-100:-7",
+				maxDate: -0,
+				onSelect: function (date) {
+					ngModelCtrl.$setViewValue(date);
+					ngModelCtrl.$render();
+					scope.$apply();
+				},
+				
+			});
+		}
+	}
+});
+
 mainApp.directive('dateandtimepicker', function(){
   return {
     require: 'ngModel',

@@ -79,6 +79,41 @@ class User_Model extends CI_Model
 		$resultData=$query->result_array();
 		return $resultData[0];
 	}
+	public function assign_under_group_admin($member_id)
+	{
+		$admin_id=0;
+		$resultData=$this->get_member_data($member_id);
+		if(count($resultData)>0 && $resultData['membership_type']=='RM' && $resultData['is_admin']=='N')
+		{
+			$parent_id=$resultData['parent_id'];
+			$dob=$resultData['dob'];
+			$diff = (date('Y') - date('Y',strtotime($dob)));
+
+			if($diff>0)
+			{
+				$sqlAgeGroup="SELECT * from tn_age_group WHERE min_age<=".$diff." AND max_age>= '".$diff."'";
+				$queryAgeGroup=$this->db->query($sqlAgeGroup);
+				$resultAgeGroupData=$queryAgeGroup->result_array();
+				if(count($resultAgeGroupData)>0)
+				{
+					$agegroup_id=$resultAgeGroupData[0]['id'];
+					$sqlAgeGroupAdmin="SELECT * from tn_members WHERE parent_id='".$parent_id."' AND membership_type='RM' AND is_admin='Y' AND status='1' AND deleted='0' AND agegroup_id='".$agegroup_id."' "; 
+					$queryAgeGroupAdmin=$this->db->query($sqlAgeGroupAdmin);
+					$resultAgeGroupAdminData=$queryAgeGroupAdmin->result_array();
+					if(count($resultAgeGroupAdminData)>0)
+					{
+						$admin_id=$resultAgeGroupAdminData[0]['id'];
+						$menu_arr_group = array(
+				            'admin_id' => $admin_id
+				        );
+						$member_friends_aid = $this->addupdatemember($member_id,$menu_arr_group);
+					}
+				}
+			}
+		}
+
+		return $admin_id;
+	}
 
 	public function ajaxgetPeopleYouMayNowData($user_auto_id,$clickProfileTab="")
 	{
@@ -109,7 +144,7 @@ class User_Model extends CI_Model
 
     			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status!='1')
 
-    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' AND tm.membership_type!='CC' ".$strWhereParam." order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -195,7 +230,7 @@ class User_Model extends CI_Model
 		$parent_id=(isset($aryFriendData['parent_id']) && !empty($aryFriendData['parent_id']))? addslashes(trim($aryFriendData['parent_id'])):0;
 		$membership_type=(isset($aryFriendData['membership_type']) && !empty($aryFriendData['membership_type']))? addslashes(trim($aryFriendData['membership_type'])):'N';        
 		
-		if($membership_type=='CM')
+		if($membership_type=='CM' || $membership_type=='CC')
 		{
 			$strParamWhere=" AND tm.parent_id='".$user_auto_id."'";
 		}
@@ -206,9 +241,14 @@ class User_Model extends CI_Model
 
 		$sql="SELECT 
 				tm.* ,
+				tm2.first_name as admin_first_name,
+				tm2.last_name as admin_last_name,
+				tag.agegroup_name,
 				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
 
 				FROM tn_members as tm
+				LEFT JOIN tn_members as tm2 ON tm2.id=tm.admin_id and tm2.status='1' and tm2.deleted='0'
+				LEFT JOIN tn_age_group as tag ON tag.id=tm.agegroup_id and tag.status='1' and tag.deleted='0'
 				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
 				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." group by tm.id order by first_name ASC";
 		/*$sql="SELECT 
@@ -231,7 +271,7 @@ class User_Model extends CI_Model
 
 	public function get_all_approve_church()
 	{
-		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
+		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND type!='9999' AND status='1' AND deleted='0' order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -252,9 +292,9 @@ class User_Model extends CI_Model
 		}
 	}
 
-	public function check_admin_exist($user_auto_id,$adminid)
+	public function check_age_group_admin_exist($user_auto_id,$adminid,$agegroup_id)
 	{
-		$sql="SELECT * from tn_members WHERE is_admin='Y' AND parent_id='".$user_auto_id."' and id!='".$adminid."' AND deleted='0'";
+		$sql="SELECT * from tn_members WHERE is_admin='Y' AND parent_id='".$user_auto_id."' AND agegroup_id='".$agegroup_id."' AND agegroup_id!='0' and id!='".$adminid."' AND deleted='0'";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		if(count($resultData)>0)
@@ -597,8 +637,7 @@ class User_Model extends CI_Model
 			if(!empty($rowData) && $rowData->maxmemberlevel>0)
 			{
 				$maxmemberlevel=$rowData->maxmemberlevel;
-
-				$maxmemberLevelText=$this->convert_level_number_text($maxmemberlevel);
+				//$maxmemberLevelText=$this->convert_level_number_text($maxmemberlevel);
 			}
 			
 			if($maxmemberlevel>0)
@@ -618,7 +657,7 @@ class User_Model extends CI_Model
 						FROM tn_members as tm
 						LEFT JOIN tn_task_level as ttl ON ttl.church_admin_id=tm.id
 						LEFT JOIN tn_task_level_stream_video as ttlsv ON ttlsv.task_level_id=ttl.id
-						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."' AND ttl.task_level='".$maxmemberLevelText."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.star_time)>=DATE(now()) order by ttlsv.star_time limit 1";
+						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."' AND ttl.task_level='".$maxmemberlevel."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.star_time)>=DATE(now()) order by ttlsv.star_time limit 1";
 				$query=$this->db->query($sql);
 				$result=$query->result_array();
 				if(count($result)>0)
@@ -634,6 +673,34 @@ class User_Model extends CI_Model
 	public function get_group_data()
 	{
 		$sql='SELECT * from tn_group WHERE status="1" AND deleted="0"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function get_abandon_member_under_church($parent_id)
+	{
+		$sql="SELECT * from tn_members WHERE parent_id='".$parent_id."' AND admin_id='0' AND membership_type='RM' AND is_admin='N' AND status='1' AND deleted='0'"; 
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function remove_member_from_group_admin($admin_id=0,$parent_id=0)
+	{
+		$menu_arr=array('admin_id'=>0,'agegroup_id'=>0);
+		$whereAry=array('parent_id'=>$parent_id,'admin_id'=>$admin_id);
+		$this->db->where($whereAry)->update('tn_members',$menu_arr);	
+	}
+
+	public function get_all_age_group_data($id=0)
+	{
+		$strWhereParam="";
+		if($id>0)
+		{
+			$strWhereParam=" AND id!='".$id."'";
+		}
+		$sql="SELECT * from tn_age_group WHERE status='1' AND deleted='0' ".$strWhereParam." order by min_age ";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;

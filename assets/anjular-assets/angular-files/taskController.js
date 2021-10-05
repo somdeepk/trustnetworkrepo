@@ -1,4 +1,7 @@
 mainApp.controller('taskController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
+	
+	$scope.parseInt = parseInt ;
+	$scope.parseFloat = parseFloat 
 		
     $scope.taskData={};
     $scope.videoIncree=0;
@@ -93,7 +96,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		if (Number(validator)==0)
 		{	
 
-			//$scope.taskData.old_video=$scope.allVideoListObj[(video_number-1)].video_name;
+			$scope.taskData.old_video=$scope.allVideoListObj[(video_number-1)].video_name;
 			$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Uploading..','loader');
 			$scope.taskData.video_number=video_number;
 

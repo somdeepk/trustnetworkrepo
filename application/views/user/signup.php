@@ -18,6 +18,7 @@
                                     <select ng-model="signupData.membership_type" id="membership_type" class="form-control mb-0">
                                     <option value="">Select Membership</option>
                                     <option value="RM">Free Membership</option>
+                                    <option value="CC">City Church</option>
                                     <option value="CM">Church Membership</option>
                                     </select>
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.membership_type)==true)? 'Membership Type Required' : ''}}</div>
@@ -47,18 +48,18 @@
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='CM' && isNullOrEmptyOrUndefined(signupData.church_name)==true)? 'Church name Required' : ''}}</div>                                    
                                 </div>                                
                                 
-                                <div class="form-group" ng-if="signupData.membership_type=='RM'">
+                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
                                     <input type="text" ng-model="signupData.first_name" id="first_name" class="form-control mb-0" placeholder="Your First Name">
 
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.first_name)==true)? 'First Name Required' : ''}}</div>
+                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && ( signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.first_name)==true)? 'First Name Required' : ''}}</div>
 
                                 </div>
-                                <div class="form-group" ng-if="signupData.membership_type=='RM'">
+                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
                                     <input type="text" ng-model="signupData.last_name" id="last_name"class="form-control mb-0" placeholder="Your Last Name">
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.last_name)==true)? 'Last Name Required' : ''}}</div>
+                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.last_name)==true)? 'Last Name Required' : ''}}</div>
                                 </div>
 
-                                <div class="form-group" ng-if="signupData.membership_type=='RM'">
+                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
                                     <select ng-model="signupData.gender" id="gender" class="form-control mb-0">
                                         <option value="">Select Gender</option>
                                         <option value="M">Male</option>
@@ -66,19 +67,22 @@
                                         <option value="T">Transgender</option>
                                    </select>
 
-                                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.gender)==true)? 'Gender Required' : ''}}</div>
+                                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.gender)==true)? 'Gender Required' : ''}}</div>
 
                                 </div>
+
+                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
+                                    <input type="text" ng-model="signupData.dob" id="dob" class="form-control mb-0" readonly="true" placeholder="Date Of Birth" dobdatesignup>
+                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
+                                </div>
+
+
 
                                 <div class="form-group">
                                     <input type="text" ng-model="signupData.user_email" id="user_email" class="form-control mb-0" placeholder="Enter email" emailvalidate>
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.user_email)==true)? 'Email Required' : ''}}</div>
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(InvalidEmailCheck==true)? 'Invalid Email' : ''}}</div>
-
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataEmailDupCheck==true)? 'This Email already Exist' : ''}}</div>
-
-
-
                                 </div>
                                 <div class="form-group">
                                     <input type="password" ng-model="signupData.password" id="password" maxlength="15" class="form-control mb-0" placeholder="Password">

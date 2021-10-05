@@ -4,6 +4,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	$scope.allFriendRequestObj={};
 	$scope.allFriendListObj={};
 	$scope.allChurchMemberListObj={};
+	$scope.allAgeGroupObj={};
 	$scope.friendData.clickProfileTab='timelineTab';
 
 	$scope.peopleYouMayNowData = function()
@@ -120,8 +121,12 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		},600);
 	};
 
-	$scope.toggleChurchAdmin = function(adminobj)
+
+
+	$scope.toggleChurchAdmin = function(adminobj,agegroup_id=0)
     {	
+    	/*alert(ageGroupId)
+    	return false*/
     	var adminid=adminobj.id;
     	var is_admin=adminobj.is_admin;
 
@@ -138,6 +143,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		{
 			$scope.friendData.adminid=adminid;
 			$scope.friendData.strAdmin=strAdmin;
+			$scope.friendData.agegroup_id=agegroup_id;
 			var formData = new FormData();
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
@@ -150,19 +156,21 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
+	        		$scope.getAllChurchMember();
+	        		 /*
 	        		if(strAdmin=='Y'){
 	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-primary');
     					$(".zmakeChurchAdminz_"+adminid).addClass('btn-success');
 						$(".zmakeChurchAdminz_"+adminid).css("background-color",'#49f0d3');
 						$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#49f0d3');
-	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-admin-line"></i>Church Admin');
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-admin-line"></i>Church Leader');
 	        		}else{
 	        			$(".zmakeChurchAdminz_"+adminid).removeClass('btn-success');
 	        			$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
 	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
 	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
-	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')
-	        		};     		
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Leader')
+	        		};   */  		
 	        	}
 	        	else if(aryreturnData.status=='2')
 	        	{
@@ -170,21 +178,21 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 					$(".zmakeChurchAdminz_"+adminid).css("background-color",'#ff9b8a');
 	        		$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#ff9b8a');
 					$(".zmakeChurchAdminz_"+adminid).addClass('btn-danger');
-					$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Admin already exist ','onlytext');
+					$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Age group admin already exist ','onlytext');
 	        		$timeout(function()
 					{
 						$(".zmakeChurchAdminz_"+adminid).removeClass('btn-danger');
 	        			$(".zmakeChurchAdminz_"+adminid).css("background-color",'#50b5ff');
 	        			$(".zmakeChurchAdminz_"+adminid).css("bordr-color",'#2aa3fb');
 						$(".zmakeChurchAdminz_"+adminid).addClass('btn-primary');
-	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i>Create Admin')	       
+	        			$(".zmakeChurchAdminz_"+adminid).html('<i class="ri-user-add-line"></i> Create Leader')	       
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Create Admin','onlytext');
+	        		$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Create Leader','onlytext');
 	        		swal("Error!",
-		        		"Admin Creation Failed!",
+		        		"Leader Creation Failed!",
 		        		"error"
 		        	)
 	        	}
@@ -439,6 +447,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	if(aryreturnData.status=='1')
 	        	{
 	        		$scope.allChurchMemberListObj=aryreturnData.data.churchMemberListData;
+	        		$scope.allAgeGroupObj=aryreturnData.data.allAgeGroupData;
 	        	}
 	        	else
 	        	{

@@ -23,7 +23,7 @@
                           <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" alt="profile-img" class="avatar-130 img-fluid" />
                        </div>
                        <div class="profile-detail">
-                          <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #e5aaff">(<i class="ri-admin-line"> Admin</i> ) </span></h3>
+                          <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span></h3>
                        </div>
                     </div>
                     <div class="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
@@ -239,8 +239,6 @@
         </div> 
         <!-- End Friend List-->
 
-
-
         <!-- Start Church Member Request-->
         <div class="container" ng-class="(friendData.clickProfileTab == 'churchmemberTab') ? '' : 'hiddenimportant'">
          <div class="row">
@@ -253,24 +251,57 @@
                   </div>
                   <div class="iq-card-body">
                      <ul class="request-list m-0 p-0">
+                        <li class="d-flex align-items-center">
+                           <div class="media-support-info ml-4">
+                              <h6>Name</h6>
+                           </div>
+                           <div class="media-support-info ml-4">
+                              <h6>Leader Name</h6>
+                           </div>
+                           <div class="media-support-info ml-4">
+                              <h6>Age Group</h6>
+                           </div>
+                           <div class="d-flex align-items-center">
+                              Action
+                           </div>
+                        </li>
+
                         <li ng-repeat="(key, value) in allChurchMemberListObj" class="d-flex align-items-center">
                            <div class="user-img img-fluid">
                             <img class="rounded-circle avatar-40" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
-                            <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
+                            <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{value.first_name+' '+value.last_name}}">
                             </div>
                            <div class="media-support-info ml-3">
-                              <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
+                              <!-- <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6> -->
+                              <h6>{{value.first_name+' '+value.last_name}}</h6>
                               <p class="mb-0">{{value.user_email}}</p>
                            </div>
+                           
+                           <div class="media-support-info ml-4">
+                              <h6>{{(isNullOrEmptyOrUndefined(value.admin_first_name)==false)? value.admin_first_name : ''}} {{(isNullOrEmptyOrUndefined(value.admin_last_name)==false)? value.admin_last_name : ''}}</h6>
+                           </div>
+                           <div class="media-support-info ml-4">
+                              <h6>{{value.agegroup_name}}</h6>
+                           </div>
                            <div class="d-flex align-items-center">
-                              <a ng-if="friendData.membership_type == 'CM'" href="javascript:void();" ng-click="toggleChurchAdmin(value);" ng-class="(value.is_admin=='Y') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zmakeChurchAdminz_{{value.id}}"><i ng-if="value.is_admin == 'N'" class="ri-user-add-line"></i> <i ng-if="value.is_admin == 'Y'" class="ri-admin-line"></i>{{(value.is_admin=='Y')? 'Church Admin' : 'Create Admin'}}</a>
+                              
+                              <a ng-if="(friendData.membership_type == 'CM' || friendData.membership_type == 'CC') && value.is_admin == 'Y'" href="javascript:void();" ng-click="toggleChurchAdmin(value);" class="mr-3 btn btn-success rounded zmakeChurchAdminz_{{value.id}}"><i class="ri-admin-line"></i>Church Leader</a>
+
+                              <div ng-if="(friendData.membership_type == 'CM' || friendData.membership_type == 'CC') && value.is_admin == 'N'" class="iq-card-header-toolbar d-flex align-items-center">
+                                <div class="dropdown">
+                                  <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded zmakeChurchAdminz_{{value.id}}" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-user-add-line"></i>Create Leader</a>
+                                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                      <a ng-repeat="(keyAG, valueAG) in allAgeGroupObj" ng-click="toggleChurchAdmin(value,valueAG.id);" class="dropdown-item" href="#"><i class="ri-group-2-fill"></i> {{valueAG.agegroup_name}}</a>
+                                   </div>
+                                </div>
+                             </div>
+
                               <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level ('+value.maxmemberlevel+')' : 'Set Level'}}</a>
                            </div>
                         </li>
                         <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
                           No suggestion found! 
                         </li>
-                        
                      </ul>
                   </div>
                </div>
@@ -278,8 +309,6 @@
          </div>
         </div>
         <!-- END Church Member-->
-
-
      </div>
   </div>
 </div>

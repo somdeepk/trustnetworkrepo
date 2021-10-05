@@ -80,11 +80,11 @@
                <div class="iq-header-title w-100">
                   <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
                   <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
-                  <input type="hidden" id="hidden_task_level" value="<?php echo $task_level; ?>">
+                  <input type="hidden" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
                   <div class="d-flex justify-content-between w-100">
-                  <h4 class="card-title">Set Task [<?php echo $str_task_level; ?>]</h4> 
+                  <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [Level <?php echo $argument['task_level']; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
                 </div>
 
@@ -169,7 +169,7 @@
                            <div class="profile-detail d-flex"> 
                               <!--left-->
                               <div class="col-sm-12 padding-lr0 mb10">
-                                <strong>Video {{key+1}}</strong>
+                                <strong>Video {{parseInt(key)+1}}</strong>
                                 <div id="uploaded_image" ng-class="(value.video_number==0) ? 'height209' : ''">
                                   <video ng-if="value.video_number>0" width="100%" height="200" controls>
                                     <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">

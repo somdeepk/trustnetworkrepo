@@ -39,7 +39,7 @@ exit;*/
                   <li>
                     <a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="group" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                       <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
+                       <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
                        <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
                        <?php } ?>
                        <li ng-repeat="(key, value) in allGroupObj"><a href="#"><i class="ri-device-line"></i>{{value.name}}</a></li>
@@ -54,12 +54,12 @@ exit;*/
                     <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>Set Task <!-- Assigned --></span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
                     <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                       <li><a href="javascript:void(0);" ng-click="set_task('levelone')"><i class="ri-tablet-line"></i>Level 1</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('leveltwo')"><i class="ri-tablet-line"></i>Level 2</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('levelthree')"><i class="ri-tablet-line"></i>Level 3</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('levelfour')"><i class="ri-tablet-line"></i>Level 4</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('levelfive')"><i class="ri-tablet-line"></i>Level 5</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('levelsix')"><i class="ri-tablet-line"></i>Level 6</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('1')"><i class="ri-tablet-line"></i>Level 1</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('2')"><i class="ri-tablet-line"></i>Level 2</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('3')"><i class="ri-tablet-line"></i>Level 3</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('4')"><i class="ri-tablet-line"></i>Level 4</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('5')"><i class="ri-tablet-line"></i>Level 5</a></li>
+                       <li><a href="javascript:void(0);" ng-click="set_task('6')"><i class="ri-tablet-line"></i>Level 6</a></li>
                     </ul>
                     <?php }elseif($membershipType=="RM" && $isAdmin=="N"){ ?>
                     <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -240,7 +240,7 @@ exit;*/
                                       <div class="media-body ml-3">
                                          <h6 class="mb-0 ">{{value.strtext}}</h6>
                                          <small class="float-right font-size-12">{{value.strdate}}</small>
-                                        <!--  <p class="mb-0">95s MB</p> -->
+                                         <p class="mb-0">{{value.strcaption}}</p>
                                       </div>
                                    </div>
                                 </a>

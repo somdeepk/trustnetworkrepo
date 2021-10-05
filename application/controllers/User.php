@@ -34,6 +34,7 @@ class User extends CI_Controller
 
         $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
         $gender=(isset($aryMemberData['gender']) && !empty($aryMemberData['gender']))? addslashes(trim($aryMemberData['gender'])):'';
+        $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d',strtotime($aryMemberData['dob'])) :NULL;
 
         $user_email=(isset($aryMemberData['user_email']) && !empty($aryMemberData['user_email']))? addslashes(trim($aryMemberData['user_email'])):'';
         $password=(isset($aryMemberData['password']) && !empty($aryMemberData['password']))? addslashes(trim($aryMemberData['password'])):'';     
@@ -42,6 +43,11 @@ class User extends CI_Controller
 		if($membership_type=="CM")
 		{
 			$first_name=$church_name;
+		}
+		elseif($membership_type=="CC")
+		{
+			$church_id=1;//City Church
+			$membership_type='RM';
 		}
 
         $flagDupEmail = $this->User_Model->check_dup_email($user_email);
@@ -61,6 +67,7 @@ class User extends CI_Controller
 	            'parent_id'  =>$church_id,
 	            'gender'  =>$gender,
 	            'marital_status'  =>'',
+	            'dob'  =>$dob,
 	            'membership_type'  =>$membership_type,
 	            //'church_id'  =>$church_id,
 	            'user_email'  =>$user_email,
@@ -69,7 +76,8 @@ class User extends CI_Controller
 	            'create_date'  =>$current_date,
 	        );
 
-			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+			$lastId = $this->User_Model->addupdatemember(0,$menu_arr);
+			$parent_leader_id=$this->User_Model->assign_under_group_admin($lastId);
 
 			if($lastId>0)
 			{
@@ -77,6 +85,7 @@ class User extends CI_Controller
 
 				$userLoginData['login']=true;
 				$userLoginData['user_auto_id']=$userLoginData['id'];
+				$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
 				$this->session->set_userdata($userLoginData);
@@ -136,11 +145,13 @@ class User extends CI_Controller
 		if(!empty(trim($email)) && !empty(trim($password)))
 		{
 			$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
-
 			if(count($userLoginData))
-			{			 	
+			{
+				$parent_leader_id=$this->User_Model->assign_under_group_admin($userLoginData['id']);
+
 			 	$userLoginData['login']=true;
 			 	$userLoginData['user_auto_id']=$userLoginData['id'];
+			 	$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
 			 	$this->session->set_userdata($userLoginData);
@@ -273,6 +284,7 @@ class User extends CI_Controller
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
 		$churchMemberListData = $this->User_Model->ajaxGetAllChurchMember($aryFriendData);
+		$allAgeGroupData = $this->User_Model->get_all_age_group_data(0);
 
 		/*echo "ss<pre>";
 		print_r($churchMemberListData);
@@ -281,7 +293,7 @@ class User extends CI_Controller
 		$returnData=array();
         $returnData['status']='1';
         $returnData['msg']='';
-        $returnData['data']=array('churchMemberListData'=>$churchMemberListData);
+        $returnData['data']=array('churchMemberListData'=>$churchMemberListData,'allAgeGroupData'=>$allAgeGroupData);
        
         echo json_encode($returnData);
         exit;
@@ -337,38 +349,57 @@ class User extends CI_Controller
   		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
 		$adminid=(isset($aryFriendData['adminid']) && !empty($aryFriendData['adminid']))? addslashes(trim($aryFriendData['adminid'])):0;
 		$strAdmin=(isset($aryFriendData['strAdmin']) && !empty($aryFriendData['strAdmin']))? addslashes(trim($aryFriendData['strAdmin'])):'N';
+		$agegroup_id=(isset($aryFriendData['agegroup_id']) && !empty($aryFriendData['agegroup_id']))? addslashes(trim($aryFriendData['agegroup_id'])):'N';
         $current_date=date('Y-m-d H:i:s');
 
-        $flagAdminExist = $this->User_Model->check_admin_exist($user_auto_id,$adminid);
+        $flagAdminExist = $this->User_Model->check_age_group_admin_exist($user_auto_id,$adminid,$agegroup_id);
 
 		if($flagAdminExist==1)
 		{
 			$returnData['status']='2';
 			$returnData['msg']='admin_aleady_exist';
-			$returnData['msgstring']='Admin already Exist For This Church';
+			$returnData['msgstring']='Leader already Exist Of This Age Group';
 			$returnData['data']=array();
 		}
 		else
 		{
 			$menu_arr = array(
+	            'agegroup_id'  =>$agegroup_id,
+	            'admin_id'  =>0,
 	            'is_admin'  =>$strAdmin,
 	            'admin_create_date'  =>$current_date
 	        );
 
 			$lastId = $this->User_Model->addupdatemember($adminid,$menu_arr);
+		
+			if($strAdmin=='Y')
+			{
+				$ary_member_under_group=$this->User_Model->get_abandon_member_under_church($user_auto_id);
+				if(count($ary_member_under_group)>0)
+				{
+					foreach($ary_member_under_group as $k=>$v)
+					{
+						$parent_leader_id=$this->User_Model->assign_under_group_admin($v['id']);
+					}
+				}			
+			}
+			elseif($strAdmin=='N')
+			{
+				$ary_member_under_group=$this->User_Model->remove_member_from_group_admin($adminid,$user_auto_id);
+			}
 
 	 		if($lastId>0)
 			{
 		        $returnData['status']='1';
 		        $returnData['msg']='success';
-		        $returnData['msgstring']='Admin Created Successfully';
+		        $returnData['msgstring']='Leader Created Successfully';
 		        $returnData['data']=array('userLoginData'=>$userLoginData);
 			}
 			else
 			{
 				$returnData['status']='0';
 		        $returnData['msg']='error';
-		        $returnData['msgstring']='Admin Creation Failed';
+		        $returnData['msgstring']='Leader Creation Failed';
 		        $returnData['data']=array();
 			}
 		}
@@ -799,7 +830,7 @@ class User extends CI_Controller
 		$data=array();
 
 		$membershipType=$this->session->userdata('membership_type');
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
 			$data['profileTab']='churchrequestTab';//$this->input->post_get('tab');
 			$msg=$this->input->post_get('msg');
@@ -826,7 +857,7 @@ class User extends CI_Controller
 		$data=array();
 
 		$membershipType=$this->session->userdata('membership_type');
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
 			$data['profileTab']='churchlistTab';//$this->input->post_get('tab');
 			$msg=$this->input->post_get('msg');
@@ -853,7 +884,7 @@ class User extends CI_Controller
 		$data=array();
 
 		$membershipType=$this->session->userdata('membership_type');
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
 
 			$data['profileTab']='memberrequestTab';//$this->input->post_get('tab');
@@ -881,7 +912,7 @@ class User extends CI_Controller
 		$data=array();
 
 		$membershipType=$this->session->userdata('membership_type');
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
 			$data['profileTab']='memberlistTab';//$this->input->post_get('tab');
 			$msg=$this->input->post_get('msg');
@@ -964,7 +995,7 @@ class User extends CI_Controller
 		$membershipType=$this->session->userdata('membership_type');
 		$isAdmin=$this->session->userdata('is_admin');
 
-		if($membershipType=="CM" || $isAdmin=="Y")
+		if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y")
 		{
 			$data['profileTab']='churchmemberTab';//$this->input->post_get('tab');
 			$msg=$this->input->post_get('msg');
@@ -994,66 +1025,44 @@ class User extends CI_Controller
 		$user_auto_id=$this->session->userdata('user_auto_id');
 		$parent_id=$this->session->userdata('parent_id');
 
-		if(!empty($task_level) && ($membershipType=="CM" || $isAdmin=="Y"))
+		if(!empty($task_level) && ( ($membershipType=="CM" || $isAdmin=="Y") || ($membershipType=="RM" && $isAdmin=="N") ) )
 		{
 			$argument=array();
 			$argument['membershipType']=$membershipType;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
 			$argument['task_level']=$task_level;
-			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
-			$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+			$argument['isAdmin']=$isAdmin;
+			
 			/*echo "<pre>";
-			print_r($taskMin3VideoLevelData);
+			print_r($argument);
 			exit;*/
-			$data['task_level']=$task_level;
-
-			if($task_level=='levelone')
-			{
-				$str_task_level='Level 1';
-			}
-			elseif($task_level=='leveltwo')
-			{
-				$str_task_level='Level 2';
-			}
-			elseif($task_level=='levelthree')
-			{
-				$str_task_level='Level 3';
-			}
-			elseif($task_level=='levelfour')
-			{
-				$str_task_level='Level 4';
-			}
-			elseif($task_level=='levelfive')
-			{
-				$str_task_level='Level 5';
-			}
-			elseif($task_level=='levelsix')
-			{
-				$str_task_level='Level 6';
-			}			
-			$data['str_task_level']=$str_task_level;
-
+			/*			
 			$argument=array();
 			$argument['membershipType']=$membershipType;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
-			$argument['task_level']=$task_level;
-			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
-			$data['liveStreamVideoData']=json_encode($liveStreamVideoData);
+			$argument['task_level']=$task_level;*/
+
+			if($membershipType=="CM" || $isAdmin=="Y")
+			{
+				$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
+				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+
+				$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+				$data['liveStreamVideoData']=json_encode($liveStreamVideoData);
+			}
+			elseif($membershipType=="RM" && $isAdmin=="N")
+			{
+
+			}
+		
+			$data['argument']=$argument;
 
 			/*echo "ss<pre>";
 			print_r($liveStreamVideoData);
 			exit;*/
 
-			$this->load->view('user/header-script');
-			$this->load->view('user/header-bottom');
-			$this->load->view('user/settask', $data);
-			$this->load->view('user/footer-top');
-			$this->load->view('user/footer');
-		}
-		elseif(!empty($task_level) && ($membershipType=="RM" && $isAdmin=="N"))
-		{
 			$this->load->view('user/header-script');
 			$this->load->view('user/header-bottom');
 			$this->load->view('user/settask', $data);
@@ -1077,7 +1086,8 @@ class User extends CI_Controller
         $membership_type=(isset($aryTaskData['membership_type']) && !empty($aryTaskData['membership_type']))? addslashes(trim($aryTaskData['membership_type'])):'';
         $video_number=(isset($aryTaskData['video_number']) && !empty($aryTaskData['video_number']))? addslashes(trim($aryTaskData['video_number'])):1;
         $old_video=(isset($aryTaskData['old_video']) && !empty($aryTaskData['old_video']))? addslashes(trim($aryTaskData['old_video'])):'';
-        //exit;
+        /*echo "old_video-".
+        exit;*/
 
 		$current_date=date('Y-m-d H:i:s');   
 
@@ -1539,14 +1549,15 @@ class User extends CI_Controller
 		{
 			foreach($aryLiveStreamScheduleNotification as $k=>$v)
 			{
-				$allNotificationData[$k]['strtext']="Next Live Streaming on ".date('m-d-Y h:i A',strtotime($v['star_time']));
+				$allNotificationData[$k]['strtext']=$v['video_title']." on ".date('m-d-Y h:i A',strtotime($v['star_time']));
+				$allNotificationData[$k]['strcaption']='Live Streaming';
 				$allNotificationData[$k]['strdate']=date('m-d-Y h:i A',strtotime($v['create_date']));
 				$allNotificationData[$k]['stricon']='ri-broadcast-fill';
 			}
 		}
 
 		/*echo "ss<pre>";
-		print_r($allNotificationData);
+		print_r($allNotificationData);"Live Streaming on "
         exit;*/
 
 		//$allNotificationData[0]=$aryLiveStreamScheduleNotification;

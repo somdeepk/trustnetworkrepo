@@ -23,12 +23,12 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.first_name)==true) || ($scope.signupData.first_name=='¿')))
+		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.first_name)==true) || ($scope.signupData.first_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.last_name)==true) || ($scope.signupData.last_name=='¿')))
+		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.last_name)==true) || ($scope.signupData.last_name=='¿')))
 		{
 			validator++ ;
 		}
@@ -38,12 +38,15 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.gender)==true) || ($scope.signupData.gender=='¿')))
+		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.gender)==true) || ($scope.signupData.gender=='¿')))
 		{
 			validator++ ;
 		}
 
-		
+		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.dob)==true) || ($scope.signupData.dob=='¿')))
+		{
+			validator++ ;
+		}
 
 		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.user_email)==true) || ($scope.signupData.user_email=='¿'))
@@ -59,7 +62,6 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
             validator++ ;
         }
 
-
 		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.password)==true) || ($scope.signupData.password=='¿'))
 		{
 			validator++ ;
@@ -70,11 +72,8 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		//alert(validator)
-
 		if (Number(validator)==0)
 		{		
-
 			var formData = new FormData();
 			formData.append('signupData',angular.toJson($scope.signupData));
 			angular.forEach($scope.files,function(file){           
