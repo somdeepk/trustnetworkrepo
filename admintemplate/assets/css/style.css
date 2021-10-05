@@ -38,3 +38,13 @@ body{background-color:#f3f3f3;font-size:.875em;overflow-x:hidden;font-family:"Op
 
 .birth-date{position: relative;}
 .birth-date .calendar-icon{position: absolute; right: 10px; top: 10px; z-index: 99;}
+
+.sidebar-logo{width: 100%; max-width: 160px;}
+.main-menu{height: 100%;}
+
+
+@media (max-width: 768px) { 
+
+.sidebar-logo{width: 100%; max-width: 60px;}
+
+ }
