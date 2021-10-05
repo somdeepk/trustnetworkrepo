@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-md-6 text-center">
                         <div class="sign-in-detail text-white">
-                            <a class="sign-in-logo" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
+                            <a class="sign-in-logo d-none d-md-block" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
                             <p style="color:#000;">Successful ministry in the 21st Century is evolving at a rapid rate. We believe it will take a delicate combination of both technolgy and biblical teaching to continuing growing body the body of Christ and the individuals who attend the local church.</p>
                             <p  style="color:#000;"><em style="color:#0391c0; font-weight:400;">The FOLLOW ME NOW-Making Disciples</em> web-based six-month module systems help churches disciple individuals.</p>
                         </div>
