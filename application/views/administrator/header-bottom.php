@@ -64,6 +64,17 @@
                 <li class="nav-item">
                     <a href="#!">
                         <i class="ti-layout"></i>
+                        <span>Age Group</span>
+                    </a>
+                    <ul class="tree-1">
+                        <li><a href="<?php echo base_url(); ?>administrator/addagegroup">Add Age Group</a></li>
+                        <li><a href="<?php echo base_url(); ?>administrator/agegrouplist">All Age Group</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#!">
+                        <i class="ti-layout"></i>
                         <span>Group</span>
                     </a>
                     <ul class="tree-1">

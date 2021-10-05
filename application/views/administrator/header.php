@@ -35,11 +35,11 @@
                                 <i class="ti-search"></i>
                             </a>
                         </li> -->
-                        <li>
+                        <!-- <li>
                             <a href="#!" onclick="javascript:toggleFullScreen()">
                                 <i class="ti-fullscreen"></i>
                             </a>
-                        </li>
+                        </li> -->
                         <!-- <li class="mega-menu-top">
                             <a href="#">
               Mega

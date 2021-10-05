@@ -74,6 +74,7 @@
                                                             <select ng-disabled="memberData.id>0" ng-model="memberData.membership_type" id="membership_type" class="form-control form-control-primary">
                                                                 <option value="">Select Membership Type</option>
                                                                 <option value="RM">Regular Membership</option>
+                                                                <option value="CC">City Church</option>
                                                                 <option value="CM">Church Membership</option>
                                                             </select>
                                                         </div>
@@ -82,14 +83,14 @@
 
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                    <div class="col-sm-4" ng-if="(memberData.membership_type=='RM' || memberData.membership_type=='CC')">
                                                         <div class="input-group">
                                                             
                                                             <input class="form-control" ng-model="memberData.first_name" id="first_name" placeholder="First Name" type="text">
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.first_name)==true)? 'First Name Required' : ''}}</div>
                                                     </div>
-                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                    <div class="col-sm-4" ng-if="(memberData.membership_type=='RM' || memberData.membership_type=='CC')">
                                                         <div class="input-group">
                                                             
                                                             <input class="form-control" ng-model="memberData.last_name" id="last_name" placeholder="Last Name" type="text">
@@ -143,7 +144,7 @@
 
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                    <div class="col-sm-4" ng-if="(memberData.membership_type=='RM' || memberData.membership_type=='CC')">
                                                         <div class="input-group">
                                                             <select ng-model="memberData.gender" id="gender" class="form-control form-control-primary">
                                                                 <option value="">Select Gender</option>
@@ -155,7 +156,7 @@
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.gender)==true)? 'Gender Required' : ''}}</div>
                                                     </div>
 
-                                                    <div class="col-sm-4" ng-if="memberData.membership_type=='RM'">
+                                                    <div class="col-sm-4" ng-if="(memberData.membership_type=='RM' || memberData.membership_type=='CC')">
                                                         <div class="input-group">
                                                             <select ng-model="memberData.marital_status" id="marital_status" class="form-control form-control-primary">
                                                                 <option value="">Select Marital Status</option>
@@ -172,10 +173,10 @@
                                                     <div class="col-sm-4">
                                                         <div class="input-group birth-date">
                                                             <i class="far fa-calendar-alt calendar-icon"></i>
-                                                            <input class="form-control" autocomplete="off" ng-model="memberData.dob" id="dob" readonly="true" placeholder="{{(memberData.membership_type=='RM')? 'Date Of Birth' : 'Foundation Date'}}" type="text" dobdate>
+                                                            <input class="form-control" autocomplete="off" ng-model="memberData.dob" id="dob" readonly="true" placeholder="{{(memberData.membership_type=='RM' || memberData.membership_type=='CC')? 'Date Of Birth' : 'Foundation Date'}}" type="text" dobdate>
                                                         </div>
 
-                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='RM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
+                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{((memberData.membership_type=='RM' || memberData.membership_type=='CC') && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
                                                          <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberData.membership_type=='CM' && memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.dob)==true)? 'Foundation Date Required' : ''}}</div>
 
                                                     </div>

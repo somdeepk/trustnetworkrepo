@@ -106,6 +106,12 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
     		{
     			$scope.memberData.church_name=$scope.memberData.first_name;
     		}
+
+    		if($scope.memberData.membership_type=='RM' && $scope.memberData.parent_id=='1')
+    		{
+    			$scope.memberData.membership_type='CC';
+    		}
+
     		if($scope.memberData.parent_id==0)
     		{
     			$scope.memberData.church_id='';
@@ -151,12 +157,12 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 			validator++ ;
 		}
 
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.first_name)==true) || ($scope.memberData.first_name=='¿')))
+		if (($scope.memberData.membership_type=='RM' || $scope.memberData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.first_name)==true) || ($scope.memberData.first_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.last_name)==true) || ($scope.memberData.last_name=='¿')))
+		if (($scope.memberData.membership_type=='RM' || $scope.memberData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.last_name)==true) || ($scope.memberData.last_name=='¿')))
 		{
 			validator++ ;
 		}
@@ -166,7 +172,7 @@ mainApp.controller('churchMemberController', function ($rootScope, $timeout, $in
 			validator++ ;
 		}
 
-		if (($scope.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.gender)==true) || ($scope.memberData.gender=='¿')))
+		if (($scope.memberData.membership_type=='RM' || $scope.memberData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.memberData.gender)==true) || ($scope.memberData.gender=='¿')))
 		{
 			validator++ ;
 		}

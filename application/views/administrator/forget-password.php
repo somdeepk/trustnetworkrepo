@@ -16,6 +16,7 @@
                                    
                                 </div>
                             <div class="auth-box">
+                                <img width="150" src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="">
                                 <div class="row m-b-20">
                                     <div class="col-md-12">
                                         <h3 class="text-left txt-primary">Forget password</h3>
@@ -45,7 +46,7 @@
                                 <hr/>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Thanking You.</p>
+                                       <!--  <p class="text-inverse text-left m-b-0">Thanking You.</p> -->
                                         <p class="text-inverse text-left"><b>Follow Me Now Team</b></p>
                                     </div>
                                     <div class="col-md-2">

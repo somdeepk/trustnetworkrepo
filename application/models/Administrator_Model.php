@@ -78,7 +78,7 @@ class Administrator_Model extends CI_Model
 
 	public function get_all_approve_church()
 	{
-		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
+		$sql="SELECT * from tn_members WHERE is_approved='Y' AND type!='9999' AND membership_type='CM' AND status='1' AND deleted='0' order by first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -92,6 +92,7 @@ class Administrator_Model extends CI_Model
 		return $resultData[0];
 	}
 
+
 	public function addupdategroup($id=NULL,$menu_arr=NULL)
 	{
 		if(!empty($id))
@@ -101,6 +102,19 @@ class Administrator_Model extends CI_Model
 		else
 		{
 			$this->db->insert('tn_group',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}	
+
+	public function addupdateagegroup($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			return $this->db->where('id',$id)->update('tn_age_group',$menu_arr);
+		}
+		else
+		{
+			$this->db->insert('tn_age_group',$menu_arr);
 			return $this->db->insert_id();
 		}
 	}
@@ -120,6 +134,21 @@ class Administrator_Model extends CI_Model
 			$strParam=' AND id!="'.$id.'"';
 		}
 		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0' ".$strParam;
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	public function check_group_admin_exist($id)
+	{
+		$sql="SELECT * from tn_members WHERE membership_type='RM' AND is_admin='Y' AND status='1' AND deleted='0' AND agegroup_id='".$id."' "; 
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		if(count($resultData)>0)
@@ -196,6 +225,27 @@ class Administrator_Model extends CI_Model
 		{
 			return array();
 		}
+	}
+
+	public function get_age_group_data($id)
+	{
+		$sql='SELECT * from tn_age_group WHERE id="'.$id.'"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData[0];
+	}
+
+	public function get_all_age_group_data($id)
+	{
+		$strWhereParam="";
+		if($id>0)
+		{
+			$strWhereParam=" AND id!='".$id."'";
+		}
+		$sql="SELECT * from tn_age_group WHERE deleted='0' ".$strWhereParam;
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
 	}
 
 }

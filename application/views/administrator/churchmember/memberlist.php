@@ -63,6 +63,7 @@
                                     <select ng-model="searchMember.membership_type" ng-change="filte_membership_type()" style="height:auto;width:85%" id="membership_type" class="form-control">
                                         <option value="">Select Membership Type</option>
                                         <option value="RM">Regular Membership</option>
+                                        <option value="CC">City Church</option>
                                         <option value="CM">Church Membership</option>
                                     </select>
                                     <input type="text" maxlength="25" class="zsearch_inputz form-control hiddenimportant" placeholder="Search">

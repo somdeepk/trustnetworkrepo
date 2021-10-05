@@ -482,21 +482,35 @@ class Administrator extends CI_Controller
 		}
 
 		if (!empty($search_membership_type))
-		{
-			if (empty($havingStr)) {
-				$havingStr.=" HAVING tm.membership_type LIKE '%".$search_membership_type."%'";
-			} else {
-				$havingStr.=" AND tm.membership_type LIKE '%".$search_membership_type."%'";
+		{			
+			if (empty($havingStr))
+			{
+				if($search_membership_type=='CC')
+				{
+					$havingStr.=" HAVING tm.parent_id=1";
+				}else{
+					$havingStr.=" HAVING tm.membership_type LIKE '%".$search_membership_type."%' AND tm.parent_id!=1";
+				}
+			}else{
+				if($search_membership_type=='CC')
+				{
+					$havingStr.=" HAVING tm.parent_id=1";
+				}else{
+					$havingStr.=" AND tm.membership_type LIKE '%".$search_membership_type."%' AND tm.parent_id!=1";
+				}
 			}
 		}
 
 		
-		$sql_main='SELECT 
+		 $sql_main='SELECT 
 					tm.*,
 					tm2.first_name as church_name
 					FROM tn_members as tm 
-					LEFT JOIN tn_members as tm2 On tm2.id=tm.parent_id
-					WHERE tm.deleted="0" '.$searchStr.' GROUP BY id '.$havingStr;
+					LEFT JOIN tn_members as tm2 On tm2.id=tm.parent_id and tm2.type!="9999"
+					WHERE tm.deleted="0" AND tm.type!="9999"'.$searchStr.' GROUP BY id '.$havingStr;
+
+					//exit;
+
 
 		$sql_query=$sql_main.$sort_str.' '.$limit_str;
 		$query=$this->db->query($sql_query);
@@ -540,8 +554,16 @@ class Administrator extends CI_Controller
 			$str_full_name=$v['first_name']." ".$v['last_name'];
 			if($v['membership_type']=="RM")
 			{
-				$str_membership_type="Regular Membership";
-			}
+				if($v['parent_id']=='1')
+				{
+					$str_membership_type="City Church";
+				}
+				else
+				{
+					$str_membership_type="Regular Membership";
+				}
+				
+			}			
 			else
 			{
 				$str_membership_type="Church Membership";
@@ -643,6 +665,11 @@ class Administrator extends CI_Controller
 		if($membership_type=="CM")
 		{
 			$first_name=$church_name;
+		}
+		elseif($membership_type=="CC")
+		{
+			$church_id=1;//city church
+			$membership_type='RM';
 		}
 
 		$flagDupEmail = $this->Administrator_Model->check_dup_email($user_email,$id);
@@ -915,6 +942,277 @@ class Administrator extends CI_Controller
 		}else{
 			return false;
 		}
+	}
+
+
+
+
+
+	public function agegrouplist()
+	{
+		$data=array();
+
+		$msg=$this->input->post_get('msg');
+		if(!empty($msg))
+		{
+			$msg=base64_decode($msg);
+			$this->session->set_flashdata('success', $msg);
+		}
+
+		$this->load->view('administrator/header-script');
+		$this->load->view('administrator/header');
+		$this->load->view('administrator/header-bottom');
+		$this->load->view('administrator/agegrouplist', $data);
+		$this->load->view('administrator/footer');
+	}
+
+	public function ajaxGetAgeGroupList()
+	{
+		$post_data=$_POST ;
+		$postData = array();
+		if(isset($post_data['iColumns']))
+		{
+		    $new_array=array();
+		    for ($i=0; $i<$post_data['iColumns']; $i++)
+		    {
+		        $new_array[$i]['data']=$i ;
+		        $new_array[$i]['name']=$post_data['mDataProp_'.$i] ;
+		        $new_array[$i]['searchable']=(isset($post_data['mDataProp_'.$i]) && !empty($post_data['mDataProp_'.$i])) ? $post_data['mDataProp_'.$i] : false ;
+		        $new_array[$i]['orderable']=(isset($post_data['bSortable_'.$i]) && !empty($post_data['bSortable_'.$i])) ? $post_data['bSortable_'.$i] : false ;
+		        $new_array[$i]['search']['value']='' ;
+		        $new_array[$i]['search']['regex']=$post_data['bRegex_'.$i] ;
+		    }
+		    $postData['columns']=$new_array ;
+		    $postData['order'][0]['column']=(isset($post_data['iSortCol_0']) && !empty($post_data['iSortCol_0'])) ? $post_data['iSortCol_0'] : '';
+		    $postData['order'][0]['dir']=(isset($post_data['sSortDir_0']) && !empty($post_data['sSortDir_0'])) ? $post_data['sSortDir_0'] : '';
+		    $postData['start']=$post_data['iDisplayStart'] ;
+		    $postData['length']=$post_data['iDisplayLength'] ;
+		}
+		
+		$searchagegroup_name=(isset($post_data['searchagegroup_name']) && $post_data['searchagegroup_name']!='') ? addslashes($post_data['searchagegroup_name']) : '' ;
+		$searchage_range=(isset($post_data['searchage_range']) && $post_data['searchage_range']!='') ? addslashes($post_data['searchage_range']) : '' ;
+		$searchcreate_date=(isset($post_data['searchcreate_date']) && $post_data['searchcreate_date']!='') ? addslashes($post_data['searchcreate_date']) : '' ;
+
+		$limit_str='';
+		$sort_str=' ORDER BY id DESC';
+
+		if (!empty($postData['columns']))
+		{
+			$columns=$postData['columns'] ;
+			foreach ($columns as $colkey=>$colval)
+			{
+				$colm_name=$colval['name'];
+				if ($colval['orderable']== true && !empty($postData['order'][0]['column']))
+				{
+					if ($postData['order'][0]['column']==1) {
+						$sort_str=' ORDER BY name '. $postData['order'][0]['dir'];
+					} else if ($postData['order'][0]['column']==2) {
+						$sort_str=' ORDER BY create_date '. $postData['order'][0]['dir'];
+					}
+				}
+			}
+		}
+		if (!empty($postData))
+		{
+		    if (isset($postData['start']) && !empty($postData['length']))
+		    {
+		        $limit_str=' LIMIT '.$postData['start'].' , '.$postData['length'];
+		    }
+		}
+
+		$returnArray=array();
+		$searchStr="";
+		$havingStr="";
+		
+		if (!empty($searchagegroup_name))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING agegroup_name LIKE '%".$searchagegroup_name."%'";
+			} else {
+				$havingStr.=" AND agegroup_name LIKE '%".$searchagegroup_name."%'";
+			}
+		}
+		
+		if (!empty($searchage_range))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING min_age<=".$searchage_range." AND max_age>= '".$searchage_range."'";
+			} else {
+				$havingStr.=" AND min_age<=".$searchage_range." AND max_age>= '".$searchage_range."'";
+			}
+		}
+		
+		if (!empty($searchcreate_date))
+		{
+			if (empty($havingStr)) {
+				$havingStr.=" HAVING DATE_FORMAT(create_date,'%d/%m/%Y') LIKE '%".$searchcreate_date."%'";
+			} else {
+				$havingStr.=" AND DATE_FORMAT(create_date,'%d/%m/%Y') LIKE '%".$searchcreate_date."%'";
+			}
+		}
+
+		
+		$sql_main='SELECT * from tn_age_group WHERE deleted="0" '.$searchStr.' GROUP BY id '.$havingStr;
+		$sql_query=$sql_main.$sort_str.' '.$limit_str;
+		$query=$this->db->query($sql_query);
+		$resultData=$query->result_array();
+
+		$sql_query_total=$sql_main;
+		$query=$this->db->query($sql_query_total);
+		$result_total=$query->result_array();
+
+		foreach($resultData as $k=>$v)
+		{
+			$activeInactiveLink='';
+
+			$activeInactiveLink.='<a title="Edit Age Group" style="color:#40444a" href="'.base_url().'administrator/addagegroup'.'/'.$v['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+
+			if($v['status']=='0')
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Inactive" style="color:#ea1620" href="javascript:void(0);" ng-click="change_agegroup_status(\'1\',\'Are you sure to Active this Age Group?\','.$v['id'].')" ><i class="fa fa-lock" aria-hidden="true"></i></a>';
+			}
+			else
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Active" style="color:#339933" href="javascript:void(0);" ng-click="change_agegroup_status(\'0\',\'Are you sure to Inactive this Age Group?\','.$v['id'].')" ><i class="fa fa-unlock-alt" aria-hidden="true"></i></a>';
+			}
+
+			$falgGroupExist=$this->Administrator_Model->check_group_admin_exist($v['id']);
+			if($falgGroupExist<=0)
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Delete" style="color:#ea1620" href="javascript:void(0);" ng-click="delete_agegroup_status(\'Are you sure to Delete this Age Group?\','.$v['id'].')" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
+			}
+			else
+			{
+				$activeInactiveLink.='&nbsp;&nbsp;<a title="Delete" style="color:#AAA4A4;" href="javascript:void(0);"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+			}
+			
+			$returnArray[]=array(
+				'id'=>$v['id'],
+				'agegroup_name'=>(isset($v['agegroup_name']) && !empty($v['agegroup_name'])) ? $v['agegroup_name'] : 'NA',
+				'age_range'=>(isset($v['age_range']) && !empty($v['age_range'])) ? $v['age_range'] : 'NA',
+				'create_date'=>(isset($v['create_date']) && !empty($v['create_date']) && $v['create_date']!='0000-00-00 00:00:00') ? date('d/m/Y',strtotime($v['create_date'])) : 'NA',
+				'action'=>$activeInactiveLink
+			);
+		}
+
+		/*echo "<pre>";
+		print_r($returnArray);
+		exit;*/
+
+		$totcount=count($result_total);
+		$json_data = array('jsonData'=> array(
+		        "draw"            => intval($post_data['sEcho']),  // Just a Random Number for Draw
+		        "recordsTotal"    => intval($totcount), // Total records count without searching and limit
+		        "recordsFiltered" => intval($totcount), //records count after searching(if not search then equals totalcount)
+		        "aaData"          => $returnArray //This array contains all the datatable rows which will be shown in the front end
+		        ));
+		echo json_encode($json_data); die();
+	}
+
+	public function addagegroup($id=0)
+	{
+		$data=array();
+
+		$data['id']=$id;
+
+		$ar_age_group_data = $this->Administrator_Model->get_all_age_group_data($id);
+		$data['ar_age_group_data']=$ar_age_group_data;
+
+		/*echo "<pre>";
+		print_r($ar_age_group_dat);
+		exit;*/
+		$this->load->view('administrator/header-script');
+		$this->load->view('administrator/header');
+		$this->load->view('administrator/header-bottom');
+		$this->load->view('administrator/addagegroup', $data);
+		$this->load->view('administrator/footer');
+	}
+
+	public function ajaxaddupdateagegroup() 
+    {
+        $agegroupData = trim($this->input->post('agegroupData'));
+        $aryAgegroupData=json_decode($agegroupData, true);
+
+        $id=(isset($aryAgegroupData['id']) && !empty($aryAgegroupData['id']))? addslashes(trim($aryAgegroupData['id'])):0;
+
+        $agegroup_name=(isset($aryAgegroupData['agegroup_name']) && !empty($aryAgegroupData['agegroup_name']))? addslashes(trim($aryAgegroupData['agegroup_name'])):'';
+        $age_range=(isset($aryAgegroupData['age_range']) && !empty($aryAgegroupData['age_range']))? addslashes(trim($aryAgegroupData['age_range'])):'';
+        $agegroup_desc=(isset($aryAgegroupData['agegroup_desc']) && !empty($aryAgegroupData['agegroup_desc']))? addslashes(trim($aryAgegroupData['agegroup_desc'])):'';
+
+        $current_date=date('Y-m-d H:i:s');
+
+        $ar_age_range=explode("-", $age_range);
+        $min_age=$ar_age_range[0];
+        $max_age=$ar_age_range[1];
+
+       	$menu_arr = array(
+            'agegroup_name' => $agegroup_name,
+            'age_range' => $age_range,
+            'min_age' => $min_age,
+            'max_age' => $max_age,
+            'agegroup_desc'  =>$agegroup_desc,
+        );
+
+        if(!empty($id))
+        {
+        	$strstatus="Updated";
+        	$menu_arr['update_date']=$current_date;
+        }
+        else{
+        	$strstatus="Added";
+        	$menu_arr['create_date']=$current_date;
+        }
+
+        $lastId = $this->Administrator_Model->addupdateagegroup($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Age Group '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+   	public function get_age_group_data() 
+    {
+    	$id=$this->input->get_post('id');
+		$agegroupData = $this->Administrator_Model->get_age_group_data($id);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('agegroupData'=>$agegroupData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxchangeagegroupstatus()
+	{
+		$statusData = trim($this->input->post('statusData'));
+        $aryStatusData=json_decode($statusData, true);
+        
+		$id = $aryStatusData['id'];
+		$status = $aryStatusData['status'];
+
+		$menu_arr['status']=$status;
+		$this->db->where('id',$id)->update('tn_age_group',$menu_arr);
+		echo $id;
+		exit;
+	}
+
+	public function ajaxdeleteagegroup()
+	{
+		$deleteData = trim($this->input->post('deleteData'));
+        $aryDeleteData=json_decode($deleteData, true);
+ 
+		$id = $aryDeleteData['id'];
+
+		$menu_arr['deleted']='1';
+		$this->db->where('id',$id)->update('tn_age_group',$menu_arr);
+		echo $id;
+		exit;
 	}
 }
 	
