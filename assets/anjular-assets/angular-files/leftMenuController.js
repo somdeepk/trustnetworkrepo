@@ -13,9 +13,9 @@ mainApp.controller('leftMenuController', function ($rootScope, $timeout, $interv
 		$scope.get_set_task_menu();
     };
 
-    $scope.set_task = function(level)
+    $scope.set_task = function(courseId,level)
 	{
-		window.location.href=varGlobalAdminBaseUrl+"settask/"+level;
+		window.location.href=varGlobalAdminBaseUrl+"settask/"+courseId+"/"+level;
     };
 
     /*$scope.get_task = function(level)

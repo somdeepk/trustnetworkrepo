@@ -231,7 +231,9 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
-	        		member_max_level=aryreturnData.data.member_max_level
+
+	        		$scope.getAllChurchMember();
+	        		/*member_max_level=aryreturnData.data.member_max_level
 	        		if(setlevel=='Y'){
 	        			$(".ztoggleSetMemberLevelz_"+member_id).removeClass('btn-primary');
     					$(".ztoggleSetMemberLevelz_"+member_id).addClass('btn-success');
@@ -244,7 +246,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        			$(".ztoggleSetMemberLevelz_"+member_id).css("background-color",'#50b5ff');
 	        			$(".ztoggleSetMemberLevelz_"+member_id).css("bordr-color",'#2aa3fb');
 	        			$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Set Level')
-	        		};     		
+	        		}; */    		
 	        	}
 	        	else
 	        	{

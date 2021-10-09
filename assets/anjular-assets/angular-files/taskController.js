@@ -16,6 +16,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
     $scope.getTaskData = function (user_auto_id,parent_id,membership_type,is_admin)
 	{
+		hidden_course_id=$('#hidden_course_id').val();	
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
 		jsonLiveStreamVideoData=$('#jsonLiveStreamVideoData').html();	
@@ -26,6 +27,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		//console.log($scope.allVideoListObj)
 		//alert(hidden_task_level)	
 		$scope.session_is_admin=is_admin;
+		$scope.taskData.course_id=hidden_course_id;
 		$scope.taskData.task_level=hidden_task_level;
 		$scope.taskData.user_auto_id=user_auto_id;
 		$scope.taskData.parent_id=parent_id;
@@ -218,6 +220,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		if (Number(validator)==0)
 		{
 			$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploading..','loader');
+			$scope.liveStreamData.course_id=$scope.taskData.course_id;
 			$scope.liveStreamData.task_level=$scope.taskData.task_level;
 			$scope.liveStreamData.user_auto_id=$scope.taskData.user_auto_id;
 			$scope.liveStreamData.parent_id=$scope.taskData.parent_id;
@@ -379,6 +382,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 					$scope.liveStreamStatusData={}
 					$scope.liveStreamStatusData.id=id;
+					$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
 					$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
 					$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
 					$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;

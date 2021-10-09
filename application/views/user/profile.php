@@ -278,7 +278,7 @@
                            </div>
                            
                            <div class="media-support-info ml-4">
-                              <h6>{{(isNullOrEmptyOrUndefined(value.admin_first_name)==false)? value.admin_first_name : ''}} {{(isNullOrEmptyOrUndefined(value.admin_last_name)==false)? value.admin_last_name : ''}}</h6>
+                              <h6>{{(value.is_admin=='Y')? 'SELF' : (isNullOrEmptyOrUndefined(value.admin_first_name)==false)? value.admin_first_name : ''}}</h6>
                            </div>
                            <div class="media-support-info ml-4">
                               <h6>{{value.agegroup_name}}</h6>
@@ -296,7 +296,7 @@
                                 </div>
                              </div>
 
-                              <a ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level ('+value.maxmemberlevel+')' : 'Set Level'}}</a>
+                              <a data-toggle="tooltip" title="Hooray!" ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level [ '+value.coursename+': '+value.maxmemberlevel+' ]' : 'Set Level'}}</a>
                            </div>
                         </li>
                         <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">

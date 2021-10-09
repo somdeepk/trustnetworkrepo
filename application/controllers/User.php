@@ -1016,7 +1016,7 @@ class User extends CI_Controller
 		}
 	}
 
-	public function settask($task_level='')
+	public function settask($course_id=0,$task_level='')
 	{
 		authenticate_user();
 		$data=array();
@@ -1025,15 +1025,20 @@ class User extends CI_Controller
 		$user_auto_id=$this->session->userdata('user_auto_id');
 		$parent_id=$this->session->userdata('parent_id');
 
-		if(!empty($task_level) && ( ($membershipType=="CM" || $isAdmin=="Y") || ($membershipType=="RM" && $isAdmin=="N") ) )
+		if(!empty($task_level) && ( ($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y") || ($membershipType=="RM" && $isAdmin=="N") ) )
 		{
 			$argument=array();
 			$argument['membershipType']=$membershipType;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
+			$argument['course_id']=$course_id;
 			$argument['task_level']=$task_level;
 			$argument['isAdmin']=$isAdmin;
 			
+			$courseData=$this->User_Model->get_course_data($course_id);
+			$course_name=$courseData['course_name'];
+			$argument['course_name']=$course_name;
+
 			/*echo "<pre>";
 			print_r($argument);
 			exit;*/
@@ -1044,7 +1049,7 @@ class User extends CI_Controller
 			$argument['parent_id']=$parent_id;
 			$argument['task_level']=$task_level;*/
 
-			if($membershipType=="CM" || $isAdmin=="Y")
+			if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y")
 			{
 				$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
 				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
@@ -1082,16 +1087,18 @@ class User extends CI_Controller
 
         $user_auto_id=(isset($aryTaskData['user_auto_id']) && !empty($aryTaskData['user_auto_id']))? addslashes(trim($aryTaskData['user_auto_id'])):0;
         $parent_id=(isset($aryTaskData['parent_id']) && !empty($aryTaskData['parent_id']))? addslashes(trim($aryTaskData['parent_id'])):0;
+        $course_id=(isset($aryTaskData['course_id']) && !empty($aryTaskData['course_id']))? addslashes(trim($aryTaskData['course_id'])):'';
         $task_level=(isset($aryTaskData['task_level']) && !empty($aryTaskData['task_level']))? addslashes(trim($aryTaskData['task_level'])):'';
         $membership_type=(isset($aryTaskData['membership_type']) && !empty($aryTaskData['membership_type']))? addslashes(trim($aryTaskData['membership_type'])):'';
         $video_number=(isset($aryTaskData['video_number']) && !empty($aryTaskData['video_number']))? addslashes(trim($aryTaskData['video_number'])):1;
         $old_video=(isset($aryTaskData['old_video']) && !empty($aryTaskData['old_video']))? addslashes(trim($aryTaskData['old_video'])):'';
-        /*echo "old_video-".
+       /* echo "old_video-".$old_video;
         exit;*/
 
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
+            'course_id' => $course_id,
             'task_level' => $task_level,
             'church_id'  =>$parent_id,
             'church_admin_id'  =>$user_auto_id            
@@ -1128,7 +1135,7 @@ class User extends CI_Controller
                 $config = array(
                     'file_name' => str_replace(".","",microtime(true)).".".$ext,
                     'allowed_types' => '*',
-                    'upload_path' => IMAGE_PATH.'taskvideo/'.$task_level,
+                    'upload_path' => IMAGE_PATH.'taskvideo/',
                     //'max_size' => 2000
                 );
 
@@ -1155,7 +1162,7 @@ class User extends CI_Controller
 
 	                if(!empty($old_video))
 	                {
-	                	unlink( IMAGE_PATH.'taskvideo/'.$task_level."/".$old_video); // correct
+	                	unlink( IMAGE_PATH.'taskvideo/'.$old_video); // correct
 	                }
                 }                
             }
@@ -1169,6 +1176,7 @@ class User extends CI_Controller
 			$argument['membershipType']=$membership_type;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
+			$argument['course_id']=$course_id;
 			$argument['task_level']=$task_level;
 			$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
 			//$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
@@ -1199,6 +1207,7 @@ class User extends CI_Controller
         $id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
         $user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
         $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
         $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
         $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
         $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
@@ -1210,6 +1219,7 @@ class User extends CI_Controller
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
+            'course_id' => $course_id,
             'task_level' => $task_level,
             'church_id'  =>$parent_id,
             'church_admin_id'  =>$user_auto_id            
@@ -1308,6 +1318,7 @@ class User extends CI_Controller
 			$argument['membershipType']=$membership_type;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
+			$argument['course_id']=$course_id;
 			$argument['task_level']=$task_level;
 			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
 
@@ -1441,6 +1452,7 @@ class User extends CI_Controller
   		$id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
 		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
         $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
         $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
         $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
 
@@ -1458,6 +1470,7 @@ class User extends CI_Controller
 			$argument['membershipType']=$membership_type;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
+			$argument['course_id']=$course_id;
 			$argument['task_level']=$task_level;
 			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
 
@@ -1487,11 +1500,12 @@ class User extends CI_Controller
   		$member_id=(isset($aryFriendData['member_id']) && !empty($aryFriendData['member_id']))? addslashes(trim($aryFriendData['member_id'])):0;
   		$setlevel=(isset($aryFriendData['setlevel']) && !empty($aryFriendData['setlevel']))? addslashes(trim($aryFriendData['setlevel'])):'N';		
         $current_date=date('Y-m-d H:i:s');
-
-       /* echo "ss<pre>";
+        
+       	/*
+       	echo "ss<pre>";
 		print_r($aryFriendData);
-        exit;
-*/
+        exit;*/
+
         if($setlevel=='Y')
         {
         	$flagLevelExist = $this->User_Model->check_member_level_exist($member_id);
@@ -1505,6 +1519,7 @@ class User extends CI_Controller
 			else
 			{
 				$menu_arr = array(
+		            'course_id'  =>1,
 		            'task_level'  =>1,
 		            'member_id'  =>$member_id,
 		            'promote_date'  =>$current_date,
@@ -1513,12 +1528,10 @@ class User extends CI_Controller
 				$flagSet = $this->User_Model->revert_assign_member_level($member_id,$menu_arr,'insert');	
 			}
 
-			$member_max_level = $this->User_Model->get_member_max_level($member_id);
-
 			$returnData['status']='1';
 			$returnData['msg']='success';
 			$returnData['msgstring']='Level Set Successfullyh';
-			$returnData['data']=array('member_max_level'=>$member_max_level);
+			$returnData['data']=array();
         }
         else
         {
@@ -1598,15 +1611,70 @@ class User extends CI_Controller
     	$allTaskLevelData=array();
     	if($membership_type=='RM' && $is_admin=='N')
     	{
-    		$member_max_level = $this->User_Model->get_member_max_level($member_id);
-			for ($k = 1; $k <= $member_max_level; $k++)
-			{
-				$allTaskLevelData[$k]['is_disabled']='Y';
-				if($k==$member_max_level)
-				{
-					$allTaskLevelData[$k]['is_disabled']='N';
-				}
-			}
+    		$memberMaxLevelData = $this->User_Model->get_member_max_level($member_id);
+    		$maxcourseid=$memberMaxLevelData->maxcourseid;
+    		$maxmemberlevel=$memberMaxLevelData->maxmemberlevel;
+
+    		
+    		$aryAllCourseData = $this->User_Model->get_all_course();
+    		$finalAllCourseData=array();
+    		if(count($aryAllCourseData)>0)
+    		{
+    			foreach($aryAllCourseData as $k=>$v)
+    			{
+    				if($maxcourseid>$v['id'])
+    				{
+    					$finalAllCourseData[$k]['id']=$v['id'];
+    					$finalAllCourseData[$k]['course_name']=$v['course_name'];
+    					$finalAllCourseData[$k]['number_of_level']=$v['number_of_level'];
+    					for ($x = 1; $x <= $v['number_of_level']; $x++)
+	    				{
+	    					$finalAllCourseData[$k]['levelData'][$x]['is_disabled']="Y";
+	    					$finalAllCourseData[$k]['levelData'][$x]['labelname']="Level ".$x;
+	    				}
+    				}
+    				elseif($maxcourseid==$v['id'])
+    				{
+    					$finalAllCourseData[$k]['id']=$v['id'];
+    					$finalAllCourseData[$k]['course_name']=$v['course_name'];
+    					$finalAllCourseData[$k]['number_of_level']=$v['number_of_level'];
+    					for ($x = 1; $x <= $maxmemberlevel; $x++)
+						{
+							$finalAllCourseData[$k]['levelData'][$x]['labelname']="Level ".$x;
+							$finalAllCourseData[$k]['levelData'][$x]['is_disabled']="Y";
+							if($x==$maxmemberlevel)
+							{								
+								$finalAllCourseData[$k]['levelData'][$x]['is_disabled']="N";
+							}
+						}
+    				}
+    			}
+    		}
+			
+			/*
+			echo "ss<pre>";
+			print_r($finalAllCourseData);
+			//print_r($aryAllCourseData);
+			exit;*/
+
+			$allTaskLevelData=$finalAllCourseData;
+			
+    	}
+    	elseif($membership_type=="CM" || $membership_type=="CC" || $is_admin=="Y")
+    	{
+    		$aryAllCourseData = $this->User_Model->get_all_course();
+    		if(count($aryAllCourseData)>0)
+    		{
+    			foreach($aryAllCourseData as $k=>$v)
+    			{
+    				for ($x = 1; $x <= $v['number_of_level']; $x++)
+    				{
+    					$aryAllCourseData[$k]['levelData'][$x]['labelname']="Level ".$x;
+    					$aryAllCourseData[$k]['levelData'][$x]['is_disabled']="N";
+    				}
+    			}
+    		}
+    		$allTaskLevelData=$aryAllCourseData;
     	}
 
 		/*

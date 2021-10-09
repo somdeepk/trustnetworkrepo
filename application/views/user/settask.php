@@ -81,10 +81,11 @@
                   <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
                   <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
                   <input type="hidden" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
+                  <input type="hidden" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
                   <div class="d-flex justify-content-between w-100">
-                  <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [Level <?php echo $argument['task_level']; ?>]</h4> 
+                  <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [<?php echo $argument['course_name']; ?> : Level <?php echo $argument['task_level']; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
                 </div>
 

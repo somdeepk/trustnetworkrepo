@@ -236,7 +236,7 @@ class User_Model extends CI_Model
 		}
 		else
 		{
-			$strParamWhere=" AND tm.parent_id='".$parent_id."' AND tm.id!='".$user_auto_id."'";
+			$strParamWhere=" AND tm.admin_id='".$user_auto_id."' AND tm.parent_id='".$parent_id."' AND tm.id!='".$user_auto_id."'";
 		}
 
 		$sql="SELECT 
@@ -244,13 +244,17 @@ class User_Model extends CI_Model
 				tm2.first_name as admin_first_name,
 				tm2.last_name as admin_last_name,
 				tag.agegroup_name,
-				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
+				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel,
+				IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
+				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename
 
 				FROM tn_members as tm
 				LEFT JOIN tn_members as tm2 ON tm2.id=tm.admin_id and tm2.status='1' and tm2.deleted='0'
 				LEFT JOIN tn_age_group as tag ON tag.id=tm.agegroup_id and tag.status='1' and tag.deleted='0'
 				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
 				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." group by tm.id order by first_name ASC";
+				
+		//				
 		/*$sql="SELECT 
 				tm.* 
 				FROM tn_members as tm
@@ -366,10 +370,11 @@ class User_Model extends CI_Model
 	public function addUpdateTaskLevel($menu_arr=NULL)
 	{
 		$current_date=date('Y-m-d H:i:s');
+		$course_id=$menu_arr['course_id'];
 		$task_level=$menu_arr['task_level'];
 		$church_id=$menu_arr['church_id'];
 		$church_admin_id=$menu_arr['church_admin_id'];
-		$sql='SELECT * from tn_task_level WHERE task_level="'.$task_level.'" AND church_id="'.$church_id.'" AND church_admin_id="'.$church_admin_id.'" AND deleted="0"';
+		$sql='SELECT * from tn_task_level WHERE course_id="'.$course_id.'" AND task_level="'.$task_level.'" AND church_id="'.$church_id.'" AND church_admin_id="'.$church_admin_id.'" AND deleted="0"';
 		$query=$this->db->query($sql);
 		$rowData=$query->row();
 		$task_level_id=0;
@@ -394,6 +399,7 @@ class User_Model extends CI_Model
 	public function addUpdatTaskLevelVideo($menu_arr=NULL,$id=NULL)
 	{
 		$current_date=date('Y-m-d H:i:s');
+		$course_id=$menu_arr['course_id'];
 		$task_level_id=$menu_arr['task_level_id'];
 		$video_number=$menu_arr['video_number'];
 
@@ -426,15 +432,16 @@ class User_Model extends CI_Model
 		$membershipType=$argument['membershipType'];
 		$user_auto_id=$argument['user_auto_id'];
 		$parent_id=$argument['parent_id'];
+		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
 
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
-			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
 		}
 		else
 		{
-			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
 		}
 		$sql="SELECT 
 				tl.*,
@@ -452,7 +459,7 @@ class User_Model extends CI_Model
 
 	public function get_task_min_three_video_by_level($argument)
 	{
-
+		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
 		$str_is_admin=$this->session->userdata('is_admin');
 
@@ -473,7 +480,7 @@ class User_Model extends CI_Model
 		{
 			foreach($taskVideoLevelData as $k=>$v)
 			{
-				if (file_exists(IMAGE_PATH."/taskvideo/".$task_level."/".$v['video_name']))
+				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']))
 				{
 					$key=($v['video_number']-1);
 	
@@ -482,7 +489,7 @@ class User_Model extends CI_Model
 					$finalTaskVideoLevelData[$key]['video_name']=$v['video_name'];
 					$finalTaskVideoLevelData[$key]['video_size']=$v['video_size'];
 					$finalTaskVideoLevelData[$key]['video_type']=$v['video_type'];
-					$finalTaskVideoLevelData[$key]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/'.$v['video_name'];
+					$finalTaskVideoLevelData[$key]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$v['video_name'];
 				}
 			}
 		}
@@ -509,17 +516,19 @@ class User_Model extends CI_Model
 		$membershipType=$argument['membershipType'];
 		$user_auto_id=$argument['user_auto_id'];
 		$parent_id=$argument['parent_id'];
+		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
 		$str_is_admin=$this->session->userdata('is_admin');
 
-		if($membershipType=="CM")
+		if($membershipType=="CM" || $membershipType=="CC")
 		{
-			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.course_id='".$course_id." AND task_level='".$task_level."'";
 		}
 		else
 		{
-			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND task_level='".$task_level."'";
 		}
+
 		$sql="SELECT 
 				tlsv.*,
 				tl.task_level,
@@ -542,7 +551,6 @@ class User_Model extends CI_Model
 				//$resultData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/streamvideo/'.$v['video_name'];
 			}
 		}
-
 		//return array();
 		return $resultData;
 	}
@@ -578,13 +586,13 @@ class User_Model extends CI_Model
 
 	public function get_member_max_level($member_id)
 	{
-		$sql="SELECT IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
+		$sql="SELECT IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
 				FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$member_id."'";
 		$query=$this->db->query($sql);
 		$rowData=$query->row();
-		if(!empty($rowData) && $rowData->maxmemberlevel>0)
+		if(!empty($rowData))
 		{
-			return $rowData->maxmemberlevel;
+			return $rowData;
 		}
 		else
 		{
@@ -704,6 +712,22 @@ class User_Model extends CI_Model
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
+	}
+
+	public function get_all_course()
+	{
+		$sql="SELECT id,course_name,number_of_level from tn_task_level_course WHERE status='1' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function get_course_data($id=0)
+	{
+		$sql="SELECT * from tn_task_level_course WHERE id='".$id."'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData[0];
 	}
 	
 }

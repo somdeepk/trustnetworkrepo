@@ -51,22 +51,22 @@ exit;*/
                   </li>
                   <li>
                     
-                    <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>Set Task <!-- Assigned --></span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <?php if($membershipType=="CM" || $isAdmin=="Y"){ ?>
-                    <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                       <li><a href="javascript:void(0);" ng-click="set_task('1')"><i class="ri-tablet-line"></i>Level 1</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('2')"><i class="ri-tablet-line"></i>Level 2</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('3')"><i class="ri-tablet-line"></i>Level 3</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('4')"><i class="ri-tablet-line"></i>Level 4</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('5')"><i class="ri-tablet-line"></i>Level 5</a></li>
-                       <li><a href="javascript:void(0);" ng-click="set_task('6')"><i class="ri-tablet-line"></i>Level 6</a></li>
-                    </ul>
+                    
+                    <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
+                    <div ng-repeat="(key, value) in allTaskLevelObj">
+                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                      <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                          <li ng-repeat="(key1, value1) in value.levelData"><a href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
+                      </ul>
+                    </div>
                     <?php }elseif($membershipType=="RM" && $isAdmin=="N"){ ?>
-                    <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                       <li ng-repeat="(key, value) in allTaskLevelObj" ><a ng-class="(value.is_disabled == 'Y') ? 'cssdisabled' : ''" href="javascript:void(0);" ng-click="set_task(key)"><i class="ri-tablet-line"></i>Level {{key}}</a></li>
-                    </ul>
+                    <div ng-repeat="(key, value) in allTaskLevelObj">
+                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                      <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li ng-repeat="(key1, value1) in  value.levelData" ><a ng-class="(value1.is_disabled == 'Y') ? 'cssdisabled' : ''" href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
+                      </ul>
+                    </div>
                     <?php } ?>
-
                      <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
                   <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
