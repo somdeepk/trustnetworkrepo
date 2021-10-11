@@ -40,12 +40,14 @@ class User extends CI_Controller
         $password=(isset($aryMemberData['password']) && !empty($aryMemberData['password']))? addslashes(trim($aryMemberData['password'])):'';     
 		$current_date=date('Y-m-d H:i:s');
 
+		$str_is_approved='Y';
 		if($membership_type=="CM")
 		{
 			$first_name=$church_name;
 		}
 		elseif($membership_type=="CC")
 		{
+			$str_is_approved='N';
 			$church_id=1;//City Church
 			$membership_type='RM';
 		}
@@ -72,7 +74,7 @@ class User extends CI_Controller
 	            //'church_id'  =>$church_id,
 	            'user_email'  =>$user_email,
 	            'password'  =>$password,
-	            'is_approved'  =>'N',
+	            'is_approved'  =>$str_is_approved,
 	            'create_date'  =>$current_date,
 	        );
 
@@ -1038,6 +1040,7 @@ class User extends CI_Controller
 			$courseData=$this->User_Model->get_course_data($course_id);
 			$course_name=$courseData['course_name'];
 			$argument['course_name']=$course_name;
+			$argument['leader_id']=0;
 
 			/*echo "<pre>";
 			print_r($argument);
@@ -1051,6 +1054,29 @@ class User extends CI_Controller
 
 			if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y")
 			{
+				$allChurchAdminData = $this->User_Model->get_all_church_admin($user_auto_id);
+				/*echo "<pre>";
+				print_r($allChurchAdminData);
+				exit;*/
+				$leader_id=0;
+				if(count($allChurchAdminData)>0)
+				{
+					foreach ($allChurchAdminData as $k => $v)
+					{
+						if($leader_id==0)
+						{
+							$leader_id=$v['id'];
+							$allChurchAdminData[$k]['leader_id']=$leader_id;
+						}
+					}
+				}
+				$data['allChurchAdminData']=$allChurchAdminData;
+
+				/*echo "<pre>";
+				print_r($allChurchAdminData);*/
+				
+				
+				$argument['leader_id']=$leader_id;
 				$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
 				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
 
@@ -1688,6 +1714,79 @@ class User extends CI_Controller
         $returnData['msg']='';
         $returnData['data']=array('allTaskLevelData'=>$allTaskLevelData);
 
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function ajaxGetLeaderWiseLiveStreamVideo() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+		$leader_id=(isset($aryLSVideoData['leader_id']) && !empty($aryLSVideoData['leader_id']))? addslashes(trim($aryLSVideoData['leader_id'])):0;
+		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+
+		
+		$argument=array();
+		$argument['membershipType']=$membership_type;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+		$argument['leader_id']=$leader_id;
+
+		/*echo "s<pre>";
+		print_r($argument);
+		exit;*/
+		$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='Deleted Successfully';
+        $returnData['data']=array('lastId'=>$lastId,'liveStreamVideoData'=>$liveStreamVideoData);
+		
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGetLeaderWiseMinThreeVideo() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+		$leader_id=(isset($aryLSVideoData['leader_id']) && !empty($aryLSVideoData['leader_id']))? addslashes(trim($aryLSVideoData['leader_id'])):0;
+		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+
+		
+		$argument=array();
+		$argument['membershipType']=$membership_type;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+		$argument['leader_id']=$leader_id;
+
+		/*echo "s<pre>";
+		print_r($argument);
+		exit;*/
+		$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='Deleted Successfully';
+        $returnData['data']=array('lastId'=>$lastId,'taskMin3VideoLevelData'=>$taskMin3VideoLevelData);
+		
         echo json_encode($returnData);
         exit;
     }

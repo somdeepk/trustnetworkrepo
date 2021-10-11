@@ -437,7 +437,8 @@ class User_Model extends CI_Model
 
 		if($membershipType=="CM" || $membershipType=="CC")
 		{
-			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
+			$leader_id=$argument['leader_id'];
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
 		}
 		else
 		{
@@ -459,8 +460,8 @@ class User_Model extends CI_Model
 
 	public function get_task_min_three_video_by_level($argument)
 	{
-		$course_id=$argument['course_id'];
-		$task_level=$argument['task_level'];
+		//$course_id=$argument['course_id'];
+		//$task_level=$argument['task_level'];
 		$str_is_admin=$this->session->userdata('is_admin');
 
 		$taskVideoLevelData=$this->get_task_video_by_level($argument);
@@ -518,11 +519,14 @@ class User_Model extends CI_Model
 		$parent_id=$argument['parent_id'];
 		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
+		
 		$str_is_admin=$this->session->userdata('is_admin');
 
 		if($membershipType=="CM" || $membershipType=="CC")
 		{
-			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.course_id='".$course_id." AND task_level='".$task_level."'";
+			$leader_id=$argument['leader_id'];
+
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND task_level='".$task_level."'";
 		}
 		else
 		{
@@ -537,6 +541,8 @@ class User_Model extends CI_Model
 				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
 				LEFT JOIN tn_members as tm ON tm.id='".$user_auto_id."'
 				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.id DESC";
+
+				//exit;
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 
@@ -601,20 +607,14 @@ class User_Model extends CI_Model
 	}
 
 
-	/*public function get_church_admin($user_auto_id,$adminid)
+	public function get_all_church_admin($parent_id)
 	{
-		$sql="SELECT * from tn_members WHERE is_admin='Y' AND parent_id='".$user_auto_id."' and id!='".$adminid."' AND deleted='0'";
+		$sql="SELECT * FROM tn_members WHERE parent_id='".$parent_id."' AND membership_type='RM' AND is_admin='Y' AND status='1' AND deleted='0'"; 
+		$queryAgeGroupAdmin=$this->db->query($sql);					
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
-		if(count($resultData)>0)
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}*/
+		return $resultData;
+	}
 
 	public function convert_level_number_text($number)
 	{
@@ -634,18 +634,18 @@ class User_Model extends CI_Model
 		$user_auto_id=$aryNotificationData['user_auto_id'];
 		$parent_id=$aryNotificationData['parent_id'];
 		$membership_type=$aryNotificationData['membership_type'];
+		$admin_id=$aryNotificationData['admin_id'];
 		$is_admin=$aryNotificationData['is_admin'];
 		if($membership_type=='RM' && $is_admin=='N')
 		{
-			$sql="SELECT IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
-				FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$user_auto_id."'";
+			$sql="SELECT IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid, IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel	FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$user_auto_id."'";
 			$query=$this->db->query($sql);
 			$rowData=$query->row();
 			$maxmemberlevel=0;
-			if(!empty($rowData) && $rowData->maxmemberlevel>0)
+			if(!empty($rowData))
 			{
+				$maxcourseid=$rowData->maxcourseid;
 				$maxmemberlevel=$rowData->maxmemberlevel;
-				//$maxmemberLevelText=$this->convert_level_number_text($maxmemberlevel);
 			}
 			
 			if($maxmemberlevel>0)
@@ -654,6 +654,7 @@ class User_Model extends CI_Model
 						tm.id,
 						tm.is_admin,
 						ttl.id as task_level_id,
+						ttl.course_id,
 						ttl.task_level,
 						ttl.church_id,
 						ttlsv.video_title,
@@ -665,7 +666,7 @@ class User_Model extends CI_Model
 						FROM tn_members as tm
 						LEFT JOIN tn_task_level as ttl ON ttl.church_admin_id=tm.id
 						LEFT JOIN tn_task_level_stream_video as ttlsv ON ttlsv.task_level_id=ttl.id
-						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."' AND ttl.task_level='".$maxmemberlevel."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.star_time)>=DATE(now()) order by ttlsv.star_time limit 1";
+						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."'  AND ttl.church_admin_id='".$admin_id."' AND ttl.course_id='".$maxcourseid."'  AND ttl.task_level='".$maxmemberlevel."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.star_time)>=DATE(now()) order by ttlsv.star_time limit 1";
 				$query=$this->db->query($sql);
 				$result=$query->result_array();
 				if(count($result)>0)

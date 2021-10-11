@@ -16,6 +16,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
     $scope.getTaskData = function (user_auto_id,parent_id,membership_type,is_admin)
 	{
+		hidden_leader_id=$('#hidden_leader_id').val();	
 		hidden_course_id=$('#hidden_course_id').val();	
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
@@ -25,8 +26,9 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
 		//console.log('dsd')
 		//console.log($scope.allVideoListObj)
-		//alert(hidden_task_level)	
+		//alert(hidden_leader_id)	
 		$scope.session_is_admin=is_admin;
+		$scope.taskData.leader_id=hidden_leader_id;
 		$scope.taskData.course_id=hidden_course_id;
 		$scope.taskData.task_level=hidden_task_level;
 		$scope.taskData.user_auto_id=user_auto_id;
@@ -414,6 +416,84 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					});
 				},1200);
 			}
+		});
+	};
+
+
+	$scope.getLeaderStreamAndVideo = function()
+    {	
+    	$scope.get_live_stream_video_by_level();
+    	$scope.get_task_min_three_video_by_level();
+    }
+	$scope.get_live_stream_video_by_level = function(valobj)
+    {   	
+
+		$scope.liveStreamStatusData={}
+		$scope.liveStreamStatusData.leader_id=$scope.taskData.leader_id;
+		$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
+		$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+		$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+		$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+		$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+
+		var formData = new FormData();
+		formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+		//alert("fd")
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxGetLeaderWiseLiveStreamVideo",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Something went wrong on fetching leader task!",
+	        		"error"
+	        	)
+        	}
+		});
+	};
+
+	$scope.get_task_min_three_video_by_level = function(valobj)
+    {   	
+
+		$scope.liveStreamStatusData={}
+		$scope.liveStreamStatusData.leader_id=$scope.taskData.leader_id;
+		$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
+		$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+		$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+		$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+		$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+
+		var formData = new FormData();
+		formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+		//alert("fd")
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxGetLeaderWiseMinThreeVideo",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.allVideoListObj=aryreturnData.data.taskMin3VideoLevelData;
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Something went wrong on fetching leader task!",
+	        		"error"
+	        	)
+        	}
 		});
 	};
 

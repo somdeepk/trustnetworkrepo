@@ -80,6 +80,7 @@
                <div class="iq-header-title w-100">
                   <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
                   <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
+                  <input type="hidden" id="hidden_leader_id" value="<?php echo $argument['leader_id']; ?>">
                   <input type="hidden" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
                   <input type="hidden" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
@@ -95,11 +96,29 @@
          </div>
       </div>
 
+      <div class="col-sm-12">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title w-100">
+              <div class="form-group col-sm-12" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'">
+              <label for="type"><strong>Select Leader To View Task:</strong></label>
+              <select ng-model="taskData.leader_id" id="leader_id" ng-change="getLeaderStreamAndVideo()" class="form-control form-control-primary">
+              <!-- <option value="0">Church Leader</option> -->
+              <?php foreach($allChurchAdminData as $key=>$val) : ?>
+              <option value="<?php echo $val['id']; ?>"><?php echo $val['first_name']." ".$val['last_name']; ?></option>
+              <?php endforeach; ?>
+              </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="col-sm-12">               
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title">
-                  <h4 class="card-title">Live Stream Video(s)</h4>
+                  <h4 class="card-title">Live Stream Schedule(s)</h4>
                </div>
             </div>
             <div class="iq-card-body">
@@ -142,7 +161,7 @@
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                    There is no Live Stream Video.
+                    There is no Live Stream Schedule.
                   </li>
                </ul>
             </div>
