@@ -481,7 +481,7 @@ class User_Model extends CI_Model
 		{
 			foreach($taskVideoLevelData as $k=>$v)
 			{
-				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']))
+				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']) && $v['video_name']!='')
 				{
 					$key=($v['video_number']-1);
 	
@@ -729,6 +729,128 @@ class User_Model extends CI_Model
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData[0];
+	}
+
+	public function get_member_watch_task_video_by_level($argument)
+	{
+		$membershipType=$argument['membershipType'];
+		$user_auto_id=$argument['user_auto_id'];
+		$parent_id=$argument['parent_id'];
+		$leader_id=$argument['leader_id'];
+		$course_id=$argument['course_id'];
+		$task_level=$argument['task_level'];
+
+		$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
+		$sql="SELECT 
+				tl.*,
+				tlv.id as task_level_video_id, 
+				tlv.video_number, 
+				tlv.video_name,
+				tlv.video_size,
+				tlv.video_type,
+				tlvv.is_full_viwed,
+				tlvv.member_id
+				FROM tn_task_level as tl
+				LEFT JOIN tn_task_level_video as tlv ON tlv.task_level_id=tl.id
+				LEFT JOIN tn_task_level_video_viewed as tlvv ON tlvv.task_level_video_id=tlv.id and  tlvv.member_id='".$user_auto_id."'
+				WHERE tl.deleted='0' ".$strWhereParam." order by tlv.video_number";
+		$query=$this->db->query($sql);
+		$taskVideoLevelData=$query->result_array();
+
+		$finalTaskVideoLevelData=array();
+		if(count($taskVideoLevelData)>0)
+		{
+			$isOpen='Y';
+			foreach($taskVideoLevelData as $k=>$v)
+			{
+				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']))
+				{
+					$key=($v['video_number']-1);
+	
+					$finalTaskVideoLevelData[$key]['membershipType']=$membershipType;
+					$finalTaskVideoLevelData[$key]['is_admin']='N';
+					$finalTaskVideoLevelData[$key]['task_level_video_id']=$v['task_level_video_id'];
+					$finalTaskVideoLevelData[$key]['video_number']=$v['video_number'];
+					$finalTaskVideoLevelData[$key]['video_name']=$v['video_name'];
+					$finalTaskVideoLevelData[$key]['video_size']=$v['video_size'];
+					$finalTaskVideoLevelData[$key]['video_type']=$v['video_type'];
+					$finalTaskVideoLevelData[$key]['is_full_viwed']=$v['is_full_viwed'];
+					if(empty($v['is_full_viwed']))
+					{
+						$finalTaskVideoLevelData[$key]['is_full_viwed']='N';
+					}
+					
+					if($v['is_full_viwed']=='Y')
+					{
+						$finalTaskVideoLevelData[$key]['view_status']='viewed';
+						$finalTaskVideoLevelData[$key]['view_txt']='Viewed';
+					}
+					elseif( (empty($v['is_full_viwed']) || $v['is_full_viwed']=='N') && $isOpen=='Y')
+					{
+						$finalTaskVideoLevelData[$key]['view_status']='open';
+						$finalTaskVideoLevelData[$key]['view_txt']='open';
+						$isOpen='N';
+					}
+					else
+					{
+						$finalTaskVideoLevelData[$key]['view_status']='block';
+						$finalTaskVideoLevelData[$key]['view_txt']='Block';
+					}
+
+					
+					$finalTaskVideoLevelData[$key]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$v['video_name'];
+				}
+			}
+		}
+
+		return $finalTaskVideoLevelData;
+	}
+
+
+	public function addUpdateTaskLevelVideoViewed($argument=NULL)
+	{
+		$current_date=date('Y-m-d H:i:s');
+		$user_auto_id=$argument['user_auto_id'];
+		$task_level_video_id=$argument['task_level_video_id'];
+		$video_ended=$argument['video_ended'];
+		$video_viewed_time=$argument['video_viewed_time'];
+		
+		$str_is_full_viwed='N';
+		if($video_ended>=1)
+		{
+			$str_is_full_viwed='Y';
+		}
+		$sql='SELECT * from tn_task_level_video_viewed WHERE member_id="'.$user_auto_id.'" AND task_level_video_id="'.$task_level_video_id.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+
+		$task_level_video_viewed_aid=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$task_level_video_viewed_aid=$rowData->id;
+		}
+
+		if($task_level_video_viewed_aid>0)
+		{
+			$menu_arr['member_id']=$user_auto_id;
+			$menu_arr['task_level_video_id']=$task_level_video_id;
+			$menu_arr['video_viewed_time']  =$video_viewed_time;
+			$menu_arr['is_full_viwed']=$str_is_full_viwed;
+			$menu_arr['view_date']  =$current_date;
+			$this->db->where('id',$task_level_video_viewed_aid)->update('tn_task_level_video_viewed',$menu_arr);
+			return $task_level_video_viewed_aid;
+		}
+		else
+		{
+			$menu_arr['member_id']=$user_auto_id;
+			$menu_arr['task_level_video_id']=$task_level_video_id;
+			$menu_arr['video_viewed_time']  =$video_viewed_time;
+			$menu_arr['is_full_viwed']=$str_is_full_viwed;
+			$menu_arr['view_date']  =$current_date;
+
+			$this->db->insert('tn_task_level_video_viewed',$menu_arr);
+			return $this->db->insert_id();
+		}
 	}
 	
 }

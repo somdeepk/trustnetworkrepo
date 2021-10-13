@@ -88,6 +88,8 @@
                   <div class="d-flex justify-content-between w-100">
                   <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [<?php echo $argument['course_name']; ?> : Level <?php echo $argument['task_level']; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
+
+                   <a href="javascript:void();" onclick="playVideo();">Play me</a>
                 </div>
 
 
@@ -178,6 +180,47 @@
          </div>
       </div>
 
+      <style>
+        .videodisabledcontainer{
+          width: 100px;
+          height: 100px;
+          position: relative;
+        }
+        .videodisabledoverlay{
+          background-color: #c3bebe;
+          position: absolute;
+          width: 267%;
+          height: 175%;
+          top: 25px;
+          left: 0;
+          z-index: 999;
+          opacity: 0.7;
+          text-align: center;
+          padding-top: 54px;
+          font-size: 37px;              
+          font-weight: bold;
+          pointer-events: none;
+        }
+        .viewedverlay{
+          color: #558527;
+        }
+        .blockverlay{
+          color: red;
+        }
+        .nopointer
+        {
+          pointer-events: none;
+        }
+
+        .videodisabled{
+          position: absolute;
+          width: 267%;
+          height: 100%;
+          top: 0;
+          left: 0;
+        }
+      </style>
+
       <div ng-repeat="(key, value) in allVideoListObj" class="col-md-4"> <!-- ng-if="taskData.membership_type!='CM'"  -->
          <div class="iq-card">
             <div class="iq-card-body profile-page profile-page-wrap p-0">
@@ -188,10 +231,13 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-start">
                            <div class="profile-detail d-flex"> 
                               <!--left-->
-                              <div class="col-sm-12 padding-lr0 mb10">
+                              <div class="col-sm-12 padding-lr0 mb10" ng-class="(session_is_admin=='N' && value.membershipType=='RM') ? 'videodisabledcontainer': ''">
                                 <strong>Video {{parseInt(key)+1}}</strong>
-                                <div id="uploaded_image" ng-class="(value.video_number==0) ? 'height209' : ''">
-                                  <video ng-if="value.video_number>0" width="100%" height="200" controls>
+
+                                <div ng-if="(session_is_admin=='N' && value.membershipType=='RM' && value.view_status!='open')" class="videodisabledoverlay" ng-class="(value.view_status=='viewed') ? 'viewedverlay' : 'blockverlay'"><i ng-if="(value.view_status=='block')" class="ri-lock-2-fill"></i><i ng-if="(value.view_status=='viewed')" class="ri-eye-fill"></i> {{value.view_txt}} </div>
+
+                                <div id="uploaded_image" ng-class="(session_is_admin=='N' && value.membershipType=='RM') ? 'videodisabled': ((value.video_number==0) ? ' height209' : '')" >
+                                  <video class="zminThreeVideoz" id="vid_{{value.task_level_video_id}}" data-membershiptype="{{value.membershipType}}" data-isadmin="{{session_is_admin}}" ng-class="(session_is_admin=='N' && value.membershipType=='RM' && value.view_status!='open') ? 'nopointer': ''" ng-if="value.video_number>0" width="100%" height="200" controls>
                                     <source src="{{value.video_path_with_video}}" type="{{value.video_type}}">
                                   </video>
 
@@ -237,3 +283,19 @@
   </div>
   <!-- End Video Section-->
 </div>
+<script type="text/javascript">
+/*
+function playVideo() {
+  alert("ds")
+    $('#vid_6').get(0).play();
+}
+  
+setInterval(function(){ 
+  video = $('#vid_6').get(0);
+  //alert(video.ended)
+  //alert(video.currentTime)
+}, 6000);
+*/
+
+ //document.getElementById("vid_6").addEventListener("ended", function(){alert("all done")}, true);
+</script>

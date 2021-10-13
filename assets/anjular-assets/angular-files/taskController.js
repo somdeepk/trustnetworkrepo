@@ -14,16 +14,49 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.liveStreamData={};
     $scope.files = [];
 
-    $scope.getTaskData = function (user_auto_id,parent_id,membership_type,is_admin)
+	
+
+    $scope.call_member_watch_task_video_by_level = function ()
 	{
+		//alert("fdf")
+		$interval(function()
+	    {
+			$('.zminThreeVideoz').each(function(index, value)
+			{
+				tempid=this.id;	
+				membershiptype=$(this).attr("data-membershiptype");
+				is_admin=$(this).attr("data-isadmin");
+				if(is_admin=='N' && membershiptype=='RM')
+				{
+					video = $('#'+tempid).get(0);
+					if(video.currentTime>0)
+					{										
+						$scope.track_member_watch_task_video_by_level(tempid);
+						//video.ended==true
+					}
+				}			
+			});
+		}, 2000);
+
+	};
+
+	$scope.getTaskData = function (user_auto_id,parent_id,membership_type,is_admin)
+	{
+		//alert("")
 		hidden_leader_id=$('#hidden_leader_id').val();	
 		hidden_course_id=$('#hidden_course_id').val();	
 		hidden_task_level=$('#hidden_task_level').val();	
 		jsonTaskVideoLevelData=$('#jsonTaskVideoLevelData').html();	
 		jsonLiveStreamVideoData=$('#jsonLiveStreamVideoData').html();	
 
-		$scope.allVideoListObj=jQuery.parseJSON(jsonTaskVideoLevelData);
-		$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
+		if (($scope.isNullOrEmptyOrUndefined(jsonTaskVideoLevelData)==false))
+		{
+			$scope.allVideoListObj=jQuery.parseJSON(jsonTaskVideoLevelData);
+		}
+		if (($scope.isNullOrEmptyOrUndefined(jsonLiveStreamVideoData)==false))
+		{
+			$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
+		}
 		//console.log('dsd')
 		//console.log($scope.allVideoListObj)
 		//alert(hidden_leader_id)	
@@ -34,7 +67,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.taskData.user_auto_id=user_auto_id;
 		$scope.taskData.parent_id=parent_id;
 		$scope.taskData.membership_type=membership_type;
+
+		$scope.call_member_watch_task_video_by_level();
 	};
+
 
 
     //listen for the file selected event
@@ -491,6 +527,54 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	{
         		swal("Error!",
 	        		"Something went wrong on fetching leader task!",
+	        		"error"
+	        	)
+        	}
+		});
+	};
+
+
+	$scope.track_member_watch_task_video_by_level = function(tempid)
+    {
+		video = $('#'+tempid).get(0);
+
+    	ary_task_level_video_id=tempid.split("_");
+		task_level_video_id=ary_task_level_video_id[1];
+
+		$scope.liveStreamStatusData={}
+		$scope.liveStreamStatusData.video_viewed_time=video.currentTime
+		$scope.liveStreamStatusData.video_ended=video.ended;
+		$scope.liveStreamStatusData.task_level_video_id=task_level_video_id;
+		$scope.liveStreamStatusData.leader_id=$scope.taskData.leader_id;
+		$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+		$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
+		$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+		$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+		$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+
+		var formData = new FormData();
+		formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+		//alert("fd")
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxTrackMemberWatchTaskVideo",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+            	if(aryreturnData.data.video_ended>=1)
+        		{
+        			$scope.allVideoListObj=aryreturnData.data.taskMin3VideoLevelData;
+        			video.currentTime=0;
+        		}        		
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Something went wrong on tracking member watch video!",
 	        		"error"
 	        	)
         	}

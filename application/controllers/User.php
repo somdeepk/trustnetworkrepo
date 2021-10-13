@@ -1050,14 +1050,12 @@ class User extends CI_Controller
 			$argument['membershipType']=$membershipType;
 			$argument['user_auto_id']=$user_auto_id;
 			$argument['parent_id']=$parent_id;
-			$argument['task_level']=$task_level;*/
+			$argument['task_level']=$task_level;
+			*/
 
 			if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y")
 			{
 				$allChurchAdminData = $this->User_Model->get_all_church_admin($user_auto_id);
-				/*echo "<pre>";
-				print_r($allChurchAdminData);
-				exit;*/
 				$leader_id=0;
 				if(count($allChurchAdminData)>0)
 				{
@@ -1073,19 +1071,30 @@ class User extends CI_Controller
 				$data['allChurchAdminData']=$allChurchAdminData;
 
 				/*echo "<pre>";
-				print_r($allChurchAdminData);*/
-				
+				print_r($allChurchAdminData);*/				
 				
 				$argument['leader_id']=$leader_id;
 				$taskMin3VideoLevelData = $this->User_Model->get_task_min_three_video_by_level($argument);
 				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+
+				/*
+				echo "ss<pre>";
+				print_r($taskMin3VideoLevelData);
+				exit;
+				*/
 
 				$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
 				$data['liveStreamVideoData']=json_encode($liveStreamVideoData);
 			}
 			elseif($membershipType=="RM" && $isAdmin=="N")
 			{
-
+				$argument['leader_id']=$this->session->userdata('admin_id');
+				$taskMin3VideoLevelData = $this->User_Model->get_member_watch_task_video_by_level($argument);
+				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
+				/*
+				echo "ss<pre>";
+				print_r($taskMin3VideoLevelData);
+				exit;	*/			
 			}
 		
 			$data['argument']=$argument;
@@ -1786,6 +1795,52 @@ class User extends CI_Controller
         $returnData['msg']='success';
         $returnData['msgstring']='Deleted Successfully';
         $returnData['data']=array('lastId'=>$lastId,'taskMin3VideoLevelData'=>$taskMin3VideoLevelData);
+		
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxTrackMemberWatchTaskVideo() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+
+  
+		$video_viewed_time=(isset($aryLSVideoData['video_viewed_time']) && !empty($aryLSVideoData['video_viewed_time']))? addslashes(trim($aryLSVideoData['video_viewed_time'])):0;
+		$video_ended=(isset($aryLSVideoData['video_ended']) && !empty($aryLSVideoData['video_ended']))? addslashes(trim($aryLSVideoData['video_ended'])):0;
+		$task_level_video_id=(isset($aryLSVideoData['task_level_video_id']) && !empty($aryLSVideoData['task_level_video_id']))? addslashes(trim($aryLSVideoData['task_level_video_id'])):0;
+		$leader_id=(isset($aryLSVideoData['leader_id']) && !empty($aryLSVideoData['leader_id']))? addslashes(trim($aryLSVideoData['leader_id'])):0;
+		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+
+		
+		$argument=array();
+		$argument['video_viewed_time']=$video_viewed_time;
+		$argument['video_ended']=$video_ended;
+		$argument['task_level_video_id']=$task_level_video_id;
+		$argument['leader_id']=$leader_id;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+		$argument['membershipType']=$membership_type;
+
+/*		echo "s<pre>";
+		print_r($argument);
+		exit;
+*/
+		$task_level_video_viewed_aid = $this->User_Model->addUpdateTaskLevelVideoViewed($argument);
+
+		$taskMin3VideoLevelData = $this->User_Model->get_member_watch_task_video_by_level($argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='Deleted Successfully';
+        $returnData['data']=array('video_ended'=>$video_ended,'task_level_video_viewed_aid'=>$task_level_video_viewed_aid,'taskMin3VideoLevelData'=>$taskMin3VideoLevelData);
 		
         echo json_encode($returnData);
         exit;
