@@ -55,6 +55,12 @@
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-pages/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
 
+
+    <script src="<?php echo base_url();?>assets/agora-assets/jquery-3.4.1.min.js"></script>
+    <script src="<?php echo base_url();?>assets/agora-assets/bootstrap.bundle.min.js"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/agora-assets/basicLive.js"></script>
+
    </head>
    
    <body ng-app="trustApp" class="right-column-fixed ng-scope "> <!-- sidebar-main -->

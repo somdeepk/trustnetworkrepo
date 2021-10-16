@@ -71,6 +71,62 @@
   </div>
   <!-- End Image Croping Modal -->
 
+
+  <!-- Start Go Live Modal -->
+  <div id="goLiveModal" class="modal" role="dialog" style="z-index:999999 ">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title"><i class="ri-broadcast-fill"></i>  Live Streaming</h4> 
+          </div>
+          <form id="join-form" name="join-form">
+            <div class="modal-body">
+              
+              <div class="container">                
+                  <div class="row join-info-group hiddenimportant">
+                    <input type="hiddens" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
+                    <input type="hiddens" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
+                    <input type="hiddens" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
+                    <input type="hiddens" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
+                  </div>
+
+                  <div class="row video-group">
+                    <div class="col">
+                     <!--  <p id="local-player-name" class="player-name"></p> -->
+                      <div id="local-player" class="player"></div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <div id="remote-playerlist"></div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!--  <div class="btn-group">
+              <button id="audience-join" type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Join as audience
+              </button> -->
+              <button class="btn btn-info zbtnGoLivez" id="host-join" ><i class="ri-broadcast-fill"></i> Start Live Streaming</button>
+              <button class="btn btn-warning" id="leave" >Leave Live Streaming</button>
+              <!-- <button type="button" class="btn btn-secondary zbtnCancelGoLivez" data-dismiss="modal">Cancel</button> -->
+            </div>
+
+            <div class="modal-footer hiddenimportant">
+              <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Congratulations!</strong><span> You can invite others to watch your live by click </span><a href="" target="_blank">here</a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+  </div>
+  <!-- End Go Live Modal -->
+
   <!-- Start Video Section-->
   <div class="container">
     <div class="row">
@@ -88,8 +144,6 @@
                   <div class="d-flex justify-content-between w-100">
                   <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [<?php echo $argument['course_name']; ?> : Level <?php echo $argument['task_level']; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
-
-                   <a href="javascript:void();" onclick="playVideo();">Play me</a>
                 </div>
 
 
@@ -141,6 +195,7 @@
                      </div>
                   </li>
 
+
                   <li ng-repeat="(key, value) in allLiveStreamVideoData" class="d-flex align-items-center">
                      <div class="media-support-info ml-4">
                         <h6>{{value.video_title}}</h6>
@@ -153,6 +208,9 @@
                      </div> -->
                      <div class="d-flex align-items-center">
                         
+                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-info rounded zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
+
+
                         <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
                         <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-class="(value.status=='1' || value.status=='0') ? 'btn-primary' : 'btn-primary'" class="mr-3 btn rounded zeditStreamVideoz_{{value.id}}">
@@ -284,18 +342,170 @@
   <!-- End Video Section-->
 </div>
 <script type="text/javascript">
-/*
-function playVideo() {
-  alert("ds")
-    $('#vid_6').get(0).play();
-}
-  
-setInterval(function(){ 
-  video = $('#vid_6').get(0);
-  //alert(video.ended)
-  //alert(video.currentTime)
-}, 6000);
-*/
+// create Agora client
+var client = AgoraRTC.createClient({mode: "live", codec: "vp8"});
+var localTracks = {
+    videoTrack: null,
+    audioTrack: null
+};
+var remoteUsers = {};
+// Agora client options
+var options = {
+    appid: null,
+    channel: null,
+    uid: null,
+    token: null,
+    role: "audience", // host or audience
+    audienceLatency: 2
+};
 
- //document.getElementById("vid_6").addEventListener("ended", function(){alert("all done")}, true);
+// the demo can auto join channel with params in url
+$(() => {
+    var urlParams = new URL(location.href).searchParams;
+    options.appid = urlParams.get("appid");
+    options.channel = urlParams.get("channel");
+    options.token = urlParams.get("token");
+    options.uid = urlParams.get("uid");
+    if (options.appid && options.channel) {
+        $("#uid").val(options.uid);
+        $("#appid").val(options.appid);
+        $("#token").val(options.token);
+        $("#channel").val(options.channel);
+        $("#join-form").submit();
+    }
+})
+
+$("#host-join").click(function (e) {
+    //$(".zbtnCancelGoLivez").addClass('hiddenimportant');
+    options.role = "host"
+})
+
+$("#lowLatency").click(function (e) {
+    options.role = "audience"
+    options.audienceLatency = 1
+    $("#join-form").submit()
+})
+
+$("#ultraLowLatency").click(function (e) {
+    options.role = "audience"
+    options.audienceLatency = 2
+    $("#join-form").submit()
+})
+
+$("#join-form").submit(async function (e) {
+    e.preventDefault();
+    $("#host-join").attr("disabled", true);
+    $("#audience-join").attr("disabled", true);
+    try {
+        options.appid = $("#appid").val();
+        options.token = $("#token").val();
+        options.channel = $("#channel").val();
+        options.uid = Number($("#uid").val());
+        await join();
+        if (options.role === "host") {
+            $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
+            if (options.token) {
+                $("#success-alert-with-token").css("display", "block");
+            } else {
+                $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
+                $("#success-alert").css("display", "block");
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        $("#leave").attr("disabled", false);
+    }
+})
+
+$("#leave").click(function (e) {
+    leave();
+    //$(".zbtnCancelGoLivez").removeClass('hiddenimportant');
+})
+
+async function join() {
+    // create Agora client
+
+    if (options.role === "audience") {
+        client.setClientRole(options.role, {level: options.audienceLatency});
+        // add event listener to play remote tracks when remote user publishs.
+        client.on("user-published", handleUserPublished);
+        client.on("user-unpublished", handleUserUnpublished);
+    }
+    else{
+        client.setClientRole(options.role);
+    }
+
+    // join the channel
+    options.uid = await client.join(options.appid, options.channel, options.token || null, options.uid || null);
+
+    if (options.role === "host") {
+        // create local audio and video tracks
+        localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+        // play local video track
+        localTracks.videoTrack.play("local-player");
+        //$("#local-player-name").text(`localTrack(${options.uid})`);
+        // publish local tracks to channel
+        await client.publish(Object.values(localTracks));
+        console.log("publish success");
+    }
+}
+
+async function leave() {
+    for (trackName in localTracks) {
+        var track = localTracks[trackName];
+        if (track) {
+            track.stop();
+            track.close();
+            localTracks[trackName] = undefined;
+        }
+    }
+
+    // remove remote users and player views
+    remoteUsers = {};
+    $("#remote-playerlist").html("");
+
+    // leave the channel
+    await client.leave();
+
+    //$("#local-player-name").text("");
+    $("#host-join").attr("disabled", false);
+    //$("#audience-join").attr("disabled", false);
+    $("#leave").attr("disabled", true);
+    location.reload();
+    //console.log("client leaves channel success");
+}
+
+async function subscribe(user, mediaType) {
+    const uid = user.uid;
+    // subscribe to a remote user
+    await client.subscribe(user, mediaType);
+    console.log("subscribe success");
+    if (mediaType === 'video') {
+        const player = $(`
+      <div id="player-wrapper-${uid}">
+        <p class="player-name">remoteUser(${uid})</p>
+        <div id="player-${uid}" class="player"></div>
+      </div>
+    `);
+        $("#remote-playerlist").append(player);
+        user.videoTrack.play(`player-${uid}`, {fit:"contain"});
+    }
+    if (mediaType === 'audio') {
+        user.audioTrack.play();
+    }
+}
+
+function handleUserPublished(user, mediaType) {
+    const id = user.uid;
+    remoteUsers[id] = user;
+    subscribe(user, mediaType);
+}
+
+function handleUserUnpublished(user) {
+    const id = user.uid;
+    delete remoteUsers[id];
+    $(`#player-wrapper-${id}`).remove();
+}
 </script>

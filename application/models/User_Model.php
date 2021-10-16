@@ -553,6 +553,7 @@ class User_Model extends CI_Model
 				$resultData[$k]['is_admin']=$str_is_admin;
 				$resultData[$k]['display_star_time']=date('m-d-Y h:i A',strtotime($v['star_time']));
 				$resultData[$k]['star_time']=date('Y-m-d H:i',strtotime($v['star_time']));
+				$resultData[$k]['star_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['star_time'])));
 				//$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
 				//$resultData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/streamvideo/'.$v['video_name'];
 			}

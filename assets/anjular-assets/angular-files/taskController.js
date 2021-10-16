@@ -12,6 +12,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.allVideoListObj={};
     $scope.allLiveStreamVideoData={};
     $scope.liveStreamData={};
+    $scope.agoraData={};
     $scope.files = [];
 
 	
@@ -579,6 +580,13 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	)
         	}
 		});
+	};
+
+	$scope.goLivePopup = function(valobj)
+	{
+		$('#goLiveModal').modal('show');
+		$scope.agoraData.appid='8d3e71062f014643834a6290706da0a4';
+		$scope.agoraData.channel='AID'+valobj.id+'TLID'+valobj.task_level_id;
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
