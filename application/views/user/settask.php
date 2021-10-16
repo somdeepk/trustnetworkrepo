@@ -107,8 +107,8 @@
               <button id="audience-join" type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Join as audience
               </button> -->
-              <button class="btn btn-info zbtnGoLivez" id="host-join" ><i class="ri-broadcast-fill"></i> Start Live Streaming</button>
-              <button class="btn btn-warning" id="leave" >Leave Live Streaming</button>
+              <button class="btn btn-info zbtnGoLivez" ng-click="start_leave_live_streaming('Y')" id="host-join" ><i class="ri-broadcast-fill"></i> Start Live Streaming</button>
+              <button class="btn btn-warning" ng-click="start_leave_live_streaming('N')" id="leave" >Leave Live Streaming</button>
               <!-- <button type="button" class="btn btn-secondary zbtnCancelGoLivez" data-dismiss="modal">Cancel</button> -->
             </div>
 
@@ -208,16 +208,18 @@
                      </div> -->
                      <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-info rounded zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
+                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
 
 
-                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
+                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? (value.status=='1') ? 'cssdisabled btn-success' : 'cssdisabled btn-primary' : (value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-class="(value.status=='1' || value.status=='0') ? 'btn-primary' : 'btn-primary'" class="mr-3 btn rounded zeditStreamVideoz_{{value.id}}">
-                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> <i ng-if="session_is_admin=='N'" class="ri-eye-line"></i>{{(session_is_admin=='Y')? 'Edit' : 'View'}}
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn btn-primary rounded zeditStreamVideoz zeditStreamVideoz_{{value.id}}">
+                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
+                        </a>
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i  class="ri-eye-line"></i>View
                         </a>
 
-                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1' || value.status=='0') ? 'btn-danger' : 'btn-danger'" class="mr-3 btn rounded zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteStreamVideoz zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
@@ -414,18 +416,23 @@ $("#join-form").submit(async function (e) {
     } catch (error) {
         console.error(error);
     } finally {
-        $("#leave").attr("disabled", false);
+        //$("#leave").attr("disabled", false);
     }
 })
 
-$("#leave").click(function (e) {
-    leave();
-    //$(".zbtnCancelGoLivez").removeClass('hiddenimportant');
-})
+function leave_live_streaming()
+{
+  leave();
+}
+
+/*$("#leave").click(function (e)
+{
+   leave();
+  //$(".zbtnCancelGoLivez").removeClass('hiddenimportant');
+})*/
 
 async function join() {
     // create Agora client
-
     if (options.role === "audience") {
         client.setClientRole(options.role, {level: options.audienceLatency});
         // add event listener to play remote tracks when remote user publishs.
@@ -472,8 +479,7 @@ async function leave() {
     //$("#local-player-name").text("");
     $("#host-join").attr("disabled", false);
     //$("#audience-join").attr("disabled", false);
-    $("#leave").attr("disabled", true);
-    location.reload();
+    //$("#leave").attr("disabled", true);
     //console.log("client leaves channel success");
 }
 

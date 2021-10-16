@@ -13,6 +13,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.allLiveStreamVideoData={};
     $scope.liveStreamData={};
     $scope.agoraData={};
+    $scope.goliveStreamData={};
     $scope.files = [];
 
 	
@@ -37,7 +38,29 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					}
 				}			
 			});
+
 		}, 2000);
+
+		$timeout(function()
+		{
+			if($('.zgoLivez').length>0)
+			{
+				$('.zgoLivez').each(function(index, value)
+				{
+					if($(this).hasClass("blink_me"))
+					{
+						tempthis=this;	
+						islive=1;
+					}		
+				});
+
+				if(islive==1)
+				{
+					$(".zgoLivez").addClass('cssdisabled');
+					$(tempthis).removeClass('cssdisabled');
+				}
+			}
+		},300);
 
 	};
 
@@ -587,6 +610,63 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$('#goLiveModal').modal('show');
 		$scope.agoraData.appid='8d3e71062f014643834a6290706da0a4';
 		$scope.agoraData.channel='AID'+valobj.id+'TLID'+valobj.task_level_id;
+		$scope.agoraData.task_level_stream_video_aid=valobj.id;
+	};
+
+	$scope.start_leave_live_streaming = function(is_live)
+    {
+		
+		$scope.goliveStreamData.id=$scope.agoraData.task_level_stream_video_aid;
+		$scope.goliveStreamData.is_live=is_live;
+		$scope.goliveStreamData.leader_id=$scope.taskData.leader_id;
+		$scope.goliveStreamData.user_auto_id=$scope.taskData.user_auto_id;
+		$scope.goliveStreamData.course_id=$scope.taskData.course_id;
+		$scope.goliveStreamData.task_level=$scope.taskData.task_level;
+		$scope.goliveStreamData.parent_id=$scope.taskData.parent_id;
+		$scope.goliveStreamData.membership_type=$scope.taskData.membership_type;
+
+		var formData = new FormData();
+		formData.append('goliveStreamData',angular.toJson($scope.goliveStreamData));
+		
+
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxStartLeaveLiveStreaming",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$(".zgoLivez").addClass('cssdisabled');
+        		$(".zgoLivez").removeClass('blink_me');
+        		$(".zactiveInactiveStreamVideoz").removeClass('cssdisabled');
+				$(".zeditStreamVideoz").removeClass('cssdisabled');
+				$(".zdeleteStreamVideoz").removeClass('cssdisabled');
+
+        		if(is_live=='N')
+        		{
+        			leave_live_streaming()
+        			location.reload();
+        		}
+        		else if(is_live=='Y')
+		        {
+					$(".zgoLivez_"+$scope.agoraData.task_level_stream_video_aid).removeClass('cssdisabled');
+					$(".zgoLivez_"+$scope.agoraData.task_level_stream_video_aid).addClass('blink_me');
+					$(".zactiveInactiveStreamVideoz_"+$scope.agoraData.task_level_stream_video_aid).addClass('cssdisabled');
+					$(".zeditStreamVideoz_"+$scope.agoraData.task_level_stream_video_aid).addClass('cssdisabled');
+					$(".zdeleteStreamVideoz_"+$scope.agoraData.task_level_stream_video_aid).addClass('cssdisabled');
+				}        		
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Streaming Starting is Failed!",
+	        		"error"
+	        	)
+        	}
+		});
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {

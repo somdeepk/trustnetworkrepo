@@ -1478,6 +1478,67 @@ class User extends CI_Controller
         exit;
     }
 
+    public function ajaxStartLeaveLiveStreaming() 
+    {
+
+    	$returnData=array();
+    	$goliveStreamData=$this->input->get_post('goliveStreamData');
+    	$AryGoliveStreamData=json_decode($goliveStreamData, true);
+  
+  		$id=(isset($AryGoliveStreamData['id']) && !empty($AryGoliveStreamData['id']))? addslashes(trim($AryGoliveStreamData['id'])):0;
+  		$is_live=(isset($AryGoliveStreamData['is_live']) && !empty($AryGoliveStreamData['is_live']))? addslashes(trim($AryGoliveStreamData['is_live'])):'N';
+  		
+  		$user_auto_id=(isset($AryGoliveStreamData['user_auto_id']) && !empty($AryGoliveStreamData['user_auto_id']))? addslashes(trim($AryGoliveStreamData['user_auto_id'])):0;
+        $parent_id=(isset($AryGoliveStreamData['parent_id']) && !empty($AryGoliveStreamData['parent_id']))? addslashes(trim($AryGoliveStreamData['parent_id'])):0;
+        $course_id=(isset($AryGoliveStreamData['course_id']) && !empty($AryGoliveStreamData['course_id']))? addslashes(trim($AryGoliveStreamData['course_id'])):'';
+        $task_level=(isset($AryGoliveStreamData['task_level']) && !empty($AryGoliveStreamData['task_level']))? addslashes(trim($AryGoliveStreamData['task_level'])):'';
+        $membership_type=(isset($AryGoliveStreamData['membership_type']) && !empty($AryGoliveStreamData['membership_type']))? addslashes(trim($AryGoliveStreamData['membership_type'])):'';
+
+		
+		$argument=array();
+		$argument['membershipType']=$membership_type;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+
+		$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+		if(count($liveStreamVideoData)>0)
+		{
+			foreach($liveStreamVideoData as $k=>$v)
+			{
+				$menu_arr = array(
+		            'is_live'  =>'N'
+		        );
+				
+				$this->User_Model->addUpdatLiveStreamVideo($menu_arr,$v['id']);
+			}
+		}
+
+		$menu_arr = array(
+            'is_live'  =>$is_live
+        );
+		$lastId = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Streaming Started Successfully';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Streaming Starting is Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
     public function ajaxDeleteStreamVideo() 
     {
     	$returnData=array();
