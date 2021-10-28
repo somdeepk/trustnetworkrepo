@@ -76,10 +76,22 @@ class User_Model extends CI_Model
 
 		if(!empty($streaming_member_aid) && $streaming_member_aid>0)
 		{
-			if($join_leave_flag=='L') //Join
+
+			if($join_leave_flag=='J') //Join
 			{	
-				$menu_arr['leave_date']=$current_date;				
+				$menu_arr['leave_date']=NULL;				
 			}
+			elseif($join_leave_flag=='L') //Join
+			{	
+				$sqlLeaveTime='SELECT * from tn_streaming_member WHERE stream_video_id="'.$stream_video_id.'" AND member_id="'.$member_id.'" AND leave_date is NULL';
+				$queryLeaveTime=$this->db->query($sqlLeaveTime);
+				$rowDataLeaveTime=$queryLeaveTime->row();
+				if(!empty($rowDataLeaveTime))
+				{
+					$menu_arr['leave_date']=$current_date;	
+				}							
+			}
+
 			$this->db->where('id',$streaming_member_aid)->update('tn_streaming_member',$menu_arr);
 			return $streaming_member_aid;			
 		}

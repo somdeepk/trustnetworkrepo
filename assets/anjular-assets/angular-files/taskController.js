@@ -38,11 +38,12 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					}
 				}			
 			});
-
-			
-			$scope.get_live_stream_video_by_level();
-
 		}, 2000);
+
+		$interval(function()
+	    {
+	    	$scope.get_live_stream_video_by_level();
+	    }, 30000);
 
 		$timeout(function()
 		{
