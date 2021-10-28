@@ -301,7 +301,7 @@ switch (ENVIRONMENT)
 		$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads\\";
 
 	}else{
-		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/demo/trust-member-uploads/";
+		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
 
 		$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
 		$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);

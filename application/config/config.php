@@ -29,7 +29,7 @@ if(IS_LOCAL_HOST==1)
 }
 else
 {
-	$config['base_url'] = 'http://followmenow.org/demo/trust-member';
+	$config['base_url'] = 'http://followmenow.org/trust-member';
 }
 //$config['image_url'] = '';
 

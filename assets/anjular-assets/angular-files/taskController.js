@@ -39,6 +39,9 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 				}			
 			});
 
+			
+			$scope.get_live_stream_video_by_level();
+
 		}, 2000);
 
 		$timeout(function()
@@ -60,6 +63,8 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					$(tempthis).removeClass('cssdisabled');
 				}
 			}
+		
+
 		},300);
 
 	};
@@ -607,15 +612,101 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.goLivePopup = function(valobj)
 	{
+		//alert(valobj.is_admin)
+		if($('.zbtnGoLivez').hasClass('cssdisabled') || $('.zbtnJoinLivez').hasClass('cssdisabled'))
+		{
+			$('.zpalyericonz').addClass('hiddenimportant');
+		}
+		else
+		{
+			$('.zpalyericonz').removeClass('hiddenimportant');
+		}		
+
+		if(valobj.is_admin=='Y')
+		{
+			$('.zbtnJoinLivez').addClass('hiddenimportant');
+			$('.zbtnLeaveNowLivez').addClass('hiddenimportant');
+			//$('.zbtnCancelGoLivez').addClass('hiddenimportant');
+			$('.zbtnGoLivez').removeClass('hiddenimportant');
+			$('.zbtnLeaveLivez').removeClass('hiddenimportant');
+
+			//
+			//$('.zhostpalyerz').removeClass('hiddenimportant');
+			//$('.zaudiancepalyerz').addClass('hiddenimportant');
+		}
+		else
+		{
+			$('.zbtnJoinLivez').removeClass('hiddenimportant');
+			$('.zbtnLeaveNowLivez').removeClass('hiddenimportant');
+			//$('.zbtnCancelGoLivez').removeClass('hiddenimportant');			
+			$('.zbtnGoLivez').addClass('hiddenimportant');
+			$('.zbtnLeaveLivez').addClass('hiddenimportant');
+
+			//$('.zhostpalyerz').addClass('hiddenimportant');
+			//$('.zaudiancepalyerz').removeClass('hiddenimportant');
+		}
+
 		$('#goLiveModal').modal('show');
 		$scope.agoraData.appid='8d3e71062f014643834a6290706da0a4';
 		$scope.agoraData.channel='AID'+valobj.id+'TLID'+valobj.task_level_id;
 		$scope.agoraData.task_level_stream_video_aid=valobj.id;
 	};
 
-	$scope.start_leave_live_streaming = function(is_live)
+	$scope.join_leave_streaming = function(flag)
     {
-		
+    	if(flag=='J')
+    	{
+    		$('.zpalyericonz').addClass('hiddenimportant');
+	    	$('.zhostpalyerz').addClass('hiddenimportant');
+			$('.zaudiancepalyerz').removeClass('hiddenimportant');
+			$scope.member_join_leave_streaming(flag);
+    	}
+    	else
+    	{
+    		leave_live_streaming();
+    		$scope.member_join_leave_streaming(flag);
+	    	$timeout(function()
+			{
+				location.reload();
+			},100);
+    	}
+    };
+
+	$scope.member_join_leave_streaming = function(join_leave_flag)
+    {
+    	$scope.goliveStreamData={};
+    	$scope.goliveStreamData.id=$scope.agoraData.task_level_stream_video_aid;
+    	$scope.goliveStreamData.user_auto_id=$scope.taskData.user_auto_id;
+    	$scope.goliveStreamData.join_leave_flag=join_leave_flag;
+    	var formData = new FormData();
+		formData.append('goliveStreamData',angular.toJson($scope.goliveStreamData));
+
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxJoinStreaming",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		console.log("Streaming Joined")
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Streaming Joining is Failed!",
+	        		"error"
+	        	)
+        	}
+		});
+
+    };
+
+	$scope.start_leave_live_streaming = function(is_live)
+    {	
+        $scope.goliveStreamData={};	
 		$scope.goliveStreamData.id=$scope.agoraData.task_level_stream_video_aid;
 		$scope.goliveStreamData.is_live=is_live;
 		$scope.goliveStreamData.leader_id=$scope.taskData.leader_id;
@@ -627,7 +718,6 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 		var formData = new FormData();
 		formData.append('goliveStreamData',angular.toJson($scope.goliveStreamData));
-		
 
 		$http({
             method  : 'POST',
@@ -652,6 +742,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         		}
         		else if(is_live=='Y')
 		        {
+		        	$('.zpalyericonz').addClass('hiddenimportant');
+		        	$('.zhostpalyerz').removeClass('hiddenimportant');
+					$('.zaudiancepalyerz').addClass('hiddenimportant');
+
 					$(".zgoLivez_"+$scope.agoraData.task_level_stream_video_aid).removeClass('cssdisabled');
 					$(".zgoLivez_"+$scope.agoraData.task_level_stream_video_aid).addClass('blink_me');
 					$(".zactiveInactiveStreamVideoz_"+$scope.agoraData.task_level_stream_video_aid).addClass('cssdisabled');

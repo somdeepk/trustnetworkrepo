@@ -1042,9 +1042,7 @@ class User extends CI_Controller
 			$argument['course_name']=$course_name;
 			$argument['leader_id']=0;
 
-			/*echo "<pre>";
-			print_r($argument);
-			exit;*/
+			
 			/*			
 			$argument=array();
 			$argument['membershipType']=$membershipType;
@@ -1091,16 +1089,23 @@ class User extends CI_Controller
 				$argument['leader_id']=$this->session->userdata('admin_id');
 				$taskMin3VideoLevelData = $this->User_Model->get_member_watch_task_video_by_level($argument);
 				$data['taskMin3VideoLevelData']=json_encode($taskMin3VideoLevelData);
-				/*
-				echo "ss<pre>";
-				print_r($taskMin3VideoLevelData);
-				exit;	*/			
+
+				/*echo "<pre>";
+				print_r($argument);
+				exit;*/
+			
+				$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+				$data['liveStreamVideoData']=json_encode($liveStreamVideoData);
+				
+				/*echo "ss<pre>";
+				print_r($liveStreamVideoData);
+				exit;		*/		
 			}
 		
 			$data['argument']=$argument;
 
 			/*echo "ss<pre>";
-			print_r($liveStreamVideoData);
+			print_r($argument);
 			exit;*/
 
 			$this->load->view('user/header-script');
@@ -1480,7 +1485,6 @@ class User extends CI_Controller
 
     public function ajaxStartLeaveLiveStreaming() 
     {
-
     	$returnData=array();
     	$goliveStreamData=$this->input->get_post('goliveStreamData');
     	$AryGoliveStreamData=json_decode($goliveStreamData, true);
@@ -1493,7 +1497,7 @@ class User extends CI_Controller
         $course_id=(isset($AryGoliveStreamData['course_id']) && !empty($AryGoliveStreamData['course_id']))? addslashes(trim($AryGoliveStreamData['course_id'])):'';
         $task_level=(isset($AryGoliveStreamData['task_level']) && !empty($AryGoliveStreamData['task_level']))? addslashes(trim($AryGoliveStreamData['task_level'])):'';
         $membership_type=(isset($AryGoliveStreamData['membership_type']) && !empty($AryGoliveStreamData['membership_type']))? addslashes(trim($AryGoliveStreamData['membership_type'])):'';
-
+        $current_date=date('Y-m-d H:i:s');
 		
 		$argument=array();
 		$argument['membershipType']=$membership_type;
@@ -1520,6 +1524,16 @@ class User extends CI_Controller
         );
 		$lastId = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
 
+		//Start force do Leave all streaming member
+		if($is_live=='N')
+		{
+			$menu_arr = array(
+	            'leave_date'  =>$current_date
+	        );
+			$this->db->where(array('stream_video_id'=>$id,'leave_date'=>NULL))->update('tn_streaming_member',$menu_arr);
+		}
+		//End force do Leave all streaming member
+
  		if($lastId>0)
 		{
 	        $returnData['status']='1';
@@ -1532,6 +1546,45 @@ class User extends CI_Controller
 			$returnData['status']='0';
 	        $returnData['msg']='error';
 	        $returnData['msgstring']='Streaming Starting is Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxJoinStreaming() 
+    {
+    	$returnData=array();
+    	$goliveStreamData=$this->input->get_post('goliveStreamData');
+    	$AryGoliveStreamData=json_decode($goliveStreamData, true);
+  
+  		$id=(isset($AryGoliveStreamData['id']) && !empty($AryGoliveStreamData['id']))? addslashes(trim($AryGoliveStreamData['id'])):0;
+  		
+  		$user_auto_id=(isset($AryGoliveStreamData['user_auto_id']) && !empty($AryGoliveStreamData['user_auto_id']))? addslashes(trim($AryGoliveStreamData['user_auto_id'])):0;
+  		$join_leave_flag=(isset($AryGoliveStreamData['join_leave_flag']) && !empty($AryGoliveStreamData['join_leave_flag']))? addslashes(trim($AryGoliveStreamData['join_leave_flag'])):'L';
+        
+
+		$argu_arr = array(
+            'stream_video_id' => $id,
+            'member_id'  =>$user_auto_id,
+            'join_leave_flag'  =>$join_leave_flag
+        );
+
+		$streaming_member_aid = $this->User_Model->ajaxAddUpdateStreamingMember($argu_arr);
+
+ 		if($streaming_member_aid>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Streaming Joined Successfully';
+	        $returnData['data']=array('lastId'=>$streaming_member_aid);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Streaming Join is Failed';
 	        $returnData['data']=array();
 		}
        

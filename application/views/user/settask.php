@@ -91,25 +91,22 @@
                   </div>
 
                   <div class="row video-group">
-                    <div class="col">
-                     <!--  <p id="local-player-name" class="player-name"></p> -->
-                      <div id="local-player" class="player"></div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                      <div id="remote-playerlist"></div>
-                    </div>
+                    <div class="col-sm-12">
+                      <i class="ri-broadcast-fill zpalyericonz hiddenimportant" style="font-size: 86px;margin-left:346px;color:#50b5ff"></i>
+                      <div id="local-player" class="player zhostpalyerz hiddenimportant"></div>
+                      <div id="remote-playerlist" class="zaudiancepalyerz hiddenimportant"></div>
+                    </div>                    
                   </div>
               </div>
             </div>
             <div class="modal-footer">
-              <!--  <div class="btn-group">
-              <button id="audience-join" type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Join as audience
-              </button> -->
-              <button class="btn btn-info zbtnGoLivez" ng-click="start_leave_live_streaming('Y')" id="host-join" ><i class="ri-broadcast-fill"></i> Start Live Streaming</button>
-              <button class="btn btn-warning" ng-click="start_leave_live_streaming('N')" id="leave" >Leave Live Streaming</button>
-              <!-- <button type="button" class="btn btn-secondary zbtnCancelGoLivez" data-dismiss="modal">Cancel</button> -->
+  
+              <button id="lowLatency" type="button" ng-click="join_leave_streaming('J')" class="btn btn-info zbtnJoinLivez hiddenimportant"><i class="ri-account-pin-circle-fill"></i> Join Now</button>
+              <button class="btn btn-warning zbtnLeaveNowLivez hiddenimportant" ng-click="join_leave_streaming('L')" id="leave" >Leave Now</button>
+
+              <button class="btn btn-info zbtnGoLivez hiddenimportant" ng-click="start_leave_live_streaming('Y')" id="host-join" ><i class="ri-broadcast-fill"></i> Start Now</button>
+              <button class="btn btn-warning zbtnLeaveLivez hiddenimportant" ng-click="start_leave_live_streaming('N')" id="leave" >Leave Now</button>
+
             </div>
 
             <div class="modal-footer hiddenimportant">
@@ -208,8 +205,7 @@
                      </div> -->
                      <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
-
+                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="value.membership_type=='RM'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
 
                         <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? (value.status=='1') ? 'cssdisabled btn-success' : 'cssdisabled btn-primary' : (value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
@@ -223,7 +219,7 @@
                      </div>
                   </li>
                   <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                    There is no Live Stream Schedule.
+                    <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>                    
                   </li>
                </ul>
             </div>
@@ -239,48 +235,6 @@
             </div>
          </div>
       </div>
-
-      <style>
-        .videodisabledcontainer{
-          width: 100px;
-          height: 100px;
-          position: relative;
-        }
-        .videodisabledoverlay{
-          background-color: #c3bebe;
-          position: absolute;
-          width: 267%;
-          height: 175%;
-          top: 25px;
-          left: 0;
-          z-index: 999;
-          opacity: 0.7;
-          text-align: center;
-          padding-top: 54px;
-          font-size: 37px;              
-          font-weight: bold;
-          pointer-events: none;
-        }
-        .viewedverlay{
-          color: #558527;
-        }
-        .blockverlay{
-          color: red;
-        }
-        .nopointer
-        {
-          pointer-events: none;
-        }
-
-        .videodisabled{
-          position: absolute;
-          width: 267%;
-          height: 100%;
-          top: 0;
-          left: 0;
-        }
-      </style>
-
       <div ng-repeat="(key, value) in allVideoListObj" class="col-md-4"> <!-- ng-if="taskData.membership_type!='CM'"  -->
          <div class="iq-card">
             <div class="iq-card-body profile-page profile-page-wrap p-0">
@@ -339,6 +293,11 @@
             </div>
          </div>
       </div>
+
+      <div ng-if="allVideoListObj.length<=0" class="col-md-12" style="text-align: center ">
+        There is no video to watch!
+      </div>
+
     </div>
   </div>
   <!-- End Video Section-->
@@ -396,8 +355,10 @@ $("#ultraLowLatency").click(function (e) {
 
 $("#join-form").submit(async function (e) {
     e.preventDefault();
-    $("#host-join").attr("disabled", true);
-    $("#audience-join").attr("disabled", true);
+    $("#host-join").addClass('cssdisabled');
+    //$("#audience-join").attr("disabled", true);
+    //$("#lowLatency").attr("disabled", true);
+    $("#lowLatency").addClass('cssdisabled');
     try {
         options.appid = $("#appid").val();
         options.token = $("#token").val();
@@ -488,13 +449,21 @@ async function subscribe(user, mediaType) {
     // subscribe to a remote user
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
-    if (mediaType === 'video') {
+    if (mediaType === 'video')
+    {        
+        /* const player = $(`
+          <div id="player-wrapper-${uid}">
+          <p class="player-name">remoteUser(${uid})</p>
+          <div id="player-${uid}" class="player"></div>
+          </div>
+        `);*/
+
         const player = $(`
-      <div id="player-wrapper-${uid}">
-        <p class="player-name">remoteUser(${uid})</p>
-        <div id="player-${uid}" class="player"></div>
-      </div>
-    `);
+          <div id="player-wrapper-${uid}">
+          <div id="player-${uid}" class="playeraudiance"></div>
+          </div>
+        `);
+
         $("#remote-playerlist").append(player);
         user.videoTrack.play(`player-${uid}`, {fit:"contain"});
     }

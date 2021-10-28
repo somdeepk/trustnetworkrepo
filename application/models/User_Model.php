@@ -57,6 +57,42 @@ class User_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
+	
+	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
+	{
+		$stream_video_id=$argu_arr['stream_video_id'];
+		$member_id=$argu_arr['member_id'];
+		$join_leave_flag=$argu_arr['join_leave_flag'];
+		$current_date=date('Y-m-d H:i:s');
+
+		$sql='SELECT * from tn_streaming_member WHERE stream_video_id="'.$stream_video_id.'" AND member_id="'.$member_id.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		$streaming_member_aid=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$streaming_member_aid=$rowData->id;
+		}
+
+		if(!empty($streaming_member_aid) && $streaming_member_aid>0)
+		{
+			if($join_leave_flag=='L') //Join
+			{	
+				$menu_arr['leave_date']=$current_date;				
+			}
+			$this->db->where('id',$streaming_member_aid)->update('tn_streaming_member',$menu_arr);
+			return $streaming_member_aid;			
+		}
+		else
+		{
+			$menu_arr['stream_video_id']=$stream_video_id;
+			$menu_arr['member_id']=$member_id;
+			$menu_arr['join_date']=$current_date;
+			$menu_arr['leave_date']=NULL;
+			$this->db->insert('tn_streaming_member',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
 
 	public function ajaxConfirmDeleteFriendRequest($menu_arr=NULL,$member_friends_aid=0)
 	{
@@ -519,30 +555,36 @@ class User_Model extends CI_Model
 		$parent_id=$argument['parent_id'];
 		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
-		
+		$leader_id=$argument['leader_id'];
+
 		$str_is_admin=$this->session->userdata('is_admin');
 
 		if($membershipType=="CM" || $membershipType=="CC")
-		{
-			$leader_id=$argument['leader_id'];
+		{		
 
-			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
 		}
-		else
+		elseif($str_is_admin=='Y' && $membershipType=="RM" )
 		{
-			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND task_level='".$task_level."'";
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."'";
+		}
+		elseif($str_is_admin=='N' && $membershipType=="RM" )
+		{
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."' AND tlsv.is_live='Y'";
 		}
 
 		$sql="SELECT 
 				tlsv.*,
 				tl.task_level,
-				tm.is_admin
+				tm.is_admin,
+				tm.membership_type
 				FROM tn_task_level as tl
 				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
 				LEFT JOIN tn_members as tm ON tm.id='".$user_auto_id."'
 				WHERE tl.deleted='0' AND tlsv.deleted='0' ".$strWhereParam." order by tlsv.id DESC";
 
-				//exit;
+		/*echo $sql;
+		exit;*/
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 
@@ -764,7 +806,7 @@ class User_Model extends CI_Model
 			$isOpen='Y';
 			foreach($taskVideoLevelData as $k=>$v)
 			{
-				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']))
+				if (file_exists(IMAGE_PATH."/taskvideo/".$v['video_name']) && $v['video_name']!='')
 				{
 					$key=($v['video_number']-1);
 	
