@@ -907,6 +907,74 @@ class User_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
-	
+
+	public function get_live_streaming_member_by_level($argument)
+	{
+		$task_level=$argument['task_level'];
+		$membershipType=$argument['membershipType'];
+		$user_auto_id=$argument['user_auto_id'];
+		$parent_id=$argument['parent_id'];
+		$course_id=$argument['course_id'];
+		$task_level=$argument['task_level'];
+		$leader_id=$argument['leader_id'];
+
+		$sql="SELECT 
+				tlsv.*,
+				tl.course_id,
+				tl.task_level,
+				tsm.member_id,
+				tm.profile_image,
+				tm.first_name,
+                tm.last_name
+				FROM tn_task_level as tl
+				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
+				LEFT JOIN tn_streaming_member as tsm ON tsm.stream_video_id=tlsv.id
+				LEFT JOIN tn_members as tm ON tm.id=tsm.member_id
+				WHERE tl.deleted='0' AND tlsv.deleted='0' AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."' AND tlsv.is_live='Y' AND tsm.join_date IS NOT NULL and tsm.leave_date IS NULL AND tm.status='1' AND tm.deleted='0' order by tlsv.id DESC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+
+		return $resultData;
+	}
+
+
+	public function modify_member_level($menu_arr=NULL)
+	{
+		$course_id=$menu_arr['course_id'];
+		$task_level=$menu_arr['task_level'];
+		$member_id=$menu_arr['member_id'];
+
+		$sql='SELECT id from tn_member_level WHERE course_id="'.$course_id.'" AND task_level="'.$task_level.'" AND member_id="'.$member_id.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		$id=0;
+		if(!empty($rowData) && $rowData->id>0)
+		{
+			$id=$rowData->id;
+		}
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tn_member_level',$menu_arr);
+			return $member_id;
+		}
+		else
+		{			
+			$this->db->insert('tn_member_level',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function get_member_total_badge_by_course($member_id=0,$course_id=0)
+	{
+	 	$sql="SELECT 
+				sum(no_of_badge) as totbadge
+				from tn_member_level WHERE member_id='".$member_id."' AND course_id='".$course_id."' and status='1'";
+        $query=$this->db->query($sql);
+		$rowData=$query->row();
+		if(!empty($rowData) && $rowData->totbadge>0)
+		{
+			return $rowData->totbadge;
+		}
+	}
 }
 ?>

@@ -1961,6 +1961,158 @@ class User extends CI_Controller
     }
 
 
+    public function ajaxGetLiveStreamingMember() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+
+  		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+        $parent_id=(isset($aryLSVideoData['parent_id']) && !empty($aryLSVideoData['parent_id']))? addslashes(trim($aryLSVideoData['parent_id'])):0;
+        $course_id=(isset($aryLSVideoData['course_id']) && !empty($aryLSVideoData['course_id']))? addslashes(trim($aryLSVideoData['course_id'])):'';
+        $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
+        $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
+
+			
+		$argument=array();
+		$argument['membershipType']=$membership_type;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+		$liveStreamMemberData = $this->User_Model->get_live_streaming_member_by_level($argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='Deleted Successfully';
+        $returnData['data']=array('liveStreamMemberData'=>$liveStreamMemberData);
+	
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function giveBadgeToMember() 
+    {
+    	$returnData=array();
+
+    	$goliveStreamData=$this->input->get_post('goliveStreamData');
+    	$AryGoliveStreamData=json_decode($goliveStreamData, true);
+  		$member_id=(isset($AryGoliveStreamData['member_id']) && !empty($AryGoliveStreamData['member_id']))? addslashes(trim($AryGoliveStreamData['member_id'])):0;
+  		$course_id=(isset($AryGoliveStreamData['course_id']) && !empty($AryGoliveStreamData['course_id']))? addslashes(trim($AryGoliveStreamData['course_id'])):0;		
+  		$task_level=(isset($AryGoliveStreamData['task_level']) && !empty($AryGoliveStreamData['task_level']))? addslashes(trim($AryGoliveStreamData['task_level'])):0;
+  		$no_of_badge=(isset($AryGoliveStreamData['no_of_badge']) && !empty($AryGoliveStreamData['no_of_badge']))? addslashes(trim($AryGoliveStreamData['no_of_badge'])):0;
+        $current_date=date('Y-m-d H:i:s');
+        
+        /*$sql="SELECT 
+				tm.id
+				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel,
+				IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
+				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename
+				FROM tn_members as tm
+				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
+				WHERE tm.id='".$member_id."'";*/
+		$sql="SELECT 
+				number_of_level
+				FROM tn_task_level_course
+				WHERE id='".$course_id."'";
+        $query=$this->db->query($sql);
+		$rowData=$query->row();
+		if(!empty($rowData) && $rowData->number_of_level>0 && $no_of_badge>0)
+		{
+			$number_of_level=$rowData->number_of_level;
+
+			if($course_id==4) //last semister
+			{
+				//Start Set Bedge to level
+				$menu_arr = array(
+		            'no_of_badge'  =>$no_of_badge,
+		            'member_id'  =>$member_id,
+		            'course_id'  =>$course_id,
+		            'task_level'  =>$task_level
+		        );
+				$flagSet = $this->User_Model->modify_member_level($menu_arr);
+				//End Set Bedge to level
+
+				if($task_level==$number_of_level)
+				{
+					$totbadge = $this->User_Model->get_member_total_badge_by_course($member_id,$course_id);
+					if($totbadge>49)
+					{
+						//Start Jump To next course
+						$menu_arr = array(
+				            'member_id'  =>$member_id,
+				            'course_id'  =>$course_id,
+				            'task_level'  =>1000 // award winner
+				        );
+						$flagSet = $this->User_Model->modify_member_level($menu_arr);
+						//End Jump To next course
+					}
+				}
+				else
+				{
+					//Start Jump To next level
+					$next_task_level=$task_level+1;
+					$menu_arr = array(
+			            'member_id'  =>$member_id,
+			            'course_id'  =>$course_id,
+			            'task_level'  =>$next_task_level,
+			            'promote_date'  =>$current_date
+			        );
+					$flagSet = $this->User_Model->modify_member_level($menu_arr);
+					//End Jump To next level
+				}
+			}
+			else
+			{
+				//Start Set Bedge to level
+				$menu_arr = array(
+		            'no_of_badge'  =>$no_of_badge,
+		            'member_id'  =>$member_id,
+		            'course_id'  =>$course_id,
+		            'task_level'  =>$task_level
+		        );
+				$flagSet = $this->User_Model->modify_member_level($menu_arr);
+				//End Set Bedge to level
+
+				if($task_level==$number_of_level)
+				{
+					$totbadge = $this->User_Model->get_member_total_badge_by_course($member_id,$course_id);
+					if($totbadge>49)
+					{
+						//Start Jump To next course
+						$next_course_id=$course_id+1;
+						$menu_arr = array(
+				            'member_id'  =>$member_id,
+				            'course_id'  =>$next_course_id,
+				            'task_level'  =>1
+				        );
+						$flagSet = $this->User_Model->modify_member_level($menu_arr);
+						//End Jump To next course
+					}					
+				}
+				else
+				{
+					//Start Jump To next level
+					$next_task_level=$task_level+1;
+					$menu_arr = array(
+			            'member_id'  =>$member_id,
+			            'course_id'  =>$course_id,
+			            'task_level'  =>$next_task_level,
+			            'promote_date'  =>$current_date
+			        );
+					$flagSet = $this->User_Model->modify_member_level($menu_arr);
+					//End Jump To next level
+				}
+			}
+		}
+
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
 }
 	
 

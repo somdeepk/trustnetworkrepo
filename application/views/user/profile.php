@@ -272,7 +272,6 @@
                             <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{value.first_name+' '+value.last_name}}">
                             </div>
                            <div class="media-support-info ml-3">
-                              <!-- <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6> -->
                               <h6>{{value.first_name+' '+value.last_name}}</h6>
                               <p class="mb-0">{{value.user_email}}</p>
                            </div>

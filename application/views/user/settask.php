@@ -81,26 +81,59 @@
           </div>
           <form id="join-form" name="join-form">
             <div class="modal-body">
-              
-              <div class="container">                
-                  <div class="row join-info-group hiddenimportant">
-                    <input type="hiddens" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
-                    <input type="hiddens" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
-                    <input type="hiddens" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
-                    <input type="hiddens" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
-                  </div>
 
-                  <div class="row video-group">
-                    <div class="col-sm-12">
-                      <i class="ri-broadcast-fill zpalyericonz hiddenimportant" style="font-size: 86px;margin-left:346px;color:#50b5ff"></i>
-                      <div id="local-player" class="player zhostpalyerz hiddenimportant"></div>
-                      <div id="remote-playerlist" class="zaudiancepalyerz hiddenimportant"></div>
-                    </div>                    
+              <div class="container">                
+                <div class="row join-info-group hiddenimportant">
+                  <input type="hiddens" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
+                  <input type="hiddens" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
+                  <input type="hiddens" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
+                  <input type="hiddens" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
+                </div>
+
+                <div class="row video-group">
+                  <div class="col-sm-6">
+                    <i class="ri-broadcast-fill zpalyericonz hiddenimportant" style="font-size: 86px;margin-left:155px;color:#50b5ff"></i>
+                    <div id="local-player" class="player zhostpalyerz hiddenimportant"></div>
+                    <div id="remote-playerlist" class="zaudiancepalyerz hiddenimportant"></div>
+                  </div> 
+
+                  <div class="col-sm-6">
+                    <div class="iq-card-body">
+                       <ul class="request-list m-0 p-0">
+                          <li ng-repeat="(keyLM, valueLM) in liveStreamingMemberListObj" class="d-flex align-items-center">
+                            <div class="user-img img-fluid">
+                              <img class="rounded-circle avatar-40" ng-if="valueLM.profile_image == '' || !valueLM.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                              <img class="rounded-circle avatar-40" ng-if="valueLM.profile_image && valueLM.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{valueLM.profile_image}}" alt="{{valueLM.first_name+' '+valueLM.last_name}}">
+                            </div>
+                            <div class="media-support-info ml-3">
+                                <h6>{{valueLM.first_name+' '+valueLM.last_name}}</h6>
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <div class="iq-card-header-toolbar d-flex align-items-center">
+                                <div class="dropdown">
+                                  <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-award-fill"></i> Give Badge</a>
+                                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                      <a ng-click="giveBadgeToMember(valueLM,5);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 5 Badge</a>
+                                      <a ng-click="giveBadgeToMember(valueLM,10);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 10 Badge</a>
+                                      <a ng-click="giveBadgeToMember(valueLM,15);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 15 Badge</a>
+                                      <a ng-click="giveBadgeToMember(valueLM,20);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 20 Badge</a>
+                                      <a ng-click="giveBadgeToMember(valueLM,25);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 25 Badge</a>
+                                   </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                          <li ng-if="peopleYouMayNowObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
+                            No suggestion found!
+                          </li>                        
+                       </ul>
+                    </div>
                   </div>
+                </div>
               </div>
             </div>
             <div class="modal-footer">
-  
+
               <button id="lowLatency" type="button" ng-click="join_leave_streaming('J')" class="btn btn-info zbtnJoinLivez hiddenimportant"><i class="ri-account-pin-circle-fill"></i> Join Now</button>
               <button class="btn btn-warning zbtnLeaveNowLivez hiddenimportant" ng-click="join_leave_streaming('L')" id="leave" >Leave Now</button>
 

@@ -15,6 +15,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.agoraData={};
     $scope.goliveStreamData={};
     $scope.files = [];
+    $scope.liveStreamingMemberListObj={};
 
 	
 
@@ -40,10 +41,13 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			});
 		}, 2000);
 
-		$interval(function()
+		//Start ajax call and see is leader started any video streaming
+		/*$interval(function()
 	    {
 	    	$scope.get_live_stream_video_by_level();
-	    }, 30000);
+	    	$scope.get_live_streaming_member_by_leve();
+	    }, 30000);*/
+	    //End ajax call and see is leader started any video streaming
 
 		$timeout(function()
 		{
@@ -99,6 +103,8 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.taskData.membership_type=membership_type;
 
 		$scope.call_member_watch_task_video_by_level();
+
+		$scope.get_live_streaming_member_by_leve();
 	};
 
 
@@ -493,7 +499,6 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     }
 	$scope.get_live_stream_video_by_level = function(valobj)
     {   	
-
 		$scope.liveStreamStatusData={}
 		$scope.liveStreamStatusData.leader_id=$scope.taskData.leader_id;
 		$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
@@ -525,6 +530,45 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	)
         	}
 		});
+	};
+
+	$scope.get_live_streaming_member_by_leve = function()
+    {   	
+    	if($scope.session_is_admin=='Y' && $scope.taskData.membership_type=='RM')
+    	{
+			$scope.liveStreamStatusData={}
+			$scope.liveStreamStatusData.is_admin=$scope.session_is_admin;
+			$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
+			$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
+			$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
+			$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
+
+			var formData = new FormData();
+			formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+			//alert("fd")
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetLiveStreamingMember",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.liveStreamingMemberListObj=aryreturnData.data.liveStreamMemberData;
+	        		console.log($scope.liveStreamingMemberListObj)
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong on fetching leader task!",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }
 	};
 
 	$scope.get_task_min_three_video_by_level = function(valobj)
@@ -758,6 +802,39 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	{
         		swal("Error!",
 	        		"Streaming Starting is Failed!",
+	        		"error"
+	        	)
+        	}
+		});
+	};
+
+	$scope.giveBadgeToMember = function(valobj,no_of_badge)
+    {			
+		$scope.goliveStreamData={};
+		$scope.goliveStreamData.member_id=valobj.member_id;
+		$scope.goliveStreamData.course_id=valobj.course_id;
+		$scope.goliveStreamData.task_level=valobj.task_level;
+		$scope.goliveStreamData.no_of_badge=no_of_badge;
+
+		var formData = new FormData();
+		formData.append('goliveStreamData',angular.toJson($scope.goliveStreamData));
+
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"giveBadgeToMember",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		//$scope.getAllChurchMember();
+        	}
+        	else
+        	{
+        		swal("Error!",
+	        		"Badge Give to Member Failed!",
 	        		"error"
 	        	)
         	}
