@@ -50,11 +50,10 @@
                                                             <select ng-disabled="memberData.id>0" ng-model="agegroupData.age_range" id="age_range" class="form-control form-control-primary">
 
                                                                 <option value="" >Select Age Range</option>
-                                                                <option value="6-12" <?php if(in_array('6-12', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Kid (6-12)</option>
-                                                                <option value="13-19" <?php if(in_array('13-19', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Teenager (13-19)</option>
-                                                                <option value="20-39" <?php if(in_array('20-39', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Young Adults (20-30)</option>
-                                                                <option value="40-59" <?php if(in_array('40-59', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Middle Age (41-60)</option>
-                                                                <option value="60-99" <?php if(in_array('60-99', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Old Adults (60-99)</option>
+                                                                <option value="13-18" <?php if(in_array('13-18', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Teenager (13-18)</option>
+                                                                <option value="19-34" <?php if(in_array('19-34', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Young Adults (19-34)</option>
+                                                                <option value="35-48" <?php if(in_array('35-48', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Middle Age (35-48)</option>
+                                                                <option value="49-120" <?php if(in_array('49-120', array_column($ar_age_group_data, 'age_range'))){ echo "disabled"; } ?>>Old Adults (49 and Above)</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(agegroupDataCheck==true && isNullOrEmptyOrUndefined(agegroupData.age_range)==true)? 'Age Range Required' : ''}}</div>

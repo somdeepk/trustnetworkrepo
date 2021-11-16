@@ -964,18 +964,18 @@ class Administrator extends CI_Controller
 		$this->load->view('administrator/header-bottom');
 		$this->load->view('administrator/agegrouplist', $data);
 		$this->load->view('administrator/footer');
-	}
-
+	}	
+	
 	public function ajaxGetAgeGroupList()
 	{
 		$post_data=$_POST ;
 		$postData = array();
 		if(isset($post_data['iColumns']))
-		{
+		{			
 		    $new_array=array();
 		    for ($i=0; $i<$post_data['iColumns']; $i++)
 		    {
-		        $new_array[$i]['data']=$i ;
+		        $new_array[$i]['data']=$i;		       
 		        $new_array[$i]['name']=$post_data['mDataProp_'.$i] ;
 		        $new_array[$i]['searchable']=(isset($post_data['mDataProp_'.$i]) && !empty($post_data['mDataProp_'.$i])) ? $post_data['mDataProp_'.$i] : false ;
 		        $new_array[$i]['orderable']=(isset($post_data['bSortable_'.$i]) && !empty($post_data['bSortable_'.$i])) ? $post_data['bSortable_'.$i] : false ;
@@ -994,7 +994,7 @@ class Administrator extends CI_Controller
 		$searchcreate_date=(isset($post_data['searchcreate_date']) && $post_data['searchcreate_date']!='') ? addslashes($post_data['searchcreate_date']) : '' ;
 
 		$limit_str='';
-		$sort_str=' ORDER BY id DESC';
+		$sort_str=' ORDER BY id ASC';
 
 		if (!empty($postData['columns']))
 		{

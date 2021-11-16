@@ -30,7 +30,7 @@ if(IS_LOCAL_HOST==1)
 }
 else
 {
-	$config['base_url'] = 'http://followmenow.org/demo/trust-network';
+	$config['base_url'] = 'http://followmenow.org/trust-network';
 }
 
 
