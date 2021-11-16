@@ -8,12 +8,20 @@
                             <h2 class="mb-0"><strong>Sign Up</strong></h2>
                             <form class="mt-4">
                             
-                                <div class="form-group">
+                                <div class="d-inline-block w-100">
+                                    <label style="width: 48%">
+                                        <input style="width: 8%" type="radio" name="registrationtype" checked="true" ng-click="getRegistrationType('MR')"/>
+                                        <font style="color:#50b5ff;font-size: : 16px;">Member Registrations</font>
+                                    </label >
+                                    <label style="width: 48%">
+                                        <input style="width: 8%" type="radio" name="registrationtype" ng-click="getRegistrationType('CR')"/>
+                                        <font style="color:#50b5ff;font-size: : 16px;">Register as a Church</font>
+                                    </label>
+                                </div>
+
+                                <div class="form-group zselectmembershipz">
                                     <select ng-model="signupData.membership_type" id="membership_type" class="form-control mb-0">
-                                    <option value="">Select Membership</option>
-                                    <option value="RM">Free Membership</option>
-                                    <option value="CC">City Church</option>
-                                    <option value="CM">Church Membership</option>
+                                    <option ng-repeat="(key, value) in obj_membership_type" value="{{key}}">{{value}}</option>
                                     </select>
                                     <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.membership_type)==true)? 'Membership Type Required' : ''}}</div>
                                 </div>

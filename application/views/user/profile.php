@@ -24,6 +24,14 @@
                        </div>
                        <div class="profile-detail">
                           <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span></h3>
+                          <?php if($this->session->userdata('maxmemberlevel')){ ?>
+                            <p class="mb-0" style="font-size: 14px;"><?php echo  $this->session->userdata('coursename').": ".$this->session->userdata('maxmemberlevel'); ?>
+                              <?php if($this->session->userdata('totbadge')>0){ ?>
+                                &nbsp;&nbsp;(<i style="font-size: 12px;color:#ffa100" class="ri-award-fill"></i> <font style="font-size: 12px;color:#ffa100" ><?php echo $this->session->userdata('totbadge'); ?></font>)
+                              <?php } ?>
+                            </p>
+                           <?php } ?>
+                          
                        </div>
                     </div>
                     <div class="profile-info p-4 d-flex align-items-center justify-content-between position-relative">

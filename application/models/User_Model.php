@@ -292,7 +292,7 @@ class User_Model extends CI_Model
 				tm2.first_name as admin_first_name,
 				tm2.last_name as admin_last_name,
 				tag.agegroup_name,
-				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel,
+				(SELECT IF (tml2.task_level> 0, tml2.task_level, 0) FROM tn_member_level as tml2 where tml2.course_id=MAX(tml.course_id) and tml2.member_id=tm.id order by tml2.id desc limit 1) as maxmemberlevel,
 				IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
 				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename
 
@@ -301,8 +301,7 @@ class User_Model extends CI_Model
 				LEFT JOIN tn_age_group as tag ON tag.id=tm.agegroup_id and tag.status='1' and tag.deleted='0'
 				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
 				WHERE tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strParamWhere." group by tm.id order by first_name ASC";
-				
-		//				
+	//				
 		/*$sql="SELECT 
 				tm.* 
 				FROM tn_members as tm
@@ -647,8 +646,11 @@ class User_Model extends CI_Model
 
 	public function get_member_max_level($member_id)
 	{
-		$sql="SELECT IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel
-				FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$member_id."'";
+		$sql="SELECT
+		IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
+		(SELECT IF (tml2.task_level> 0, tml2.task_level, 0) FROM tn_member_level as tml2 where tml2.course_id=MAX(tml.course_id) and tml2.member_id='".$member_id."' order by tml2.id desc limit 1) as maxmemberlevel
+		FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$member_id."'";
+
 		$query=$this->db->query($sql);
 		$rowData=$query->row();
 		if(!empty($rowData))
@@ -693,7 +695,9 @@ class User_Model extends CI_Model
 		$is_admin=$aryNotificationData['is_admin'];
 		if($membership_type=='RM' && $is_admin=='N')
 		{
-			$sql="SELECT IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid, IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel	FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$user_auto_id."'";
+			$sql="SELECT IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
+			(SELECT IF (tml2.task_level> 0, tml2.task_level, 0) FROM tn_member_level as tml2 where tml2.course_id=MAX(tml.course_id) and tml2.member_id='".$user_auto_id."' order by tml2.id desc limit 1) as maxmemberlevel
+			 FROM tn_member_level as tml WHERE tml.status='1' and member_id='".$user_auto_id."'";
 			$query=$this->db->query($sql);
 			$rowData=$query->row();
 			$maxmemberlevel=0;
@@ -917,7 +921,6 @@ class User_Model extends CI_Model
 		$course_id=$argument['course_id'];
 		$task_level=$argument['task_level'];
 		$leader_id=$argument['leader_id'];
-
 		$sql="SELECT 
 				tlsv.*,
 				tl.course_id,
@@ -925,12 +928,22 @@ class User_Model extends CI_Model
 				tsm.member_id,
 				tm.profile_image,
 				tm.first_name,
-                tm.last_name
+                tm.last_name,
+				IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,				
+				(SELECT IF (tml2.task_level> 0, tml2.task_level, 0) FROM tn_member_level as tml2 where tml2.course_id=MAX(tml.course_id) and tml2.member_id=tm.id order by tml2.id desc limit 1) as maxmemberlevel,
+				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename,
+
+				(SELECT sum(tml3.no_of_badge) FROM tn_member_level as tml3 where tml3.course_id=MAX(tml.course_id) and tml3.member_id=tm.id order by tml3.id desc limit 1) as totbadge
+
 				FROM tn_task_level as tl
 				LEFT JOIN tn_task_level_stream_video as tlsv ON tlsv.task_level_id=tl.id
 				LEFT JOIN tn_streaming_member as tsm ON tsm.stream_video_id=tlsv.id
 				LEFT JOIN tn_members as tm ON tm.id=tsm.member_id
-				WHERE tl.deleted='0' AND tlsv.deleted='0' AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."' AND tlsv.is_live='Y' AND tsm.join_date IS NOT NULL and tsm.leave_date IS NULL AND tm.status='1' AND tm.deleted='0' order by tlsv.id DESC";
+				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
+
+				WHERE tl.deleted='0' AND tlsv.deleted='0' AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."' AND tlsv.is_live='Y' AND tsm.join_date IS NOT NULL and tsm.leave_date IS NULL AND tm.status='1' AND tm.deleted='0' group by tm.id order by tlsv.id DESC";
+
+
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 
@@ -938,7 +951,23 @@ class User_Model extends CI_Model
 	}
 
 
-	public function modify_member_level($menu_arr=NULL)
+	public function insert_member_level($menu_arr=NULL)
+	{
+		$course_id=$menu_arr['course_id'];
+		$task_level=$menu_arr['task_level'];
+		$member_id=$menu_arr['member_id'];
+
+		$sql='SELECT id from tn_member_level WHERE course_id="'.$course_id.'" AND task_level="'.$task_level.'" AND member_id="'.$member_id.'"';
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		if(empty($rowData))
+		{
+			$this->db->insert('tn_member_level',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function update_member_level($menu_arr=NULL)
 	{
 		$course_id=$menu_arr['course_id'];
 		$task_level=$menu_arr['task_level'];
@@ -950,18 +979,10 @@ class User_Model extends CI_Model
 		$id=0;
 		if(!empty($rowData) && $rowData->id>0)
 		{
-			$id=$rowData->id;
-		}
-		if(!empty($id) && $id>0)
-		{
-			$this->db->where('id',$id)->update('tn_member_level',$menu_arr);
+			$this->db->where('id',$rowData->id)->update('tn_member_level',$menu_arr);
 			return $member_id;
 		}
-		else
-		{			
-			$this->db->insert('tn_member_level',$menu_arr);
-			return $this->db->insert_id();
-		}
+		
 	}
 
 	public function get_member_total_badge_by_course($member_id=0,$course_id=0)
@@ -975,6 +996,30 @@ class User_Model extends CI_Model
 		{
 			return $rowData->totbadge;
 		}
+	}
+
+
+	public function get_member_level_standard($id)
+	{
+		$sql="SELECT 
+				(SELECT IF (tml2.task_level> 0, tml2.task_level, 0) FROM tn_member_level as tml2 where tml2.course_id=MAX(tml.course_id) and tml2.member_id=tm.id order by tml2.id desc limit 1) as maxmemberlevel,
+				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename,
+				(SELECT sum(tml3.no_of_badge) FROM tn_member_level as tml3 where tml3.course_id=MAX(tml.course_id) and tml3.member_id=tm.id order by tml3.id desc limit 1) as totbadge
+				FROM tn_members as tm
+				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
+				WHERE tm.id='".$id."' group by tm.id";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		$resultData=$resultData[0];
+
+		$aryfinal=array();
+		if(count($resultData)>0)
+		{
+			$aryfinal['maxmemberlevel']=$resultData['maxmemberlevel'];
+			$aryfinal['coursename']=$resultData['coursename'];
+			$aryfinal['totbadge']=$resultData['totbadge'];
+		}
+		return $aryfinal;
 	}
 }
 ?>

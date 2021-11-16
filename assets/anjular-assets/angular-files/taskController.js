@@ -42,11 +42,11 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		}, 2000);
 
 		//Start ajax call and see is leader started any video streaming
-		/*$interval(function()
+		$interval(function()
 	    {
 	    	$scope.get_live_stream_video_by_level();
 	    	$scope.get_live_streaming_member_by_leve();
-	    }, 30000);*/
+	    }, 20000);
 	    //End ajax call and see is leader started any video streaming
 
 		$timeout(function()
@@ -104,7 +104,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 		$scope.call_member_watch_task_video_by_level();
 
-		$scope.get_live_streaming_member_by_leve();
+	//	$scope.get_live_streaming_member_by_leve();
 	};
 
 
@@ -558,7 +558,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	if(aryreturnData.status=='1')
 	        	{
 	        		$scope.liveStreamingMemberListObj=aryreturnData.data.liveStreamMemberData;
-	        		console.log($scope.liveStreamingMemberListObj)
+	        		//console.log($scope.liveStreamingMemberListObj)
 	        	}
 	        	else
 	        	{
@@ -829,7 +829,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			aryreturnData=angular.fromJson(returnData);
         	if(aryreturnData.status=='1')
         	{
-        		//$scope.getAllChurchMember();
+        		$scope.get_live_streaming_member_by_leve();
         	}
         	else
         	{

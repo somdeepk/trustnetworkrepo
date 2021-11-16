@@ -5,6 +5,12 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 	$scope.InvalidEmailCheck=false;
 	$scope.signupDataEmailDupCheck=false;
    
+   	$scope.obj_membership_type = {
+        '': 'Select Membership',
+        'RM': 'Regular Membership',
+        'CC': 'City Church'
+    }
+
 	$scope.submitSignup = function() {
 		$scope.signupDataCheck=true ;
 		$timeout(function()
@@ -112,6 +118,28 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 		}
 	};
 
+
+	$scope.getRegistrationType = function(val)
+	{
+		if(val=='CR')
+		{
+			$scope.obj_membership_type={
+		        'CM': 'Church Membership'
+		    }
+		    $scope.signupData.membership_type='CM';
+			$('.zselectmembershipz').addClass('hiddenimportant')
+		}
+		else
+		{
+			$scope.obj_membership_type = {
+		        '': 'Select Membership',
+		        'RM': 'Regular Membership',
+		        'CC': 'City Church'
+		    }
+		    $scope.signupData.membership_type='';
+		    $('.zselectmembershipz').removeClass('hiddenimportant')
+		}
+	};	
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};

@@ -107,11 +107,13 @@
                             </div>
                             <div class="media-support-info ml-3">
                                 <h6>{{valueLM.first_name+' '+valueLM.last_name}}</h6>
+                                <p class="mb-0" style="font-size: 14px;">{{valueLM.coursename+': '+valueLM.maxmemberlevel }}</p>
+                                <p class="mb-0" style="font-size: 12px;color:#ffa100" ng-if="valueLM.totbadge>0"><i class="ri-award-fill"></i> {{valueLM.totbadge}} </p>
                             </div>
                             <div class="d-flex align-items-center">
                               <div class="iq-card-header-toolbar d-flex align-items-center">
                                 <div class="dropdown">
-                                  <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-award-fill"></i> Give Badge</a>
+                                  <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-award-fill"></i>Set Badge</a>
                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
                                       <a ng-click="giveBadgeToMember(valueLM,5);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 5 Badge</a>
                                       <a ng-click="giveBadgeToMember(valueLM,10);" class="dropdown-item" href="#"><i class="ri-award-fill"></i> 10 Badge</a>

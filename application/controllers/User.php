@@ -150,12 +150,16 @@ class User extends CI_Controller
 			if(count($userLoginData))
 			{
 				$parent_leader_id=$this->User_Model->assign_under_group_admin($userLoginData['id']);
+				$memberLevelStandardData=$this->User_Model->get_member_level_standard($userLoginData['id']);
 
 			 	$userLoginData['login']=true;
 			 	$userLoginData['user_auto_id']=$userLoginData['id'];
 			 	$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
+			 	$userLoginData['maxmemberlevel']=$memberLevelStandardData['maxmemberlevel'];
+			 	$userLoginData['coursename']=$memberLevelStandardData['coursename'];
+			 	$userLoginData['totbadge']=$memberLevelStandardData['totbadge'];
 			 	$this->session->set_userdata($userLoginData);
 
 			 	// Start Remember Me block
@@ -2004,14 +2008,9 @@ class User extends CI_Controller
   		$no_of_badge=(isset($AryGoliveStreamData['no_of_badge']) && !empty($AryGoliveStreamData['no_of_badge']))? addslashes(trim($AryGoliveStreamData['no_of_badge'])):0;
         $current_date=date('Y-m-d H:i:s');
         
-        /*$sql="SELECT 
-				tm.id
-				IF(MAX(tml.task_level)> 0, MAX(tml.task_level), 0) as maxmemberlevel,
-				IF(MAX(tml.course_id)> 0, MAX(tml.course_id), 0) as maxcourseid,
-				(SELECT course_name FROM tn_task_level_course where id=MAX(tml.course_id)) as coursename
-				FROM tn_members as tm
-				LEFT JOIN tn_member_level as tml ON tml.member_id=tm.id and tml.status='1'
-				WHERE tm.id='".$member_id."'";*/
+        /*$course_id=4;
+        $task_level=6;*/
+
 		$sql="SELECT 
 				number_of_level
 				FROM tn_task_level_course
@@ -2031,7 +2030,7 @@ class User extends CI_Controller
 		            'course_id'  =>$course_id,
 		            'task_level'  =>$task_level
 		        );
-				$flagSet = $this->User_Model->modify_member_level($menu_arr);
+				$flagSet = $this->User_Model->update_member_level($menu_arr);
 				//End Set Bedge to level
 
 				if($task_level==$number_of_level)
@@ -2043,9 +2042,10 @@ class User extends CI_Controller
 						$menu_arr = array(
 				            'member_id'  =>$member_id,
 				            'course_id'  =>$course_id,
-				            'task_level'  =>1000 // award winner
+				            'task_level'  =>999, // award winner
+				            'promote_date'  =>$current_date
 				        );
-						$flagSet = $this->User_Model->modify_member_level($menu_arr);
+						$flagSet = $this->User_Model->insert_member_level($menu_arr);
 						//End Jump To next course
 					}
 				}
@@ -2059,7 +2059,7 @@ class User extends CI_Controller
 			            'task_level'  =>$next_task_level,
 			            'promote_date'  =>$current_date
 			        );
-					$flagSet = $this->User_Model->modify_member_level($menu_arr);
+					$flagSet = $this->User_Model->insert_member_level($menu_arr);
 					//End Jump To next level
 				}
 			}
@@ -2072,7 +2072,7 @@ class User extends CI_Controller
 		            'course_id'  =>$course_id,
 		            'task_level'  =>$task_level
 		        );
-				$flagSet = $this->User_Model->modify_member_level($menu_arr);
+				$flagSet = $this->User_Model->update_member_level($menu_arr);
 				//End Set Bedge to level
 
 				if($task_level==$number_of_level)
@@ -2087,7 +2087,7 @@ class User extends CI_Controller
 				            'course_id'  =>$next_course_id,
 				            'task_level'  =>1
 				        );
-						$flagSet = $this->User_Model->modify_member_level($menu_arr);
+						$flagSet = $this->User_Model->insert_member_level($menu_arr);
 						//End Jump To next course
 					}					
 				}
@@ -2101,12 +2101,17 @@ class User extends CI_Controller
 			            'task_level'  =>$next_task_level,
 			            'promote_date'  =>$current_date
 			        );
-					$flagSet = $this->User_Model->modify_member_level($menu_arr);
+					$flagSet = $this->User_Model->insert_member_level($menu_arr);
 					//End Jump To next level
 				}
 			}
 		}
 
+
+		$returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='Badge Give to Member Successfully Done';
+        $returnData['data']=array('flagSet'=>$flagSet);
        
         echo json_encode($returnData);
         exit;
