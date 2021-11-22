@@ -11,7 +11,7 @@
                                 <div class="d-inline-block w-100">
                                     <label style="width: 48%">
                                         <input style="width: 8%" type="radio" name="registrationtype" checked="true" ng-click="getRegistrationType('MR')"/>
-                                        <font style="color:#50b5ff;font-size: : 16px;">Member Registrations</font>
+                                        <font style="color:#50b5ff;font-size: : 16px;">Member Registration</font>
                                     </label >
                                     <label style="width: 48%">
                                         <input style="width: 8%" type="radio" name="registrationtype" ng-click="getRegistrationType('CR')"/>

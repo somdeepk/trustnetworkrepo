@@ -166,19 +166,17 @@
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title w-100">
-                  <input ng-model="taskData.user_auto_id" id="user_auto_id" type="hidden">
-                  <input ng-model="taskData.parent_id" id="parent_id" type="hidden">
-                  <input type="hidden" id="hidden_leader_id" value="<?php echo $argument['leader_id']; ?>">
-                  <input type="hidden" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
-                  <input type="hidden" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
+                  <input type="hiddens" id="user_auto_id" ng-model="taskData.user_auto_id" >
+                  <input type="hiddens" id="parent_id" ng-model="taskData.parent_id"  >
+                  <input type="hiddens" id="hidden_leader_id" value="<?php echo $argument['leader_id']; ?>">
+                  <input type="hiddens" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
+                  <input type="hiddens" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
                   <div class="d-flex justify-content-between w-100">
                   <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My"; } ?> Task [<?php echo $argument['course_name']; ?> : Level <?php echo $argument['task_level']; ?>]</h4> 
                   <a href="javascript:void();" ng-click="uploadliveStreamVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-broadcast-fill"></i>Add New Stream Schedule</a>
                 </div>
-
-
                </div>
             </div>
          </div>
@@ -332,6 +330,117 @@
       <div ng-if="allVideoListObj.length<=0" class="col-md-12" style="text-align: center ">
         There is no video to watch!
       </div>
+
+
+
+      <!-- Start Question Setup Section -->
+
+      <!-- Start Image Croping Modal -->
+      <div id="createQuestionnaireModal" class="modal" role="dialog" style="z-index:999999 ">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title zheadSQz">Create Question Set</h4> 
+                </div>
+                <div class="modal-body">
+                  <div ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
+
+                    <div class="form-group col-sm-12">
+                       <label for="address"><strong>Qusetion {{parseInt(key)+1}}:</strong></label>
+                       <textarea class="form-control" ng-model="value.question" autocomplete="off" style="height:60px;width:710px;float: left;" style="line-height: 22px;"></textarea>
+                       <i style="float: right;font-size: 20px;cursor: pointer;color:#ff9b8a" class="ri-delete-bin-fill"></i>
+                       <i style="float: right;margin-right: 5px;font-size: 20px;cursor: pointer;" class="ri-add-box-line"></i> 
+                    </div>
+                    <!--left-->
+                    <div ng-repeat="(key1, value1) in value.option" class="form-group col-sm-6">
+                      <span style="float:left;line-height: 40px;">Option {{parseInt(key1)+1}}:</span>
+                      <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1" maxlength="50" class="form-control">
+                      <i style="float: right;cursor: pointer;color:#ff9b8a;line-height: 40px;" class="ri-delete-bin-fill"></i>
+                      <i style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" class="ri-add-box-line"></i> 
+                      <div class="clearfix"></div>
+                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;" class="ri-checkbox-blank-circle-line"></i>
+                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;" class="ri-checkbox-circle-line"></i>
+
+                      Correct Answer
+
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button ng-if="session_is_admin=='Y'" class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Questionnaire</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+          </div>
+      </div>
+      <!-- End Image Croping Modal -->
+
+      <div class="col-sm-12">
+         <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+               <div class="iq-header-title w-100">
+                  <div class="d-flex justify-content-between w-100">
+                  <h4 class="card-title"><?php if($argument['isAdmin']=='Y'){ echo "Set Question"; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "My Exam"; }else{ echo "Questionnaire"; } ?>  [<?php echo $argument['course_name']; ?> : Level <?php echo $argument['task_level']; ?>]</h4> 
+                  <a href="javascript:void();" ng-click="createQuestionnaire();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-questionnaire-line"></i>Create Questionnaire</a>
+                </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="col-sm-12">               
+         <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+               <div class="iq-header-title">
+                  <h4 class="card-title">Live Stream Schedule(s)</h4>
+               </div>
+            </div>
+            <div class="iq-card-body">
+               <ul class="request-list list-inline m-0 p-0">
+
+                  <li class="d-flex align-items-center">
+                     <div class="media-support-info ml-4">
+                        <h6>Title</h6>
+                     </div>
+                     <div class="media-support-info ml-4">
+                        <h6>Star Time</h6>
+                     </div>
+                     <div class="d-flex align-items-center">
+                        Action
+                     </div>
+                  </li>
+
+
+                  <li ng-repeat="(key, value) in allLiveStreamVideoData" class="d-flex align-items-center">
+                     <div class="media-support-info ml-4">
+                        <h6>{{value.video_title}}</h6>
+                     </div>
+                     <div class="media-support-info ml-4">
+                        <h6>{{value.display_star_time}}</h6>
+                     </div>
+                     <div class="d-flex align-items-center">
+                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="value.membership_type=='RM'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
+
+                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? (value.status=='1') ? 'cssdisabled btn-success' : 'cssdisabled btn-primary' : (value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
+                        
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn btn-primary rounded zeditStreamVideoz zeditStreamVideoz_{{value.id}}">
+                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
+                        </a>
+                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i  class="ri-eye-line"></i>View
+                        </a>
+
+                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteStreamVideoz zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                     </div>
+                  </li>
+                  <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
+                    <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>                    
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!-- End Question Setup Section -->
+
 
     </div>
   </div>

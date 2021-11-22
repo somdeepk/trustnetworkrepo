@@ -434,7 +434,6 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		},1200);
 	};
 
-
 	$scope.deleteStreamVideo = function(valobj)
     {	
     	swal({
@@ -839,6 +838,21 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	)
         	}
 		});
+	};
+
+
+	$scope.createQuestionnaire = function()
+	{
+		$scope.QuestionnaireData={}
+		var myObject = [{ 
+						"question": 'qqq1',
+						"option": {0: "hilton hotel 1",1: "hilton hotel 2"}
+						}]
+		console.log(myObject)
+		$scope.allQuestionnaireObj=myObject;
+
+		$('.zheadSQz').html("Create Question Set");
+		$('#createQuestionnaireModal').modal('show');
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
