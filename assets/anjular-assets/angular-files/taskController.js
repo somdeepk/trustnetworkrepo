@@ -840,19 +840,82 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		});
 	};
 
+	$scope.allQuestionnaireObj=[];
+
+	$scope.create_question_object = function()
+	{
+		var temp={};
+		temp.question='';
+		temp.correct_ans=0;
+		temp.options=[];
+	
+		for (let i = 0; i < 4; i++)
+		{
+			var temp2={};
+			temp2.optionval='';
+			temp.options.push(temp2);
+		}
+		return temp;
+	};
 
 	$scope.createQuestionnaire = function()
 	{
-		$scope.QuestionnaireData={}
-		var myObject = [{ 
-						"question": 'qqq1',
-						"option": {0: "hilton hotel 1",1: "hilton hotel 2"}
-						}]
-		console.log(myObject)
-		$scope.allQuestionnaireObj=myObject;
-
+		temp=$scope.create_question_object();
+		$scope.allQuestionnaireObj.push(temp);
 		$('.zheadSQz').html("Create Question Set");
 		$('#createQuestionnaireModal').modal('show');
+	};
+
+	$scope.addQuestion = function()
+	{
+		if($scope.allQuestionnaireObj.length>2)
+		{
+			$('#createQuestionnaireModal').modal('hide');
+			swal("Attention",
+        		"Maximum 3 Questions are allowed!",
+        		"warning"
+        	)
+			.then((value) => {
+			  $('#createQuestionnaireModal').modal('show');
+			});
+		}
+		else
+		{
+			temp=$scope.create_question_object();
+			$scope.allQuestionnaireObj.push(temp);
+		}		
+	};
+
+	$scope.deleteQuestion = function(index)
+	{
+		$scope.allQuestionnaireObj.splice(index,1);
+	};
+
+	$scope.addQuestionOption = function(index)
+	{
+		if($scope.allQuestionnaireObj[index].options.length>5)
+		{
+			$('#createQuestionnaireModal').modal('hide');
+			swal("Attention",
+        		"Maximum 6 Options are allowed!",
+        		"warning"
+        	)
+			.then((value) => {
+			  $('#createQuestionnaireModal').modal('show');
+			});
+
+		}
+		else
+		{
+			var temp2={};
+			temp2.optionval='';
+			$scope.allQuestionnaireObj[index].options.push(temp2);
+		}
+	};
+
+	$scope.deleteQuestionOption = function(index,index2)
+	{
+		$scope.allQuestionnaireObj[index].options.splice(index2,1);
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {

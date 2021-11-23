@@ -348,20 +348,17 @@
                     <div class="form-group col-sm-12">
                        <label for="address"><strong>Qusetion {{parseInt(key)+1}}:</strong></label>
                        <textarea class="form-control" ng-model="value.question" autocomplete="off" style="height:60px;width:710px;float: left;" style="line-height: 22px;"></textarea>
-                       <i style="float: right;font-size: 20px;cursor: pointer;color:#ff9b8a" class="ri-delete-bin-fill"></i>
-                       <i style="float: right;margin-right: 5px;font-size: 20px;cursor: pointer;" class="ri-add-box-line"></i> 
+                       <i ng-if="key!='0'" style="float: right;font-size: 20px;cursor: pointer;color:#ff9b8a" ng-click="deleteQuestion(key)" class="ri-delete-bin-fill"></i>
+                       <i ng-if="key=='0'" style="float: right;margin-right: 5px;font-size: 20px;cursor: pointer;" ng-click="addQuestion()" class="ri-add-box-line"></i> 
                     </div>
                     <!--left-->
-                    <div ng-repeat="(key1, value1) in value.option" class="form-group col-sm-6">
+                    <div ng-repeat="(key1, value1) in value.options" class="form-group col-sm-6">
                       <span style="float:left;line-height: 40px;">Option {{parseInt(key1)+1}}:</span>
-                      <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1" maxlength="50" class="form-control">
-                      <i style="float: right;cursor: pointer;color:#ff9b8a;line-height: 40px;" class="ri-delete-bin-fill"></i>
-                      <i style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" class="ri-add-box-line"></i> 
+                      <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1.optionval" maxlength="50" class="form-control">
+                      <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#000;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
+                      <i ng-if="key1=='0'" style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" ng-click="addQuestionOption(key)" class="ri-add-box-line"></i> 
                       <div class="clearfix"></div>
-                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;" class="ri-checkbox-blank-circle-line"></i>
-                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;" class="ri-checkbox-circle-line"></i>
-
-                      Correct Answer
+                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i>Correct Answer
 
                     </div>
                   </div>
