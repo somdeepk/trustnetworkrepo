@@ -1255,7 +1255,7 @@ class User extends CI_Controller
         $task_level=(isset($aryLSVideoData['task_level']) && !empty($aryLSVideoData['task_level']))? addslashes(trim($aryLSVideoData['task_level'])):'';
         $membership_type=(isset($aryLSVideoData['membership_type']) && !empty($aryLSVideoData['membership_type']))? addslashes(trim($aryLSVideoData['membership_type'])):'';
         $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
-        $star_time=(isset($aryLSVideoData['star_time']) && !empty($aryLSVideoData['star_time']))? addslashes(trim($aryLSVideoData['star_time'])):'';
+        $start_time=(isset($aryLSVideoData['start_time']) && !empty($aryLSVideoData['start_time']))? addslashes(trim($aryLSVideoData['start_time'])):'';
        /* $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';*/
         $description=(isset($aryLSVideoData['description']) && !empty($aryLSVideoData['description']))? trim($aryLSVideoData['description']):'';
         //$old_video=(isset($aryLSVideoData['old_video']) && !empty($aryLSVideoData['old_video']))? addslashes(trim($aryLSVideoData['old_video'])):'';
@@ -1277,82 +1277,18 @@ class User extends CI_Controller
 	        $menu_arr = array(
 	            'task_level_id'=>$task_level_id,
 	            'video_title'   =>$video_title,
-	            'star_time'   =>date('Y-m-d H:i:s',strtotime($star_time)),
+	            'start_time'   =>date('Y-m-d H:i:s',strtotime($start_time)),
 	            'description'   =>$description,            
 	            'create_date'   =>$current_date		            
 	        );
 
-	        /*echo $id."ss<pre>";
-        print_r($menu_arr);
-        exit;*/
+			/*echo $id."ss<pre>";
+			print_r($menu_arr);
+			exit;*/
 
 	        $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
 	    }
         
-        /*if (!empty($_FILES['file']['name']))
-        {
-            $videofile = json_encode($_FILES);
-        } else {
-            $videofile = "";
-        }
-
-        $video_name="";
-        $ls_video_id=0;
-
-        if(!empty($videofile) && $task_level_id>0)
-        {
-            $videofile=json_decode($videofile);
-            $this->load->library('upload');
-            $filename=$videofile->file->name[0];
-            $imarr=explode(".",$filename);
-            $ext=end($imarr);
-          
-            if($ext=="mp4" or $ext=="wmv" or $ext=="avi" or $ext=="3gp" or $ext=="mov" or $ext=="mpeg")
-            {
-                $_FILES['file']['name']=$videofile->file->name[0];
-                $_FILES['file']['type']=$video_type=$videofile->file->type[0];
-                $_FILES['file']['tmp_name']=$videofile->file->tmp_name[0];
-                $_FILES['file']['error']=$videofile->file->error[0];
-                $_FILES['file']['size']=$video_size=$videofile->file->size[0];
-
-                $config = array(
-                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
-                    'allowed_types' => '*',
-                    'upload_path' => IMAGE_PATH.'taskvideo/'.$task_level."/streamvideo",
-                    //'max_size' => 2000
-                );
-
-                $this->upload->initialize($config);
-                
-                if (!$this->upload->do_upload('file'))
-                {
-                    $errormsg=$this->upload->display_errors();
-                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
-                }
-                else
-                {
-                    $image_data = $this->upload->data();
-                    $video_name=$image_data['file_name'];
-                    $menu_arr = array(
-			            'task_level_id'=>$task_level_id,
-			            'video_title'   =>$video_title,
-			            'star_time'   =>date('Y-m-d H:i:s',strtotime($star_time)),
-			            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
-			            'description'   =>$description,
-			            'video_name'   =>$video_name,
-			            'video_size'   =>$video_size,        
-			            'video_type'   =>$video_type,		            
-			            'create_date'   =>$current_date		            
-			        );
-
-	                $ls_video_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
-	                if(!empty($old_video))
-	                {
-	                	unlink( IMAGE_PATH.'taskvideo/'.$task_level."/streamvideo/".$old_video); // correct
-	                }
-                }                
-            }
-        }*/
 
 
         $returnData=array();
@@ -1715,7 +1651,7 @@ class User extends CI_Controller
 		{
 			foreach($aryLiveStreamScheduleNotification as $k=>$v)
 			{
-				$allNotificationData[$k]['strtext']=$v['video_title']." on ".date('m-d-Y h:i A',strtotime($v['star_time']));
+				$allNotificationData[$k]['strtext']=$v['video_title']." on ".date('m-d-Y h:i A',strtotime($v['start_time']));
 				$allNotificationData[$k]['strcaption']='Live Streaming';
 				$allNotificationData[$k]['strdate']=date('m-d-Y h:i A',strtotime($v['create_date']));
 				$allNotificationData[$k]['stricon']='ri-broadcast-fill';
@@ -2113,6 +2049,83 @@ class User extends CI_Controller
         $returnData['msgstring']='Badge Give to Member Successfully Done';
         $returnData['data']=array('flagSet'=>$flagSet);
        
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function ajaxaddupdateexam() 
+    {
+
+        $examData = trim($this->input->post('examData'));
+        $aryExamData=json_decode($examData, true);
+
+        
+        $id=(isset($aryExamData['id']) && !empty($aryExamData['id']))? addslashes(trim($aryExamData['id'])):0;
+        $user_auto_id=(isset($aryExamData['user_auto_id']) && !empty($aryExamData['user_auto_id']))? addslashes(trim($aryExamData['user_auto_id'])):0;
+        $parent_id=(isset($aryExamData['parent_id']) && !empty($aryExamData['parent_id']))? addslashes(trim($aryExamData['parent_id'])):0;
+        $course_id=(isset($aryExamData['course_id']) && !empty($aryExamData['course_id']))? addslashes(trim($aryExamData['course_id'])):'';
+        $task_level=(isset($aryExamData['task_level']) && !empty($aryExamData['task_level']))? addslashes(trim($aryExamData['task_level'])):'';
+        $membership_type=(isset($aryExamData['membership_type']) && !empty($aryExamData['membership_type']))? addslashes(trim($aryExamData['membership_type'])):'';
+        $aryQuestionnaire=(isset($aryExamData['aryQuestionnaire']) && !empty($aryExamData['video_title']))? $aryExamData['aryQuestionnaire']:array();
+
+        $exam_title=(isset($aryExamData['exam_title']) && !empty($aryExamData['exam_title']))? addslashes(trim($aryExamData['exam_title'])):'';
+        $start_time=(isset($aryLSVideoData['start_time']) && !empty($aryLSVideoData['start_time']))? addslashes(trim($aryLSVideoData['start_time'])):'';
+        $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';
+/*
+
+		$current_date=date('Y-m-d H:i:s');   
+
+		$menu_arr = array(
+            'course_id' => $course_id,
+            'task_level' => $task_level,
+            'church_id'  =>$parent_id,
+            'church_admin_id'  =>$user_auto_id            
+        );
+
+        $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
+
+        $ls_exam_id=0;
+        if($task_level_id>0)
+        {
+        	if(count($aryQuestionnaire)>0)
+        	{
+        		$menu_arr = array(
+		            'task_level_id'=>$task_level_id,
+		            'exam_title'   =>$exam_title,
+		            'start_time'   =>date('Y-m-d H:i:s',strtotime($start_time)),
+		            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
+		            'total_question'   =>count($aryQuestionnaire),
+		            'create_date'   =>$current_date		            
+		        );
+		        $ls_exam_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+        	}	        
+	    }*/
+
+        $returnData=array();
+ 		if($ls_exam_id>0)
+		{
+			$argument=array();
+			$argument['membershipType']=$membership_type;
+			$argument['user_auto_id']=$user_auto_id;
+			$argument['parent_id']=$parent_id;
+			$argument['course_id']=$course_id;
+			$argument['task_level']=$task_level;
+			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Exam Set Successfully';
+	        $returnData['data']=array('id'=>$ls_exam_id,'liveStreamVideoData'=>$liveStreamVideoData);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Exam Set Failed';
+	        $returnData['data']=array();
+		}
+
         echo json_encode($returnData);
         exit;
     }

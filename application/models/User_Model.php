@@ -604,9 +604,9 @@ class User_Model extends CI_Model
 			foreach($resultData as $k=>$v)
 			{	
 				$resultData[$k]['is_admin']=$str_is_admin;
-				$resultData[$k]['display_star_time']=date('m-d-Y h:i A',strtotime($v['star_time']));
-				$resultData[$k]['star_time']=date('Y-m-d H:i',strtotime($v['star_time']));
-				$resultData[$k]['star_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['star_time'])));
+				$resultData[$k]['display_start_time']=date('m-d-Y h:i A',strtotime($v['start_time']));
+				$resultData[$k]['start_time']=date('Y-m-d H:i',strtotime($v['start_time']));
+				$resultData[$k]['start_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['start_time'])));
 				//$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
 				//$resultData[$k]['video_path_with_video']=IMAGE_URL.'/taskvideo/'.$task_level.'/streamvideo/'.$v['video_name'];
 			}
@@ -718,14 +718,14 @@ class User_Model extends CI_Model
 						ttl.church_id,
 						ttlsv.video_title,
 						ttlsv.video_title,
-						ttlsv.star_time,
+						ttlsv.start_time,
 						ttlsv.description,
 						ttlsv.create_date
 
 						FROM tn_members as tm
 						LEFT JOIN tn_task_level as ttl ON ttl.church_admin_id=tm.id
 						LEFT JOIN tn_task_level_stream_video as ttlsv ON ttlsv.task_level_id=ttl.id
-						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."'  AND ttl.church_admin_id='".$admin_id."' AND ttl.course_id='".$maxcourseid."'  AND ttl.task_level='".$maxmemberlevel."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.star_time)>=DATE(now()) order by ttlsv.star_time limit 1";
+						WHERE tm.membership_type='RM' AND tm.parent_id='".$parent_id."' AND tm.is_admin='Y' AND tm.deleted='0' AND ttl.church_id='".$parent_id."'  AND ttl.church_admin_id='".$admin_id."' AND ttl.course_id='".$maxcourseid."'  AND ttl.task_level='".$maxmemberlevel."' AND ttl.deleted='0' AND ttl.status='1' AND ttlsv.deleted='0' AND ttlsv.status='1' AND DATE(ttlsv.start_time)>=DATE(now()) order by ttlsv.start_time limit 1";
 				$query=$this->db->query($sql);
 				$result=$query->result_array();
 				if(count($result)>0)

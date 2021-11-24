@@ -16,6 +16,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.goliveStreamData={};
     $scope.files = [];
     $scope.liveStreamingMemberListObj={};
+    $scope.examData={};
 
 	
 
@@ -91,9 +92,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		{
 			$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
 		}
-		//console.log('dsd')
-		//console.log($scope.allVideoListObj)
-		//alert(hidden_leader_id)	
+
 		$scope.session_is_admin=is_admin;
 		$scope.taskData.leader_id=hidden_leader_id;
 		$scope.taskData.course_id=hidden_course_id;
@@ -103,8 +102,6 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.taskData.membership_type=membership_type;
 
 		$scope.call_member_watch_task_video_by_level();
-
-	//	$scope.get_live_streaming_member_by_leve();
 	};
 
 
@@ -249,13 +246,13 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			$scope.liveStreamDataCheck=false ;
 		},2000);
 
-		//alert($scope.liveStreamData.star_time)
+		//alert($scope.liveStreamData.start_time)
 		var validator=0;
 		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.video_title)==true) || ($scope.liveStreamData.video_title=='¿'))
 		{
 			validator++ ;
 		}
-		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.star_time)==true) || ($scope.liveStreamData.star_time=='¿'))
+		if (($scope.isNullOrEmptyOrUndefined($scope.liveStreamData.start_time)==true) || ($scope.liveStreamData.start_time=='¿'))
 		{
 			validator++ ;
 		}
@@ -293,7 +290,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		*/
 		if (Number(validator)==0)
 		{
-			$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Uploading..','loader');
+			$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Submitting..','loader');
 			$scope.liveStreamData.course_id=$scope.taskData.course_id;
 			$scope.liveStreamData.task_level=$scope.taskData.task_level;
 			$scope.liveStreamData.user_auto_id=$scope.taskData.user_auto_id;
@@ -364,7 +361,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     	$scope.liveStreamData.id=valobj.id;
     	//$scope.liveStreamData.old_video=valobj.video_name;
     	$scope.liveStreamData.video_title=valobj.video_title;
-    	$scope.liveStreamData.star_time=valobj.star_time;
+    	$scope.liveStreamData.start_time=valobj.start_time;
     	//$scope.liveStreamData.end_time=valobj.end_time;
     	$scope.liveStreamData.description=valobj.description;
     	$('#uploadliveStreamVideoModal').modal('show');    	
@@ -840,7 +837,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		});
 	};
 
-	$scope.allQuestionnaireObj=[];
+	//$scope.allQuestionnaireObj=[];
 
 	$scope.create_question_object = function()
 	{
@@ -860,6 +857,8 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.createQuestionnaire = function()
 	{
+		$scope.allQuestionnaireObj=[];
+		$scope.examData={};
 		temp=$scope.create_question_object();
 		$scope.allQuestionnaireObj.push(temp);
 		$('.zheadSQz').html("Create Question Set");
@@ -916,6 +915,105 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	$scope.deleteQuestionOption = function(index,index2)
 	{
 		$scope.allQuestionnaireObj[index].options.splice(index2,1);
+		if($scope.allQuestionnaireObj[index].correct_ans==index2)
+		{
+			$scope.allQuestionnaireObj[index].correct_ans=0;
+		}
+
+	};
+
+	$scope.submitQuestionnaire = function()
+    {
+    	var validator=0;
+
+    	$scope.examDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.examDataCheck=false ;
+		},2000);
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.examData.exam_title)==true) || ($scope.examData.exam_title=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.examData.start_time)==true) || ($scope.examData.start_time=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.examData.end_time)==true) || ($scope.examData.end_time=='¿'))
+		{
+			validator++ ;
+		}
+
+	   	$('.zExamQuestionz').each(function(index, value)
+		{
+			$(this).removeClass('redBorder');	
+			question=jQuery.trim($(this).val());
+			if (question=='')
+			{
+				$(this).addClass('redBorder');
+				validator++ ;				
+			}
+		});
+
+		$('.zExamQuestionOptionz').each(function(index, value)
+		{
+			$(this).removeClass('redBorder');	
+			question=jQuery.trim($(this).val());
+			if (question=='')
+			{
+				$(this).addClass('redBorder');
+				validator++ ;				
+			}
+		});
+
+    	if (Number(validator)==0)
+		{
+			$scope.buttonSavingAnimation('zsubmitquestionnairez','Submitting..','loader');
+			$scope.examData.course_id=$scope.taskData.course_id;
+			$scope.examData.task_level=$scope.taskData.task_level;
+			$scope.examData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.examData.parent_id=$scope.taskData.parent_id;
+			$scope.examData.membership_type=$scope.taskData.membership_type;
+			$scope.examData.aryQuestionnaire=$scope.allQuestionnaireObj;
+
+			var formData = new FormData();
+			formData.append('examData',angular.toJson($scope.examData));
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxaddupdateexam",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+	        	{            		
+	        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submited!','onlytext');
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
+	            		$scope.examData={}
+	            		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+					},1200);
+					$timeout(function()
+					{
+						$('#createQuestionnaireModal').modal('hide');
+					},1800);					
+	        	}
+	        	else
+	        	{
+	        		$scope.examData={}
+	        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
+	        		$('#createQuestionnaireModal').modal('hide');
+	        		swal("Error!",
+		        		"Exam Set Failed!",
+		        		"error"
+		        	)		        	
+	        	}
+			});
+	    }
 	};
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {

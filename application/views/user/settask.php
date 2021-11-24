@@ -19,8 +19,8 @@
                   <div class="form-group col-sm-6">
 
                     <label for="dob">Start Time:</label>
-                    <input class="form-control" style="background: transparent;" ng-model="liveStreamData.star_time" id="liveStreamStartTime" type="text" autocomplete="off" dateandtimepicker>
-                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.star_time)==true)? 'Start Time Required' : ''}}</div>
+                    <input class="form-control" style="background: transparent;" ng-model="liveStreamData.start_time" id="liveStreamStartTime" type="text" autocomplete="off" dateandtimepicker>
+                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(liveStreamDataCheck==true && isNullOrEmptyOrUndefined(liveStreamData.start_time)==true)? 'Start Time Required' : ''}}</div>
                   </div>
 
                   <!-- <div class="form-group col-sm-6">
@@ -231,7 +231,7 @@
                         <h6>{{value.video_title}}</h6>
                      </div>
                      <div class="media-support-info ml-4">
-                        <h6>{{value.display_star_time}}</h6>
+                        <h6>{{value.display_start_time}}</h6>
                      </div>
                     <!-- <div class="media-support-info ml-3">
                         <h6>{{value.display_end_time}}</h6>
@@ -343,28 +343,46 @@
                   <h4 class="modal-title zheadSQz">Create Question Set</h4> 
                 </div>
                 <div class="modal-body">
-                  <div ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
-
+                  <div class="row">
                     <div class="form-group col-sm-12">
-                       <label for="address"><strong>Qusetion {{parseInt(key)+1}}:</strong></label>
-                       <textarea class="form-control" ng-model="value.question" autocomplete="off" style="height:60px;width:710px;float: left;" style="line-height: 22px;"></textarea>
-                       <i ng-if="key!='0'" style="float: right;font-size: 20px;cursor: pointer;color:#ff9b8a" ng-click="deleteQuestion(key)" class="ri-delete-bin-fill"></i>
-                       <i ng-if="key=='0'" style="float: right;margin-right: 5px;font-size: 20px;cursor: pointer;" ng-click="addQuestion()" class="ri-add-box-line"></i> 
+                       <label>Exam Title:</label>
+                       <input type="text" ng-model="examData.exam_title" maxlength="100" class="form-control">
+                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.exam_title)==true)? 'Title Required' : ''}}</div>
                     </div>
-                    <!--left-->
-                    <div ng-repeat="(key1, value1) in value.options" class="form-group col-sm-6">
-                      <span style="float:left;line-height: 40px;">Option {{parseInt(key1)+1}}:</span>
-                      <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1.optionval" maxlength="50" class="form-control">
-                      <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#000;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
-                      <i ng-if="key1=='0'" style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" ng-click="addQuestionOption(key)" class="ri-add-box-line"></i> 
-                      <div class="clearfix"></div>
-                      <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i>Correct Answer
+                    <div class="form-group col-sm-6">
+                      <label for="dob">Exam Start Time:</label>
+                      <input class="form-control" style="background: transparent;" ng-model="examData.start_time" type="text" autocomplete="off" startdateandtimepickerexam>
+                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.start_time)==true)? 'Start Time Required' : ''}}</div>
+                    </div>
 
+                    <div class="form-group col-sm-6">
+                      <label for="dob">Exam End Time:</label>
+                      <input class="form-control"  style="background: transparent;" ng-model="examData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" enddateandtimepickerexam >
+                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.end_time)==true)? 'End Time Required' : ''}}</div>
+                    </div>
+
+                    <div ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
+                      <div class="form-group col-sm-12">
+                         <label for="address"><strong>Qusetion {{parseInt(key)+1}}:</strong></label>
+                         <textarea class="form-control zExamQuestionz" ng-model="value.question" autocomplete="off" style="height:60px;width:710px;float: left;" style="line-height: 22px;"></textarea>
+                         <i ng-if="key!='0'" style="float: right;font-size: 20px;cursor: pointer;color:#ff9b8a" ng-click="deleteQuestion(key)" class="ri-delete-bin-fill"></i>
+                         <i ng-if="key=='0'" style="float: right;margin-right: 5px;font-size: 20px;cursor: pointer;" ng-click="addQuestion()" class="ri-add-box-line"></i> 
+                      </div>
+                      <!--left-->
+                      <div ng-repeat="(key1, value1) in value.options" class="form-group col-sm-6">
+                        <span style="float:left;line-height: 40px;">Option {{parseInt(key1)+1}}:</span>
+                        <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1.optionval" maxlength="50" class="form-control zExamQuestionOptionz">
+                        <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#000;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
+                        <i ng-if="key1=='0'" style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" ng-click="addQuestionOption(key)" class="ri-add-box-line"></i> 
+                        <div class="clearfix"></div>
+                        <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i> Correct Answer
+
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button ng-if="session_is_admin=='Y'" class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Questionnaire</button>
+                  <button ng-if="session_is_admin=='Y'" class="btn btn-success zsubmitquestionnairez" ng-click="submitQuestionnaire()" >Submit Questionnaire</button>
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -385,57 +403,6 @@
          </div>
       </div>
 
-      <div class="col-sm-12">               
-         <div class="iq-card">
-            <div class="iq-card-header d-flex justify-content-between">
-               <div class="iq-header-title">
-                  <h4 class="card-title">Live Stream Schedule(s)</h4>
-               </div>
-            </div>
-            <div class="iq-card-body">
-               <ul class="request-list list-inline m-0 p-0">
-
-                  <li class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6>Title</h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6>Star Time</h6>
-                     </div>
-                     <div class="d-flex align-items-center">
-                        Action
-                     </div>
-                  </li>
-
-
-                  <li ng-repeat="(key, value) in allLiveStreamVideoData" class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.video_title}}</h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.display_star_time}}</h6>
-                     </div>
-                     <div class="d-flex align-items-center">
-                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="value.membership_type=='RM'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
-
-                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? (value.status=='1') ? 'cssdisabled btn-success' : 'cssdisabled btn-primary' : (value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
-                        
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn btn-primary rounded zeditStreamVideoz zeditStreamVideoz_{{value.id}}">
-                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
-                        </a>
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i  class="ri-eye-line"></i>View
-                        </a>
-
-                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteStreamVideoz zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
-                     </div>
-                  </li>
-                  <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                    <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>                    
-                  </li>
-               </ul>
-            </div>
-         </div>
-      </div>
       <!-- End Question Setup Section -->
 
 
