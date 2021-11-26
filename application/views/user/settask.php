@@ -335,7 +335,6 @@
 
       <!-- Start Question Setup Section -->
 
-      <!-- Start Image Croping Modal -->
       <div id="createQuestionnaireModal" class="modal" role="dialog" style="z-index:999999 ">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -388,7 +387,6 @@
             </div>
           </div>
       </div>
-      <!-- End Image Croping Modal -->
 
       <div class="col-sm-12">
          <div class="iq-card">
@@ -399,6 +397,64 @@
                   <a href="javascript:void();" ng-click="createQuestionnaire();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="ri-questionnaire-line"></i>Create Questionnaire</a>
                 </div>
                </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="col-sm-12">               
+         <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between">
+               <div class="iq-header-title">
+                  <h4 class="card-title">Exam List(s)</h4>
+               </div>
+            </div>
+            <div class="iq-card-body">
+               <ul class="request-list list-inline m-0 p-0">
+
+                  <li class="d-flex align-items-center">
+                     <div class="media-support-info ml-4">
+                        <h6>Exam Title</h6>
+                     </div>
+                     <div class="media-support-info ml-4">
+                        <h6>Exam Star Time</h6>
+                     </div>
+                     <div class="media-support-info ml-3">
+                        <h6>Total Question</h6>
+                     </div>
+                     <div class="d-flex align-items-center">
+                        Action
+                     </div>
+                  </li>
+
+
+                  <li ng-repeat="(key, value) in allExamListObj" class="d-flex align-items-center">
+                     <div class="media-support-info ml-4">
+                        <h6>{{value.exam_title}}</h6>
+                     </div>
+                     <div class="media-support-info ml-4">
+                        <h6>{{value.display_start_time}}</h6>
+                     </div>
+                    <div class="media-support-info ml-3">
+                        <h6>{{value.display_end_time}}</h6>
+                     </div>
+                     <div class="d-flex align-items-center">
+                        
+
+                        <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
+                        
+                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
+                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
+                        </a>
+                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i  class="ri-eye-line"></i>View
+                        </a>
+
+                        <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+                     </div>
+                  </li>
+                  <li ng-if="allExamListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
+                    <?php if($argument['isAdmin']=='Y'){ echo "No Exam is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Exam is not started yet!"; }else{ echo "There is no Exam Schedule"; } ?>                    
+                  </li>
+               </ul>
             </div>
          </div>
       </div>

@@ -1021,5 +1021,61 @@ class User_Model extends CI_Model
 		}
 		return $aryfinal;
 	}
+
+	public function addUpdatExam($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tbl_exam',$menu_arr);
+			return $id;
+		}
+		else
+		{			
+			$this->db->insert('tbl_exam',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+	public function addUpdatExamQuestion($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tbl_exam_question',$menu_arr);
+			return $id;
+		}
+		else
+		{			
+			$this->db->insert('tbl_exam_question',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function get_exam_by_level($argument)
+	{
+		$task_level_id=$argument['task_level_id'];
+
+		$sql="SELECT 
+				te.*
+				FROM tbl_exam as te
+				WHERE te.task_level_id='".$task_level_id."' AND te.deleted='0' order by te.id DESC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		$str_is_admin=$this->session->userdata('is_admin');
+		if(count($resultData)>0)
+		{
+			foreach($resultData as $k=>$v)
+			{	
+				$resultData[$k]['is_admin']=$str_is_admin;
+				$resultData[$k]['display_start_time']=date('m-d-Y h:i A',strtotime($v['start_time']));
+				$resultData[$k]['start_time']=date('Y-m-d H:i',strtotime($v['start_time']));
+				$resultData[$k]['start_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['start_time'])));
+
+				$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
+				$resultData[$k]['end_time']=date('Y-m-d H:i',strtotime($v['end_time']));
+				$resultData[$k]['end_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['end_time'])));
+			}
+		}
+		//return array();
+		return $resultData;
+	}
 }
 ?>

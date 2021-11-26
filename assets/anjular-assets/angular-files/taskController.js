@@ -17,6 +17,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     $scope.files = [];
     $scope.liveStreamingMemberListObj={};
     $scope.examData={};
+    $scope.allExamListObj={};
 
 	
 
@@ -45,8 +46,8 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		//Start ajax call and see is leader started any video streaming
 		$interval(function()
 	    {
-	    	$scope.get_live_stream_video_by_level();
-	    	$scope.get_live_streaming_member_by_leve();
+	    	/*$scope.get_live_stream_video_by_level();
+	    	$scope.get_live_streaming_member_by_leve();*/
 	    }, 20000);
 	    //End ajax call and see is leader started any video streaming
 
@@ -102,6 +103,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		$scope.taskData.membership_type=membership_type;
 
 		$scope.call_member_watch_task_video_by_level();
+		$scope.getAllTaskLevelExam();
 	};
 
 
@@ -995,11 +997,14 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					{
 						$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
 	            		$scope.examData={}
-	            		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+	            		$scope.allExamListObj=aryreturnData.data.allExamListObj;
 					},1200);
+
 					$timeout(function()
 					{
 						$('#createQuestionnaireModal').modal('hide');
+
+						$scope.getAllTaskLevelExam();
 					},1800);					
 	        	}
 	        	else
@@ -1015,6 +1020,159 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			});
 	    }
 	};
+
+	$scope.activeInactiveExam = function(valobj)
+    {	
+    	var id=valobj.id;
+    	var status=valobj.status;
+
+    	if($(".zactiveInactiveExamz_"+id).hasClass('btn-success')){
+    		strText="Inactivating..";
+    		strStatus='0';
+    	}else{
+    		strText="Activating..";
+    		strStatus='1';
+    	}
+
+    	$scope.buttonSavingAnimation('zactiveInactiveExamz_'+id,strText,'loader');		
+		$timeout(function()
+		{
+			$scope.examStatusData={}
+			$scope.examStatusData.id=id;
+			$scope.examStatusData.strStatus=strStatus;
+			var formData = new FormData();
+			formData.append('ExamData',angular.toJson($scope.examStatusData));
+			//alert("fd")
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxActiveInactiveExam",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		if(strStatus=='1')
+	        		{
+	        			$(".zactiveInactiveExamz_"+id).removeClass('btn-primary');
+    					$(".zactiveInactiveExamz_"+id).addClass('btn-success');
+						$(".zactiveInactiveExamz_"+id).css("background-color",'#49f0d3');
+						$(".zactiveInactiveExamz_"+id).css("bordr-color",'#49f0d3');
+	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active');
+	        		}else{
+	        			$(".zactiveInactiveExamz_"+id).removeClass('btn-success');
+	        			$(".zactiveInactiveExamz_"+id).addClass('btn-primary');
+	        			$(".zactiveInactiveExamz_"+id).css("background-color",'#50b5ff');
+	        			$(".zactiveInactiveExamz_"+id).css("bordr-color",'#2aa3fb');
+	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+	        		};     		
+	        	}
+	        	else
+	        	{
+	        		if($(".zactiveInactiveExamz_"+id).hasClass('btn-success'))
+	        		{
+			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active')
+			    	}else{
+			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+			    	}
+	        		swal("Error!",
+		        		"Status Changed Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},1200);
+	};
+
+	$scope.deleteExam = function(valobj)
+    {	
+    	swal({
+	      title: "Attention",
+	      text: "Are you sure to delete this exam",
+	      icon: "warning",
+	      buttons: true,
+	      dangerMode: true,
+	    })
+	    .then((willDelete) =>
+	    {
+	    	if (willDelete)
+	    	{
+		    	var id=valobj.id;
+		    	var task_level_id=valobj.task_level_id;
+
+		    	$scope.buttonSavingAnimation('zdeleteExamz_'+id,"Deleting..",'loader');		
+				$timeout(function()
+				{
+
+					$scope.examDeleteData={}
+					$scope.examDeleteData.id=id;
+					$scope.examDeleteData.task_level_id=task_level_id;
+
+					var formData = new FormData();
+					formData.append('examDeleteData',angular.toJson($scope.examDeleteData));
+					//alert("fd")
+					$http({
+			            method  : 'POST',
+			            url     : varGlobalAdminBaseUrl+"ajaxDeleteExam",
+			            transformRequest: angular.identity,
+			            headers: {'Content-Type': undefined},                     
+			            data:formData, 
+			        }).success(function(returnData){
+						aryreturnData=angular.fromJson(returnData);
+			        	if(aryreturnData.status=='1')
+			        	{
+			        		$scope.allExamListObj=aryreturnData.data.allExamListObj;
+			        	}
+			        	else
+			        	{
+			        		$(".zdeleteExamz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
+			        		swal("Error!",
+				        		"Deletion Failed!",
+				        		"error"
+				        	)
+			        	}
+					});
+				},1200);
+			}
+		});
+	};
+
+	$scope.getAllTaskLevelExam = function()
+	{
+		if($scope.taskData.user_auto_id>0)
+		{
+			$scope.examListData={};
+			$scope.examListData.course_id=$scope.taskData.course_id;
+			$scope.examListData.task_level=$scope.taskData.task_level;
+			$scope.examListData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.examListData.parent_id=$scope.taskData.parent_id;
+
+			
+			var formData = new FormData();
+			formData.append('examListData',angular.toJson($scope.examListData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllTaskLevelExam",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allExamListObj=aryreturnData.data.allExamListObj;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+    };
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;

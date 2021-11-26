@@ -2059,7 +2059,6 @@ class User extends CI_Controller
 
         $examData = trim($this->input->post('examData'));
         $aryExamData=json_decode($examData, true);
-
         
         $id=(isset($aryExamData['id']) && !empty($aryExamData['id']))? addslashes(trim($aryExamData['id'])):0;
         $user_auto_id=(isset($aryExamData['user_auto_id']) && !empty($aryExamData['user_auto_id']))? addslashes(trim($aryExamData['user_auto_id'])):0;
@@ -2067,13 +2066,13 @@ class User extends CI_Controller
         $course_id=(isset($aryExamData['course_id']) && !empty($aryExamData['course_id']))? addslashes(trim($aryExamData['course_id'])):'';
         $task_level=(isset($aryExamData['task_level']) && !empty($aryExamData['task_level']))? addslashes(trim($aryExamData['task_level'])):'';
         $membership_type=(isset($aryExamData['membership_type']) && !empty($aryExamData['membership_type']))? addslashes(trim($aryExamData['membership_type'])):'';
-        $aryQuestionnaire=(isset($aryExamData['aryQuestionnaire']) && !empty($aryExamData['video_title']))? $aryExamData['aryQuestionnaire']:array();
+        $aryQuestionnaire=(isset($aryExamData['aryQuestionnaire']) && !empty($aryExamData['aryQuestionnaire']))? $aryExamData['aryQuestionnaire']:array();
 
         $exam_title=(isset($aryExamData['exam_title']) && !empty($aryExamData['exam_title']))? addslashes(trim($aryExamData['exam_title'])):'';
-        $start_time=(isset($aryLSVideoData['start_time']) && !empty($aryLSVideoData['start_time']))? addslashes(trim($aryLSVideoData['start_time'])):'';
-        $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):'';
-/*
+        $start_time=(isset($aryExamData['start_time']) && !empty($aryExamData['start_time']))? addslashes(trim($aryExamData['start_time'])):'';
+        $end_time=(isset($aryExamData['end_time']) && !empty($aryExamData['end_time']))? addslashes(trim($aryExamData['end_time'])):'';
 
+        
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
@@ -2091,32 +2090,48 @@ class User extends CI_Controller
         	if(count($aryQuestionnaire)>0)
         	{
         		$menu_arr = array(
-		            'task_level_id'=>$task_level_id,
-		            'exam_title'   =>$exam_title,
-		            'start_time'   =>date('Y-m-d H:i:s',strtotime($start_time)),
-		            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)),
-		            'total_question'   =>count($aryQuestionnaire),
+		            'task_level_id'	=>$task_level_id,
+		            'exam_title'   	=>$exam_title,
+		            'start_time'   	=>date('Y-m-d H:i:s',strtotime($start_time)),
+		            'end_time'     	=>date('Y-m-d H:i:s',strtotime($end_time)),
+		            'total_question'=>count($aryQuestionnaire),
 		            'create_date'   =>$current_date		            
 		        );
-		        $ls_exam_id = $this->User_Model->addUpdatLiveStreamVideo($menu_arr,$id);
+		        $ls_exam_id = $this->User_Model->addUpdatExam($menu_arr,$id);
         	}	        
-	    }*/
+	    }
 
         $returnData=array();
  		if($ls_exam_id>0)
 		{
+			if(count($aryQuestionnaire)>0)
+        	{
+        		foreach($aryQuestionnaire as $k=>$v)
+        		{
+        			$ary_exam_answer_option=array();
+        			$ary_exam_answer_option['correct_ans']=$v['correct_ans'];
+        			$ary_exam_answer_option['options']=$v['options'];
+        			$json_exam_answer_option=json_encode($ary_exam_answer_option);
+
+        			$menu_arr = array(
+			            'exam_id'	=>$ls_exam_id,
+			            'task_level_id'   	=>$task_level_id,
+			            'exam_question'   	=>$v['question'],
+			            'exam_answer_option'   	=>$json_exam_answer_option
+			        );
+			        $this->User_Model->addUpdatExamQuestion($menu_arr,0);
+        		}
+        	}
+
 			$argument=array();
-			$argument['membershipType']=$membership_type;
-			$argument['user_auto_id']=$user_auto_id;
-			$argument['parent_id']=$parent_id;
-			$argument['course_id']=$course_id;
-			$argument['task_level']=$task_level;
-			$liveStreamVideoData = $this->User_Model->get_live_stream_video_by_level($argument);
+			$argument['task_level_id']=$task_level_id;
+			$allExamListObj = $this->User_Model->get_exam_by_level($argument);
+			
 
 	        $returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Exam Set Successfully';
-	        $returnData['data']=array('id'=>$ls_exam_id,'liveStreamVideoData'=>$liveStreamVideoData);
+	        $returnData['data']=array('id'=>$ls_exam_id,'allExamListObj'=>$allExamListObj);
 		}
 		else
 		{
@@ -2126,6 +2141,116 @@ class User extends CI_Controller
 	        $returnData['data']=array();
 		}
 
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function ajaxActiveInactiveExam() 
+    {
+
+    	$returnData=array();
+    	$ExamData=$this->input->get_post('ExamData');
+    	$aryExamData=json_decode($ExamData, true);
+  
+  		$id=(isset($aryExamData['id']) && !empty($aryExamData['id']))? addslashes(trim($aryExamData['id'])):0;
+		$strStatus=(isset($aryExamData['strStatus']) && !empty($aryExamData['strStatus']))? addslashes(trim($aryExamData['strStatus'])):'0';
+		
+		$menu_arr = array(
+            'status'  =>$strStatus
+        );
+
+		$lastId = $this->User_Model->addUpdatExam($menu_arr,$id);
+
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Status Changed Successfully';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Status Changed Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function ajaxDeleteExam() 
+    {
+    	$returnData=array();
+    	$examDeleteData=$this->input->get_post('examDeleteData');
+    	$aryExamDeleteData=json_decode($examDeleteData, true);
+  
+  		$id=(isset($aryExamDeleteData['id']) && !empty($aryExamDeleteData['id']))? addslashes(trim($aryExamDeleteData['id'])):0;
+  		$task_level_id=(isset($aryExamDeleteData['task_level_id']) && !empty($aryExamDeleteData['task_level_id']))? addslashes(trim($aryExamDeleteData['task_level_id'])):0;
+
+		$menu_arr = array(
+            'deleted'  =>'1'
+        );
+        /*echo $id."ss<pre>";
+        print_r($menu_arr);
+        exit;*/
+		$lastId = $this->User_Model->addUpdatExam($menu_arr,$id);
+
+ 		if($lastId>0)
+		{			
+			$argument=array();
+			$argument['task_level_id']=$task_level_id;
+			$allExamListObj = $this->User_Model->get_exam_by_level($argument);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Deleted Successfully';
+	        $returnData['data']=array('lastId'=>$lastId,'allExamListObj'=>$allExamListObj);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Deletion Failed';
+	        $returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGetAllTaskLevelExam() 
+    {
+    	
+    	$examListData = trim($this->input->post('examListData'));
+        $aryExamListData=json_decode($examListData, true);
+  
+        $user_auto_id=(isset($aryExamListData['user_auto_id']) && !empty($aryExamListData['user_auto_id']))? addslashes(trim($aryExamListData['user_auto_id'])):0;
+        $parent_id=(isset($aryExamListData['parent_id']) && !empty($aryExamListData['parent_id']))? addslashes(trim($aryExamListData['parent_id'])):0;
+        $course_id=(isset($aryExamListData['course_id']) && !empty($aryExamListData['course_id']))? addslashes(trim($aryExamListData['course_id'])):'';
+        $task_level=(isset($aryExamListData['task_level']) && !empty($aryExamListData['task_level']))? addslashes(trim($aryExamListData['task_level'])):'';
+
+
+        $menu_arr=array();
+        $menu_arr = array(
+            'course_id' => $course_id,
+            'task_level' => $task_level,
+            'church_id'  =>$parent_id,
+            'church_admin_id'  =>$user_auto_id            
+        );
+        $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
+
+		$argument=array();
+		$argument['task_level_id']=$task_level_id;
+		$allExamListObj = $this->User_Model->get_exam_by_level($argument);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('allExamListObj'=>$allExamListObj);
+       
         echo json_encode($returnData);
         exit;
     }
