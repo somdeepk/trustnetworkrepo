@@ -344,18 +344,18 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="form-group col-sm-12">
-                       <label>Exam Title:</label>
+                       <label><strong>Exam Title:</strong></label>
                        <input type="text" ng-model="examData.exam_title" maxlength="100" class="form-control">
                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.exam_title)==true)? 'Title Required' : ''}}</div>
                     </div>
                     <div class="form-group col-sm-6">
-                      <label for="dob">Exam Start Time:</label>
+                      <label for="dob"><strong>Exam Start Time:</strong></label>
                       <input class="form-control" style="background: transparent;" ng-model="examData.start_time" type="text" autocomplete="off" startdateandtimepickerexam>
                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.start_time)==true)? 'Start Time Required' : ''}}</div>
                     </div>
 
                     <div class="form-group col-sm-6">
-                      <label for="dob">Exam End Time:</label>
+                      <label for="dob"><strong>Exam End Time:</strong></label>
                       <input class="form-control"  style="background: transparent;" ng-model="examData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" enddateandtimepickerexam >
                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.end_time)==true)? 'End Time Required' : ''}}</div>
                     </div>
@@ -418,6 +418,9 @@
                      <div class="media-support-info ml-4">
                         <h6>Exam Star Time</h6>
                      </div>
+                     <div class="media-support-info ml-4">
+                        <h6>Exam End Time</h6>
+                     </div>
                      <div class="media-support-info ml-3">
                         <h6>Total Question</h6>
                      </div>
@@ -436,6 +439,9 @@
                      </div>
                     <div class="media-support-info ml-3">
                         <h6>{{value.display_end_time}}</h6>
+                     </div>
+                     <div class="media-support-info ml-3">
+                        <h6>{{value.total_question}}</h6>
                      </div>
                      <div class="d-flex align-items-center">
                         

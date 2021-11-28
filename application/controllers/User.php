@@ -2060,7 +2060,7 @@ class User extends CI_Controller
         $examData = trim($this->input->post('examData'));
         $aryExamData=json_decode($examData, true);
         
-        $id=(isset($aryExamData['id']) && !empty($aryExamData['id']))? addslashes(trim($aryExamData['id'])):0;
+        $exam_id=(isset($aryExamData['exam_id']) && !empty($aryExamData['exam_id']))? addslashes(trim($aryExamData['exam_id'])):0;
         $user_auto_id=(isset($aryExamData['user_auto_id']) && !empty($aryExamData['user_auto_id']))? addslashes(trim($aryExamData['user_auto_id'])):0;
         $parent_id=(isset($aryExamData['parent_id']) && !empty($aryExamData['parent_id']))? addslashes(trim($aryExamData['parent_id'])):0;
         $course_id=(isset($aryExamData['course_id']) && !empty($aryExamData['course_id']))? addslashes(trim($aryExamData['course_id'])):'';
@@ -2072,7 +2072,11 @@ class User extends CI_Controller
         $start_time=(isset($aryExamData['start_time']) && !empty($aryExamData['start_time']))? addslashes(trim($aryExamData['start_time'])):'';
         $end_time=(isset($aryExamData['end_time']) && !empty($aryExamData['end_time']))? addslashes(trim($aryExamData['end_time'])):'';
 
-        
+       /* echo $exam_id."ss<pre>";
+        print_r($aryExamData);
+        exit;*/
+
+
 		$current_date=date('Y-m-d H:i:s');   
 
 		$menu_arr = array(
@@ -2097,13 +2101,23 @@ class User extends CI_Controller
 		            'total_question'=>count($aryQuestionnaire),
 		            'create_date'   =>$current_date		            
 		        );
-		        $ls_exam_id = $this->User_Model->addUpdatExam($menu_arr,$id);
+		        $ls_exam_id = $this->User_Model->addUpdatExam($menu_arr,$exam_id);
         	}	        
 	    }
 
         $returnData=array();
  		if($ls_exam_id>0)
 		{
+			/*echo "exam_id".$exam_id;
+			exit;*/
+			if($exam_id>0)
+			{
+				$delete_arr = array(
+		            'is_deleted'	=>'1'
+		        );
+		        $this->User_Model->deleteAllExamQuestion($delete_arr,$exam_id);
+			}
+			
 			if(count($aryQuestionnaire)>0)
         	{
         		foreach($aryQuestionnaire as $k=>$v)
@@ -2250,6 +2264,29 @@ class User extends CI_Controller
         $returnData['status']='1';
         $returnData['msg']='';
         $returnData['data']=array('allExamListObj'=>$allExamListObj);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxGetExamData() 
+    {
+    	$editExamData=$this->input->get_post('editExamData');
+        $aryEditExamData=json_decode($editExamData, true);
+
+
+    	$id=(isset($aryEditExamData['id']) && !empty($aryEditExamData['id']))? addslashes(trim($aryEditExamData['id'])):0;
+    	/*$user_auto_id=(isset($aryEditExamData['user_auto_id']) && !empty($aryEditExamData['user_auto_id']))? addslashes(trim($aryEditExamData['user_auto_id'])):0;
+        $parent_id=(isset($aryEditExamData['parent_id']) && !empty($aryEditExamData['parent_id']))? addslashes(trim($aryEditExamData['parent_id'])):0;
+        $course_id=(isset($aryEditExamData['course_id']) && !empty($aryEditExamData['course_id']))? addslashes(trim($aryEditExamData['course_id'])):'';
+        $task_level=(isset($aryEditExamData['task_level']) && !empty($aryEditExamData['task_level']))? addslashes(trim($aryEditExamData['task_level'])):'';*/
+
+		$examData = $this->User_Model->GetExamData($id);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('id'=>$id,'examData'=>$examData);
        
         echo json_encode($returnData);
         exit;

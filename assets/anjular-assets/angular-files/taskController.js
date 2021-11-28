@@ -972,6 +972,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     	if (Number(validator)==0)
 		{
 			$scope.buttonSavingAnimation('zsubmitquestionnairez','Submitting..','loader');
+			$scope.examData.exam_id=$scope.taskData.exam_id;
 			$scope.examData.course_id=$scope.taskData.course_id;
 			$scope.examData.task_level=$scope.taskData.task_level;
 			$scope.examData.user_auto_id=$scope.taskData.user_auto_id;
@@ -1174,8 +1175,58 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	    }
     };
 
+    $scope.editExam = function(valobj)
+    {	
+		if(valobj.is_admin=="Y")
+		{
+			$('.zheadSQz').html("Edit Question Set");
+		}
+		else
+		{
+			$('.zheadSQz').html("View Question Set");
+		}		
+
+		if(valobj.id>0)
+		{
+			$scope.editExamData={};
+			$scope.allQuestionnaireObj=[];
+
+			$scope.editExamData.id=valobj.id;
+			$scope.taskData.exam_id=valobj.id;
+			
+			var formData = new FormData();
+			formData.append('editExamData',angular.toJson($scope.editExamData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetExamData",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.examData=aryreturnData.data.examData;
+	        		$scope.allQuestionnaireObj=aryreturnData.data.examData.aryQuestionnaire;
+	        		$scope.getAllTaskLevelExam();	        		
+    				$('#createQuestionnaireModal').modal('show');
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+   	    	
+	};
+
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
+
+
 	
 });

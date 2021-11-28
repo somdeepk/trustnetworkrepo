@@ -1049,6 +1049,13 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function deleteAllExamQuestion($delete_arr=NULL,$exam_id=NULL)
+	{
+		$this->db->where('exam_id',$exam_id)->update('tbl_exam_question',$delete_arr);
+		return $id;
+	}
+
+
 	public function get_exam_by_level($argument)
 	{
 		$task_level_id=$argument['task_level_id'];
@@ -1077,5 +1084,38 @@ class User_Model extends CI_Model
 		//return array();
 		return $resultData;
 	}
+
+	public function GetExamData($id)
+	{
+		$aryReturnData=array();
+		$sql="SELECT * from tbl_exam WHERE  id= '".$id."' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+		if(count($result)>0)
+		{
+			$result=$result[0];
+			$aryReturnData['exam_title']=$result['exam_title'];
+			$aryReturnData['start_time']=$result['start_time'];
+			$aryReturnData['end_time']=$result['end_time'];
+			
+			$sqlExamQuestion="SELECT * from tbl_exam_question WHERE exam_id=".$id." AND is_deleted= '0'";
+			$queryExamQuestion=$this->db->query($sqlExamQuestion);
+			$resultExamQuestion=$queryExamQuestion->result_array();
+			if(count($resultExamQuestion)>0)
+			{
+				$aryQuestionnaire=array();
+				foreach($resultExamQuestion as $k=>$v)
+				{
+					$aryQuestionnaire[$k]['question']=$v['exam_question'];
+					$ary_exam_answer_option=json_decode($v['exam_answer_option'],true);
+					$aryQuestionnaire[$k]['correct_ans']=$ary_exam_answer_option['correct_ans'];
+					$aryQuestionnaire[$k]['options']=$ary_exam_answer_option['options'];
+				}
+			}
+			$aryReturnData['aryQuestionnaire']=$aryQuestionnaire;
+		}
+		return $aryReturnData;
+	}
+
 }
 ?>
