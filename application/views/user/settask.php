@@ -374,7 +374,7 @@
                         <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#000;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
                         <i ng-if="key1=='0'" style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" ng-click="addQuestionOption(key)" class="ri-add-box-line"></i> 
                         <div class="clearfix"></div>
-                        <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i> Correct Answer
+                        <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i><strong style="color:green;"> Correct Answer</strong>
 
                       </div>
                     </div>
