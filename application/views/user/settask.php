@@ -405,7 +405,7 @@
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title">
-                  <h4 class="card-title">Exam List(s)</h4>
+                  <h4 class="card-title">Exam List (s)</h4>
                </div>
             </div>
             <div class="iq-card-body">
@@ -451,7 +451,7 @@
                         <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
                           <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
                         </a>
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i  class="ri-eye-line"></i>View
+                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i  class="ri-eye-line"></i>View
                         </a>
 
                         <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>

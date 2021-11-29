@@ -2088,6 +2088,10 @@ class User extends CI_Controller
 
         $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
 
+       /* echo $task_level_id."ss<pre>";
+        print_r($menu_arr);
+        exit;*/
+
         $ls_exam_id=0;
         if($task_level_id>0)
         {
@@ -2241,24 +2245,28 @@ class User extends CI_Controller
     	$examListData = trim($this->input->post('examListData'));
         $aryExamListData=json_decode($examListData, true);
   
-        $user_auto_id=(isset($aryExamListData['user_auto_id']) && !empty($aryExamListData['user_auto_id']))? addslashes(trim($aryExamListData['user_auto_id'])):0;
-        $parent_id=(isset($aryExamListData['parent_id']) && !empty($aryExamListData['parent_id']))? addslashes(trim($aryExamListData['parent_id'])):0;
+        $leader_id=(isset($aryExamListData['leader_id']) && !empty($aryExamListData['leader_id']))? addslashes(trim($aryExamListData['leader_id'])):0;
         $course_id=(isset($aryExamListData['course_id']) && !empty($aryExamListData['course_id']))? addslashes(trim($aryExamListData['course_id'])):'';
         $task_level=(isset($aryExamListData['task_level']) && !empty($aryExamListData['task_level']))? addslashes(trim($aryExamListData['task_level'])):'';
+        $user_auto_id=(isset($aryExamListData['user_auto_id']) && !empty($aryExamListData['user_auto_id']))? addslashes(trim($aryExamListData['user_auto_id'])):0;
+        $parent_id=(isset($aryExamListData['parent_id']) && !empty($aryExamListData['parent_id']))? addslashes(trim($aryExamListData['parent_id'])):0;
+        $membership_type=(isset($aryExamListData['membership_type']) && !empty($aryExamListData['membership_type']))? addslashes(trim($aryExamListData['membership_type'])):'';
 
-
-        $menu_arr=array();
-        $menu_arr = array(
-            'course_id' => $course_id,
-            'task_level' => $task_level,
-            'church_id'  =>$parent_id,
-            'church_admin_id'  =>$user_auto_id            
-        );
-        $task_level_id = $this->User_Model->addUpdateTaskLevel($menu_arr);
 
 		$argument=array();
-		$argument['task_level_id']=$task_level_id;
+		$argument['membershipType']=$membership_type;
+		$argument['user_auto_id']=$user_auto_id;
+		$argument['parent_id']=$parent_id;
+		$argument['course_id']=$course_id;
+		$argument['task_level']=$task_level;
+		$argument['leader_id']=$leader_id;
+
+
 		$allExamListObj = $this->User_Model->get_exam_by_level($argument);
+/*
+		echo "ss<pre>";
+        print_r($allExamListObj);
+        exit;*/
 
 		$returnData=array();
         $returnData['status']='1';

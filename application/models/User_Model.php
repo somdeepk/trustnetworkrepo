@@ -1058,14 +1058,39 @@ class User_Model extends CI_Model
 
 	public function get_exam_by_level($argument)
 	{
-		$task_level_id=$argument['task_level_id'];
+		$task_level=$argument['task_level'];
+		$membershipType=$argument['membershipType'];
+		$user_auto_id=$argument['user_auto_id'];
+		$parent_id=$argument['parent_id'];
+		$course_id=$argument['course_id'];
+		$task_level=$argument['task_level'];
+		$leader_id=$argument['leader_id'];
 
+		$str_is_admin=$this->session->userdata('is_admin');
+
+		if($membershipType=="CM" || $membershipType=="CC")
+		{		
+			$strWhereParam=" AND tl.church_id='".$user_auto_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."' AND tl.task_level='".$task_level."'";
+		}
+		elseif($str_is_admin=='Y' && $membershipType=="RM" )
+		{
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$user_auto_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."'";
+		}
+		elseif($str_is_admin=='N' && $membershipType=="RM" )
+		{
+			$strWhereParam=" AND tl.church_id='".$parent_id."' AND tl.church_admin_id='".$leader_id."' AND tl.course_id='".$course_id."'  AND tl.task_level='".$task_level."' AND tl.status='1' AND te.start_time<=now() AND te.end_time>=now() ";
+		}
+
+		//2021-11-30 21:26:00
 		$sql="SELECT 
-				te.*
-				FROM tbl_exam as te
-				WHERE te.task_level_id='".$task_level_id."' AND te.deleted='0' order by te.id DESC";
+				te.*,
+				tl.task_level
+				FROM tn_task_level as tl
+				LEFT JOIN tbl_exam as te ON te.task_level_id=tl.id
+				WHERE te.deleted='0'".$strWhereParam." ORDER BY te.id DESC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
+
 		$str_is_admin=$this->session->userdata('is_admin');
 		if(count($resultData)>0)
 		{

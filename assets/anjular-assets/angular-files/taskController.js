@@ -494,6 +494,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     {	
     	$scope.get_live_stream_video_by_level();
     	$scope.get_task_min_three_video_by_level();
+    	$scope.getAllTaskLevelExam();
     }
 	$scope.get_live_stream_video_by_level = function(valobj)
     {   	
@@ -1144,12 +1145,14 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		if($scope.taskData.user_auto_id>0)
 		{
 			$scope.examListData={};
+			$scope.examListData.leader_id=$scope.taskData.leader_id;
 			$scope.examListData.course_id=$scope.taskData.course_id;
 			$scope.examListData.task_level=$scope.taskData.task_level;
 			$scope.examListData.user_auto_id=$scope.taskData.user_auto_id;
 			$scope.examListData.parent_id=$scope.taskData.parent_id;
+			$scope.examListData.membership_type=$scope.taskData.membership_type;
 
-			
+
 			var formData = new FormData();
 			formData.append('examListData',angular.toJson($scope.examListData));
 			$http({
