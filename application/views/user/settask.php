@@ -444,17 +444,20 @@
                         <h6>{{value.total_question}}</h6>
                      </div>
                      <div class="d-flex align-items-center">
-                        
 
                         <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
                         <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
                           <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
                         </a>
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i  class="ri-eye-line"></i>View
+
+                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i class="ri-eye-line"></i>View
                         </a>
 
+                        <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM'" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
+
                         <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+
                      </div>
                   </li>
                   <li ng-if="allExamListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">

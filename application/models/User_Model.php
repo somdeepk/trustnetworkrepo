@@ -1055,7 +1055,6 @@ class User_Model extends CI_Model
 		return $id;
 	}
 
-
 	public function get_exam_by_level($argument)
 	{
 		$task_level=$argument['task_level'];
@@ -1092,6 +1091,7 @@ class User_Model extends CI_Model
 		$resultData=$query->result_array();
 
 		$str_is_admin=$this->session->userdata('is_admin');
+
 		if(count($resultData)>0)
 		{
 			foreach($resultData as $k=>$v)

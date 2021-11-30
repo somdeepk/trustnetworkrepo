@@ -870,11 +870,11 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.addQuestion = function()
 	{
-		if($scope.allQuestionnaireObj.length>2)
+		if($scope.allQuestionnaireObj.length>29)
 		{
 			$('#createQuestionnaireModal').modal('hide');
 			swal("Attention",
-        		"Maximum 3 Questions are allowed!",
+        		"Maximum 30 Questions are allowed!",
         		"warning"
         	)
 			.then((value) => {
@@ -1226,10 +1226,58 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
    	    	
 	};
 
+    $scope.giveExam = function(valobj)
+    {	
+		window.location.href=varGlobalAdminBaseUrl+"giveexam/"+valobj.id;   	    	
+	};
+
+	$scope.getExamData = function (user_auto_id,parent_id,membership_type,is_admin)
+	{
+		//alert("")
+		hidden_exam_id=$('#hidden_exam_id').val();	
+		$scope.taskData.exam_id=hidden_exam_id;
+
+		$scope.taskData.user_auto_id=user_auto_id;
+		$scope.taskData.parent_id=parent_id;
+		$scope.taskData.membership_type=membership_type;
+		$scope.session_is_admin=is_admin;
+
+		if($scope.taskData.exam_id>0)
+		{
+			$scope.editExamData={};
+			$scope.allQuestionnaireObj=[];
+
+			$scope.editExamData.id=$scope.taskData.exam_id;
+			$scope.taskData.exam_id=$scope.taskData.exam_id;
+			
+			var formData = new FormData();
+			formData.append('editExamData',angular.toJson($scope.editExamData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetExamData",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.examData=aryreturnData.data.examData;
+	        		$scope.allQuestionnaireObj=aryreturnData.data.examData.aryQuestionnaire;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+	};
+
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
-
-
 	
 });

@@ -4195,40 +4195,69 @@ input {
 }
 
 .videodisabledcontainer{
-          width: 100px;
-          height: 100px;
-          position: relative;
-        }
-        .videodisabledoverlay{
-          background-color: #c3bebe;
-          position: absolute;
-          width: 267%;
-          height: 175%;
-          top: 25px;
-          left: 0;
-          z-index: 999;
-          opacity: 0.7;
-          text-align: center;
-          padding-top: 54px;
-          font-size: 37px;              
-          font-weight: bold;
-          pointer-events: none;
-        }
-        .viewedverlay{
-          color: #558527;
-        }
-        .blockverlay{
-          color: red;
-        }
-        .nopointer
-        {
-          pointer-events: none;
-        }
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+.videodisabledoverlay{
+  background-color: #c3bebe;
+  position: absolute;
+  width: 267%;
+  height: 175%;
+  top: 25px;
+  left: 0;
+  z-index: 999;
+  opacity: 0.7;
+  text-align: center;
+  padding-top: 54px;
+  font-size: 37px;              
+  font-weight: bold;
+  pointer-events: none;
+}
+.viewedverlay{
+  color: #558527;
+}
+.blockverlay{
+  color: red;
+}
+.nopointer
+{
+  pointer-events: none;
+}
 
-        .videodisabled{
-          position: absolute;
-          width: 267%;
-          height: 100%;
-          top: 0;
-          left: 0;
-        }
+.videodisabled{
+  position: absolute;
+  width: 267%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+
+.altcontainer {
+  background-color:#fff;
+  font-size:120%;
+  line-height:1.7em;
+}
+
+
+/* The radiocontainer */
+.radiocontainer {
+  background-color:#E7E9EB;
+  display: block;
+  position: relative;
+  padding:10px 10px 10px 15px;
+  margin-bottom: 1px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  word-wrap: break-word;
+}
+.qtext {
+  font-size:17px;
+  font-weight:bold;
+  color: #01A5CB;
+}

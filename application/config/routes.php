@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['user'] = 'user/login';
 $route['user/login'] = 'user/login';
 $route['user/settask/(:any)'] = "user/settask/$1";
+$route['user/giveexam/(:any)'] = "user/giveexam/$1";
 
 $route['user/forget-password'] = 'user/forget_password';
 

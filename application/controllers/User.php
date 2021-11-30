@@ -2282,12 +2282,7 @@ class User extends CI_Controller
     	$editExamData=$this->input->get_post('editExamData');
         $aryEditExamData=json_decode($editExamData, true);
 
-
     	$id=(isset($aryEditExamData['id']) && !empty($aryEditExamData['id']))? addslashes(trim($aryEditExamData['id'])):0;
-    	/*$user_auto_id=(isset($aryEditExamData['user_auto_id']) && !empty($aryEditExamData['user_auto_id']))? addslashes(trim($aryEditExamData['user_auto_id'])):0;
-        $parent_id=(isset($aryEditExamData['parent_id']) && !empty($aryEditExamData['parent_id']))? addslashes(trim($aryEditExamData['parent_id'])):0;
-        $course_id=(isset($aryEditExamData['course_id']) && !empty($aryEditExamData['course_id']))? addslashes(trim($aryEditExamData['course_id'])):'';
-        $task_level=(isset($aryEditExamData['task_level']) && !empty($aryEditExamData['task_level']))? addslashes(trim($aryEditExamData['task_level'])):'';*/
 
 		$examData = $this->User_Model->GetExamData($id);
 
@@ -2299,6 +2294,31 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+    public function giveexam($examId=0)
+	{
+		authenticate_user();
+		$data=array();
+		$membershipType=$this->session->userdata('membership_type');
+		$isAdmin=$this->session->userdata('is_admin');
+		$user_auto_id=$this->session->userdata('user_auto_id');
+		$parent_id=$this->session->userdata('parent_id');
+
+		if(!empty($examId) && $membershipType=="RM" && $isAdmin=="N")
+		{
+			$data['examId']=$examId;
+
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/giveexam', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
 
 
 }
