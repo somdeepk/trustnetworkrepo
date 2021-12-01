@@ -2285,7 +2285,23 @@ class User extends CI_Controller
     	$id=(isset($aryEditExamData['id']) && !empty($aryEditExamData['id']))? addslashes(trim($aryEditExamData['id'])):0;
 
 		$examData = $this->User_Model->GetExamData($id);
+		if(count($examData['aryQuestionnaire']))
+		{
+			$arrayFinal=array();
+			foreach($examData['aryQuestionnaire'] as $k=>$v)
+			{
+				$arrayFinal[$k]=$v;
+				$arrayFinal[$k]['given_ans']=0;
+			}
+			$examData['aryQuestionnaire']=$arrayFinal;
+		}
 
+		/*
+		echo "<pre>";
+		print_r($examData);
+		exit;
+		*/
+		
 		$returnData=array();
         $returnData['status']='1';
         $returnData['msg']='';

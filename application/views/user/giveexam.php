@@ -17,12 +17,15 @@
           <div ng-repeat="(key1, value1) in value.options" class="form-group col-sm-12">
             <div class="notranslate altcontainer">
               <label class="radiocontainer"> {{parseInt(key1)+1}} )
-                <i style="font-size: 14px;cursor: pointer;"  ng-click="value.given_ans=key1" ng-class="(value.given_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i>  {{value1.optionval}}
+                <i style="font-size: 21px;cursor: pointer;"  ng-click="value.given_ans=key1" ng-class="(value.given_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i>  {{value1.optionval}}
               </label>
             </div>
           </div>
         <div style="clear:both"></div>
         </div>
+
+        <a href="javascript:void();" ng-click="submitExam();" class="mr-3 btn btn-primary rounded zsubmitExamz">Submit</a>
+
     </div>
   </div>
   <!-- End Video Section-->

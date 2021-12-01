@@ -1131,6 +1131,7 @@ class User_Model extends CI_Model
 				$aryQuestionnaire=array();
 				foreach($resultExamQuestion as $k=>$v)
 				{
+					$aryQuestionnaire[$k]['questionID']=$v['id'];
 					$aryQuestionnaire[$k]['question']=$v['exam_question'];
 					$ary_exam_answer_option=json_decode($v['exam_answer_option'],true);
 					$aryQuestionnaire[$k]['correct_ans']=$ary_exam_answer_option['correct_ans'];

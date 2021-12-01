@@ -1276,6 +1276,70 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	    }
 	};
 
+	$scope.submitExam = function ()
+	{
+		totalQuestion=$scope.allQuestionnaireObj.length;
+		totalCorrectAnswer=0;
+		if(totalQuestion>0)
+		{
+			angular.forEach($scope.allQuestionnaireObj,function(item)
+			{    
+				if(item.correct_ans==item.given_ans)
+				{
+					totalCorrectAnswer++;
+				}
+			}); 
+		}
+		total_percentage_got=((totalCorrectAnswer/totalQuestion)*100);
+
+
+		is_exam_pass="N";
+		if(total_percentage_got>=30) //percentage marg is 30%
+		{
+			is_exam_pass="Y";
+		}
+		$scope.submitExamData={};
+		$scope.submitExamData.allQuestionnaireObj=$scope.allQuestionnaireObj;
+		$scope.submitExamData.total_percentage_got=total_percentage_got;
+		$scope.submitExamData.is_exam_pass=is_exam_pass;
+
+		var formData = new FormData();
+		formData.append('submitExamData',angular.toJson($scope.submitExamData));
+
+		$scope.buttonSavingAnimation('zsubmitExamz','Submitting..','loader');
+
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxaddupdateexam",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+        	{            		
+        		$scope.buttonSavingAnimation('zsubmitExamz','Submited!','onlytext');
+        		$timeout(function()
+				{
+					hidden_exam_id=$('#hidden_exam_id').val();	
+					window.location.href=varGlobalAdminBaseUrl+"giveexam/"+hidden_exam_id; 
+				},1200);					
+        	}
+        	else
+        	{
+        		$scope.examData={}
+        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
+        		$('#createQuestionnaireModal').modal('hide');
+        		swal("Error!",
+	        		"Exam Set Failed!",
+	        		"error"
+	        	)		        	
+        	}
+		});
+
+	};
+
+
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
