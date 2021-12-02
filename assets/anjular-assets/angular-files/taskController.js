@@ -1228,27 +1228,33 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
     $scope.giveExam = function(valobj)
     {	
-		window.location.href=varGlobalAdminBaseUrl+"giveexam/"+valobj.id;   	    	
+    	course_id=valobj.course_id;
+    	task_level=valobj.task_level;
+    	exam_id=valobj.id;
+    	task_level_id=valobj.task_level_id;
+    	string=course_id+'-'+task_level+'-'+exam_id+'-'+task_level_id;
+    	string=btoa(string)
+		window.location.href=varGlobalAdminBaseUrl+"giveexam/"+string;   	    	
 	};
 
-	$scope.getExamData = function (user_auto_id,parent_id,membership_type,is_admin)
+	$scope.getExamData = function (user_auto_id)
 	{
-		//alert("")
-		hidden_exam_id=$('#hidden_exam_id').val();	
-		$scope.taskData.exam_id=hidden_exam_id;
+		hidden_id_string=$('#hidden_id_string').val();	
+		id_string=atob(hidden_id_string);
+		ary_id_string=id_string.split("-");
+		course_id=ary_id_string[0];
+		task_level=ary_id_string[1];
+		exam_id=ary_id_string[2];
+		task_level_id=ary_id_string[3];
 
 		$scope.taskData.user_auto_id=user_auto_id;
-		$scope.taskData.parent_id=parent_id;
-		$scope.taskData.membership_type=membership_type;
-		$scope.session_is_admin=is_admin;
 
-		if($scope.taskData.exam_id>0)
+		if(exam_id>0)
 		{
 			$scope.editExamData={};
 			$scope.allQuestionnaireObj=[];
 
-			$scope.editExamData.id=$scope.taskData.exam_id;
-			$scope.taskData.exam_id=$scope.taskData.exam_id;
+			$scope.editExamData.id=exam_id;
 			
 			var formData = new FormData();
 			formData.append('editExamData',angular.toJson($scope.editExamData));
@@ -1278,64 +1284,77 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	$scope.submitExam = function ()
 	{
-		totalQuestion=$scope.allQuestionnaireObj.length;
-		totalCorrectAnswer=0;
-		if(totalQuestion>0)
+		hidden_id_string=$('#hidden_id_string').val();	
+		id_string=atob(hidden_id_string);
+		ary_id_string=id_string.split("-");
+		course_id=ary_id_string[0];
+		task_level=ary_id_string[1];
+		exam_id=ary_id_string[2];
+		task_level_id=ary_id_string[3];
+
+		if(exam_id>0 && $scope.allQuestionnaireObj.length>0)
 		{
-			angular.forEach($scope.allQuestionnaireObj,function(item)
-			{    
-				if(item.correct_ans==item.given_ans)
-				{
-					totalCorrectAnswer++;
-				}
-			}); 
-		}
-		total_percentage_got=((totalCorrectAnswer/totalQuestion)*100);
+			totalQuestion=$scope.allQuestionnaireObj.length;
+			totalCorrectAnswer=0;
+			if(totalQuestion>0)
+			{
+				angular.forEach($scope.allQuestionnaireObj,function(item)
+				{    
+					if(item.correct_ans==item.given_ans)
+					{
+						totalCorrectAnswer++;
+					}
+				}); 
+			}
+			total_percentage_got=((totalCorrectAnswer/totalQuestion)*100);
 
+			is_exam_pass="N";
+			if(total_percentage_got>=30) //percentage marg is 30%
+			{
+				is_exam_pass="Y";
+			}
 
-		is_exam_pass="N";
-		if(total_percentage_got>=30) //percentage marg is 30%
-		{
-			is_exam_pass="Y";
-		}
-		$scope.submitExamData={};
-		$scope.submitExamData.allQuestionnaireObj=$scope.allQuestionnaireObj;
-		$scope.submitExamData.total_percentage_got=total_percentage_got;
-		$scope.submitExamData.is_exam_pass=is_exam_pass;
+			$scope.submitExamData={};
+			$scope.submitExamData.exam_id=exam_id;
+			$scope.submitExamData.task_level_id=task_level_id;
+			$scope.submitExamData.user_auto_id=$scope.taskData.user_auto_id;
+			$scope.submitExamData.total_percentage_got=total_percentage_got;
+			$scope.submitExamData.is_exam_pass=is_exam_pass;
+			$scope.submitExamData.allQuestionnaireObj=$scope.allQuestionnaireObj;
 
-		var formData = new FormData();
-		formData.append('submitExamData',angular.toJson($scope.submitExamData));
+			var formData = new FormData();
+			formData.append('submitExamData',angular.toJson($scope.submitExamData));
 
-		$scope.buttonSavingAnimation('zsubmitExamz','Submitting..','loader');
+			$scope.buttonSavingAnimation('zsubmitExamz','Submitting..','loader');
 
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"ajaxaddupdateexam",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData) {
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-        	{            		
-        		$scope.buttonSavingAnimation('zsubmitExamz','Submited!','onlytext');
-        		$timeout(function()
-				{
-					hidden_exam_id=$('#hidden_exam_id').val();	
-					window.location.href=varGlobalAdminBaseUrl+"giveexam/"+hidden_exam_id; 
-				},1200);					
-        	}
-        	else
-        	{
-        		$scope.examData={}
-        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
-        		$('#createQuestionnaireModal').modal('hide');
-        		swal("Error!",
-	        		"Exam Set Failed!",
-	        		"error"
-	        	)		        	
-        	}
-		});
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxaddupdateexamgiven",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+	        	{            		
+	        		$scope.buttonSavingAnimation('zsubmitExamz','Submited!','onlytext');
+	        		$timeout(function()
+					{
+						window.location.href=varGlobalAdminBaseUrl+"settask/"+course_id+"/"+task_level; 
+					},1200);					
+	        	}
+	        	else
+	        	{
+	        		$scope.examData={}
+	        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
+	        		$('#createQuestionnaireModal').modal('hide');
+	        		swal("Error!",
+		        		"Exam Set Failed!",
+		        		"error"
+		        	)		        	
+	        	}
+			});
+	    }
 
 	};
 

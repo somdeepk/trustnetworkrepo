@@ -1083,6 +1083,8 @@ class User_Model extends CI_Model
 		//2021-11-30 21:26:00
 		$sql="SELECT 
 				te.*,
+				tl.id as task_level_id,
+				tl.course_id,
 				tl.task_level
 				FROM tn_task_level as tl
 				LEFT JOIN tbl_exam as te ON te.task_level_id=tl.id
@@ -1141,6 +1143,34 @@ class User_Model extends CI_Model
 			$aryReturnData['aryQuestionnaire']=$aryQuestionnaire;
 		}
 		return $aryReturnData;
+	}
+
+	public function addUpdatExamGiven($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tbl_exam_given',$menu_arr);
+			return $id;
+		}
+		else
+		{			
+			$this->db->insert('tbl_exam_given',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function addUpdatExamGivenAnswer($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tbl_exam_given_answer',$menu_arr);
+			return $id;
+		}
+		else
+		{			
+			$this->db->insert('tbl_exam_given_answer',$menu_arr);
+			return $this->db->insert_id();
+		}
 	}
 
 }

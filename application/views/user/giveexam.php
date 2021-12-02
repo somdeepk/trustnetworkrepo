@@ -1,7 +1,7 @@
-<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getExamData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>');">
+<div id="content-page" class="content-page" ng-controller="taskController" ng-init="getExamData(<?php echo $this->session->userdata('user_auto_id'); ?>);">
   <!-- Start Video Section-->
   <div class="container">
-    <input type="hiddens" id="hidden_exam_id" value="<?php echo $examId; ?>">
+    <input type="hiddens" id="hidden_id_string" value="<?php echo $idString; ?>">
 
     <div class="row">
 
