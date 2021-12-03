@@ -6,7 +6,7 @@ mainApp.run(function ($rootScope)
 	{        
 		if(what=='loader')
 		{
-			$('.'+$where).html('<div style="position:relative;"><div class="loader"  style="position:absolute;">Loading...</div><div  style="position:relative;z-index: 999">'+strtext+'</div></div>');
+			$('.'+$where).html('<div style="position:relative;"><div class="loader" style="position:absolute;">Loading...</div><div  style="position:relative;z-index: 999">'+strtext+'</div></div>');
 		}
 		else
 		{

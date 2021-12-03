@@ -1306,15 +1306,23 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 					}
 				}); 
 			}
+
 			total_percentage_got=((totalCorrectAnswer/totalQuestion)*100);
 
+			str_is_exam_pass="Failed";
 			is_exam_pass="N";
 			if(total_percentage_got>=30) //percentage marg is 30%
 			{
 				is_exam_pass="Y";
+				str_is_exam_pass="Pass";
 			}
 
 			$scope.submitExamData={};
+			$scope.submitExamData.totalCorrectAnswer=totalCorrectAnswer
+			$scope.submitExamData.course_id=course_id;
+			$scope.submitExamData.task_level=task_level;
+			$scope.submitExamData.str_is_exam_pass=str_is_exam_pass;
+
 			$scope.submitExamData.exam_id=exam_id;
 			$scope.submitExamData.task_level_id=task_level_id;
 			$scope.submitExamData.user_auto_id=$scope.taskData.user_auto_id;
@@ -1335,9 +1343,21 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	            data:formData, 
 	        }).success(function(returnData) {
 				aryreturnData=angular.fromJson(returnData);
+
 	        	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-	        	{            		
+	        	{   
+	        		$('.zsubmitExamz').remove();
 	        		$scope.buttonSavingAnimation('zsubmitExamz','Submited!','onlytext');
+	        		$('#examReultModal').modal('show');
+	        	}
+	        	else if(aryreturnData.status=='2' && aryreturnData.msg=='chance_over')
+	        	{
+	        		$scope.submitExamData={}
+	        		$scope.buttonSavingAnimation('zsubmitExamz','Submit Questionnaire','onlytext');            		
+	        		swal("Error!",
+		        		"You have reached the maximum attempts'!",
+		        		"warning"
+		        	)
 	        		$timeout(function()
 					{
 						window.location.href=varGlobalAdminBaseUrl+"settask/"+course_id+"/"+task_level; 
@@ -1345,11 +1365,10 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	}
 	        	else
 	        	{
-	        		$scope.examData={}
-	        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
-	        		$('#createQuestionnaireModal').modal('hide');
+	        		$scope.submitExamData={}
+	        		$scope.buttonSavingAnimation('zsubmitExamz','Submit Questionnaire','onlytext');
 	        		swal("Error!",
-		        		"Exam Set Failed!",
+		        		"Exam Given Failed!",
 		        		"error"
 		        	)		        	
 	        	}
@@ -1359,6 +1378,9 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	};
 
 
+	$scope.leave_result_popup = function () {
+		window.location.href=varGlobalAdminBaseUrl+"settask/"+$scope.submitExamData.course_id+"/"+$scope.submitExamData.task_level; 	
+	};
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};

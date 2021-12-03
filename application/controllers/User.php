@@ -2348,57 +2348,75 @@ class User extends CI_Controller
         print_r($allQuestionnaireObj);
         exit;*/
 
-        $ls_exam_given_id=0;
-        if($exam_id>0 && count($allQuestionnaireObj)>0)
-        {
-    		$ary_exam_given = array(
-	            'exam_id' => $exam_id,
-	            'task_level_id' => $task_level_id,
-	            'member_id'  =>$user_auto_id,
-	            'percentage_got'  =>$percentage_got,         
-	            'is_exam_pass'  =>$is_exam_pass,         
-	            'exam_date'  =>$current_date        
-	        );
-	        $ls_exam_given_id = $this->User_Model->addUpdatExamGiven($ary_exam_given,'');
-	    }
-
-        $returnData=array();
- 		if($ls_exam_given_id>0)
-		{			
-			if(count($allQuestionnaireObj)>0)
-        	{
-        		foreach($allQuestionnaireObj as $k=>$v)
-        		{
-        			$ary_exam_answer_option=array();
-        			$ary_exam_answer_option['correct_ans']=$v['correct_ans'];
-        			$ary_exam_answer_option['options']=$v['options'];
-        			$ary_exam_answer_option['given_ans']=$v['given_ans'];
-        			$json_exam_answer_option=json_encode($ary_exam_answer_option);
-
-        			$ary_exam_given_answer = array(
-			            'exam_given_id'	=>$ls_exam_given_id,
-			            'exam_id'	=>$exam_id,
-			            'task_level_id'   	=>$task_level_id,
-			            'member_id'   	=>$user_auto_id,
-			            'exam_question_id'   	=>$v['questionID'],
-			            'exam_answer'   	=>$json_exam_answer_option
-			        );
-			        $this->User_Model->addUpdatExamGivenAnswer($ary_exam_given_answer,0);
-        		}
-        	}
-
-	        $returnData['status']='1';
-	        $returnData['msg']='success';
-	        $returnData['msgstring']='Exam Given Successfully';
-	        $returnData['data']=array('id'=>$ls_exam_given_id);
-		}
-		else
+        $sql='SELECT id from tbl_exam_given WHERE exam_id="'.$exam_id.'" AND member_id="'.$user_auto_id.'"';
+		$query=$this->db->query($sql);
+		$resultGivenExam=$query->result_array();
+		if(count($resultGivenExam)<30)
 		{
-			$returnData['status']='0';
-	        $returnData['msg']='error';
-	        $returnData['msgstring']='Exam Given Failed';
-	        $returnData['data']=array();
+			//Start make previous exam status off
+			$ary_exam_give['status']='0';
+			$this->db->where(array('exam_id'=>$exam_id,'member_id'=>$user_auto_id))->update('tbl_exam_given',$ary_exam_give);
+			//end make previous exam status off
+
+
+			$ls_exam_given_id=0;
+	        if($exam_id>0 && count($allQuestionnaireObj)>0)
+	        {
+	    		$ary_exam_given = array(
+		            'exam_id' => $exam_id,
+		            'task_level_id' => $task_level_id,
+		            'member_id'  =>$user_auto_id,
+		            'percentage_got'  =>$percentage_got,         
+		            'is_exam_pass'  =>$is_exam_pass,         
+		            'exam_date'  =>$current_date        
+		        );
+		        $ls_exam_given_id = $this->User_Model->addUpdatExamGiven($ary_exam_given,'');
+		    }
+
+	        $returnData=array();
+	 		if($ls_exam_given_id>0)
+			{			
+				if(count($allQuestionnaireObj)>0)
+	        	{
+	        		foreach($allQuestionnaireObj as $k=>$v)
+	        		{
+	        			$ary_exam_answer_option=array();
+	        			$ary_exam_answer_option['correct_ans']=$v['correct_ans'];
+	        			$ary_exam_answer_option['options']=$v['options'];
+	        			$ary_exam_answer_option['given_ans']=$v['given_ans'];
+	        			$json_exam_answer_option=json_encode($ary_exam_answer_option);
+
+	        			$ary_exam_given_answer = array(
+				            'exam_given_id'	=>$ls_exam_given_id,
+				            'exam_id'	=>$exam_id,
+				            'task_level_id'   	=>$task_level_id,
+				            'member_id'   	=>$user_auto_id,
+				            'exam_question_id'   	=>$v['questionID'],
+				            'exam_answer'   	=>$json_exam_answer_option
+				        );
+				        $this->User_Model->addUpdatExamGivenAnswer($ary_exam_given_answer,0);
+	        		}
+	        	}
+
+		        $returnData['status']='1';
+		        $returnData['msg']='success';
+		        $returnData['msgstring']='Exam Given Successfully';
+		        $returnData['data']=array('id'=>$ls_exam_given_id);
+			}
+			else
+			{
+				$returnData['status']='0';
+		        $returnData['msg']='error';
+		        $returnData['msgstring']='Exam Given Failed';
+		        $returnData['data']=array();
+			}
 		}
+		else{
+			$returnData['status']='2';
+	        $returnData['msg']='chance_over';
+	        $returnData['msgstring']='You have reached the maximum attempts';
+	        $returnData['data']=array();
+		}       
 
         echo json_encode($returnData);
         exit;
