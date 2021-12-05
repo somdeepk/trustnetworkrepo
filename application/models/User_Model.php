@@ -1094,22 +1094,94 @@ class User_Model extends CI_Model
 
 		$str_is_admin=$this->session->userdata('is_admin');
 
+		$returnAry=array();
+
 		if(count($resultData)>0)
 		{
 			foreach($resultData as $k=>$v)
 			{	
-				$resultData[$k]['is_admin']=$str_is_admin;
-				$resultData[$k]['display_start_time']=date('m-d-Y h:i A',strtotime($v['start_time']));
-				$resultData[$k]['start_time']=date('Y-m-d H:i',strtotime($v['start_time']));
-				$resultData[$k]['start_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['start_time'])));
 
-				$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
-				$resultData[$k]['end_time']=date('Y-m-d H:i',strtotime($v['end_time']));
-				$resultData[$k]['end_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['end_time'])));
+				$isExtendedTimeOver='N';
+				if($str_is_admin=='N' && $membershipType=="RM" )
+				{
+					$sqlMemberExamDtls="SELECT 
+							count(id) as totalNumberExamGiven,
+							(SELECT percentage_got FROM tbl_exam_given where id=MAX(teg.id)) as percentage_got,
+							(SELECT is_exam_pass FROM tbl_exam_given where id=MAX(teg.id)) as is_exam_pass,
+							(SELECT exam_date FROM tbl_exam_given where id=MAX(teg.id)) as exam_date
+							FROM tbl_exam_given as teg
+							WHERE teg.exam_id='".$v['id']."' AND teg.member_id='".$user_auto_id."'";
+					$queryMemberExamDtls=$this->db->query($sqlMemberExamDtls);
+					$resultMemberExamData=$queryMemberExamDtls->result_array()[0];
+			
+					if(!empty($resultMemberExamData['exam_date']))
+					{
+						$extendedOneDayTime =date('Y-m-d H:i:s',strtotime('+24 hours',strtotime($resultMemberExamData['exam_date'])));
+						$extendedOneDayTime=strtotime($extendedOneDayTime);
+						$currentTimeStamp=time();
+
+						if($currentTimeStamp>$extendedOneDayTime)
+						{
+							$isExtendedTimeOver="Y";
+						}
+					}
+				}
+				/*1638974555
+				1638716862*/
+
+
+				if($isExtendedTimeOver=='N')
+				{
+					$totalNumberExamGiven=0;
+					$percentage_got=0;
+					$is_exam_pass='';
+					$star_is_exam_pass='';
+					$exam_date='';	
+
+					if($str_is_admin=='N' && $membershipType=="RM" )
+					{
+						$totalNumberExamGiven=$resultMemberExamData['totalNumberExamGiven'];
+						$percentage_got=$resultMemberExamData['percentage_got'];
+						$is_exam_pass=$resultMemberExamData['is_exam_pass'];
+						if($is_exam_pass=='Y')
+						{
+							$star_is_exam_pass='Pass';
+						}
+						else
+						{
+							$star_is_exam_pass='Fail';
+						}
+						
+						$exam_date=$resultMemberExamData['exam_date'];
+					}
+
+					$returnAry[$k]=$v;
+					$returnAry[$k]['totalNumberExamGiven']=$totalNumberExamGiven;
+					$returnAry[$k]['percentage_got']=$percentage_got;
+					$returnAry[$k]['is_exam_pass']=$is_exam_pass;
+					$returnAry[$k]['star_is_exam_pass']=$star_is_exam_pass;
+					$returnAry[$k]['exam_date']=$exam_date;	
+
+
+					$returnAry[$k]['is_admin']=$str_is_admin;
+					$returnAry[$k]['display_start_time']=date('m-d-Y h:i A',strtotime($v['start_time']));
+					$returnAry[$k]['start_time']=date('Y-m-d H:i',strtotime($v['start_time']));
+					$returnAry[$k]['start_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['start_time'])));
+
+					$returnAry[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time']));
+					$returnAry[$k]['end_time']=date('Y-m-d H:i',strtotime($v['end_time']));
+					$returnAry[$k]['end_time_numbers']=str_replace(array('-',' ',':'),array('','',''),date('Y-m-d H:i',strtotime($v['end_time'])));
+				}
+
+				
 			}
 		}
+
+		/*echo "<pre>";
+		print_r($returnAry);
+		exit;*/
 		//return array();
-		return $resultData;
+		return $returnAry;
 	}
 
 	public function GetExamData($id)

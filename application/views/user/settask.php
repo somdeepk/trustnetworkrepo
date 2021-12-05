@@ -84,10 +84,10 @@
 
               <div class="container">                
                 <div class="row join-info-group hiddenimportant">
-                  <input type="hiddens" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
-                  <input type="hiddens" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
-                  <input type="hiddens" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
-                  <input type="hiddens" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
+                  <input type="hidden" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
+                  <input type="hidden" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
+                  <input type="hidden" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
+                  <input type="hidden" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
                 </div>
 
                 <div class="row video-group">
@@ -166,11 +166,11 @@
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title w-100">
-                  <input type="hiddens" id="user_auto_id" ng-model="taskData.user_auto_id" >
-                  <input type="hiddens" id="parent_id" ng-model="taskData.parent_id"  >
-                  <input type="hiddens" id="hidden_leader_id" value="<?php echo $argument['leader_id']; ?>">
-                  <input type="hiddens" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
-                  <input type="hiddens" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
+                  <input type="hidden" id="user_auto_id" ng-model="taskData.user_auto_id" >
+                  <input type="hidden" id="parent_id" ng-model="taskData.parent_id"  >
+                  <input type="hidden" id="hidden_leader_id" value="<?php echo $argument['leader_id']; ?>">
+                  <input type="hidden" id="hidden_task_level" value="<?php echo $argument['task_level']; ?>">
+                  <input type="hidden" id="hidden_course_id" value="<?php echo $argument['course_id']; ?>">
                   <div id="jsonTaskVideoLevelData" class="hiddenimportant"><?php echo $taskMin3VideoLevelData; ?></div>
                   <div id="jsonLiveStreamVideoData" class="hiddenimportant"><?php echo $liveStreamVideoData; ?></div>
                   <div class="d-flex justify-content-between w-100">
@@ -421,10 +421,16 @@
                      <div class="media-support-info ml-4">
                         <h6>Exam End Time</h6>
                      </div>
-                     <div class="media-support-info ml-3">
+
+
+                      <div class="media-support-info ml-3">
                         <h6>Total Question</h6>
-                     </div>
-                     <div class="d-flex align-items-center">
+                      </div>
+                      <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
+                      <h6>Result</h6>
+                      </div>
+
+                     <div class="d-flex align-items-center" >
                         Action
                      </div>
                   </li>
@@ -443,8 +449,12 @@
                      <div class="media-support-info ml-3">
                         <h6>{{value.total_question}}</h6>
                      </div>
+                     <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
+                        <h6>
+                          {{( session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven>0)? value.star_is_exam_pass+' ['+ value.percentage_got+' %]' : 'NA'}}
+                      </h6>
+                     </div>
                      <div class="d-flex align-items-center">
-
                         <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
                         <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
@@ -454,7 +464,9 @@
                         <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i class="ri-eye-line"></i>View
                         </a>
 
-                        <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM'" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
+                        
+
+                        <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven<3 && (value.is_exam_pass=='N' ||  isNullOrEmptyOrUndefined(value.is_exam_pass)==true)" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
 
                         <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
 

@@ -1,6 +1,6 @@
 <div id="content-page" class="content-page" ng-controller="taskController" ng-init="getExamData(<?php echo $this->session->userdata('user_auto_id'); ?>);">
   <div class="container">
-    <input type="hiddens" id="hidden_id_string" value="<?php echo $idString; ?>">
+    <input type="hidden" id="hidden_id_string" value="<?php echo $idString; ?>">
 
     <div class="row">
 

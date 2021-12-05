@@ -2351,7 +2351,7 @@ class User extends CI_Controller
         $sql='SELECT id from tbl_exam_given WHERE exam_id="'.$exam_id.'" AND member_id="'.$user_auto_id.'"';
 		$query=$this->db->query($sql);
 		$resultGivenExam=$query->result_array();
-		if(count($resultGivenExam)<30)
+		if(count($resultGivenExam)<3)
 		{
 			//Start make previous exam status off
 			$ary_exam_give['status']='0';
