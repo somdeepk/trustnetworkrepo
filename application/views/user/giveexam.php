@@ -8,7 +8,7 @@
            <h4 class="card-title">{{examData.exam_title}}</h4>
         </div>
 
-        <div style="margin-bottom: 20px;" ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
+        <div style="margin-bottom: 20px;width: 100%;" ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
           <div class="form-group col-sm-12" style="margin-bottom: 0px;">
             <p class="qtext">{{parseInt(key)+1}}. {{value.question}}</p>
           </div>
@@ -23,7 +23,10 @@
         <div style="clear:both"></div>
         </div>
 
+        <div style="clear:both"></div>  
+
         <a href="javascript:void();" ng-click="submitExam();" class="mr-3 btn btn-primary rounded zsubmitExamz">Submit</a>
+        <a href="javascript:void();" ng-click="backToTaskPage();" class="mr-3 btn btn-secondary rounded"><i class="ri-arrow-left-circle-line"></i> Back</a>
 
     </div>
   </div>

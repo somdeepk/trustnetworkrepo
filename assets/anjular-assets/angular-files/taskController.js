@@ -1377,6 +1377,17 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 
 	};
 
+	$scope.backToTaskPage = function ()
+	{
+		hidden_id_string=$('#hidden_id_string').val();	
+		id_string=atob(hidden_id_string);
+		ary_id_string=id_string.split("-");
+		course_id=ary_id_string[0];
+		task_level=ary_id_string[1];
+		exam_id=ary_id_string[2];
+		task_level_id=ary_id_string[3];
+		window.location.href=varGlobalAdminBaseUrl+"settask/"+course_id+"/"+task_level; 	
+	};
 
 	$scope.leave_result_popup = function () {
 		window.location.href=varGlobalAdminBaseUrl+"settask/"+$scope.submitExamData.course_id+"/"+$scope.submitExamData.task_level; 	
