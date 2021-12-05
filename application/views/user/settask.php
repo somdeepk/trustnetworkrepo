@@ -413,25 +413,25 @@
 
                   <li class="d-flex align-items-center">
                      <div class="media-support-info ml-4">
-                        <h6>Exam Title</h6>
+                        <h6><strong>Exam Title</strong></h6>
                      </div>
                      <div class="media-support-info ml-4">
-                        <h6>Exam Star Time</h6>
+                        <h6><strong>Exam Star Time</strong></h6>
                      </div>
                      <div class="media-support-info ml-4">
-                        <h6>Exam End Time</h6>
+                        <h6><strong>Exam End Time</strong></h6>
                      </div>
 
 
                       <div class="media-support-info ml-3">
-                        <h6>Total Question</h6>
+                        <h6><strong>Total Question</strong></h6>
                       </div>
                       <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                      <h6>Result</h6>
+                      <h6><strong>Result</strong></h6>
                       </div>
 
                      <div class="d-flex align-items-center" >
-                        Action
+                        <strong>Action</strong>
                      </div>
                   </li>
 
@@ -450,9 +450,9 @@
                         <h6>{{value.total_question}}</h6>
                      </div>
                      <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                        <h6>
+                        <h5>
                           {{( session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven>0)? value.star_is_exam_pass+' ['+ value.percentage_got+' %]' : 'NA'}}
-                      </h6>
+                        </h5>
                      </div>
                      <div class="d-flex align-items-center">
                         <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
