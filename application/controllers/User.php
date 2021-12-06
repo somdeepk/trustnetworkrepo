@@ -89,6 +89,7 @@ class User extends CI_Controller
 				$userLoginData['user_auto_id']=$userLoginData['id'];
 				$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
+			 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
 				$this->session->set_userdata($userLoginData);
 
@@ -156,6 +157,8 @@ class User extends CI_Controller
 			 	$userLoginData['user_auto_id']=$userLoginData['id'];
 			 	$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
+			 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
+			 	
 			 	$userLoginData['email']=$userLoginData['user_email'];
 			 	$userLoginData['maxmemberlevel']=$memberLevelStandardData['maxmemberlevel'];
 			 	$userLoginData['coursename']=$memberLevelStandardData['coursename'];

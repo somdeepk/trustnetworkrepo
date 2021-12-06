@@ -71,7 +71,7 @@ exit;*/
                   </li>    
                   <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
                   <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
-                  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li>
+                 <!--  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
                   <li><a href="#" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
                 </ul>
              </nav>
@@ -366,8 +366,8 @@ exit;*/
                              <div class="iq-card-body p-0 ">
                                 <?php if ($memberIsApproved=="Y"){ ?>
                                 <div class="bg-primary p-3 line-height">
-                                   <h5 class="mb-0 text-white line-height">Hello Bni Cyst</h5>
-                                   <span class="text-white font-size-12">Available</span>
+                                   <h5 class="mb-0 text-white line-height">Hello <?php echo $this->session->userdata('user_full_name'); ?></h5>
+                                   <!-- <span class="text-white font-size-12">Available</span> -->
                                 </div>
                                 <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                                    <div class="media align-items-center">
@@ -391,7 +391,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="account-setting.html" class="iq-sub-card iq-bg-info-hover">
+                                <!-- <a href="account-setting.html" class="iq-sub-card iq-bg-info-hover">
                                    <div class="media align-items-center">
                                       <div class="rounded iq-card-icon iq-bg-info">
                                          <i class="ri-account-box-line"></i>
@@ -412,7 +412,7 @@ exit;*/
                                          <p class="mb-0 font-size-12">Control your privacy parameters.</p>
                                       </div>
                                    </div>
-                                </a>
+                                </a> -->
                                 <?php } ?>
                                 <div class="d-inline-block w-100 text-center p-3">
                                    <a class="bg-primary iq-sign-btn" href="<?php echo base_url();?>user/logout" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>

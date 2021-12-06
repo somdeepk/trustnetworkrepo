@@ -15,13 +15,14 @@
                        <img src="<?php echo base_url();?>assets/images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
                        <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
                           <li><a href="javascript:void();"><i class="ri-pencil-line"></i></a></li>
-                          <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li>
+                          <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
                        </ul>
                     </div>
                     <div class="user-detail text-center mb-3">
                        <div class="profile-img">
                           <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" alt="profile-img" class="avatar-130 img-fluid" />
                        </div>
+                       
                        <div class="profile-detail">
                           <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span></h3>
                           <?php if($this->session->userdata('maxmemberlevel')){ ?>
@@ -36,7 +37,7 @@
                     </div>
                     <div class="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
                        <div class="social-links">
-                          <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                          <!-- <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                              <li class="text-center pr-3">
                                 <a href="#"><img src="<?php echo base_url();?>assets/images/icon/08.png" class="img-fluid rounded" alt="facebook"></a>
                              </li>
@@ -55,7 +56,7 @@
                              <li class="text-center pr-3">
                                 <a href="#"><img src="<?php echo base_url();?>assets/images/icon/13.png" class="img-fluid rounded" alt="linkedin"></a>
                              </li>
-                          </ul>
+                          </ul> -->
                        </div>
                        <div class="social-info">
                           <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
@@ -229,7 +230,7 @@
                                       <div class="user-data-block">
                                          <h4 class="">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h4>
                                          <h6>{{value.user_email}}</h6>
-                                         <p>Lorem Ipsum is simply dummy text of the</p>
+                                         <p>{{(isNullOrEmptyOrUndefined(value.church_first_name)==false)? value.church_first_name : ''}}</p>
                                       </div>
                                    </div>
                                    <button type="submit" class="btn btn-primary">Following</button>
