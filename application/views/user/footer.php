@@ -16,7 +16,7 @@
     <script src="<?php echo base_url();?>assets/crop-cover-image/pilote.js"></script>
     */
     ?>
-    
+
     <!-- Appear JavaScript -->
     <script src="<?php echo base_url();?>assets/js/jquery.appear.js"></script>
     <!-- Countdown JavaScript -->
