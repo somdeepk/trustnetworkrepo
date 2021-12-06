@@ -8,7 +8,6 @@
     <script src="<?php echo base_url();?>assets/crop-image/croppie.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/crop-image/croppie.css">
     
-
     <?php
     /*
     <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
@@ -17,7 +16,7 @@
     <script src="<?php echo base_url();?>assets/crop-cover-image/pilote.js"></script>
     */
     ?>
-
+    
     <!-- Appear JavaScript -->
     <script src="<?php echo base_url();?>assets/js/jquery.appear.js"></script>
     <!-- Countdown JavaScript -->
