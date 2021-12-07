@@ -1,4 +1,4 @@
-<div id="content-page" class="content-page" ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');">
+<div id="content-page" class="content-page" ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
   
   <div class="container">
      <div class="row">
@@ -12,14 +12,30 @@
                         <input ng-model="friendData.is_admin" id="is_admin" type="hidden">
                         <input ng-model="friendData.parent_id" id="parent_id" type="hidden">
                         <input id="hidden_profile_tab" type="hidden" value="<?php echo $profileTab; ?>">
-                       <img src="<?php echo base_url();?>assets/images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
-                       <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
+
+
+                        <!-- Start Cover Image Section -->
+                        <input type="hiddens" ng-model="coverImageData.encode_cover_image" />
+                        <input type="hiddens" ng-model="coverImageData.exist_cover_image" />
+
+                        <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
+                        <button type="button" class="btn btn-default" ng-click="clearCoverImage();" data-dismiss="modal">Cancel</button>
+                        <input class="file-uploadss" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/>
+
+                        <div class="zCoverImgContainerz">
+                          <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
+                          <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
+                        </div>
+                        <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%; margin-top:30px"></div>
+                        <!-- End Cover Image Section -->
+                       
+                        <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
                           <li><a href="javascript:void();"><i class="ri-pencil-line"></i></a></li>
                           <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
-                       </ul>
+                        </ul>
                     </div>
                     <div class="user-detail text-center mb-3">
-                       <div class="profile-img">
+                      <div class="profile-img zProfileImgContainerz">
                           <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" alt="profile-img" class="avatar-130 img-fluid" />
                        </div>
                        

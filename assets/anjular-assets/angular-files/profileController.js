@@ -7,6 +7,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	$scope.allAgeGroupObj={};
 	$scope.friendData.clickProfileTab='timelineTab';
 
+	$scope.coverImageData={};
+
 	$scope.peopleYouMayNowData = function()
 	{
 		if($scope.friendData.user_auto_id>0)
@@ -373,8 +375,11 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	};
 
 
-	$scope.selectprofileTab = function (user_auto_id,membership_type,is_admin,parent_id)
+	$scope.selectprofileTab = function (user_auto_id,membership_type,is_admin,parent_id,cover_image)
 	{
+		$scope.coverImageData.exist_cover_image=cover_image;
+
+
 		$scope.friendData.user_auto_id=user_auto_id;
 		$scope.friendData.membership_type=membership_type;
 		$scope.friendData.is_admin=is_admin;
@@ -462,5 +467,77 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 			});			
 	    }
     };
+
+
+    $scope.initiateUpload=0;
+    $image_crop = $('.zCropCoverImagez').croppie({
+		enableExif: false,
+		viewport: {
+		  width:1000,
+		  height:250,
+		  type:'square' //circle
+		},
+		boundary:{
+		  width:1000,
+		  height:300
+		}
+	});
+
+	$('#btnUploadCoverImage').click(function(){
+	    $(this).val('');
+	})  
+
+	$('#btnUploadCoverImage').on('change', function()
+	{
+		$scope.initiateUpload=1;
+		var reader = new FileReader();
+		reader.onload = function (event)
+		{
+			$image_crop.croppie('bind', {
+			url: event.target.result
+			}).then(function()
+			{
+				console.log('jQuery bind complete');
+			});
+		}
+		reader.readAsDataURL(this.files[0]);
+		$('.zCropCoverImagez').removeClass('hiddenimportant')
+		$('.zCoverImgContainerz').addClass('hiddenimportant')
+		$('.zProfileImgContainerz').addClass('hiddenimportant')
+	});
+
+	$('.zCropImagez').click(function(event)
+	{
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			data='<img class="rounded img-fluid" src="'+response+'">';
+			response=response.replace(";", "colone");
+			response=response.replace(",", "comma");
+			$scope.coverImageData.encode_cover_image=response;
+			$('.zCoverImgContainerz').html(data);
+			$('.zCropCoverImagez').addClass('hiddenimportant');
+			$('.zCoverImgContainerz').removeClass('hiddenimportant');
+			$('.zProfileImgContainerz').removeClass('hiddenimportant');
+
+		})
+	});
+
+	$scope.clearCoverImage = function()
+	{		
+		if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
+    	{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/'+$scope.coverImageData.exist_cover_image+'" alt="Cover Image" class="rounded img-fluid">');
+		}
+		else
+		{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/cover-no-image.jpg" alt="Cover Image" class="rounded img-fluid">');
+		}
+		$('.zCropCoverImagez').addClass('hiddenimportant');
+		$('.zCoverImgContainerz').removeClass('hiddenimportant');
+		$('.zProfileImgContainerz').removeClass('hiddenimportant');
+	};
 
 });
