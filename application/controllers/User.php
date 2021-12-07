@@ -641,7 +641,7 @@ class User extends CI_Controller
 	        $imagebase64Data = base64_decode($image_array_2[1]);
 	        $imagename = time().'.png';
 
-			$image_name_with_path = IMAGE_PATH.'images/members/'.time() . '.png';
+			$image_name_with_path = IMAGE_PATH.'images/members/'.$imagename;
 			file_put_contents($image_name_with_path, $imagebase64Data);
 
 			$menu_arr['profile_image']=$imagename;
@@ -2423,6 +2423,58 @@ class User extends CI_Controller
 
         echo json_encode($returnData);
         exit;
+    }
+
+    public function ajaxupdateeditcoverimage() 
+    {
+        $coverImageData = trim($this->input->post('coverImageData'));
+        $aryCoverImageData=json_decode($coverImageData, true);
+
+        $id=(isset($aryCoverImageData['id']) && !empty($aryCoverImageData['id']))? addslashes(trim($aryCoverImageData['id'])):0;
+        $encode_cover_image=(isset($aryCoverImageData['encode_cover_image']) && !empty($aryCoverImageData['encode_cover_image']))? addslashes(trim($aryCoverImageData['encode_cover_image'])):'';
+        $exist_cover_image=(isset($aryCoverImageData['exist_cover_image']) && !empty($aryCoverImageData['exist_cover_image']))? addslashes(trim($aryCoverImageData['exist_cover_image'])):'';
+		$current_date=date('Y-m-d H:i:s');   
+
+        $returnData=array();
+
+        /*echo "encode_cover_image".$encode_cover_image;
+        exit;*/
+
+        if(!empty($encode_cover_image) && $encode_cover_image!='data:comma' && !empty($id)) //data:comma blank Image
+        {
+        	$menu_arr=array();
+
+        	$encode_cover_image=str_replace('colone', ';', $encode_cover_image);
+        	$encode_cover_image=str_replace('comma', ',', $encode_cover_image);        	
+	        $image_array_1 = explode(";", $encode_cover_image);
+	        $image_array_2 = explode(",", $image_array_1[1]);
+
+	        $imagebase64Data = base64_decode($image_array_2[1]);
+	        $imagename = time().'.png';
+
+			$image_name_with_path = IMAGE_PATH.'images/members/coverimages/'.$imagename;
+			file_put_contents($image_name_with_path, $imagebase64Data);
+
+			$menu_arr['cover_image']=$imagename;
+			$this->session->set_userdata('cover_image',$imagename);
+
+			unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
+
+			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+			$returnData['status']='1';
+	        $returnData['msg']=base64_encode('Cover Image Updated Successfully.');
+	        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Cover Image Upload Failed';
+	        $returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;    	
     }
 
 }

@@ -15,11 +15,11 @@
 
 
                         <!-- Start Cover Image Section -->
-                        <input type="hiddens" ng-model="coverImageData.encode_cover_image" />
-                        <input type="hiddens" ng-model="coverImageData.exist_cover_image" />
+                        <input type="hidden" ng-model="coverImageData.encode_cover_image" />
+                        <input type="hidden" ng-model="coverImageData.exist_cover_image" />
 
-                        <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
-                        <button type="button" class="btn btn-default" ng-click="clearCoverImage();" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success" ng-click="cropCoverImage();">Crop & Upload Image</button>
+                        <button type="button" class="btn btn-primary" ng-click="clearCoverImage();">Cancel</button>
                         <input class="file-uploadss" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/>
 
                         <div class="zCoverImgContainerz">

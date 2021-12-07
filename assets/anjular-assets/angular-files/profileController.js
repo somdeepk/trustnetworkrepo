@@ -506,25 +506,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$('.zProfileImgContainerz').addClass('hiddenimportant')
 	});
 
-	$('.zCropImagez').click(function(event)
-	{
-		$image_crop.croppie('result', {
-			type: 'canvas',
-			size: 'viewport'
-		}).then(function(response)
-		{
-			data='<img class="rounded img-fluid" src="'+response+'">';
-			response=response.replace(";", "colone");
-			response=response.replace(",", "comma");
-			$scope.coverImageData.encode_cover_image=response;
-			$('.zCoverImgContainerz').html(data);
-			$('.zCropCoverImagez').addClass('hiddenimportant');
-			$('.zCoverImgContainerz').removeClass('hiddenimportant');
-			$('.zProfileImgContainerz').removeClass('hiddenimportant');
-
-		})
-	});
-
 	$scope.clearCoverImage = function()
 	{		
 		if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
@@ -538,6 +519,56 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$('.zCropCoverImagez').addClass('hiddenimportant');
 		$('.zCoverImgContainerz').removeClass('hiddenimportant');
 		$('.zProfileImgContainerz').removeClass('hiddenimportant');
+	};
+
+	$scope.cropCoverImage = function()
+    {
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			newImage=response;
+			postresponse=response.replace(";", "colone");
+			postresponse=postresponse.replace(",", "comma");
+			$scope.coverImageData.encode_cover_image=postresponse;
+			$scope.coverImageData.id=$scope.friendData.user_auto_id
+
+			if($scope.coverImageData.id>0)
+			{
+				var formData = new FormData();
+				formData.append('coverImageData',angular.toJson($scope.coverImageData)); 
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditcoverimage",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.coverImageData.exist_cover_image=aryreturnData.data.imagename;
+	            		//alert($scope.coverImageData.exist_cover_image)
+	            		data='<img alt="Cover Image" class="rounded img-fluid" src="'+newImage+'">';
+						$('.zCoverImgContainerz').html(data);
+						$('.zCropCoverImagez').addClass('hiddenimportant');
+						$('.zCoverImgContainerz').removeClass('hiddenimportant');
+						$('.zProfileImgContainerz').removeClass('hiddenimportant');
+	            	}
+	            	else
+	            	{
+	            		$scope.clearCoverImage();
+	            		swal("Error!",
+			        		"Cover Image Upload Failed!",
+			        		"error"
+			        	)
+	            	}
+
+				});
+	        }
+		})
 	};
 
 });
