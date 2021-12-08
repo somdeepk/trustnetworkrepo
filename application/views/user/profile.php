@@ -17,10 +17,7 @@
                         <!-- Start Cover Image Section -->
                         <input type="hidden" ng-model="coverImageData.encode_cover_image" />
                         <input type="hidden" ng-model="coverImageData.exist_cover_image" />
-
-                        <button class="btn btn-success" ng-click="cropCoverImage();">Crop & Upload Image</button>
-                        <button type="button" class="btn btn-primary" ng-click="clearCoverImage();">Cancel</button>
-                        <input class="file-uploadss" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/>
+                        
 
                         <div class="zCoverImgContainerz">
                           <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
@@ -30,7 +27,14 @@
                         <!-- End Cover Image Section -->
                        
                         <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
-                          <li><a href="javascript:void();"><i class="ri-pencil-line"></i></a></li>
+                          <li style="z-index: 99">
+                            <a class="file-upload-icon zeditCoverz" style="position: relative;" href="javascript:void();"><i class="ri-pencil-line">
+                            <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                            </a>
+
+                            <i class="ri-crop-line zCropCancelz hiddenimportant" ng-click="cropCoverImage();"></i>
+                            <i class="ri-close-circle-line zCropCancelz hiddenimportant" ng-click="clearCoverImage();" ></i>
+                          </li>
                           <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
                         </ul>
                     </div>

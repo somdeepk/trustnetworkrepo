@@ -504,6 +504,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$('.zCropCoverImagez').removeClass('hiddenimportant')
 		$('.zCoverImgContainerz').addClass('hiddenimportant')
 		$('.zProfileImgContainerz').addClass('hiddenimportant')
+		$('.zeditCoverz').addClass('hiddenimportant')
+		$('.zCropCancelz').removeClass('hiddenimportant')
 	});
 
 	$scope.clearCoverImage = function()
@@ -519,6 +521,9 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$('.zCropCoverImagez').addClass('hiddenimportant');
 		$('.zCoverImgContainerz').removeClass('hiddenimportant');
 		$('.zProfileImgContainerz').removeClass('hiddenimportant');
+
+		$('.zCropCancelz').addClass('hiddenimportant')
+		$('.zeditCoverz').removeClass('hiddenimportant')
 	};
 
 	$scope.cropCoverImage = function()
@@ -556,6 +561,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 						$('.zCropCoverImagez').addClass('hiddenimportant');
 						$('.zCoverImgContainerz').removeClass('hiddenimportant');
 						$('.zProfileImgContainerz').removeClass('hiddenimportant');
+						$('.zCropCancelz').addClass('hiddenimportant')
+						$('.zeditCoverz').removeClass('hiddenimportant')
 	            	}
 	            	else
 	            	{
