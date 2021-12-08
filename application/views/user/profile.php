@@ -97,20 +97,20 @@
            <div class="iq-card" >
               <div class="iq-card-body p-0">
                  <div class="user-tabing">
-                    <ul class="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
-                       <li class="col-sm-3 p-0">
+                    <ul class="nav nav-pills d-flex align-items-center justify-content-around profile-feed-items p-0 m-0">
+                       <li class="p-0">
                           <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="friendData.clickProfileTab='timelineTab'">Timeline</a>
                        </li>
-                       <li class="col-sm-3 p-0">
+                       <li class="p-0">
                           <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="friendData.clickProfileTab='aboutTab'">About</a>
                        </li>
-                       <li class="col-sm-3 p-0">
+                       <li class="p-0">
                           <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="friendData.clickProfileTab='friendlistTab'; friendData.activeSubFrndTab='all'; getAllFriendList()" ng-class="(friendData.clickProfileTab=='churchlistTab' || friendData.clickProfileTab=='memberlistTab' || friendData.clickProfileTab=='friendlistTab' || friendData.activeSubFrndTab=='all') ? 'active' : ''" >Friends</a>
                        </li>
-                       <li class="col-sm-3 p-0">
+                       <li class="p-0">
                           <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="friendData.clickProfileTab='photos'">Photos</a>
                        </li>
-                       <li class="col-sm-3 p-0">
+                       <li class="p-0">
                           <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="friendData.clickProfileTab='eventsTab'">Events</a>
                        </li>
                     </ul>
@@ -280,13 +280,14 @@
                            <div class="media-support-info ml-4">
                               <h6>Name</h6>
                            </div>
+                           
                            <div class="media-support-info ml-4">
                               <h6>Leader Name</h6>
                            </div>
                            <div class="media-support-info ml-4">
                               <h6>Age Group</h6>
                            </div>
-                           <div class="d-flex align-items-center">
+                           <div class="media-support-info text-right">
                               Action
                            </div>
                         </li>

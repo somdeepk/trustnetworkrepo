@@ -656,7 +656,7 @@ opacity: 0;
 	top: 75px;
 	width: 250px;
 	height: 100%;
-	background: var(--iq-white);
+	background: var(--iq-dark-box);
 	transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -876,8 +876,8 @@ body.sidebar-main .iq-sidebar .iq-sidebar-menu .iq-menu li ul.iq-submenu-data li
 	right: 0;
 	width: 100%;
 	display: inline-block;
-	z-index: 9999;
-	background: var(--iq-white);
+	z-index: 999;
+	background: var(--iq-dark-box);
 	margin: 0;
 	transition: all 0.45s ease 0s;
 	box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
@@ -4261,3 +4261,7 @@ input {
   font-weight:bold;
   color: #01A5CB;
 }
+
+.modal-content{background: var(--iq-dark-box);}
+.modal-header{border-bottom: 1px solid var(--iq-border-light);}
+.modal-header .close{color: #fff; box-shadow: none;;}

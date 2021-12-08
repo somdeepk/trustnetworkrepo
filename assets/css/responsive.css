@@ -532,7 +532,7 @@ margin-bottom: 15px;
 padding-left: 0 !important;
 }
  .user-detail .d-flex {
-display: block !important;
+/*display: block !important;*/
 text-align: center;
 }
  .profile-img {
@@ -623,6 +623,8 @@ margin-top: 10px;
  .iq-sub-dropdown.iq-sub-dropdown-large {
 width: 300px;
 }
+.like-block{font-size: 13px;}
+.share-block{font-size: 13px;}
 }
  @media(max-width:479px) {
  .display-1 {
@@ -761,4 +763,5 @@ margin: 10px 0 0 !important;
 	.modal-sm {
     max-width: 332px;
 }
+
 }
