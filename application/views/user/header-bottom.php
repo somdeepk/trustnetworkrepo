@@ -98,8 +98,10 @@ exit;*/
 
                 <?php if ($memberIsApproved=="Y"){ ?>
                  <a href="<?php echo base_url();?>user/index">
-                 <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
-                 <span class="d-none d-md-block">Follow Me</span>
+                 <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid d-none d-md-block" alt="">
+                 <img src="<?php echo base_url();?>assets/images/logomobile.png" class="img-fluid d-block d-md-none" alt="">
+                 
+                 <!-- <span class="d-none d-md-block">Follow Me</span> -->
                  </a>
                  <div class="iq-menu-bt align-self-center">
                    <div class="wrapper-menu">
