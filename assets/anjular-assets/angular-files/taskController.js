@@ -1061,22 +1061,22 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
     					$(".zactiveInactiveExamz_"+id).addClass('btn-success');
 						$(".zactiveInactiveExamz_"+id).css("background-color",'#49f0d3');
 						$(".zactiveInactiveExamz_"+id).css("bordr-color",'#49f0d3');
-	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active');
+	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>');
 	        		}else{
 	        			$(".zactiveInactiveExamz_"+id).removeClass('btn-success');
 	        			$(".zactiveInactiveExamz_"+id).addClass('btn-primary');
 	        			$(".zactiveInactiveExamz_"+id).css("background-color",'#50b5ff');
 	        			$(".zactiveInactiveExamz_"+id).css("bordr-color",'#2aa3fb');
-	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+	        			$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>')
 	        		};     		
 	        	}
 	        	else
 	        	{
 	        		if($(".zactiveInactiveExamz_"+id).hasClass('btn-success'))
 	        		{
-			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active')
+			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-unlock-fill"></i>')
 			    	}else{
-			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>')
 			    	}
 	        		swal("Error!",
 		        		"Status Changed Failed!",

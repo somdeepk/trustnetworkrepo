@@ -32,7 +32,7 @@
   --iq-body-text: #777D74;
   --iq-primary: #50b5ff;
   --iq-secondary: #a09e9e;
-  --iq-success: #49f0d3;
+  --iq-success: /*#49f0d3;*/#28b39b;
   --iq-warning: #ffba68;
   --iq-danger: #ff9b8a;
   --iq-info: #d592ff;

@@ -583,7 +583,7 @@ font-size: 0;
  .profile-header .user-detail {
 position: relative;
 bottom: 0;
-margin-top: -70px;
+margin-top: -10px;
 }
  .profile-info.p-4.d-flex {
 display: block !important;
@@ -625,6 +625,8 @@ width: 300px;
 }
 .like-block{font-size: 13px;}
 .share-block{font-size: 13px;}
+.correct-answer{margin-left: 0px;}
+.user-profile-img img{width: 80px; height: 80px;}
 }
  @media(max-width:479px) {
  .display-1 {

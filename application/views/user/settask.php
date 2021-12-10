@@ -360,7 +360,7 @@
                       <input class="form-control"  style="background: transparent;" ng-model="examData.end_time" id="liveStreamEndTime" type="text" autocomplete="off" enddateandtimepickerexam >
                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(examDataCheck==true && isNullOrEmptyOrUndefined(examData.end_time)==true)? 'End Time Required' : ''}}</div>
                     </div>
-
+                    <div class="col-md-12">
                     <div ng-repeat="(key, value) in allQuestionnaireObj"  class="row">
                       <div class="form-group col-sm-12">
                          <label for="address"><strong>Qusetion {{parseInt(key)+1}}:</strong></label>
@@ -371,19 +371,20 @@
                       <!--left-->
                       <div ng-repeat="(key1, value1) in value.options" class="form-group col-sm-6">
                         <span style="float:left;line-height: 40px;">Option {{parseInt(key1)+1}}:</span>
-                        <input style="float:left;width:250px;margin-left:20px; " type="text" ng-model="value1.optionval" maxlength="50" class="form-control zExamQuestionOptionz">
-                        <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#000;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
+                        <input style="float:left;width:250px;" type="text" ng-model="value1.optionval" maxlength="50" class="form-control ml-md-2 zExamQuestionOptionz">
+                        <i ng-if="key1!='0'" style="float: right;cursor: pointer;color:#ff9b8a;line-height: 40px;" ng-click="deleteQuestionOption(key,key1)" class="ri-delete-bin-fill"></i>
                         <i ng-if="key1=='0'" style="float: right;margin-right: 5px;cursor: pointer;line-height: 40px;" ng-click="addQuestionOption(key)" class="ri-add-box-line"></i> 
                         <div class="clearfix"></div>
-                        <i style="font-size: 14px;cursor: pointer;margin-left: 85px;"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i><strong style="color:green;"> Correct Answer</strong>
+                        <i style="font-size: 14px;cursor: pointer;" class="correct-answer"  ng-click="value.correct_ans=key1"  ng-class="(value.correct_ans==key1) ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line'"></i><strong style="color:#1edbba;"> Correct Answer</strong>
 
                       </div>
                     </div>
                   </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button ng-if="session_is_admin=='Y'" class="btn btn-success zsubmitquestionnairez" ng-click="submitQuestionnaire()" >Submit Questionnaire</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
           </div>
@@ -411,153 +412,70 @@
             </div>
             <div class="iq-card-body">
               <div class="table-respnsive">
-              <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><h6><strong>Exam Title</strong></h6></th>
-                  <th><h6><strong>Exam Star Time</strong></h6></th>
-                  <th><h6><strong>Exam End Time</strong></h6></th>
-                  <th><h6><strong>Total Question</strong></h6></th>
-                  <th><div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                      <h6><strong>Result</strong></h6>
-                      </div>
-                  </th>
-                  <th><strong>Action</strong></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="(key, value) in allExamListObj">
-                  <td> 
-                  <div class="media-support-info ml-4">
-                        <h6>{{value.exam_title}}</h6>
-                     </div>           
-                  </td>
-                  <td> 
-                  <div class="media-support-info ml-4">
-                        <h6>{{value.display_start_time}}</h6>
-                     </div>                   
-                  </td>
-                  <td>
-                    <div class="media-support-info ml-3">
-                        <h6>{{value.display_end_time}}</h6>
-                     </div>
-                  </td>
-                  <td>
-                    <div class="media-support-info ml-3">
-                        <h6>{{value.total_question}}</h6>
-                     </div>
-                  </td>
-                  <td>
-                    <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                        <h5>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Star Time</th>
+                      <th>End Time</th>
+                      <th style="width: 100px">Total Qn.</th>
+                      <th style="width: 100px">
+                        <div ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
+                          Result
+                        </div>
+                      </th>
+                      <th style="width: 18%">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="(key, value) in allExamListObj">
+                      <td> 
+                        {{value.exam_title}}
+                      </td>
+                      <td> 
+                        {{value.display_start_time}}
+                      </td>
+                      <td>
+                        {{value.display_end_time}}
+                      </td>
+                      <td>
+                        {{value.total_question}}
+                      </td>
+                      <td>
+                        <div ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
                           {{( session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven>0)? value.star_is_exam_pass+' ['+ value.percentage_got+' %]' : 'NA'}}
-                        </h5>
-                     </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                        <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
-                        
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
-                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
-                        </a>
+                         </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i></a>
+                            
+                            <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
+                              <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i>
+                            </a>
 
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i class="ri-eye-line"></i>View
-                        </a>
+                            <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i class="ri-eye-line"></i>
+                            </a>                       
 
-                        
+                            <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven<3 && (value.is_exam_pass=='N' ||  isNullOrEmptyOrUndefined(value.is_exam_pass)==true)" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
 
-                        <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven<3 && (value.is_exam_pass=='N' ||  isNullOrEmptyOrUndefined(value.is_exam_pass)==true)" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
+                            <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i></a>
 
-                        <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
-
-                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td ng-if="allExamListObj.length<=0" class="d-flex align-items-center">
-                    
-                    <?php if($argument['isAdmin']=='Y'){ echo "No Exam is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Exam is not started yet!"; }else{ echo "There is no Exam Schedule"; } ?>                    
-                  
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-               <ul class="request-list list-inline m-0 p-0">
-
-                  <li class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6><strong>Exam Title</strong></h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6><strong>Exam Star Time</strong></h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6><strong>Exam End Time</strong></h6>
-                     </div>
-
-
-                      <div class="media-support-info ml-3">
-                        <h6><strong>Total Question</strong></h6>
-                      </div>
-                      <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                      <h6><strong>Result</strong></h6>
-                      </div>
-
-                     <div class="d-flex align-items-center" >
-                        <strong>Action</strong>
-                     </div>
-                  </li>
-
-
-                  <li ng-repeat="(key, value) in allExamListObj" class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.exam_title}}</h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.display_start_time}}</h6>
-                     </div>
-                    <div class="media-support-info ml-3">
-                        <h6>{{value.display_end_time}}</h6>
-                     </div>
-                     <div class="media-support-info ml-3">
-                        <h6>{{value.total_question}}</h6>
-                     </div>
-                     <div class="media-support-info ml-3" ng-show="session_is_admin=='N' && taskData.membership_type=='RM'"> 
-                        <h5>
-                          {{( session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven>0)? value.star_is_exam_pass+' ['+ value.percentage_got+' %]' : 'NA'}}
-                        </h5>
-                     </div>
-                     <div class="d-flex align-items-center">
-                        <a href="javascript:void();" ng-click="activeInactiveExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveExamz zactiveInactiveExamz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
-                        
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="session_is_admin=='Y'" class="mr-3 btn btn-primary rounded zeditExamz zeditExamz_{{value.id}}">
-                          <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
-                        </a>
-
-                        <a href="javascript:void();" ng-click="editExam(value);" ng-if="taskData.membership_type=='CM' || taskData.membership_type=='CC'" class="mr-3 btn btn-primary rounded zeditExamz_{{value.id}}"><i class="ri-eye-line"></i>View
-                        </a>
-
-                        
-
-                        <a href="javascript:void();" ng-click="giveExam(value);" ng-if="session_is_admin=='N' && taskData.membership_type=='RM' && value.totalNumberExamGiven<3 && (value.is_exam_pass=='N' ||  isNullOrEmptyOrUndefined(value.is_exam_pass)==true)" class="mr-3 btn btn-primary rounded zgiveExamz_{{value.id}}"><i class="ri-book-open-line"></i>Give Exam</a>
-
-                        <a href="javascript:void();" ng-click="deleteExam(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteExamz zdeleteExamz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
-
-                     </div>
-                  </li>
-                  <li ng-if="allExamListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                    <?php if($argument['isAdmin']=='Y'){ echo "No Exam is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Exam is not started yet!"; }else{ echo "There is no Exam Schedule"; } ?>                    
-                  </li>
-               </ul>
+                         </div>
+                      </td>
+                    </tr>
+                    <tr ng-if="allExamListObj.length<=0">
+                      <td colspan='6'>                    
+                        <?php if($argument['isAdmin']=='Y'){ echo "No Exam is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Exam is not started yet!"; }else{ echo "There is no Exam Schedule"; } ?>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
          </div>
       </div>
-
       <!-- End Question Setup Section -->
-
-
     </div>
   </div>
   <!-- End Video Section-->
