@@ -1561,7 +1561,7 @@ div#post-modal-data .modal .modal-dialog {
 	overflow: scroll;
 }
 #post-modal-data .modal-content {
-	background: var(--iq-white);
+	background: var(--iq-dark-box);
 }
 #post-modal-data .modal-header {
 	border-color: var(--iq-border-dark);
