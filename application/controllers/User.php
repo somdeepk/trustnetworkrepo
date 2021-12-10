@@ -113,9 +113,15 @@ class User extends CI_Controller
 
 	public function login()
 	{
+		$aryRequestUri=explode("/",$_SERVER['REQUEST_URI']);
+
 		if($this->session->userdata('login'))
 		{
 			redirect('user/index');
+		}
+		elseif(!in_array('login', $aryRequestUri))
+		{
+			redirect('user/login');
 		}
 
 		if (!file_exists(APPPATH.'views/user/login.php'))

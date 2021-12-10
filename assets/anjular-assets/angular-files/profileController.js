@@ -473,13 +473,13 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
     $image_crop = $('.zCropCoverImagez').croppie({
 		enableExif: false,
 		viewport: {
-		  width:1000,
-		  height:250,
+		  width:960,
+		  height:241,
 		  type:'square' //circle
 		},
 		boundary:{
-		  width:1000,
-		  height:300
+		  width:960,
+		  height:241
 		}
 	});
 

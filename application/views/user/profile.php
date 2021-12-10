@@ -23,7 +23,7 @@
                           <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
                           <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
                         </div>
-                        <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%; margin-top:30px"></div>
+                        <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%;"></div>
                         <!-- End Cover Image Section -->
                        
                         <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0 crop-list">
