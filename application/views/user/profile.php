@@ -26,7 +26,7 @@
                         <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%; margin-top:30px"></div>
                         <!-- End Cover Image Section -->
                        
-                        <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0">
+                        <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0 crop-list">
                           <li style="z-index: 99">
                             <a class="file-upload-icon zeditCoverz" style="position: relative;" href="javascript:void();"><i class="ri-pencil-line">
                             <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
