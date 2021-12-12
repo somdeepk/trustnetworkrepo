@@ -4275,3 +4275,8 @@ input {
 .zeditCoverz{margin-bottom: 20px !important;}
 .zCropCancelz{font-size: 20px; color: #fff}
 .zCropCancelz{font-size: 20px; color: #fff;}
+
+
+.datepicker {color: var(--iq-dark-title-text) ;}
+.timepicker {color: var(--iq-dark-title-text) ;}
+.bootstrap-datetimepicker-widget table td span {color: var(--iq-dark-title-text) ;}
