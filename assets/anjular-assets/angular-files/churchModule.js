@@ -6,10 +6,12 @@ mainApp.run(function ($rootScope)
 	{        
 		if(what=='loader')
 		{
+			$('.'+$where).addClass('cssdisabled', true);
 			$('.'+$where).html('<div style="position:relative;"><div class="loader" style="position:absolute;">Loading...</div><div  style="position:relative;z-index: 999">'+strtext+'</div></div>');
 		}
 		else
 		{
+			$('.'+$where).removeClass('cssdisabled', true);
 			$('.'+$where).html(strtext);
 		}		
     };
