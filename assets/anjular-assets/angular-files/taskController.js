@@ -46,9 +46,9 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 		//Start ajax call and see is leader started any video streaming
 		$interval(function()
 	    {
-	    	/*$scope.get_live_stream_video_by_level();
-	    	$scope.get_live_streaming_member_by_leve();*/
-	    }, 20000);
+	    	$scope.get_live_stream_video_by_level();
+	    	$scope.get_live_streaming_member_by_leve();
+	    },10000);
 	    //End ajax call and see is leader started any video streaming
 
 		$timeout(function()

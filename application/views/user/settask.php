@@ -84,10 +84,10 @@
 
               <div class="container">                
                 <div class="row join-info-group hiddenimportant">
-                  <input type="hidden" ng-model="agoraData.appid" id="appid" value=""> <!-- AppID(Mandatory) -->
-                  <input type="hidden" ng-model="agoraData.channel" id="channel" value=""> <!-- Channel(Mandatory) -->
-                  <input type="hidden" ng-model="agoraData.token" id="token" value=""> <!-- Token(optional) -->
-                  <input type="hidden" ng-model="agoraData.uid" id="uid"> <!-- User ID(optional) -->
+                  <input type="text" ng-model="agoraData.appid" id="appid" value="" class="hiddenimportant"> <!-- AppID(Mandatory) -->
+                  <input type="text" ng-model="agoraData.channel" id="channel" value=""  class="hiddenimportant"> <!-- Channel(Mandatory) -->
+                  <input type="text" ng-model="agoraData.token" id="token" value=""  class="hiddenimportant"> <!-- Token(optional) -->
+                  <input type="text" ng-model="agoraData.uid" id="uid"  class="hiddenimportant"> <!-- User ID(optional) -->
                 </div>
 
                 <div class="row video-group">
