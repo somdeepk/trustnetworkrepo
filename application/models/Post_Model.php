@@ -34,6 +34,20 @@ class Post_Model extends CI_Model
 		}
 	}
 
+	public function addupdatetagfriend($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_post_tag_friend',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_post_tag_friend',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
 
 }
 ?>

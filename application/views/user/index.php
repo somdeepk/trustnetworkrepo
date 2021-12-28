@@ -14,18 +14,20 @@
                   <i class="ri-search-line"></i>
                </div>
                <form class="post-text ml-3 w-100" action="javascript:void();">
-                  <input type="text" class="form-control rounded" ng-model="tagPostData.searchFriend" placeholder="Search friend" style="border:none;">
+                  <input type="text" class="form-control rounded" ng-model="tagPostData.searchFriend" ng-keyup="tagPostToFriend()" placeholder="Search friend" style="border:none;">
                </form>
             </div>
 
             <div class="iq-card-body">
                <ul class="media-story m-0 p-0">
-                  <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj">
+                  <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setTagFriendToPost(value.id)">
                      <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
                      <img class="rounded-circle img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                      <div class="stories-data ml-3">
                         <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                      </div>
+                     <i style="font-size: 22px;cursor: pointer;float: right;" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
+
                   </li>
                </ul>
             </div>

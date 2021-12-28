@@ -7,8 +7,11 @@ class Post extends CI_Controller
         $singlePostData = trim($this->input->post('singlePostData'));
         $arySinglePostData=json_decode($singlePostData, true);
 
+        $aryPostTagFriend = trim($this->input->post('aryPostTagFriend'));
+        $aryPostTagFriend=json_decode($aryPostTagFriend, true);
+
         // echo "<pre>";
-        // print_r($arySinglePostData);
+        // print_r($aryPostTagFriend);
         // exit;
 
         $member_id=(isset($arySinglePostData['member_id']) && !empty($arySinglePostData['member_id']))? addslashes(trim($arySinglePostData['member_id'])):'0';
@@ -26,6 +29,18 @@ class Post extends CI_Controller
 
 			$lstPostId = $this->Post_Model->addupdatepost(0,$menu_arr);
 
+			if(count($aryPostTagFriend)>0)
+			{
+				foreach ($aryPostTagFriend as $ktag => $vtag) {
+					$menu_arr_tag = array(
+			            'post_id'  =>$lstPostId,
+			            'member_id' => $member_id,
+			            'tagged_member_id'  =>$vtag,
+			            'create_date'  =>$current_date,
+			        );
+					$lastTagId = $this->Post_Model->addupdatetagfriend(0,$menu_arr_tag);
+				}
+			}
 			if($lstPostId>0)
 			{
 		        $returnData['status']='1';
@@ -41,7 +56,6 @@ class Post extends CI_Controller
 	        $returnData['msgstring']='Posting Failed';
 	        $returnData['data']=array();
 		}
-
         echo json_encode($returnData);
         exit;    	
     }

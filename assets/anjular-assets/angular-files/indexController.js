@@ -3,6 +3,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	$scope.singlePostData={};
 	$scope.memberData={};
 	$scope.friendData={};
+	$scope.tagPostData={};
 
 	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
@@ -24,6 +25,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 		var formData = new FormData();
 		formData.append('singlePostData',angular.toJson($scope.singlePostData));
+		formData.append('aryPostTagFriend',angular.toJson($scope.aryPostTagFriend));
 
 		$scope.buttonSavingAnimation('zbtnSinglePostz','Posting..','loader');
 
@@ -44,6 +46,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 					$scope.buttonSavingAnimation('zbtnSinglePostz','Post','onlytext');
 					$('#postModal').modal('hide');
 					$scope.singlePostData={};
+					$scope.tagPostData={};
+					$scope.aryPostTagFriend = [];
 				},1200);
           	}
         	else
@@ -62,6 +66,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		if($scope.memberData.user_auto_id>0)
 		{
 			$scope.friendData.user_auto_id=$scope.memberData.user_auto_id;
+			$scope.friendData.searchFriend=$scope.tagPostData.searchFriend;
 
 			var formData = new FormData();
 			formData.append('friendData',angular.toJson($scope.friendData));
@@ -81,6 +86,24 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 			});			
 	    }		
 	};	
+
+	$scope.aryPostTagFriend = [];
+	$scope.setTagFriendToPost = function(memberId)
+	{
+		if($scope.aryPostTagFriend.length>0)
+		{
+		  if($.inArray(memberId, $scope.aryPostTagFriend) != -1){
+		    $scope.aryPostTagFriend.splice( $.inArray(memberId, $scope.aryPostTagFriend), 1 );
+		  }else{
+		    $scope.aryPostTagFriend.push(memberId);
+		  }
+		}else{
+		  $scope.aryPostTagFriend.push(memberId);
+		}
+
+		console.log($scope.aryPostTagFriend);
+	};
+
 
 	$scope.closeTagPostModal = function ()
 	{
