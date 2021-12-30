@@ -95,16 +95,17 @@
                            <hr>
                            <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                               <li class="col-md-6 mb-3">
-                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video</div>
+                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video <input type="file" accept=".jpg, .jpeg, .png" multiple name="input-file-preview" post-file-upload class="ng-scope"></div>
                               </li>
+
                               <li class="col-md-6 mb-3" ng-click="tagPostToFriend();">
-                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</div>
+                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</div>
                               </li>
                               <li class="col-md-6 mb-3">
-                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</div>
+                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</div>
                               </li>
                               <li class="col-md-6 mb-3">
-                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/10.png" alt="icon" class="img-fluid"> Check in</div>
+                                 <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/10.png" alt="icon" class="img-fluid"> Check in</div>
                               </li>
                            </ul>
                            <hr>
@@ -163,6 +164,8 @@
                                  </div>
                               </div>
                            </div> -->
+
+                           <div class="user-post" id="post_image_preview_container"> </div>
                            <button type="button" ng-click="submitPost();" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Post</button>
                         </div>
                      </div>

@@ -113,6 +113,77 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
-	};		 
+	};
+
+	$scope.singlePostData.uploaddata=[];
+	$scope.singlePostPreviewImages=[];
+	var postImgPreHTML="";
+	potImagePreviewIncree=0;
+	$scope.$on("postFileSelected", function (event, args)
+  	{
+	    $scope.$apply(function () {
+	      var validFormats = ['jpg','jpeg','png']; //'csv','doc','docx','txt','pdf','xls','xlsx',
+	      angular.forEach(args, function(vald, key) {
+	        validExt=0;
+	        validSize=0;
+	        var imagesName=vald.name ;
+	        var valExt=imagesName.substring(imagesName.lastIndexOf('.') + 1).toLowerCase();
+	        if (validFormats.indexOf(valExt) !== -1)
+	        {
+	          validExt=1;
+	        }
+
+	        if(parseInt(vald.size)>0 ) //&& parseInt(vald.size)<=1000000
+	        {
+	          validSize=1;
+	        }
+
+	        if (validExt==1 && validSize==1)
+	        {
+	        	var img = $('<img/>', {
+		          id: 'postPreview'
+		        });
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+					img.attr('src', e.target.result);
+					img.attr('class', 'img-fluid rounded w-100');
+					if(potImagePreviewIncree==0)
+					{
+						img.attr('style', 'width: 291px; height:391px;');    
+					}
+					else
+					{
+						img.attr('style', 'width: 291px; height:187px;');
+					}
+					$scope.singlePostPreviewImages.push($(img)[0].outerHTML);
+					potImagePreviewIncree++;
+		        }        
+		        reader.readAsDataURL(vald);
+	          	$scope.singlePostData.uploaddata.push(vald);
+	        }
+	      });
+	    });
+
+		$timeout(function() //187
+		{
+			postImgPreHTML='<div class="d-flex" id="post_image_preview_container">\
+                 <div class="col-md-6">\
+                    <a href="javascript:void();">'+$scope.singlePostPreviewImages[0]+'</a>\
+                 </div>\
+                 <div class="col-md-6 row m-0 p-0">\
+                    <div class="col-sm-12">\
+                       <a href="javascript:void();">'+$scope.singlePostPreviewImages[1]+'</a>\
+                    </div>\
+                    <div class="col-sm-12 mt-3">\
+                       <a href="javascript:void();">'+$scope.singlePostPreviewImages[2]+'</a>\
+                    </div>\
+                 </div>\
+            </div>';
+			
+			$("#post_image_preview_container").html(postImgPreHTML);
+
+		},200);
+
+  	});
 
 });
