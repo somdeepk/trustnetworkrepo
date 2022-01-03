@@ -47,6 +47,32 @@ class Post_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
+	public function addupdatemembertimeline($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_member_timeline',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_member_timeline',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+	public function addUpdatPostFile($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_post_file',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_post_file',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
 
 
 }
