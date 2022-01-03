@@ -2439,7 +2439,7 @@ class User extends CI_Controller
         $id=(isset($aryCoverImageData['id']) && !empty($aryCoverImageData['id']))? addslashes(trim($aryCoverImageData['id'])):0;
         $encode_cover_image=(isset($aryCoverImageData['encode_cover_image']) && !empty($aryCoverImageData['encode_cover_image']))? addslashes(trim($aryCoverImageData['encode_cover_image'])):'';
         $exist_cover_image=(isset($aryCoverImageData['exist_cover_image']) && !empty($aryCoverImageData['exist_cover_image']))? addslashes(trim($aryCoverImageData['exist_cover_image'])):'';
-		$current_date=date('Y-m-d H:i:s');   
+		    $current_date=date('Y-m-d H:i:s');   
 
         $returnData=array();
 
@@ -2449,40 +2449,83 @@ class User extends CI_Controller
         if(!empty($encode_cover_image) && $encode_cover_image!='data:comma' && !empty($id)) //data:comma blank Image
         {
         	$menu_arr=array();
-
         	$encode_cover_image=str_replace('colone', ';', $encode_cover_image);
         	$encode_cover_image=str_replace('comma', ',', $encode_cover_image);        	
 	        $image_array_1 = explode(";", $encode_cover_image);
 	        $image_array_2 = explode(",", $image_array_1[1]);
-
 	        $imagebase64Data = base64_decode($image_array_2[1]);
 	        $imagename = time().'.png';
 
-			$image_name_with_path = IMAGE_PATH.'images/members/coverimages/'.$imagename;
-			file_put_contents($image_name_with_path, $imagebase64Data);
+          $image_name_with_path = IMAGE_PATH.'images/members/coverimages/'.$imagename;
+          file_put_contents($image_name_with_path, $imagebase64Data);
 
-			$menu_arr['cover_image']=$imagename;
-			$this->session->set_userdata('cover_image',$imagename);
+          $menu_arr['cover_image']=$imagename;
+          $this->session->set_userdata('cover_image',$imagename);
 
-			unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
+          unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
 
-			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+          $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
 
-			$returnData['status']='1';
+          $returnData['status']='1';
 	        $returnData['msg']=base64_encode('Cover Image Updated Successfully.');
 	        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
-		}
-		else
-		{
-			$returnData['status']='0';
+    		}
+    		else
+    		{
+          $returnData['status']='0';
 	        $returnData['msg']='error';
 	        $returnData['msgstring']='Cover Image Upload Failed';
 	        $returnData['data']=array();
-		}
+		    }
         echo json_encode($returnData);
         exit;    	
     }
 
+    public function support()
+    {
+      authenticate_user();
+      $data=array();
+      $data['membershipType']=$this->session->userdata('membership_type');
+      $data['isAdmin']=$this->session->userdata('is_admin');
+      $data['user_auto_id']=$this->session->userdata('user_auto_id');
+      $data['parent_id']=$this->session->userdata('parent_id');
+      $data['parent_leader_id']=$this->session->userdata('parent_leader_id');
+
+      $msg=$this->input->post_get('msg');
+      if(!empty($msg))
+      {
+        $msg=base64_decode($msg);
+        $this->session->set_flashdata('success', $msg);
+      }
+      //$data['church_id']=$church_id;
+      $this->load->view('user/header-script');
+      $this->load->view('user/header-bottom');
+      $this->load->view('user/support', $data);
+      $this->load->view('user/footer-top');
+      $this->load->view('user/footer');
+    }
+
+    public function ajaxsubmitticket()
+    {
+        $returnData=array();
+        $user_auto_id=$this->session->userdata('user_auto_id');
+
+        $manageSupport = trim($this->input->post('manageSupport'));
+        $arySupportData=json_decode($manageSupport, true);
+
+        //print "<pre>"; print_r($arySupportData); print "</pre>";
+        $supportTicketId=(isset($arySupportData['id']) && !empty($arySupportData['id']))? $arySupportData['id'] : 0 ;
+        $supportParentId=(isset($arySupportData['parent_id']) && !empty($arySupportData['parent_id']))? $arySupportData['parent_id'] : 0 ;
+        $responseTo=(isset($arySupportData['report_to']) && !empty($arySupportData['report_to']))? $arySupportData['report_to'] : 0 ;
+        $responseSubject=(isset($arySupportData['subject']) && !empty($arySupportData['subject']))? $arySupportData['subject'] : NULL ;
+        $responseDescription=(isset($arySupportData['description']) && !empty($arySupportData['description']))? $arySupportData['description'] : NULL ;
+
+        $repArray=array('parent_id'=>$supportParentId, 'response_from'=>$user_auto_id, 'response_to'=>$responseTo, 'subject'=>$responseSubject, 'description'=>$responseDescription, 'created_on'=>date('Y-m-d H:i:s'), 'is_deleted'=>0);
+
+        $retId = $this->User_Model->submit_ticket($repArray, $supportTicketId);
+        echo json_encode(array('retId'=>$retId));
+        die();
+    }
 }
 	
 
