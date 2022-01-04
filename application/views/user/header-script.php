@@ -28,6 +28,7 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-sanitize.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/ng-infinite-scroll.js"></script>
     <!--<script type="text/javascript" src="https://angular-ui.github.io/ui-select/dist/select.js"></script>-->
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-messages.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/angular158/angular-animate.js"></script>

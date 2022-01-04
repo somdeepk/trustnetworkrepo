@@ -242,19 +242,26 @@ class User_Model extends CI_Model
 		return $resultData;
 	}
 
-	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="")
+	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="",$aryArgument=array())
 	{
+		$searchFriend=$aryArgument['searchFriend'];
+
 		$strWhereParam="";
 		if(!empty($clickProfileTab))
 		{
 			if($clickProfileTab=="churchlistTab")
 			{
-				$strWhereParam=" AND tm.membership_type='CM'";
+				$strWhereParam.=" AND tm.membership_type='CM'";
 			}
 			if($clickProfileTab=="memberlistTab")
 			{
-				$strWhereParam=" AND tm.membership_type='RM'";
+				$strWhereParam.=" AND tm.membership_type='RM'";
 			}
+		}
+
+		if(!empty($searchFriend))
+		{
+			$strWhereParam.=" AND (tm.first_name LIKE '%".$searchFriend."%' OR tm.last_name LIKE '%".$searchFriend."%') ";
 		}
 
 		$sql="SELECT 
@@ -271,6 +278,7 @@ class User_Model extends CI_Model
     				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='2')
     			)
     			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;

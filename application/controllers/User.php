@@ -280,7 +280,11 @@ class User extends CI_Controller
         $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
         $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
 
-		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab);
+        $searchFriend=(isset($aryFriendData['searchFriend']) && !empty($aryFriendData['searchFriend']))? addslashes(trim($aryFriendData['searchFriend'])):'';
+
+        $aryArgument['searchFriend']=$searchFriend;
+        
+		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab,$aryArgument);
 
 		/*echo "ss<pre>";
 		print_r($friendListData);
