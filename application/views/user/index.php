@@ -446,6 +446,7 @@ div.postcontainer{
                                  </div>
                               </div>
                               <hr>
+                              
                               <div class="d-flex justify-content-between align-items-center">
                                  <div class="like-block position-relative d-flex align-items-center">
                                     <div class="d-flex align-items-center">
