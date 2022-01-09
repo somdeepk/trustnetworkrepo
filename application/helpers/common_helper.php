@@ -16,6 +16,7 @@ function authenticate_user()
     $userLoginData['login']=true;
 	$userLoginData['user_auto_id']=$userLoginData['id'];
  	$userLoginData['user_email']=$userLoginData['user_email'];
+ 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
  	$userLoginData['email']=$userLoginData['user_email'];
  	$ci->session->set_userdata($userLoginData);
 
