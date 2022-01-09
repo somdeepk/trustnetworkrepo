@@ -10,9 +10,9 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 		if(!$scope.isNullOrEmptyOrUndefined(jsonRememberMe))
 		{
 			$rememberMeData=angular.fromJson(jsonRememberMe);
-			if(!$scope.isNullOrEmptyOrUndefined($rememberMeData.trust_member_remember_me))
+			if(!$scope.isNullOrEmptyOrUndefined($rememberMeData.christtube_remember_me))
 			{
-				$scope.loginData.email=$rememberMeData.trust_member_remember_me;
+				$scope.loginData.email=$rememberMeData.christtube_remember_me;
 				$scope.loginData.password='';
 				$scope.loginData.remember_me=true;
 			}
@@ -58,7 +58,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             		}
             		else
             		{
-            			window.location.href=varGlobalAdminBaseUrl+"profileedit";
+            			window.location.href=varGlobalAdminBaseUrl+"profilesetting";
             		}
               	}
             	else

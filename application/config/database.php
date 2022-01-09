@@ -81,7 +81,7 @@ if(IS_LOCAL_HOST==1)
 		'hostname' => 'localhost',
 		'username' => 'root',
 		'password' => '',
-		'database' => 'followme_trust_network',
+		'database' => 'christtube',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
 		'pconnect' => FALSE,

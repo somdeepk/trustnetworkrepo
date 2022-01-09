@@ -21,7 +21,7 @@ function authenticate_user()
 
 	if($ci->session->userdata('is_approved')=='N')
 	{
-	  redirect('user/profileedit');
+	  redirect('user/profilesetting');
 	}
     
 }

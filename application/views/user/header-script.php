@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link href="<?php echo base_url();?>assets/images/favicon.ico" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>Christtube</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Follow Me Now - Making Disciples</title>
-    <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/favicon.ico" />
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/typography.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Socialite is - Professional A unique and beautiful collection of UI elements">
+
+    <!-- icons
+    ================================================== -->
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/icons.css">
+
+    <!-- CSS 
+    ================================================== --> 
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/uikit.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/responsive.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/sweetalert.min.js"></script>
@@ -37,18 +50,10 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/treasure-overlay-spinner.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/spinner-directive.js"></script> 
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/js/ngDialog.js"></script>
-
     
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchModule.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/loginController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/signupController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/editProfileController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/profileController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/leftMenuController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/notificationController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/taskController.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/indexController.js"></script>
-
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/bootstrap-datetimepicker.css" />
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/moment.js_2.9.0_moment-with-locales.js"></script>
@@ -57,19 +62,20 @@
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-pages/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
 
-
-    <!-- <script src="<?php //echo base_url();?>assets/agora-assets/jquery-3.4.1.min.js"></script> -->
-   <!--  <script src="<?php //echo base_url();?>assets/agora-assets/bootstrap.bundle.min.js"></script> -->
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
-    <!-- <script type="text/javascript" src="<?php //echo base_url();?>assets/agora-assets/basicLive.js"></script> -->
+    <script>
+        varGlobalAdminBaseUrl='<?php echo base_url();?>user/'
+        varBaseUrl='<?php echo base_url();?>'
+        varImageUrl='<?php echo IMAGE_URL;?>'
+    </script>
+    <style>
+        body{
+            background-color: #f0f2f5;
+        } 
+    </style>
 
    </head>
    
-   <body ng-app="trustApp" class="right-column-fixed ng-scope "> <!-- sidebar-main -->
+   <body ng-app="trustApp"> <!-- sidebar-main -->
    
 
-    <script>
-    varGlobalAdminBaseUrl='<?php echo base_url();?>user/'
-    varBaseUrl='<?php echo base_url();?>'
-    varImageUrl='<?php echo IMAGE_URL;?>'
-    </script>
+    

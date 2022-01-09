@@ -20,6 +20,21 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function check_dup_email($email='')
+	{
+		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	public function addupdatemember($id=NULL,$menu_arr=NULL)
 	{
 		if(!empty($id))
@@ -341,20 +356,7 @@ class User_Model extends CI_Model
 		return $resultData;
 	}
 
-	public function check_dup_email($email='')
-	{
-		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0'";
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		if(count($resultData)>0)
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
+	
 
 	public function check_age_group_admin_exist($user_auto_id,$adminid,$agegroup_id)
 	{

@@ -3,537 +3,535 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 {
   redirect('user/login');
 }
-$memberIsApproved=$this->session -> userdata('is_approved');
-$membershipType=$this->session -> userdata('membership_type');
-$isAdmin=$this->session -> userdata('is_admin');
-//$user_auto_id=$this->session -> userdata('user_auto_id');
-/*echo $user_auto_id."ss<pre>";
-print_r($this->session -> userdata);
-exit;*/
 ?>
  <!-- Wrapper START -->
 <div class="wrapper">
-    <!-- Sidebar  -->
-    
-      <div class="iq-sidebar" ng-controller="leftMenuController" ng-init="init_left_menu(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>')">
-          <div id="sidebar-scrollbar">
-             <?php if ($memberIsApproved=="Y"){ ?>
-             <nav class="iq-sidebar-menu">
-                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
-                  <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
-                  <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
-                  <?php if($membershipType=="RM"){ ?>
-                  <li><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
-                  <li><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
-                  <?php }else{ ?>
-                      <li><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
-                  <?php } ?>
+	<!-- Header -->
+	<header>
+	    <div class="header_wrap">
+	        <div class="header_inner mcontainer">
+	            <div class="left_side">
 
-                   <li><a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
-                   
-                  <li>
-                    <a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                    <ul id="group" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                       <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
-                       <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
-                       <?php } ?>
-                       <li ng-repeat="(key, value) in allGroupObj"><a href="#"><i class="ri-device-line"></i>{{value.name}}</a></li>
-                       <!-- <li><a href="#"><i class="ri-toggle-line"></i>School Friends</a></li>
-                       <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
-                       <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
-                       <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li> -->
-                    </ul>
-                  </li>
-                  <li>
-                    
-                    
-                    <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
-                    <div ng-repeat="(key, value) in allTaskLevelObj">
-                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                      <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                          <li ng-repeat="(key1, value1) in value.levelData"><a href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
-                      </ul>
-                    </div>
-                    <?php }elseif($membershipType=="RM" && $isAdmin=="N"){ ?>
-                    <div ng-repeat="(key, value) in allTaskLevelObj">
-                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-                      <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li ng-repeat="(key1, value1) in  value.levelData" ><a ng-class="(value1.is_disabled == 'Y') ? 'cssdisabled' : ''" href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
-                      </ul>
-                    </div>
-                    <?php } ?>
-                     <!-- ng-disabled="value.is_disabled=='Y'"  -->
-                  </li>    
-                  <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
-                  <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
-                 <!--  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
-                  <li><a href="#" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
-                </ul>
-             </nav>
-             <div class="p-3"></div>
-             <?php } ?>
-          </div>
-      </div>
-    
-    <!-- TOP Nav Bar -->
-    
-    <div class="iq-top-navbar">
-        <div class="iq-navbar-custom">
-           <nav class="navbar navbar-expand-lg navbar-light p-0">
+	                <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+	                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+	                </span>
+
+	                <div id="logo">
+	                    <a href="feed.html">
+	                        <img src="assets/images/logo-full.png" alt="">
+	                        <img src="assets/images/logo-full.png" class="logo_mobile" alt="">
+	                    </a>
+	                </div>
+	            </div>
+
+	          <!-- search icon for mobile -->
+	            <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
+	            <div class="header_search"><i class="uil-search-alt"></i>
+	                <input value="" type="text" class="form-control" placeholder="Search for Friends , Videos and more.." autocomplete="off">
+	                <div uk-drop="mode: click" class="header_search_dropdown">
+
+	                    <h4 class="search_title"> Recently </h4>
+	                    <ul>
+	                        <li>
+	                            <a href="#">
+	                                <img src="assets/images/avatars/avatar-1.jpg" alt="" class="list-avatar">
+	                                <div class="list-name">  Erica Jones </div>
+	                            </a>
+	                        </li>
+	                        <li>
+	                            <a href="#">
+	                                <img src="assets/images/avatars/avatar-2.jpg" alt="" class="list-avatar">
+	                                <div class="list-name">  Coffee  Addicts </div>
+	                            </a>
+	                        </li>
+	                        <li>
+	                            <a href="#">
+	                                <img src="assets/images/avatars/avatar-3.jpg" alt="" class="list-avatar">
+	                                <div class="list-name"> Mountain Riders </div>
+	                            </a>
+	                        </li>
+	                        <li>
+	                            <a href="#">
+	                                <img src="assets/images/avatars/avatar-4.jpg" alt="" class="list-avatar">
+	                                <div class="list-name"> Property Rent And Sale  </div>
+	                            </a>
+	                        </li>
+	                        <li>
+	                            <a href="#">
+	                                <img src="assets/images/avatars/avatar-5.jpg" alt="" class="list-avatar">
+	                                <div class="list-name">  Erica Jones </div>
+	                            </a>
+	                        </li>
+	                    </ul>
+
+	                </div>
+	            </div>
+
+	            <div class="right_side">
+
+	                <div class="header_widgets">
+
+	                    
+
+	                    <a href="#" class="is_icon" uk-tooltip="title: Notifications">
+	                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+	                        <span>3</span>
+	                    </a>
+	                    <div uk-drop="mode: click" class="header_dropdown">
+	                         <div  class="dropdown_scrollbar" data-simplebar>
+	                             <div class="drop_headline">
+	                                 <h4>Notifications </h4>
+	                                 <div class="btn_action">
+	                                    <a href="#" data-tippy-placement="left" title="Notifications">
+	                                        <ion-icon name="settings-outline"></ion-icon>
+	                                    </a>
+	                                    <a href="#" data-tippy-placement="left" title="Mark as read all">
+	                                        <ion-icon name="checkbox-outline"></ion-icon>
+	                                    </a>
+	                                </div>
+	                             </div>
+	                             <ul>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar">
+	                                             <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         </div>
+	                                         <span class="drop_icon bg-gradient-primary">
+	                                             <i class="icon-feather-thumbs-up"></i>
+	                                         </span>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Adrian Mohani</strong> Like Your Comment On Video
+	                                                <span class="text-link">Learn Prototype Faster </span>
+	                                             </p>
+	                                             <time> 2 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li class="not-read">
+	                                     <a href="#">
+	                                         <div class="drop_avatar status-online"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Stella Johnson</strong> Replay Your Comments in
+	                                                <span class="text-link">Adobe XD Tutorial</span>
+	                                             </p>
+	                                             <time> 9 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                         </div>
+	                                         <span class="drop_icon bg-gradient-primary">
+	                                            <i class="icon-feather-thumbs-up"></i>
+	                                        </span>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Alex Dolgove</strong> Added New Review In Video
+	                                                <span class="text-link">Full Stack PHP Developer</span>
+	                                             </p>
+	                                             <time> 12 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Jonathan Madano</strong> Shared Your Discussion On Video
+	                                                <span class="text-link">Css Flex Box </span>
+	                                             </p>
+	                                             <time> Yesterday </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         </div>
+	                                         <span class="drop_icon bg-gradient-primary">
+	                                            <i class="icon-feather-thumbs-up"></i>
+	                                        </span>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Adrian Mohani</strong> Like Your Comment On Course
+	                                                <span class="text-link">Javascript Introduction </span>
+	                                             </p>
+	                                             <time> 2 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar status-online"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Stella Johnson</strong> Replay Your Comments in
+	                                                <span class="text-link">Programming for Games</span>
+	                                             </p>
+	                                             <time> 9 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Stella Johnson</strong> Replay Your Comments in
+	                                                <span class="text-link">Programming for Games</span>
+	                                             </p>
+	                                             <time> 9 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Alex Dolgove</strong> Added New Review In Course
+	                                                <span class="text-link">Full Stack PHP Developer</span>
+	                                             </p>
+	                                             <time> 12 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Jonathan Madano</strong> Shared Your Discussion On Course
+	                                                <span class="text-link">Css Flex Box </span>
+	                                             </p>
+	                                             <time> Yesterday </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Adrian Mohani</strong> Like Your Comment On Course
+	                                                <span class="text-link">Javascript Introduction </span>
+	                                             </p>
+	                                             <time> 2 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                                 <li>
+	                                     <a href="#">
+	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         </div>
+	                                         <div class="drop_text">
+	                                             <p>
+	                                                <strong>Stella Johnson</strong> Replay Your Comments in
+	                                                <span class="text-link">Programming for Games</span>
+	                                             </p>
+	                                             <time> 9 hours ago </time>
+	                                         </div>
+	                                     </a>
+	                                 </li>
+	                             </ul>
+	                         </div>
+	                    </div>
+
+	                    <!-- Message -->
+	                    <a href="#" class="is_icon" uk-tooltip="title: Message">
+	                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg>
+	                        <span>4</span>
+	                    </a>
+	                    <div uk-drop="mode: click" class="header_dropdown is_message">
+	                        <div  class="dropdown_scrollbar" data-simplebar>
+	                            <div class="drop_headline">
+	                                 <h4>Messages </h4>
+	                                <div class="btn_action">
+	                                    <a href="#" data-tippy-placement="left" title="Notifications">
+	                                        <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: left"></ion-icon>
+	                                    </a>
+	                                    <a href="#" data-tippy-placement="left" title="Mark as read all">
+	                                        <ion-icon name="checkbox-outline"></ion-icon>
+	                                    </a>
+	                                </div>
+	                            </div>
+	                            <input type="text" class="uk-input" placeholder="Search in Messages">
+	                            <ul>
+	                                <li class="un-read">
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-7.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Stella Johnson </strong> <time>12:43 PM</time>
+	                                            <p>  Alex will explain you how ...  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Adrian Mohani </strong> <time> 6:43 PM</time>
+	                                            <p> Thanks for The Answer sit amet...  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-6.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong>Alia Dolgove </strong> <time> Wed </time>
+	                                            <p>  Alia just joined Messenger!  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Jonathan Madano </strong> <time> Sun</time>
+	                                            <p>  Replay Your Comments insit amet consectetur </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li class="un-read">
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Stella Johnson </strong> <time>12:43 PM</time>
+	                                            <p>  Alex will explain you how ...  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Adrian Mohani </strong> <time> 6:43 PM</time>
+	                                            <p> Thanks for The Answer sit amet...  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong>Alia Dolgove </strong> <time> Wed </time>
+	                                            <p>  Alia just joined Messenger!  </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                                <li>
+	                                    <a href="#">
+	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
+	                                        </div>
+	                                        <div class="drop_text">
+	                                            <strong> Jonathan Madano </strong> <time> Sun</time>
+	                                            <p>  Replay Your Comments insit amet consectetur </p>
+	                                        </div>
+	                                    </a>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                        <a href="#" class="see-all"> See all in Messages</a>
+	                    </div>
 
 
-              <div class="iq-navbar-logo d-flex justify-content-between " >
+	                    <a href="#">
+	                        <img src="assets/images/avatars/avatar-2.jpg" class="is_avatar" alt="">
+	                    </a>
+	                    <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
-                 <?php if ($memberIsApproved=="N"){ ?>
-                 <a href="javascript:void(0);">
-                 <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
-                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</span>
-                 </a>
-                <?php } ?>
+	                        <a href="timeline.html" class="user">
+	                            <div class="user_avatar">
+	                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                            </div>
+	                            <div class="user_name">
+	                                <div> Stella Johnson </div>
+	                                <span> @johnson</span>
+	                            </div>
+	                        </a>
 
-                <?php if ($memberIsApproved=="Y"){ ?>
-                 <a href="<?php echo base_url();?>user/index">
-                 <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid d-none d-md-block" alt="">
-                 <img src="<?php echo base_url();?>assets/images/logomobile.png" class="img-fluid d-block d-md-none" alt="">
-                 
-                 <!-- <span class="d-none d-md-block">Follow Me</span> -->
-                 </a>
-                 <div class="iq-menu-bt align-self-center">
-                   <div class="wrapper-menu">
-                      <div class="main-circle"><i class="ri-menu-line"></i></div>
-                   </div>
-                </div>
-                <?php } ?>
-              </div>
-              <div class="iq-search-bar">
-                 <?php if ($memberIsApproved=="Y"){ ?>
-                 <form action="#" class="searchbox">
-                    <input type="text" class="text search-input" placeholder="Type here to search...">
-                    <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                 </form>
-                <?php } ?>
-              </div>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-              <i class="ri-menu-3-line"></i>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                 <?php if ($memberIsApproved=="Y"){ ?>
-                 <ul class="navbar-nav ml-auto navbar-list">
-                    <li>
-                       <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
-                          <img id="header_profile_images" src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
-                          <div class="caption">
-                             <h6 class="mb-0 line-height"><?php echo $this->session->userdata('first_name'); ?></h6>
-                          </div>
-                       </a>
-                    </li>
-                    <li>
-                       <a href="<?php echo base_url();?>user/index" class="iq-waves-effect d-flex align-items-center">
-                       <i class="ri-home-line"></i>
-                       </a>
-                    </li>
-                    <li class="nav-item">
-                       <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i></a>
-                       <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                          <div class="iq-card shadow-none m-0">
-                             <div class="iq-card-body p-0 ">
-                                <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">Friend Request<small class="badge  badge-light float-right pt-1">4</small></h5>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Jaques Amole</h6>
-                                            <p class="mb-0">40  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Lucy Tania</h6>
-                                            <p class="mb-0">12  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Manny Petty</h6>
-                                            <p class="mb-0">3  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Marsha Mello</h6>
-                                            <p class="mb-0">15  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="text-center">
-                                   <a href="#" class="mr-3 btn text-primary">View More Request</a>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </li>
-                    <li class="nav-item">
-                       <a href="#" class="search-toggle iq-waves-effect">
-                          <div id="lottie-beil"></div>
-                          <span class="bg-danger dots"></span>
-                       </a>
+	                        <a href="profile-setting.html">
+	                            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
+	                            Profile Settings
+	                        </a>
+	                        <a href="profile-setting.html">
+	                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+	                                <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"  clip-rule="evenodd" />
+	                            </svg>
+	                            Privacy Settings
+	                        </a>
+	                        <a href="reportform.html">
+	                            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path></svg>
+	                            Report A Problem
+	                        </a>
+	                        <a href="activitylog.html" id="night-mode" class="btn-night-mode">
+	                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+	                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+	                              </svg>
+	                             Activity Log
+	                        </a>
+	                        <a href="#">
+	                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+	                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+	                            </svg>
+	                            Log Out
+	                        </a>
 
-                      <!--  ng-repeat="(key, value) in allVideoListObj" -->
-                       <div class="iq-sub-dropdown" ng-controller="notificationController" ng-init="get_all_notifiction(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('admin_id'); ?>');">
-                          <div class="iq-card shadow-none m-0">
-                             <div class="iq-card-body p-0 ">
-                                <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">{{allNotificationObj.length}}</small></h5>
-                                </div>
-                                <a ng-repeat="(key, value) in allNotificationObj" href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                        <i class="{{value.stricon}}"></i>
-                                         <!-- <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt=""> -->
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">{{value.strtext}}</h6>
-                                         <small class="float-right font-size-12">{{value.strdate}}</small>
-                                         <p class="mb-0">{{value.strcaption}}</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <!-- <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">New customer is join</h6>
-                                         <small class="float-right font-size-12">5 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Two customer is left</h6>
-                                         <small class="float-right font-size-12">2 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">New Mail from Fenny</h6>
-                                         <small class="float-right font-size-12">3 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a> -->
-                             </div>
-                          </div>
-                       </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                       <a href="#" class="search-toggle iq-waves-effect">
-                          <div id="lottie-mail"></div>
-                          <span class="bg-primary count-mail"></span>
-                       </a>
-                       <div class="iq-sub-dropdown">
-                          <div class="iq-card shadow-none m-0">
-                             <div class="iq-card-body p-0 ">
-                                <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
-                                </div>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Bni Emma Watson</h6>
-                                         <small class="float-left font-size-12">13 Jun</small>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
-                                         <small class="float-left font-size-12">20 Apr</small>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Why do we use it?</h6>
-                                         <small class="float-left font-size-12">30 Jun</small>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Variations Passages</h6>
-                                         <small class="float-left font-size-12">12 Sep</small>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Lorem Ipsum generators</h6>
-                                         <small class="float-left font-size-12">5 Dec</small>
-                                      </div>
-                                   </div>
-                                </a>
-                             </div>
-                          </div>
-                       </div>
-                    </li>
-                 </ul>
-                 <?php } ?>
-                 <ul class="navbar-list">
-                    <li>
-                       <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                       <i class="ri-arrow-down-s-fill"></i>
-                       </a>
-                       <div class="iq-sub-dropdown iq-user-dropdown">
-                          <div class="iq-card shadow-none m-0">
-                             <div class="iq-card-body p-0 ">
-                                <?php if ($memberIsApproved=="Y"){ ?>
-                                <div class="bg-primary p-3 line-height">
-                                   <h5 class="mb-0 text-white line-height">Hello <?php echo $this->session->userdata('user_full_name'); ?></h5>
-                                   <!-- <span class="text-white font-size-12">Available</span> -->
-                                </div>
-                                <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
-                                   <div class="media align-items-center">
-                                      <div class="rounded iq-card-icon iq-bg-primary">
-                                         <i class="ri-file-user-line"></i>
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">My Profile</h6>
-                                         <p class="mb-0 font-size-12">View personal profile details.</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="<?php echo base_url();?>user/profileedit" class="iq-sub-card iq-bg-warning-hover">
-                                   <div class="media align-items-center">
-                                      <div class="rounded iq-card-icon iq-bg-warning">
-                                         <i class="ri-profile-line"></i>
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Edit Profile</h6>
-                                         <p class="mb-0 font-size-12">Modify your personal details.</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <!-- <a href="account-setting.html" class="iq-sub-card iq-bg-info-hover">
-                                   <div class="media align-items-center">
-                                      <div class="rounded iq-card-icon iq-bg-info">
-                                         <i class="ri-account-box-line"></i>
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Account settings</h6>
-                                         <p class="mb-0 font-size-12">Manage your account parameters.</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="privacy-setting.html" class="iq-sub-card iq-bg-danger-hover">
-                                   <div class="media align-items-center">
-                                      <div class="rounded iq-card-icon iq-bg-danger">
-                                         <i class="ri-lock-line"></i>
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Privacy Settings</h6>
-                                         <p class="mb-0 font-size-12">Control your privacy parameters.</p>
-                                      </div>
-                                   </div>
-                                </a> -->
-                                <?php } ?>
-                                <div class="d-inline-block w-100 text-center p-3">
-                                   <a class="bg-primary iq-sign-btn" href="<?php echo base_url();?>user/logout" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </li>
-                 </ul>
-              </div>
-           </nav>
-        </div>
-    </div>
-    <!-- TOP Nav Bar END -->
-    <!-- Right Sidebar Panel Start-->
-    <div class="right-sidebar-mini right-sidebar">
-        <div class="right-sidebar-panel p-0">
-           <div class="iq-card shadow-none">
-              <?php if ($memberIsApproved=="Y"){ ?>
-              <div class="iq-card-body p-0">
-                 <div class="media-height p-3">
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Anna Sthesia</a></h6>
-                          <p class="mb-0">Just Now</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Paul Molive</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Anna Mull</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Paige Turner</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/11.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Bob Frapples</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Barb Ackue</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-online">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Greta Life</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-away">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/12.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Ira Membrit</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center mb-4">
-                       <div class="iq-profile-avatar status-away">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Pete Sariya</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                    <div class="media align-items-center">
-                       <div class="iq-profile-avatar">
-                          <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                       </div>
-                       <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Monty Carlo</a></h6>
-                          <p class="mb-0">Admin</p>
-                       </div>
-                    </div>
-                 </div>
-                 <div class="right-sidebar-toggle bg-primary mt-3">
-                    <i class="ri-arrow-left-line side-left-icon"></i>
-                    <i class="ri-arrow-right-line side-right-icon"><span class="ml-3 d-inline-block">Close Menu</span></i>
-                 </div>
-              </div>
-              <?php } ?>
-           </div>
-        </div>
-    </div>
-    <!-- Right Sidebar Panel End-->
+
+	                    </div>
+
+	                </div>
+
+	            </div>
+	        </div>
+	    </div>
+	</header>
+
+	<!-- sidebar -->
+	<div class="sidebar">
+	    <div class="sidebar_inner" data-simplebar>
+	        <ul>
+	            <li><a href="feed.html"> 
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+	                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+	                </svg>
+	                <span> Newsfeeds </span> </a> 
+	            </li>
+	            <li  class="active-submenu"><a href="#"> 
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+	                  <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+	                </svg> 
+	                <span> Wall </span> </a> 
+	                <ul>
+	                    <li><a href="generalwall.html">General Wall</a></li>
+	                    <li><a href="prayerwall.html">Prayer Wall</a></li>
+	                    <li><a href="praisereportwall.html">Praise Report Wall</a></li>
+	                    <li><a href="testimonialwall.html">Testimony Wall 2</a></li>
+	                    <li><a href="myfollowerswall.html">My Followers Wall</a></li>
+	                    <li><a href="fanswall.html">Fans Wall</a></li>
+	                    <li><a href="favouritewall.html">Favourite Wall</a></li>
+	                    <li><a href="churchmemberswall.html">My Church Members</a></li>
+	                    <li><a href="virtualmemberswall.html">My Virtual Church Members</a></li>
+	                </ul>
+	            </li>
+	            
+	            <li><a href="#"> 
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+	                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+	                </svg>  <span>  Communication </span></a> 
+	                 <ul>
+	                    <li><a href="photos.html">Photos</a></li>
+	                    <li><a href="events.html">Events</a></li>
+	                    <li><a href="news.html">News</a></li>
+	                    <li><a href="findfriends.html">Find Connection</a></li>
+	                    <li><a href="friendsisting.html">Connection List</a></li>
+	                    <li><a href="memberslisting.html">Members List</a></li>
+	                </ul>
+	            </li> 
+	            <li id="more-veiw" ><a href="#"> 
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+	                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+	                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+	                </svg>
+	               <span> Mailbox</span> </a> 
+	                <ul>
+	                    <li><a href="inbox.html">Inbox</a></li>
+	                    <li><a href="compose.html">Compose</a></li>
+	                    <li><a href="sent.html">Sent</a></li>
+	                    <li><a href="trash.html">Trash</a></li>
+	                </ul>
+	            </li>
+	            
+	            <li><a href="videos.html">
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-red-500">
+	                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clip-rule="evenodd" />
+	                </svg>
+	                <span> Featured Apps</span></a> 
+	                 <ul>
+	                    <li><a href="videotube.html">Video Tube</a></li>
+	                    <li><a href="liveevents.html">Live Events</a></li>
+	                    <li><a href="audio.html">Audio Tube</a></li>
+	                    <li><a href="rhemes.html">Rhemes</a></li>
+	                    <li><a href="donation.html">Donation</a></li>
+	                </ul>  
+	            </li> 
+	            
+	            <li><a href="groups.html"> 
+	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+	                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+	                </svg><span> Groups </span></a> 
+	                  <ul>
+	                    <li><a href="leaderships.html">Leadership</a></li>
+	                    <li><a href="staff.html">Staff</a></li>
+	                    <li><a href="clergy.html">Clergy</a></li>
+	                    <li><a href="ministers.html">Ministers</a></li>
+	                    <li><a href="virtualmembers.html">Virtual Members</a></li>
+	                    <li><a href="fans.html">Fans</a></li>
+	                    <li><a href="followers.html">Followers</a></li>
+	                    <li><a href="partners.html">Partners</a></li>
+	                    <li><a href="sponsors.html">Sponsors</a></li>
+	                    <li><a href="businesses.html">Businesses</a></li>
+	                    <li><a href="advertisers.html">Advertisers</a></li>
+	                    <li><a href="mensgroups.html">Mens Groups</a></li>
+	                    <li><a href="womengroups.html">Women Groups</a></li>
+	                    <li><a href="adultsgroup.html">Adults Groups</a></li>
+	                    <li><a href="media.html">Media</a></li>
+	                </ul> 
+	            </li>
+	        </ul>
+	        <ul class="side_links" data-sub-title="Security">
+
+	           
+	            <li><a href="feed.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
+	                <ul>
+	                    <li><a href="profile-setting.html">Profile Settings</a></li>
+	                    <li><a href="profile-setting.html">Privacy Settings</a></li>
+	                    <li><a href="profile-setting.html">Create Groups</a></li>
+	                    <li><a href="profile-setting.html">Notifications and Settings</a></li>
+	                </ul>
+	            </li>
+	            <li><a href="#"> <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Pages </span>  </a> 
+	                <ul>
+	                    <li><a href="faith.html"> Statement of faith </a></li>
+	                    <li><a href="churchinfo.html"> Church Information </a></li>
+	                    <li><a href="church.html"> Church Members </a></li>
+	                    <li><a href="connections.html"> Our Connections </a></li>
+	                    <li><a href="corevalue.html"> Core Value </a></li>
+	                    <li><a href="ourpastors.html"> Our Pastor </a></li>
+	                    <li><a href="ourleaderships.html"> Our Leaderships </a></li>
+	                </ul>
+	            </li>
+	        </ul>
+
+	        <div class="footer-links">
+	            <a href="about.html">About</a>
+	            <a href="privacypolicy.html">Privacy policy </a>
+	            <a href="supportform.html">Support</a>
+	            <a href="contact.html">Contact </a>
+	            <a href="reportform.html">Report a problem</a>
+	            <a href="term.html">Terms of service</a>
+	        </div>
+	    </div>
+	    <!-- sidebar overly for mobile -->
+	    <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+	</div> 

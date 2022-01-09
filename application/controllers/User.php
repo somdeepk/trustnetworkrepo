@@ -8,9 +8,6 @@ class User extends CI_Controller
 			redirect('user/index');
 		}
 
-		$all_church_data = $this->User_Model->get_all_approve_church();
-
-		$data['all_church_data'] = $all_church_data;
 		$data['title'] = ucfirst($page);
 		$this->load->view('user/header-script');
 		$this->load->view('user/signup', $data);
@@ -25,31 +22,27 @@ class User extends CI_Controller
 
         $membership_type=(isset($aryMemberData['membership_type']) && !empty($aryMemberData['membership_type']))? addslashes(trim($aryMemberData['membership_type'])):'';
 
-        $church_id=(isset($aryMemberData['church_id']) && !empty($aryMemberData['church_id']))? addslashes(trim($aryMemberData['church_id'])):0;
-
-       
+        $membership_option=(isset($aryMemberData['membership_option']) && !empty($aryMemberData['membership_option']))? addslashes(trim($aryMemberData['membership_option'])):'';
+        $church_type=(isset($aryMemberData['church_type']) && !empty($aryMemberData['church_type']))? addslashes(trim($aryMemberData['church_type'])):'';
+      
         $church_name=(isset($aryMemberData['church_name']) && !empty($aryMemberData['church_name']))? addslashes(trim($aryMemberData['church_name'])):'';
 
         $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';
 
         $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
-        $gender=(isset($aryMemberData['gender']) && !empty($aryMemberData['gender']))? addslashes(trim($aryMemberData['gender'])):'';
+
+        $mobile=(isset($aryMemberData['mobile']) && !empty($aryMemberData['mobile']))? addslashes(trim($aryMemberData['mobile'])):'';
+
         $dob=(isset($aryMemberData['dob']) && !empty($aryMemberData['dob']))? date('Y-m-d',strtotime($aryMemberData['dob'])) :NULL;
 
         $user_email=(isset($aryMemberData['user_email']) && !empty($aryMemberData['user_email']))? addslashes(trim($aryMemberData['user_email'])):'';
         $password=(isset($aryMemberData['password']) && !empty($aryMemberData['password']))? addslashes(trim($aryMemberData['password'])):'';     
 		$current_date=date('Y-m-d H:i:s');
 
-		$str_is_approved='Y';
-		if($membership_type=="CM")
+		$str_is_approved='N';
+		if($membership_type=="PM")
 		{
 			$first_name=$church_name;
-		}
-		elseif($membership_type=="CC")
-		{
-			$str_is_approved='N';
-			$church_id=1;//City Church
-			$membership_type='RM';
 		}
 
         $flagDupEmail = $this->User_Model->check_dup_email($user_email);
@@ -64,14 +57,13 @@ class User extends CI_Controller
 		else
 		{
 			$menu_arr = array(
+				'membership_type'  =>$membership_type,
+	            'membership_option'  =>$membership_option,
+	            'church_type'  =>$church_type,	            
 	            'first_name' => $first_name,
 	            'last_name'  =>$last_name,
-	            'parent_id'  =>$church_id,
-	            'gender'  =>$gender,
-	            'marital_status'  =>'',
+	            'mobile'  =>$mobile,
 	            'dob'  =>$dob,
-	            'membership_type'  =>$membership_type,
-	            //'church_id'  =>$church_id,
 	            'user_email'  =>$user_email,
 	            'password'  =>$password,
 	            'is_approved'  =>$str_is_approved,
@@ -79,7 +71,6 @@ class User extends CI_Controller
 	        );
 
 			$lastId = $this->User_Model->addupdatemember(0,$menu_arr);
-			$parent_leader_id=$this->User_Model->assign_under_group_admin($lastId);
 
 			if($lastId>0)
 			{
@@ -87,7 +78,6 @@ class User extends CI_Controller
 
 				$userLoginData['login']=true;
 				$userLoginData['user_auto_id']=$userLoginData['id'];
-				$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
 			 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
 			 	$userLoginData['email']=$userLoginData['user_email'];
@@ -111,7 +101,7 @@ class User extends CI_Controller
         exit;    	
     }
 
-	public function login()
+    public function login()
 	{
 		$aryRequestUri=explode("/",$_SERVER['REQUEST_URI']);
 
@@ -130,7 +120,7 @@ class User extends CI_Controller
 		}
 		$data['title'] = ucfirst($page);
 
-		$ary_cockie['trust_member_remember_me'] = $_COOKIE["trust_member_remember_me"];
+		$ary_cockie['christtube_remember_me'] = $_COOKIE["christtube_remember_me"];
 		$jsonCookieRememberMe = json_encode($ary_cockie);
 		$data['jsonCookieRememberMe'] = $jsonCookieRememberMe;
 
@@ -139,7 +129,7 @@ class User extends CI_Controller
 		$this->load->view('user/footer');
 	}
 
-	public function ajaxcheckuserlogin()
+    public function ajaxcheckuserlogin()
 	{
 		$returnData=array();
 
@@ -156,27 +146,19 @@ class User extends CI_Controller
 			$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
 			if(count($userLoginData))
 			{
-				$parent_leader_id=$this->User_Model->assign_under_group_admin($userLoginData['id']);
-				$memberLevelStandardData=$this->User_Model->get_member_level_standard($userLoginData['id']);
-
 			 	$userLoginData['login']=true;
 			 	$userLoginData['user_auto_id']=$userLoginData['id'];
-			 	$userLoginData['parent_leader_id']=$parent_leader_id;
 			 	$userLoginData['user_email']=$userLoginData['user_email'];
-			 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
-			 	
+			 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];			 	
 			 	$userLoginData['email']=$userLoginData['user_email'];
-			 	$userLoginData['maxmemberlevel']=$memberLevelStandardData['maxmemberlevel'];
-			 	$userLoginData['coursename']=$memberLevelStandardData['coursename'];
-			 	$userLoginData['totbadge']=$memberLevelStandardData['totbadge'];
 			 	$this->session->set_userdata($userLoginData);
 
 			 	// Start Remember Me block
 			 	if($remember_me){
-					setcookie("trust_member_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
+					setcookie("christtube_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
 				}else{
-					if(isset($_COOKIE["trust_member_remember_me"])){
-						setcookie ("trust_member_remember_me","");
+					if(isset($_COOKIE["christtube_remember_me"])){
+						setcookie ("christtube_remember_me","");
 					}
 				}
 				// END Remember Me block
@@ -203,24 +185,35 @@ class User extends CI_Controller
         exit;	
 
 	}
+	public function profilesetting()
+	{
+		$data=array();
+		$msg=$this->input->post_get('msg');
+		if(!empty($msg))
+		{
+			$msg=base64_decode($msg);
+			$this->session->set_flashdata('success', $msg);
+		}
+		//$data['member_id']=$member_id;
+
+		$user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+		$jsonMemberData = json_encode($memberData);
+
+		$this->session->set_userdata('is_approved', $memberData['is_approved']);
+		$data['jsonMemberData'] = $jsonMemberData;
+
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profilesetting', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
+	}
 
 
-	
 
 
-	/*public function get_member_data() 
-    {
-    	$id=$this->input->get_post('id');
-		$memberData = $this->User_Model->get_member_data($id);
 
-		$returnData=array();
-        $returnData['status']='1';
-        $returnData['msg']='';
-        $returnData['data']=array('memberData'=>$memberData);
-       
-        echo json_encode($returnData);
-        exit;
-    }*/
 
 	public function ajaxgetPeopleYouMayNowData() 
     {
@@ -1418,34 +1411,7 @@ class User extends CI_Controller
         exit;
     }
 
-	public function profileedit()
-	{
-		$data=array();
-		$msg=$this->input->post_get('msg');
-		if(!empty($msg))
-		{
-			$msg=base64_decode($msg);
-			$this->session->set_flashdata('success', $msg);
-		}
-		//$data['member_id']=$member_id;
-
-		$churchTypeData = $this->User_Model->get_church_type();
-
-		$user_auto_id=$this->session->userdata('user_auto_id');
-		$memberData = $this->User_Model->get_member_data($user_auto_id);
-		$jsonMemberData = json_encode($memberData);
-
-		$this->session->set_userdata('is_approved', $memberData['is_approved']);
-
-		$data['churchTypeData'] = $churchTypeData;
-		$data['jsonMemberData'] = $jsonMemberData;
-
-		$this->load->view('user/header-script');
-		$this->load->view('user/header-bottom');
-		$this->load->view('user/profileedit', $data);
-		$this->load->view('user/footer-top');
-		$this->load->view('user/footer');
-	}
+	
 	
     public function getcountrydata() 
     {

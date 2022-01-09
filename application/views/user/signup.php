@@ -1,127 +1,77 @@
-<section class="sign-in-page" ng-controller="signupController">
-            <div class="container">
-                 <div class="sign-up-inner">
-                <div class="row no-gutters">
-                    <div class="col-md-6 order-md-2 pt-0">
-                        <div class="sign-in-from">
-                             <a class="sign-in-logo d-block d-md-none" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
-                            <h2 class="mb-0"><strong>Sign Up</strong></h2>
-                            <form class="mt-4">
-                            
-                                <div class="d-inline-block w-100">
-                                    <label style="width: 48%">
-                                        <input style="width: 8%" type="radio" name="registrationtype" checked="true" ng-click="getRegistrationType('MR')"/>
-                                        <font style="color:#50b5ff;font-size: : 16px;">Member Registration</font>
-                                    </label >
-                                    <label style="width: 48%">
-                                        <input style="width: 8%" type="radio" name="registrationtype" ng-click="getRegistrationType('CR')"/>
-                                        <font style="color:#50b5ff;font-size: : 16px;">Register as a Church</font>
-                                    </label>
-                                </div>
-
-                                <div class="form-group zselectmembershipz">
-                                    <select ng-model="signupData.membership_type" id="membership_type" class="form-control mb-0">
-                                    <option ng-repeat="(key, value) in obj_membership_type" value="{{key}}">{{value}}</option>
-                                    </select>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.membership_type)==true)? 'Membership Type Required' : ''}}</div>
-                                </div>
-
-                                <div class="form-group" ng-if="signupData.membership_type=='RM'">
-                                    <select ng-model="signupData.church_id" id="church_id" class="form-control form-control-primary">
-                                        <option value="">Select Church</option>
-                                        <?php 
-                                        if(count($all_church_data)>0)
-                                        {
-                                            foreach($all_church_data as $k=>$v)
-                                            {
-                                        ?>
-                                                <option value="<?php echo $v['id']; ?>"><?php echo $v['first_name']; ?></option>
-                                        <?php 
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.church_id)==true)? 'Church Required' : ''}}</div>
-                                </div>
-                                <div class="form-group" ng-if="signupData.membership_type=='CM'">
-                                    <input type="text" ng-model="signupData.church_name" id="church_name" class="form-control mb-0" placeholder="Enter Church Name">
-
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && signupData.membership_type=='CM' && isNullOrEmptyOrUndefined(signupData.church_name)==true)? 'Church name Required' : ''}}</div>                                    
-                                </div>                                
-                                
-                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
-                                    <input type="text" ng-model="signupData.first_name" id="first_name" class="form-control mb-0" placeholder="Your First Name">
-
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && ( signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.first_name)==true)? 'First Name Required' : ''}}</div>
-
-                                </div>
-                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
-                                    <input type="text" ng-model="signupData.last_name" id="last_name"class="form-control mb-0" placeholder="Your Last Name">
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.last_name)==true)? 'Last Name Required' : ''}}</div>
-                                </div>
-
-                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
-                                    <select ng-model="signupData.gender" id="gender" class="form-control mb-0">
-                                        <option value="">Select Gender</option>
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
-                                        <option value="T">Transgender</option>
-                                   </select>
-
-                                   <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.gender)==true)? 'Gender Required' : ''}}</div>
-
-                                </div>
-
-                                <div class="form-group" ng-if="(signupData.membership_type=='RM' || signupData.membership_type=='CC')">
-                                    <input type="text" ng-model="signupData.dob" id="dob" class="form-control mb-0" readonly="true" placeholder="Date Of Birth" dobdatesignup>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.dob)==true)? 'Date Of Birth Required' : ''}}</div>
-                                </div>
-
-
-
-                                <div class="form-group">
-                                    <input type="text" ng-model="signupData.user_email" id="user_email" class="form-control mb-0" placeholder="Enter email" emailvalidate>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.user_email)==true)? 'Email Required' : ''}}</div>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(InvalidEmailCheck==true)? 'Invalid Email' : ''}}</div>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataEmailDupCheck==true)? 'This Email already Exist' : ''}}</div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" ng-model="signupData.password" id="password" maxlength="15" class="form-control mb-0" placeholder="Password">
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.password)==true)? 'Password Required' : ''}}</div>
-                                </div>
-
-                                <div class="d-inline-block w-100">
-                                    <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
-                                        <input type="checkbox" ng-model="signupData.toc" id="toc" class="custom-control-input">
-                                        <label class="custom-control-label" for="toc">I accept <a href="#" ><strong>Terms and Conditions</strong></a></label>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary float-right"  ng-click="submitSignup();">Sign Up</button>
-                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.toc)==true)? 'Please Accept  T&C' : ''}}</div>
-                                </div>
-                                <div class="sign-info">
-                                    <span class="dark-color d-inline-block line-height-2">Already Have Account ? <a href="<?php echo base_url();?>user/login"><strong>Log In</strong></a></span>
-                                    <ul class="iq-social-media">
-                                        <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
-                                        <li><a href="#"><i class="ri-google-line"></i></a></li>
-                                        <li><a href="#"><i class="ri-twitter-line"></i></a></li>
-                                        <!-- <li><a href="#"><i class="ri-instagram-line"></i></a></li> -->
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
+<div class="lg:flex max-w-5xl min-h-screen mx-auto p-6 py-10" ng-controller="signupController">
+    <div class="flex flex-col items-center lg: lg:flex-row lg:space-x-10">
+        <div class="lg:mb-12 flex-1 lg:text-left text-center">
+            <img src="<?php echo base_url();?>assets/images/logo-full.png" alt="" class="lg:mx-0 lg:w-52 mx-auto w-40">
+            <p class="font-medium lg:mx-0 md:text-2xl mt-6 mx-auto sm:w-3/4 text-xl"><span class="redtext">Christ</span><span class="blacktext">tube</span> Helps Christians Globally </p>
+            <p class="leading-6"> To communicate their messages and faith in a 100% Christ - centered environment while advancing the kingdom of God.</p>
+            <p class="font-medium lg:mx-0 md:text-2xl mt-6 mx-auto sm:w-3/4 text-xl">Register and get one account across all services</p>
+        </div>
+        <div class="lg:mt-0 lg:w-96 md:w-1/2 sm:w-2/3 mt-10 w-full bg-white shadow-lg rounded-lg">
+            <form class="p-7 space-y-5">
+            
+                <div class="gap-5">
+                    <div>
+                        <select ng-model="signupData.membership_type" id="membership_type" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.membership_type)==true)? 'redBorder' : ''" ng-click="getMembershipOption('MR')" class="mt-2 mb-2 with-border ">
+                            <option ng-repeat="(key, value) in obj_membership_type" value="{{key}}">{{value}}</option>
+                        </select>
                     </div>
-                    <div class="col-md-6 text-center">
-                        <div class="sign-in-detail text-white">
-                            <a class="sign-in-logo d-none d-md-block" href="#"><img src="<?php echo base_url();?>assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
-                            <p style="color:#000;">Successful ministry in the 21st Century is evolving at a rapid rate. We believe it will take a delicate combination of both technolgy and biblical teaching to continuing growing body the body of Christ and the individuals who attend the local church.</p>
-                            <p  style="color:#000;"><em style="color:#0391c0; font-weight:400;">The FOLLOW ME NOW-Making Disciples</em> web-based six-month module systems help churches disciple individuals.</p>
-                        </div>
+                    
+                    
+                    <div>
+                        <select ng-model="signupData.membership_option" id="membership_option" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.membership_option)==true)? 'redBorder' : ''" class="mt-2 mb-2 with-border">
+                            <option ng-repeat="(key, value) in obj_membership_option" value="{{key}}">{{value}}</option>
+                        </select>
 
                     </div>
                     
+                    <div>
+                        <select ng-if="signupData.membership_type=='PM'" ng-class="(signupDataCheck==true && signupData.membership_type=='PM' && isNullOrEmptyOrUndefined(signupData.church_type)==true)? 'redBorder' : ''" ng-model="signupData.church_type" id="church_type" class="mt-2 mb-2 with-border">
+                            <option value="">Select Churche Type</option>
+                            <option value="Local Churche">Local Churches</option>
+                            <option value="Local Ministrie">Local Ministries</option>
+                            <option value="Global Ministries">Global Ministries</option>
+                            <option value="Missions Group">Missions Group</option>
+                            <option value="Churches">Churches</option>
+                            <option value="Fellowships">Fellowships</option>
+                            <option value="Conferences">Conferences</option>
+                            <option value="Missions">Missions</option>
+                            <option value="Para Church">Para Church</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <input ng-if="signupData.membership_type=='PM'" type="text" ng-model="signupData.church_name" id="church_name" placeholder="Church Name" ng-class="(signupDataCheck==true && signupData.membership_type=='PM' && isNullOrEmptyOrUndefined(signupData.church_name)==true)? 'redBorder' : ''" maxlength="25" class="with-border mt-2 mb-2 pl-1">
+
+                        <input ng-if="signupData.membership_type=='RM'" ng-model="signupData.first_name" id="first_name"  ng-class="(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.first_name)==true)? 'redBorder' : ''" type="text" placeholder="First Name" maxlength="25" class="with-border mt-2 mb-2 pl-1">
+
+                        <input ng-if="signupData.membership_type=='RM'" ng-model="signupData.last_name" id="last_name" maxlength="25" ng-class="(signupDataCheck==true && signupData.membership_type=='RM' && isNullOrEmptyOrUndefined(signupData.last_name)==true)? 'redBorder' : ''" type="text" placeholder="Last Name" class="with-border mt-2 mb-2 pl-1">
+
+
+                        <input type="text" placeholder="Phone Number"  ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.mobile)==true)? 'redBorder' : ''" ng-model="signupData.mobile" id="mobile" autocomplete="off" maxlength="15"  phone-masking class="with-border mt-2 mb-2 pl-1"> <!-- mobileformat -->
+
+                        <input type="text" placeholder="{{(signupData.membership_type=='PM')? 'Date of Establishment' : 'DOB'}}" autocomplete="off" readonly="true" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.dob)==true)? 'redBorder' : ''" ng-model="signupData.dob" id="dob" class="with-border mt-2 mb-2 bootCal " dobdatesignup>
+
+                        <input type="text" placeholder="Email Id" ng-model="signupData.user_email" id="user_email" emailvalidate class="with-border mt-2 mb-2 pl-1" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.user_email)==true)? 'redBorder' : ''">
+                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(InvalidEmailCheck==true)? 'Invalid Email' : ''}}</div>
+                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataEmailDupCheck==true)? 'This Email already Exist' : ''}}</div>
+
+                        <input type="password" ng-model="signupData.password" id="password" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.password)==true)? 'redBorder' : ''" maxlength="10" class="with-border mt-2 mb-2 pl-1">
+
+                    </div>
                 </div>
-            </div>
-            </div>
-</section>
+                <p class="text-xs text-gray-400 pt-3">By clicking Sign Up, you agree to our
+                    <a href="#" class="text-blue-500">Terms</a>, 
+                    <a href="#">Data Policy</a> and 
+                    <a href="#">Cookies Policy</a>. 
+                     You may receive SMS Notifications from us and can opt out any time.
+                </p>
+                <div class="flex mt-10">
+                    <button type="button" ng-click="submitSignup();" class="bg-blue-600 font-semibold mx-auto px-10 py-3 rounded-md ml-0 text-white">
+                        Get Started
+                    </button>
+                </div>
+            </form>
+            <div class="pl-7 mb-5 text-sm"> <a href="<?php echo base_url();?>user/login" class="font-semibold hover:underline"> Login </a> if you registered login here </div>
+        </div>
+    </div>
+</div>

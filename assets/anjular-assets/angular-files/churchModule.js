@@ -138,6 +138,26 @@ mainApp.directive('emailvalidate',function() {
 	}
 });
 
+mainApp.directive('phoneformat',function(){
+  return {
+    link:  function(scope, element, attrs){
+  		element.bind('focus',function(e){
+  			 element.mask('(00) 0000 0000');
+  		});
+    }
+  }
+});
+
+mainApp.directive('mobileformat',function(){
+  return {
+    link:  function(scope, element, attrs){
+      element.bind('focus',function(e){
+         element.mask('0000 000 000');
+      });
+    }
+  }
+});
+
 mainApp.directive('phoneMasking', function() {
     return {
         require: 'ngModel',

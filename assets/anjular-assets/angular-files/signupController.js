@@ -6,10 +6,52 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 	$scope.signupDataEmailDupCheck=false;
    
    	$scope.obj_membership_type = {
-        '': 'Select Membership',
+        '': 'Select Membership Type',
         'RM': 'Regular Membership',
-        'CC': 'City Church'
+        'PM': 'Premium Membership'
+    }	
+
+    $scope.obj_membership_option = {
+         '': 'Select Membership'
     }
+
+    $scope.getMembershipOption = function(val)
+	{
+
+		if($scope.signupData.membership_type=='RM')
+		{
+			$scope.obj_membership_option = {
+		        '': 'Select Membership',
+		        'regular_members': 'Regular Members',
+		        // 'athletes': 'Athletes',
+		        // 'armed_force': 'Armed Force',
+		        // 'family_profile': 'Family Profile',
+		        // 'politician': 'Politician',
+		        // 'public_safety': 'Public Safety',
+		        // 'public_official': 'Public Official'
+		    }
+		}
+		else if($scope.signupData.membership_type=='PM')
+		{
+
+			$scope.obj_membership_option = {
+		        '': 'Select Membership',
+		        'church_ministries': 'Church/Ministries',
+		        // 'ministers_and_speaker': 'Ministers and Speakers',
+		        // 'pastor': 'Pastor',
+		        // 'clergy': 'Clergy',
+		        // 'christian_business': 'Christian Business',
+		        // 'music_artist_and_musicians': 'Music Artist and Musicians',
+		    }			
+		}
+		else
+		{
+			$scope.obj_membership_option = {
+		         '': 'Select Membership'
+		    }
+		}
+		$scope.signupData.membership_option='';
+	};	
 
 	$scope.submitSignup = function() {
 		$scope.signupDataCheck=true ;
@@ -24,32 +66,38 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.church_id)==true) || ($scope.signupData.church_id=='¿')))
+		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.membership_option)==true) || ($scope.signupData.membership_option=='¿'))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.first_name)==true) || ($scope.signupData.first_name=='¿')))
+		if ($scope.signupData.membership_type=='PM' && (($scope.isNullOrEmptyOrUndefined($scope.signupData.church_type)==true) || ($scope.signupData.church_type=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.last_name)==true) || ($scope.signupData.last_name=='¿')))
+
+		if ($scope.signupData.membership_type=='PM' && (($scope.isNullOrEmptyOrUndefined($scope.signupData.church_name)==true) || ($scope.signupData.church_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='CM') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.church_name)==true) || ($scope.signupData.church_name=='¿')))
+		if ($scope.signupData.membership_type=='RM' && (($scope.isNullOrEmptyOrUndefined($scope.signupData.first_name)==true) || ($scope.signupData.first_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.gender)==true) || ($scope.signupData.gender=='¿')))
+		if ($scope.signupData.membership_type=='RM' && (($scope.isNullOrEmptyOrUndefined($scope.signupData.last_name)==true) || ($scope.signupData.last_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.signupData.membership_type=='RM' || $scope.signupData.membership_type=='CC') && (($scope.isNullOrEmptyOrUndefined($scope.signupData.dob)==true) || ($scope.signupData.dob=='¿')))
+		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.mobile)==true) || ($scope.signupData.mobile=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.dob)==true) || ($scope.signupData.dob=='¿'))
 		{
 			validator++ ;
 		}
@@ -73,10 +121,6 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
-		if (($scope.isNullOrEmptyOrUndefined($scope.signupData.toc)==true) || ($scope.signupData.toc=='¿'))
-		{
-			validator++ ;
-		}
 
 		if (Number(validator)==0)
 		{		
@@ -105,7 +149,7 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
             	}
             	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{
-            		window.location.href=varGlobalAdminBaseUrl+"profileedit";
+            		window.location.href=varGlobalAdminBaseUrl+"profilesetting";
             	}
             	else
             	{
@@ -117,29 +161,7 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			});
 		}
 	};
-
-
-	$scope.getRegistrationType = function(val)
-	{
-		if(val=='CR')
-		{
-			$scope.obj_membership_type={
-		        'CM': 'Church Membership'
-		    }
-		    $scope.signupData.membership_type='CM';
-			$('.zselectmembershipz').addClass('hiddenimportant')
-		}
-		else
-		{
-			$scope.obj_membership_type = {
-		        '': 'Select Membership',
-		        'RM': 'Regular Membership',
-		        'CC': 'City Church'
-		    }
-		    $scope.signupData.membership_type='';
-		    $('.zselectmembershipz').removeClass('hiddenimportant')
-		}
-	};	
+	
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};
