@@ -19,8 +19,8 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 
 	                <div id="logo">
 	                    <a href="feed.html">
-	                        <img src="assets/images/logo-full.png" alt="">
-	                        <img src="assets/images/logo-full.png" class="logo_mobile" alt="">
+	                        <img src="<?php echo base_url();?>assets/images/logo-full.png" alt="">
+	                        <img src="<?php echo base_url();?>assets/images/logo-full.png" class="logo_mobile" alt="">
 	                    </a>
 	                </div>
 	            </div>
@@ -35,31 +35,31 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    <ul>
 	                        <li>
 	                            <a href="#">
-	                                <img src="assets/images/avatars/avatar-1.jpg" alt="" class="list-avatar">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="list-avatar">
 	                                <div class="list-name">  Erica Jones </div>
 	                            </a>
 	                        </li>
 	                        <li>
 	                            <a href="#">
-	                                <img src="assets/images/avatars/avatar-2.jpg" alt="" class="list-avatar">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="list-avatar">
 	                                <div class="list-name">  Coffee  Addicts </div>
 	                            </a>
 	                        </li>
 	                        <li>
 	                            <a href="#">
-	                                <img src="assets/images/avatars/avatar-3.jpg" alt="" class="list-avatar">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="list-avatar">
 	                                <div class="list-name"> Mountain Riders </div>
 	                            </a>
 	                        </li>
 	                        <li>
 	                            <a href="#">
-	                                <img src="assets/images/avatars/avatar-4.jpg" alt="" class="list-avatar">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="list-avatar">
 	                                <div class="list-name"> Property Rent And Sale  </div>
 	                            </a>
 	                        </li>
 	                        <li>
 	                            <a href="#">
-	                                <img src="assets/images/avatars/avatar-5.jpg" alt="" class="list-avatar">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="list-avatar">
 	                                <div class="list-name">  Erica Jones </div>
 	                            </a>
 	                        </li>
@@ -95,7 +95,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 <li>
 	                                     <a href="#">
 	                                         <div class="drop_avatar">
-	                                             <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                             <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                         </div>
 	                                         <span class="drop_icon bg-gradient-primary">
 	                                             <i class="icon-feather-thumbs-up"></i>
@@ -111,7 +111,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li class="not-read">
 	                                     <a href="#">
-	                                         <div class="drop_avatar status-online"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         <div class="drop_avatar status-online"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -124,7 +124,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="">
 	                                         </div>
 	                                         <span class="drop_icon bg-gradient-primary">
 	                                            <i class="icon-feather-thumbs-up"></i>
@@ -140,7 +140,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -153,7 +153,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                         </div>
 	                                         <span class="drop_icon bg-gradient-primary">
 	                                            <i class="icon-feather-thumbs-up"></i>
@@ -169,7 +169,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar status-online"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         <div class="drop_avatar status-online"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -182,7 +182,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -195,7 +195,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -208,7 +208,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -221,7 +221,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -234,7 +234,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                 </li>
 	                                 <li>
 	                                     <a href="#">
-	                                         <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                         <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                                         </div>
 	                                         <div class="drop_text">
 	                                             <p>
@@ -271,7 +271,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                            <ul>
 	                                <li class="un-read">
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-7.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-7.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Stella Johnson </strong> <time>12:43 PM</time>
@@ -281,7 +281,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Adrian Mohani </strong> <time> 6:43 PM</time>
@@ -291,7 +291,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-6.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong>Alia Dolgove </strong> <time> Wed </time>
@@ -301,7 +301,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Jonathan Madano </strong> <time> Sun</time>
@@ -311,7 +311,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li class="un-read">
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Stella Johnson </strong> <time>12:43 PM</time>
@@ -321,7 +321,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Adrian Mohani </strong> <time> 6:43 PM</time>
@@ -331,7 +331,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong>Alia Dolgove </strong> <time> Wed </time>
@@ -341,7 +341,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                                </li>
 	                                <li>
 	                                    <a href="#">
-	                                        <div class="drop_avatar"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
+	                                        <div class="drop_avatar"> <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="">
 	                                        </div>
 	                                        <div class="drop_text">
 	                                            <strong> Jonathan Madano </strong> <time> Sun</time>
@@ -356,13 +356,13 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 
 
 	                    <a href="#">
-	                        <img src="assets/images/avatars/avatar-2.jpg" class="is_avatar" alt="">
+	                        <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" class="is_avatar" alt="">
 	                    </a>
 	                    <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
 	                        <a href="timeline.html" class="user">
 	                            <div class="user_avatar">
-	                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
+	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
 	                            </div>
 	                            <div class="user_name">
 	                                <div> Stella Johnson </div>

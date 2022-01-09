@@ -52,28 +52,28 @@
 
                     <a href="chats-friend.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-1.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
                             <span class="user_status status_online"></span>
                         </div>
                         <div class="contact-username"> Dennis Han</div>
                     </a>
                     <a href="chats-friend.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
                             <span class="user_status"></span>
                         </div>
                         <div class="contact-username"> Erica Jones</div>
                     </a>
                     <a href="chats-friend.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-3.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="">
 
                         </div>
                         <div class="contact-username">Stella Johnson</div>
                     </a>
                     <a href="chats-friend.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-4.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="">
 
                         </div>
                         <div class="contact-username"> Alex Dolgove</div>
@@ -83,53 +83,53 @@
                 <div class="p-1">
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-7.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-7.jpg" alt="">
                         </div>
                         <div class="contact-username"> Alex Dolgove</div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-8.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-8.jpg" alt="">
                             <span class="user_status status_online"></span>
                         </div>
                         <div class="contact-username"> Dennis Han</div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
                             <span class="user_status"></span>
                         </div>
                         <div class="contact-username"> Erica Jones</div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-3.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="">
                         </div>
                         <div class="contact-username">Stella Johnson</div>
                     </a>
                     
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-5.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="">
                         </div>
                         <div class="contact-username">Adrian Mohani </div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-6.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="">
                         </div>
                         <div class="contact-username"> Jonathan Madano</div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
                             <span class="user_status"></span>
                         </div>
                         <div class="contact-username"> Erica Jones</div>
                     </a>
                     <a href="chats-group.html">
                         <div class="contact-avatar">
-                            <img src="assets/images/avatars/avatar-1.jpg" alt="">
+                            <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="">
                             <span class="user_status status_online"></span>
                         </div>
                         <div class="contact-username"> Dennis Han</div>
