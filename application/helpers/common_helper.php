@@ -19,11 +19,5 @@ function authenticate_user()
  	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];
  	$userLoginData['email']=$userLoginData['user_email'];
  	$ci->session->set_userdata($userLoginData);
-
-	if($ci->session->userdata('is_approved')=='N')
-	{
-	  redirect('user/profilesetting');
-	}
-    
 }
 ?>

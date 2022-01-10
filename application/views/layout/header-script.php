@@ -52,8 +52,10 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/js/ngDialog.js"></script>
     
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchModule.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/menuController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/loginController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/signupController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/profileSettingController.js"></script>
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/bootstrap-datetimepicker.css" />
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/moment.js_2.9.0_moment-with-locales.js"></script>
@@ -67,15 +69,30 @@
         varBaseUrl='<?php echo base_url();?>'
         varImageUrl='<?php echo IMAGE_URL;?>'
     </script>
-    <style>
+    <style type="text/css">
         body{
             background-color: #f0f2f5;
         } 
+        .loaderOverlay
+        {
+          position: fixed; /* Sit on top of the page content */
+          display: none; /* Hidden by default */
+          width: 100%; /* Full width (cover the whole page) */
+          height: 100%; /* Full height (cover the whole page) */
+          top: 0; 
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+          z-index: 10001; /* Specify a stack order in case you're using a different order for other elements */
+          cursor: pointer; /* Add a pointer on hover */
+        }
     </style>
 
    </head>
    
    <body ng-app="trustApp"> <!-- sidebar-main -->
+   <div class="loaderOverlay"></div>
    
 
     

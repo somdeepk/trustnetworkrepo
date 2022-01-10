@@ -9,9 +9,9 @@ class User extends CI_Controller
 		}
 
 		$data['title'] = ucfirst($page);
-		$this->load->view('user/header-script');
-		$this->load->view('user/signup', $data);
-		$this->load->view('user/footer');
+		$data['ignoreHeadFoot'] = 1;
+		$data['content'] = 'user/signup';
+		$this->load->view('layout/template', $data);
 	}
 
 	public function ajaxsubmitsignup() 
@@ -124,9 +124,9 @@ class User extends CI_Controller
 		$jsonCookieRememberMe = json_encode($ary_cockie);
 		$data['jsonCookieRememberMe'] = $jsonCookieRememberMe;
 
-		$this->load->view('user/header-script');
-		$this->load->view('user/login', $data);
-		$this->load->view('user/footer');
+		$data['ignoreHeadFoot'] = 1;
+		$data['content'] = 'user/login';
+		$this->load->view('layout/template', $data);
 	}
 
     public function ajaxcheckuserlogin()
@@ -185,34 +185,85 @@ class User extends CI_Controller
         exit;	
 
 	}
+
+	public function index()
+	{
+		authenticate_user();
+
+		$data=array();
+		$user_auto_id=$this->session->userdata('user_auto_id');
+		$data['content'] = 'user/index';
+		$this->load->view('layout/template', $data);
+	}
+
 	public function profilesetting()
 	{
 		$data=array();
-		$msg=$this->input->post_get('msg');
-		if(!empty($msg))
-		{
-			$msg=base64_decode($msg);
-			$this->session->set_flashdata('success', $msg);
-		}
-		//$data['member_id']=$member_id;
+		$profileSettingData=array();
 
 		$user_auto_id=$this->session->userdata('user_auto_id');
+
 		$memberData = $this->User_Model->get_member_data($user_auto_id);
-		$jsonMemberData = json_encode($memberData);
+		$profileSettingData['memberData']=$memberData;
 
-		$this->session->set_userdata('is_approved', $memberData['is_approved']);
-		$data['jsonMemberData'] = $jsonMemberData;
+		$data['profileSettingData'] = $profileSettingData;
 
-		$this->load->view('user/header-script');
-		$this->load->view('user/header-bottom');
-		$this->load->view('user/profilesetting', $data);
-		$this->load->view('user/footer-top');
-		$this->load->view('user/footer');
+
+        $data['content'] = 'user/profilesetting';
+		$this->load->view('layout/template', $data);
 	}
 
+	public function ajaxupdateeditgeneraldata() 
+    {
+        $profileGeneralData = trim($this->input->post('profileGeneralData'));
+        $aryProfileGeneralData=json_decode($profileGeneralData, true);
+        $aryMemberData=$aryProfileGeneralData['memberData'];
 
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+        $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';
+        $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
+        $about_church=(isset($aryMemberData['about_church']) && !empty($aryMemberData['about_church']))? addslashes(trim($aryMemberData['about_church'])):'';
+        $address=(isset($aryMemberData['address']) && !empty($aryMemberData['address']))? addslashes(trim($aryMemberData['address'])):'';
+        $city=(isset($aryMemberData['city']) && !empty($aryMemberData['city']))? addslashes(trim($aryMemberData['city'])):'';
+        $country=(isset($aryMemberData['country']) && !empty($aryMemberData['country']))? addslashes(trim($aryMemberData['country'])):0;
+        $state=(isset($aryMemberData['state']) && !empty($aryMemberData['state']))? addslashes(trim($aryMemberData['state'])):0;
+        $postal_code=(isset($aryMemberData['postal_code']) && !empty($aryMemberData['postal_code']))? addslashes(trim($aryMemberData['postal_code'])):'';
+	
+		$current_date=date('Y-m-d H:i:s');   
 
+       	$menu_arr = array(
+            'first_name' => $first_name,
+            'last_name'  =>$last_name,
+            'about_church'  =>$about_church,
+            'address'  =>$address,
+            'city'  =>$city,
+            'country'  =>$country,
+            'state'  =>$state,
+            'postal_code'  =>$postal_code,
+            'update_date'  =>$current_date,
+        );
 
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Member Updated Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+    // log admin out
+	public function logout()
+	{
+		// unset user data
+		$this->session->unset_userdata('login');
+		$this->session->unset_userdata('email');
+		$this->session->unset_userdata('user_auto_id');
+		redirect(base_url().'user/login');
+	}
+	
 
 
 	public function ajaxgetPeopleYouMayNowData() 
@@ -794,17 +845,7 @@ class User extends CI_Controller
     }
 
 
-	// log admin out
-	public function logout()
-	{
-		// unset user data
-		$this->session->unset_userdata('login');
-		$this->session->unset_userdata('email');
-		$this->session->unset_userdata('user_auto_id');
-		//Set Message
-		$this->session->set_flashdata('success', 'You are logged out.');
-		redirect(base_url().'user/login');
-	}
+	
 
 	public function forget_password($page = 'forget-password')
 	{
@@ -861,66 +902,7 @@ class User extends CI_Controller
 
 	}
 
-	public function index()
-	{
-		authenticate_user();
-		$data=array();
-		$msg=$this->input->post_get('msg');
-		if(!empty($msg))
-		{
-			$msg=base64_decode($msg);
-			$this->session->set_flashdata('success', $msg);
-		}
-		$user_auto_id=$this->session->userdata('user_auto_id');
-		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,'',array());
-
-		$aryUpcomingBirthDay=array();
-		if(count($friendListData)>0)
-		{
-			$incree=0;
-			$currentNow=date("Y-m-d",time());
-			$currentNow=strtotime($currentNow);
-
-			$withinOneMonthTime = date("Y-m-d",strtotime("+1 months", time()));
-			$withinOneMonthTime=strtotime($withinOneMonthTime);
-
-			$addedOneDay = date("Y-m-d",strtotime("+1 day", time()));
-			$addedOneDay=strtotime($addedOneDay);
-			foreach ($friendListData as $key => $value)
-			{
-				$birthdayDate= $this->get_next_date(strtotime($value['dob']),1,'year'); //echo "-".
-				if($birthdayDate>=$currentNow && $birthdayDate<=$withinOneMonthTime && $value['membership_type']=='RM')
-				{
-					$incree++;
-					$aryUpcomingBirthDay[$incree]=$value;
-					if(date("d",strtotime($value['dob']))==date("d"))
-					{
-						$aryUpcomingBirthDay[$incree]['dispTimeString']='Today';
-					}
-					elseif(date("d",strtotime($value['dob']))==date("d",$addedOneDay))
-					{
-						$aryUpcomingBirthDay[$incree]['dispTimeString']='Tomorrow';
-					}
-					else
-					{
-						$aryUpcomingBirthDay[$incree]['dispTimeString']=date("jS M",strtotime($value['dob']));
-					}
-				}
-			}
-		}
-		$data['aryUpcomingBirthDay']=$aryUpcomingBirthDay;
-
-		/*echo "<pre>";
-        print_r($aryUpcomingBirthDay);
-        exit;
-		exit;*/
-
-		$this->load->view('user/header-script');
-		$this->load->view('user/header-bottom');
-		$this->load->view('user/index', $data);
-		$this->load->view('user/footer-top');
-		$this->load->view('user/footer');
-	}
+	
 
 	public function churchrequest()
 	{

@@ -52,14 +52,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{
-            		if(aryreturnData.data.userLoginData.is_approved=='Y')
-            		{
-            			window.location.href=varGlobalAdminBaseUrl+"index";
-            		}
-            		else
-            		{
-            			window.location.href=varGlobalAdminBaseUrl+"profilesetting";
-            		}
+            		window.location.href=varGlobalAdminBaseUrl+"index";
               	}
             	else
             	{

@@ -5,6 +5,7 @@ class User_Model extends CI_Model
 	{
 		$this->load->database();
 	}
+
 	public function ajaxcheckuserlogin($email, $password)
 	{
 		$sql="SELECT * FROM tn_members WHERE user_email='".$email."' AND password='".$password."' AND status='1' AND deleted='0'";
@@ -19,7 +20,7 @@ class User_Model extends CI_Model
 			return array();
 		}
 	}
-
+	
 	public function check_dup_email($email='')
 	{
 		$sql="SELECT * from tn_members WHERE user_email='".$email."' AND deleted='0'";
@@ -48,6 +49,16 @@ class User_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
+
+	public function get_member_data($id)
+	{
+		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData[0];
+	}
+
+
 
 	public function ajaxAddUpdateMemberFriends($menu_arr=NULL,$member_friends_aid=0)
 	{
@@ -135,13 +146,6 @@ class User_Model extends CI_Model
 		}
 	}
 
-	public function get_member_data($id)
-	{
-		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData[0];
-	}
 	public function assign_under_group_admin($member_id)
 	{
 		$admin_id=0;
@@ -212,21 +216,6 @@ class User_Model extends CI_Model
 		$resultData=$query->result_array();
 		return $resultData;
 	}
-
-//AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status='1' )
-	/*$sql="SELECT 
-				tm.*,
-				tmf.id as member_friends_aid, 
-				tmf.request_status,
-				(SELECT GROUP_CONCAT(friend_id) FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status='1' ) AS tempFriend
-				FROM tn_members as tm
-				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id
-				WHERE 
-				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1' )
-    			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' )
-    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' order by first_name ASC";*/
-    	
-
 
 	public function ajaxGetAllFriendRequest($user_auto_id,$clickProfileTab="")
 	{

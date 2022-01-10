@@ -390,7 +390,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                              </svg>
 	                             Activity Log
 	                        </a>
-	                        <a href="#">
+	                        <a href="<?php echo base_url();?>user/logout">
 	                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 	                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
 	                            </svg>
@@ -408,7 +408,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	</header>
 
 	<!-- sidebar -->
-	<div class="sidebar">
+	<div class="sidebar" ng-controller="menuController" ng-init="menuPointer();">
 	    <div class="sidebar_inner" data-simplebar>
 	        <ul>
 	            <li><a href="feed.html"> 
@@ -504,7 +504,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	           
 	            <li><a href="feed.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
 	                <ul>
-	                    <li><a href="profile-setting.html">Profile Settings</a></li>
+	                    <li><a href="javascript:void(0);" ng-click="profileSetting()">Profile Settings</a></li>
 	                    <li><a href="profile-setting.html">Privacy Settings</a></li>
 	                    <li><a href="profile-setting.html">Create Groups</a></li>
 	                    <li><a href="profile-setting.html">Notifications and Settings</a></li>
@@ -534,4 +534,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	    </div>
 	    <!-- sidebar overly for mobile -->
 	    <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
-	</div> 
+	</div>
+	
+	<!-- Start  dynamicContentViewer --> 
+	<div id="angularMainContent">

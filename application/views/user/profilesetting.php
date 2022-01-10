@@ -1,6 +1,5 @@
-
 <!-- Main Contents -->
-<div class="main_content">
+<div class="main_content" ng-controller="profileSettingController" ng-init="baseencoded_profileSettingData='<?php echo base64_encode(json_encode($profileSettingData)) ;?>'; initProfileSetting();">
     <div class="mcontainer">
         <div class="bg-white lg:divide-x lg:flex lg:shadow-md rounded-md shadow lg:rounded-xl overflow-hidden lg:m-0 -mx-4">
             <div class="lg:w-1/3">
@@ -31,66 +30,58 @@
                   </div>
                   <!-- form body -->
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
-                     <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                        <span for="username" class="line__placeholder"> First Name   </span>
+                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='RM'">
+                        <input class="line__input" type="text" id="first_name"  autocomplete="off" ng-model="profileSettingData.memberData.first_name" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(profileSettingData.memberData.first_name)==true)? 'redBorder' : ''">
+                        <span for="username" class="line__placeholder">First Name</span>
                      </div>
-                     <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                        <span for="username" class="line__placeholder"> Last Name </span>
+                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='RM'">
+                        <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="profileSettingData.memberData.last_name" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(profileSettingData.memberData.last_name)==true)? 'redBorder' : ''">
+                        <span for="username" class="line__placeholder">Last Name</span>
                      </div>
-                     <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                        <span for="username" class="line__placeholder">Church Name </span>
+                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='PM'">
+                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="profileSettingData.memberData.first_name" maxlength="25">
+                        <span for="username" class="line__placeholder">Church Name</span>
                      </div>
-                     <div>
-                        <label for="">Denomination </label>
-                        <select id="relationship" name="relationship"  class="shadow-none selectpicker with-border ">
-                           <option value="0">None</option>
-                           <option value="1">Anabaptist Groups</option>
-                           <option value="2">Baptist General Conference</option>
-                           <option value="3">Calvary Chapel</option>
-                           <option value="4">Catholic Charismatic Church</option>
-                           <option value="5">Church of God (Holiness)</option>
-                           <option value="6">Disciples of Christ</option>
-                           <option value="7">Episcopal Church</option>
-                           <option value="8">Fellowship of Christian Assemblies</option>
-                           <option value="9">IFCA International</option>
-                           <option value="10">Islamic Society of North America</option>
-                        </select>
-                     </div>
+
                      <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="profileSettingData.memberData.user_email" emailvalidate ng-disabled="true" maxlength="25">
                         <span for="username" class="line__placeholder">Email </span>
                      </div>
-                     <div class="col-span-2" hidden>
-                        <label for="about">About Church</label>
-                        <textarea class="shadow-none with-border"></textarea>
-                     </div>
-                     <div class="line h-32">
-                        <textarea class="line__input h-32"  autocomplete="off"  type="text" onKeyUp="this.setAttribute('value', this.value);" value=""></textarea>
+                     <div class="line h-32" ng-if="profileSettingData.memberData.membership_type=='RM'">
+                        <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="profileSettingData.memberData.about_church"></textarea>
                         <span for="username" class="line__placeholder">About Church </span>
                      </div>
                      <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                        <input class="line__input" id="address" autocomplete="off" type="text" ng-model="profileSettingData.memberData.address">
                         <span for="username" class="line__placeholder">Address </span>
                      </div>
+                     
                      <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                        <span for="username" class="line__placeholder">State/City </span>
+                        <select ng-model="profileSettingData.memberData.country" id="country" ng-change="getStateData(profileSettingData.memberData.country)" class="form-control">
+                            <option value="0">Select Country</option>
+                            <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
+                        </select>
                      </div>
                      <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                        <span for="username" class="line__placeholder">Country </span>
+                        <select ng-disabled="!profileSettingData.memberData.country"  ng-model="profileSettingData.memberData.state" id="state"  ng-change="getCityData(profileSettingData.memberData.state)" style="background: transparent;" class="form-control form-control-primary">
+                         <option value="0">Select State</option>
+                         <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
+                       </select>
                      </div>
                      <div class="line">
-                        <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                        <select ng-disabled="!profileSettingData.memberData.state" ng-model="profileSettingData.memberData.city" id="city" style="background: transparent;" class="form-control form-control-primary">
+                           <option value="0">Select City</option>
+                           <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
+                       </select>
+                     </div>
+                     <div class="line">
+                        <input class="line__input" autocomplete="off" ng-model="profileSettingData.memberData.postal_code" id="postal_code" type="text">
                         <span for="username" class="line__placeholder">Zip Code </span>
                      </div>
                   </div>
-                  <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                  <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3"><!-- 
+                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
+                     <button type="button" ng-click="submitProfileGeneralData()" class="zsubmitGeneralDataz button bg-blue-700"> Save </button>
                   </div>
                </div>
             </div>
