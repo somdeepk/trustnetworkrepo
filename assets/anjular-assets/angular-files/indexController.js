@@ -260,8 +260,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        			$scope.postExist = false;
 	        		}
 
-	        		// console.log("KANU")
-	        		// console.log($scope.aryPostScroll)
+	        		console.log("KANU")
+	        		console.log($scope.aryPostScroll)
 	        	}
 	        	else
 	        	{
@@ -345,5 +345,57 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         		console.log("Like Unlike Failed!")
         	}
 		});
+	};
+
+	$scope.commentTimelinePost = function(valuePS)
+    {	
+    	
+    	timelineId=valuePS.id;
+    	post_id=valuePS.post_id;
+    	member_comment=$.trim(valuePS.member_comment);
+
+		$scope.postCommentData={}
+		$scope.postCommentData.post_id=post_id;
+		$scope.postCommentData.timelineId=timelineId;
+		$scope.postCommentData.member_comment=member_comment;
+
+		if(member_comment!="")
+		{
+			var formData = new FormData();
+			formData.append('postCommentData',angular.toJson($scope.postCommentData));
+			$http({
+	            method  : 'POST',
+	            url     : varBaseUrl+"post/commentTimelinePost",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.postCommentData={};
+
+	        		var postCommentData=aryreturnData.data.postCommentData;
+	        		var postAllCommentData=aryreturnData.data.postAllCommentData;
+	        		var result = $scope.aryPostScroll.filter(function(v,i)
+					{  
+					    if (v.id === timelineId)
+					    {
+					    	// alert(v.id+" -- "+timelineId)
+					    	// console.log($scope.aryPostScroll);
+					    	$scope.aryPostScroll[i].post_comment_data=postCommentData ;
+					    	$scope.aryPostScroll[i].all_post_comment_data=postAllCommentData ;
+					    	$scope.aryPostScroll[i].member_comment='' ;
+					 	} 
+					}); 
+
+
+	        	}
+	        	else
+	        	{
+	        		console.log("Commenting Failed!")
+	        	}
+			});
+	    }
 	};
 });

@@ -423,19 +423,14 @@ div.postcontainer{
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="total-comment-block">
+                                    <div ng-if='valuePS.all_post_comment_data.length>0' class="total-comment-block">
                                        <div class="dropdown">
                                           <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                          20 Comment
+                                          {{valuePS.all_post_comment_data.length}} Comment
                                           </span>
                                           <div class="dropdown-menu">
-                                             <a class="dropdown-item" href="#">Max Emum</a>
-                                             <a class="dropdown-item" href="#">Bill Yerds</a>
-                                             <a class="dropdown-item" href="#">Hap E. Birthday</a>
-                                             <a class="dropdown-item" href="#">Tara Misu</a>
-                                             <a class="dropdown-item" href="#">Midge Itz</a>
-                                             <a class="dropdown-item" href="#">Sal Vidge</a>
-                                             <a class="dropdown-item" href="#">Other</a>
+                                             <a class="dropdown-item" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data" href="javascript:void();">{{valueComments.first_name+' '+valueComments.last_name}}</a>
+                                             <a ng-if='valuePS.all_post_comment_data.length>3' class="dropdown-item" href="javascript:void();">Other</a>
                                           </div>
                                        </div>
                                     </div>
@@ -475,62 +470,50 @@ div.postcontainer{
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="total-comment-block">
+                                    <!-- <div class="total-comment-block">
                                        <div class="dropdown">
                                           <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                                           Comment
                                           </span>
                                          </div>
-                                    </div>
+                                    </div> -->
                                  </div>
                                  <div class="share-block d-flex align-items-center feather-icon mr-3">
                                     <a href="javascript:void();"><i class="ri-share-line"></i>
                                     <span class="ml-1">Share Now</span></a>
                                  </div>
                               </div>
-                              <hr>
-                              <ul class="post-comments p-0 m-0">
-                                 <li class="mb-2">
-                                    <div class="d-flex flex-wrap">
-                                       <div class="user-img">
-                                          <img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="userimg" class="avatar-35 rounded-circle img-fluid">
-                                       </div>
-                                       <div class="comment-data-block ml-3">
-                                          <h6>Monty Carlo</h6>
-                                          <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                                          <div class="d-flex flex-wrap align-items-center comment-activity">
-                                             <a href="javascript:void();">like</a>
-                                             <a href="javascript:void();">reply</a>
-                                             <a href="javascript:void();">translate</a>
-                                             <span> 5 min </span>
+
+                              <div ng-if='valuePS.post_comment_data.length>0'>
+                                 <hr>
+                                 <ul class="post-comments p-0 m-0">
+                                    <li class="mb-2" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data">
+                                       <div class="d-flex flex-wrap">
+                                          <div class="user-img">
+                                             <img src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="userimg" class="avatar-35 rounded-circle img-fluid">
+                                          </div>
+                                          <div class="comment-data-block ml-3">
+                                             <h6>{{valueComments.first_name+' '+valueComments.last_name}}</h6>
+                                             <p class="mb-0">{{valueComments.member_comment}}</p>
+                                             <div class="d-flex flex-wrap align-items-center comment-activity">
+                                                <!-- <a href="javascript:void();">like</a>
+                                                <a href="javascript:void();">reply</a>
+                                                <a href="javascript:void();">translate</a> -->
+                                                <span> {{valueComments.comment_date}} </span>
+                                             </div>
                                           </div>
                                        </div>
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div class="d-flex flex-wrap">
-                                       <div class="user-img">
-                                          <img src="<?php echo base_url();?>assets/images/user/03.jpg" alt="userimg" class="avatar-35 rounded-circle img-fluid">
-                                       </div>
-                                       <div class="comment-data-block ml-3">
-                                          <h6>Paul Molive</h6>
-                                          <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                                          <div class="d-flex flex-wrap align-items-center comment-activity">
-                                             <a href="javascript:void();">like</a>
-                                             <a href="javascript:void();">reply</a>
-                                             <a href="javascript:void();">translate</a>
-                                             <span> 5 min </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </li>
-                              </ul>
+                                    </li>
+                                    
+                                 </ul>
+                              </div>
                               <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                                 <input type="text" class="form-control rounded" placeholder="Enter Your Comment">
+                                 <input type="text" class="form-control rounded" ng-model="valuePS.member_comment" maxlength="300" placeholder="Enter Your Comment">
                                  <div class="comment-attagement d-flex">
-                                    <a href="javascript:void();"><i class="ri-link mr-3"></i></a>
-                                    <a href="javascript:void();"><i class="ri-user-smile-line mr-3"></i></a>
-                                    <a href="javascript:void();"><i class="ri-camera-line mr-3"></i></a>
+                                    <!-- <a href="javascript:void();"><i class="ri-link mr-3"></i></a>
+                                    <a href="javascript:void();"><i class="ri-user-smile-line mr-3"></i></a> 
+                                    <a href="javascript:void();"><i class="ri-camera-line mr-3"></i></a>-->
+                                    <a href="javascript:void();" ng-click="commentTimelinePost(valuePS)"><i class="ri-send-plane-2-fill mr-3"></i></a>
                                  </div>
                               </form>
                            </div>

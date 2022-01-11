@@ -132,6 +132,47 @@ class Post_Model extends CI_Model
 		}
 	}
 
+	public function addUpdatePostComment($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_post_comments',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_post_comments',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	public function getPostCommentData($aryArgu=array())
+	{
+		$post_id=$aryArgu['post_id'];
+		$start=$aryArgu['start'];
+		$limit=$aryArgu['limit'];
+
+		$strLimit="";
+		if($limit!="")
+		{
+			$strLimit=" limit ".$start.",".$limit;
+		}
+
+		$sqlPostComments="SELECT 
+		tpl.id,
+		tpl.member_comment,
+		DATE_FORMAT(tpl.create_date, '%d %b %Y %h:%i %p') as comment_date,
+		tm.first_name,
+		tm.last_name,
+		tm.profile_image
+
+		FROM tn_post_comments as tpl
+		LEFT JOIN tn_members as tm on tm.id=tpl.member_id
+		WHERE tpl.post_id='".$post_id."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
+		$queryPostComments=$this->db->query($sqlPostComments);
+		$resultPostComments=$queryPostComments->result_array();
+		return $resultPostComments;
+	}
 
 }
 ?>
