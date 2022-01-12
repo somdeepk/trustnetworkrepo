@@ -2,15 +2,16 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
   $scope.supportData={};
   $scope.supportData.manageSupport={};
   $scope.supportData.manageSupport.id='0';
-  $scope.supportData.listSupport=[];
+  $scope.supportData.listSupport={};
 
   $scope.initSupport = function() {
     $scope.supportData={};
     $scope.supportData.manageSupport={};
-    $scope.supportData.listSupport=[];
+    $scope.supportData.listSupport={};
     $scope.supportData.manageSupport.id='0';
     $scope.supportData.manageSupport.parent_id='0';
     $scope.supportData.manageSupport.report_to='0';
+    $scope.checkDailyReport();
   };
 
   $scope.submitTicket = function() {
@@ -34,6 +35,7 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
       swal("Error!", tjoin+" Required", "error");
     } else {
       //console.log(varGlobalAdminBaseUrl);
+      $scope.buttonSavingAnimation('zsubmitTicketz','Saving..','loader');
       var formData = new FormData();
       formData.append('manageSupport',angular.toJson($scope.supportData.manageSupport));
       $http({
@@ -43,14 +45,38 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
           headers: {'Content-Type': undefined},                     
           data:formData, 
       }).success(function(returnData) {
-        console.log(returnData);
-        //aryreturnData=angular.fromJson(returnData);
+        $scope.buttonSavingAnimation('zsubmitTicketz','Saved!','onlytext');
+        $scope.checkDailyReport();
+        $timeout(function()
+        {
+          $scope.supportData.manageSupport={};
+          $scope.supportData.manageSupport.id='0';
+          $scope.supportData.manageSupport.report_to='';
+          $scope.buttonSavingAnimation('zsubmitTicketz','Submit','onlytext');
+        },1200);
       });
     }
   };
 
+  $scope.MyInterval = $interval( function() { $scope.checkDailyReport(); }, 5000);
+
+  $scope.checkDailyReport = function() {
+   $http({
+        method  : 'POST',
+        url     : varGlobalAdminBaseUrl+"ajaxgetallticket",
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined},                     
+    }).success(function(returnData) {
+      console.log(returnData);
+      $scope.supportData.listSupport=returnData ;
+    });
+  };
+
   $scope.isNullOrEmptyOrUndefined = function (value) {
     return !value;
-  };     
+  };
+
+  $scope.parseInt = parseInt ;
+  $scope.parseFloat = parseFloat ;   
 
 });

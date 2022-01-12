@@ -19,10 +19,16 @@
                     ?>
                     <option value="0">Super Admin</option>
                     <?php
-                    } else if ($parent_leader_id>0) {
+                    } else if ($membershipType=='RM' && $parent_leader_id>0) {
                     ?>
                     <option value="0">Super Admin</option>
-                    <option value="<?php echo $parent_leader_id ;?>">Group Admin</option>
+                    <option value="<?php echo $parent_id ;?>">My Church</option>
+                    <option value="<?php echo $parent_leader_id ;?>">Leader</option>
+                    <?php
+                    } else if ($membershipType=='RM' && $parent_leader_id==0) {
+                    ?>
+                    <option value="0">Super Admin</option>
+                    <option value="<?php echo $parent_id ;?>">My Church</option>
                     <?php
                     } else {
                     ?>
@@ -43,10 +49,77 @@
                    <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px;" ng-model="supportData.manageSupport.description"></textarea>
                 </div>
                 <div class="form-group col-sm-12">
-                  <a href="javascript:void(0);" class="btn btn-request" style="float:right;" ng-click="submitTicket();">Submit</a>
+                  <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="submitTicket();">Submit</button>
                 </div>              
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="iq-card">
+          <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+              <h4 class="card-title">My Tickets</h4>
+            </div>
+            <!--<div class="iq-card-header-toolbar d-flex align-items-center">
+              <div class="dropdown">
+                 <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
+                 <i class="ri-more-fill"></i>
+                 </span>
+                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
+                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
+                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                 </div>
+              </div>
+            </div>-->
+          </div>
+          <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.myTickets.length)>0">
+            <ul class="media-story m-0 p-0">
+              <li class="d-flex mb-4 align-items-center" ng-repeat="myTicket in supportData.listSupport.myTickets">
+                 <div class="stories-data ml-3">
+                    <h5>{{myTicket.myTicketSubject}}</h5>
+                    <p class="mb-0">To {{myTicket.responseToName}} on {{myTicket.myTicketCreation}}</p>
+                 </div>
+              </li>
+            </ul>
+          </div>
+          <div class="iq-card-body" ng-if="isNullOrEmptyOrUndefined(supportData.listSupport.myTickets)==true">
+            <ul class="media-story m-0 p-0">
+              <li class="d-flex mb-4 align-items-center ">
+                 <div class="stories-data ml-3">
+                    <h5>No Records Found</h5>
+                 </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="iq-card">
+          <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+              <h4 class="card-title">Assigned Tickets</h4>
+            </div>
+          </div>
+          <div class="iq-card-body">
+            <ul class="media-story m-0 p-0">
+              <li class="d-flex mb-4 align-items-center">
+                <img src="http://localhost/trust-member/assets/images/user/01.jpg" alt="story-img" class="rounded-circle img-fluid">
+                <div class="stories-data ml-3">
+                    <h5>Anna Sthesia</h5>
+                    <p class="mb-0">Today</p>
+                </div>
+              </li>
+              <li class="d-flex align-items-center">
+                 <img src="http://localhost/trust-member/assets/images/user/02.jpg" alt="story-img" class="rounded-circle img-fluid">
+                 <div class="stories-data ml-3">
+                    <h5>Paul Molive</h5>
+                    <p class="mb-0">Tomorrow</p>
+                 </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

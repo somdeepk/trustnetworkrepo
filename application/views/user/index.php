@@ -514,10 +514,10 @@ div.postcontainer{
                
                <div class="iq-card">
                   <div class="iq-card-header d-flex justify-content-between">
-                     <div class="iq-header-title">
-                        <h4 class="card-title">Events</h4>
-                     </div>
-                     <div class="iq-card-header-toolbar d-flex align-items-center">
+                    <div class="iq-header-title">
+                      <h4 class="card-title">Events</h4>
+                    </div>
+                    <div class="iq-card-header-toolbar d-flex align-items-center">
                         <div class="dropdown">
                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
                            <i class="ri-more-fill"></i>
@@ -530,7 +530,7 @@ div.postcontainer{
                               <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
                            </div>
                         </div>
-                     </div>
+                    </div>
                   </div>
                   <div class="iq-card-body">
                      <ul class="media-story m-0 p-0">

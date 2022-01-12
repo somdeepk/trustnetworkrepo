@@ -2530,6 +2530,103 @@ class User extends CI_Controller
         echo json_encode(array('retId'=>$retId));
         die();
     }
+
+    public function ajaxgetallticket()
+    {
+      $returnData=array();
+      $user_auto_id=$this->session->userdata('user_auto_id');
+      $myTickets=array();
+      $aTickets=array();
+      $sql='SELECT a.id, a.subject, a.description, a.created_on, a.response_to, (SELECT COUNT(id) FROM tn_support_ticket WHERE parent_id=a.id AND is_deleted="0") AS childCount FROM tn_support_ticket AS a WHERE a.parent_id="0" AND a.response_from="'.$user_auto_id.'" AND a.is_deleted="0"';
+      $query=$this->db->query($sql);
+      $mTickets=$query->result_array();
+      // print "<pre>"; print_r($mTickets); print "</pre>";
+      // die();
+      if (!empty($mTickets)) {
+        foreach ($mTickets as $mData) {
+          if (!empty($mData['id'])) {
+            $myTicketId=$mData['id'];
+            $myTicketSubject=$mData['subject'];
+            $myTicketDescription=$mData['description'];
+            $myTicketRespTo=$mData['response_to'];
+            $myTicketCreation=date('m/d/Y H:i', strtotime($mData['created_on']));
+            $myTicketChildCount=$mData['childCount'];
+
+            $nmql='SELECT CONCAT(first_name, " ", last_name) AS responseToName FROM tn_members WHERE id="'.$myTicketRespTo.'"';
+            $nmquery=$this->db->query($nmql);
+            $nmDetails=$nmquery->result_array();
+            $responseToName=(isset($nmDetails[0]['responseToName']) && !empty($nmDetails[0]['responseToName']))? $nmDetails[0]['responseToName'] : 'Super Admin';
+
+            $tql='SELECT a.id, a.response_from FROM tn_support_ticket AS a WHERE a.parent_id="'.$myTicketId.'" AND a.is_deleted="0" ORDER BY id DESC LIMIT 1';
+            $tquery=$this->db->query($tql);
+            $tTickets=$tquery->result_array();
+
+            $lastChildTicket=(isset($tTickets[0]['id']) && !empty($tTickets[0]['id']))? $tTickets[0]['id'] : 0 ;
+            $lastResponseFrom=(isset($tTickets[0]['response_from']) && !empty($tTickets[0]['response_from']))? $tTickets[0]['response_from'] : 0 ;
+            $lastRespFrom=0;
+            $lastResponseFromName='';
+            if (!empty($lastChildTicket) && !empty($lastResponseFrom)) {
+              if ($lastResponseFrom!=$user_auto_id) {
+                $lastRespFrom=$lastResponseFrom;
+
+                $nmlql='SELECT CONCAT(first_name, " ", last_name) AS responseFromName FROM tn_members WHERE id="'.$lastRespFrom.'"';
+                $nmlquery=$this->db->query($nmlql);
+                $nmlDetails=$nmlquery->result_array();
+                $lastResponseFromName=(isset($nmlDetails[0]['responseFromName']) && !empty($nmlDetails[0]['responseFromName']))? $nmlDetails[0]['responseFromName'] : 'Super Admin';
+              }
+            }
+            $myTickets[]=array('myTicketId'=>$myTicketId, 'myTicketSubject'=>$myTicketSubject, 'myTicketDescription'=>$myTicketDescription, 'myTicketCreation'=>$myTicketCreation, 'myTicketChildCount'=>$myTicketChildCount, 'lastRespFrom'=>$lastRespFrom, 'myTicketRespTo'=>$myTicketRespTo, 'responseToName'=>$responseToName, 'lastResponseFromName'=>$lastResponseFromName);
+          }
+        }
+      }
+      
+
+      $sql2='SELECT a.id, a.subject, a.description, a.created_on, a.response_from, (SELECT COUNT(id) FROM tn_support_ticket WHERE parent_id=a.id AND is_deleted="0") AS childCount FROM tn_support_ticket AS a WHERE a.parent_id="0" AND a.response_to="'.$user_auto_id.'" AND a.is_deleted="0"';
+      $query2=$this->db->query($sql2);
+      $assignedTickets=$query2->result_array();
+      
+      if (!empty($assignedTickets)) {
+        foreach ($assignedTickets as $aData) {
+          if (!empty($aData['id'])) {
+            $assignTicketId=$aData['id'];
+            $assignTicketSubject=$aData['subject'];
+            $assignTicketDescription=$aData['description'];
+            $assignTicketRespfrom=$aData['response_from'];
+            $assignTicketCreation=date('m/d/Y H:i', strtotime($aData['created_on']));
+            $assignTicketChildCount=$aData['childCount'];
+
+            $nmaql='SELECT CONCAT(first_name, " ", last_name) AS responseToName FROM tn_members WHERE id="'.$assignTicketRespfrom.'"';
+            $nmaquery=$this->db->query($nmaql);
+            $nmaDetails=$nmaquery->result_array();
+            $responseToName=(isset($nmaDetails[0]['responseToName']) && !empty($nmaDetails[0]['responseToName']))? $nmaDetails[0]['responseToName'] : 'Super Admin';
+
+            $tql='SELECT a.id, a.response_from FROM tn_support_ticket AS a WHERE a.parent_id="'.$myTicketId.'" AND a.is_deleted="0" ORDER BY id DESC LIMIT 1';
+            $tquery=$this->db->query($tql);
+            $tTickets=$tquery->result_array();
+
+            $lastChildTicket=(isset($tTickets[0]['id']) && !empty($tTickets[0]['id']))? $tTickets[0]['id'] : 0 ;
+            $lastResponseFrom=(isset($tTickets[0]['response_from']) && !empty($tTickets[0]['response_from']))? $tTickets[0]['response_from'] : 0 ;
+            $lastAssignRespFrom=0;
+            $lastResponseAssignFromName='';
+            if (!empty($lastChildTicket) && !empty($lastResponseFrom)) {
+              if ($lastResponseFrom!=$user_auto_id) {
+                $lastAssignRespFrom=$lastResponseFrom;
+
+                $nmlql='SELECT CONCAT(first_name, " ", last_name) AS responseAssignFromName FROM tn_members WHERE id="'.$lastAssignRespFrom.'"';
+                $nmlquery=$this->db->query($nmlql);
+                $nmlDetails=$nmlquery->result_array();
+                $lastResponseAssignFromName=(isset($nmlDetails[0]['responseAssignFromName']) && !empty($nmlDetails[0]['responseAssignFromName']))? $nmlDetails[0]['responseAssignFromName'] : 'Super Admin';
+              }
+            }
+
+            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'responseToName'=>$responseToName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
+          }
+        }
+      }
+      
+      echo json_encode(array('myTickets'=>$myTickets, 'assignedTickets'=>$aTickets));
+      die();
+    }
 }
 	
 

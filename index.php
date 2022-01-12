@@ -53,9 +53,12 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
+
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
-
+  ini_set('error_reporting', (E_ALL & ~E_NOTICE & ~E_WARNING) );
+  error_reporting(E_ALL);
+  ini_set("display_errors", 1);
 
 /*
  *---------------------------------------------------------------
