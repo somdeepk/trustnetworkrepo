@@ -2546,7 +2546,7 @@ class User extends CI_Controller
         foreach ($mTickets as $mData) {
           if (!empty($mData['id'])) {
             $myTicketId=$mData['id'];
-            $myTicketSubject=$mData['subject'];
+            $myTicketSubject=(strlen($mData['subject'])>20)? substr($mData['subject'],0, 20) .'...' : $mData['subject'];
             $myTicketDescription=$mData['description'];
             $myTicketRespTo=$mData['response_to'];
             $myTicketCreation=date('m/d/Y H:i', strtotime($mData['created_on']));
@@ -2589,16 +2589,16 @@ class User extends CI_Controller
         foreach ($assignedTickets as $aData) {
           if (!empty($aData['id'])) {
             $assignTicketId=$aData['id'];
-            $assignTicketSubject=$aData['subject'];
+            $assignTicketSubject=(strlen($aData['subject'])>20)? substr($aData['subject'],0, 20) .'...' : $aData['subject'];
             $assignTicketDescription=$aData['description'];
-            $assignTicketRespfrom=$aData['response_from'];
+            $ticketCameFromId=$aData['response_from'];
             $assignTicketCreation=date('m/d/Y H:i', strtotime($aData['created_on']));
             $assignTicketChildCount=$aData['childCount'];
 
-            $nmaql='SELECT CONCAT(first_name, " ", last_name) AS responseToName FROM tn_members WHERE id="'.$assignTicketRespfrom.'"';
+            $nmaql='SELECT CONCAT(first_name, " ", last_name) AS ticketCameFromName FROM tn_members WHERE id="'.$ticketCameFromId.'"';
             $nmaquery=$this->db->query($nmaql);
             $nmaDetails=$nmaquery->result_array();
-            $responseToName=(isset($nmaDetails[0]['responseToName']) && !empty($nmaDetails[0]['responseToName']))? $nmaDetails[0]['responseToName'] : 'Super Admin';
+            $ticketCameFromName=(isset($nmaDetails[0]['ticketCameFromName']) && !empty($nmaDetails[0]['ticketCameFromName']))? $nmaDetails[0]['ticketCameFromName'] : 'Super Admin';
 
             $tql='SELECT a.id, a.response_from FROM tn_support_ticket AS a WHERE a.parent_id="'.$myTicketId.'" AND a.is_deleted="0" ORDER BY id DESC LIMIT 1';
             $tquery=$this->db->query($tql);
@@ -2619,12 +2619,26 @@ class User extends CI_Controller
               }
             }
 
-            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'responseToName'=>$responseToName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
+            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'ticketCameFromName'=>$ticketCameFromName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
           }
         }
       }
       
       echo json_encode(array('myTickets'=>$myTickets, 'assignedTickets'=>$aTickets));
+      die();
+    }
+
+    public function ajaxgetticketresponse()
+    {
+      $returnArray=array();
+      $parentTicket = trim($this->input->post('parentTicketId'));
+      $parentTicketId=json_decode($parentTicket, true);
+      $user_auto_id=$this->session->userdata('user_auto_id');
+      $tql='SELECT a.id, a.description, a.response_to, a.response_from, a.created_on, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_to) AS responseToName, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_from) AS responseFromName FROM tn_support_ticket AS a WHERE a.parent_id="'.$parentTicketId.'" AND a.is_deleted="0" ORDER BY id DESC';
+      $tquery=$this->db->query($tql);
+      $returnArray=$tquery->result_array();
+
+      echo json_encode(array('returnData'=>$returnArray, 'tSql'=>$tql));
       die();
     }
 }

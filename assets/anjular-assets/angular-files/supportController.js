@@ -1,16 +1,18 @@
 mainApp.controller('supportController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
   $scope.supportData={};
+  $scope.supportData.manageTicket={};
   $scope.supportData.manageSupport={};
   $scope.supportData.manageSupport.id='0';
   $scope.supportData.listSupport={};
 
   $scope.initSupport = function() {
     $scope.supportData={};
+    $scope.supportData.manageTicket={};
     $scope.supportData.manageSupport={};
     $scope.supportData.listSupport={};
     $scope.supportData.manageSupport.id='0';
     $scope.supportData.manageSupport.parent_id='0';
-    $scope.supportData.manageSupport.report_to='0';
+    $scope.supportData.manageSupport.report_to='';
     $scope.checkDailyReport();
   };
 
@@ -61,15 +63,45 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
   $scope.MyInterval = $interval( function() { $scope.checkDailyReport(); }, 5000);
 
   $scope.checkDailyReport = function() {
-   $http({
+    $http({
         method  : 'POST',
         url     : varGlobalAdminBaseUrl+"ajaxgetallticket",
         transformRequest: angular.identity,
         headers: {'Content-Type': undefined},                     
     }).success(function(returnData) {
-      console.log(returnData);
       $scope.supportData.listSupport=returnData ;
     });
+  };
+
+  $scope.viewTicketDetails = function(ticketData) {
+    $scope.supportData.manageTicket={};
+    $scope.supportData.manageTicket.ticketId=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketId)==false)? ticketData.assignTicketId : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketId)==false)? ticketData.myTicketId : 0);
+    $scope.supportData.manageTicket.ticketSubject=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketSubject)==false)? ticketData.assignTicketSubject : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketSubject)==false)? ticketData.myTicketSubject : '');
+    $scope.supportData.manageTicket.ticketDescription=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketDescription)==false)? ticketData.assignTicketDescription : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketDescription)==false)? ticketData.myTicketDescription : '');
+    $scope.supportData.manageTicket.ticketChildCount=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketChildCount)==false)? ticketData.assignTicketChildCount : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketChildCount)==false)? ticketData.myTicketChildCount : 0);
+    $scope.supportData.manageTicket.ticketResponseTo=($scope.isNullOrEmptyOrUndefined(ticketData.myTicketRespTo)==false)? ticketData.myTicketRespTo : 0 ;
+    $scope.supportData.manageTicket.ticketType=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketId)==false)? 'A' : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketId)==false)? 'M' : '');
+    if ($scope.supportData.manageTicket.ticketType=='M' && parseInt($scope.supportData.manageTicket.ticketId)>0 && parseInt($scope.supportData.manageTicket.ticketChildCount)==0) {
+      $scope.supportData.manageSupport.id=$scope.supportData.manageTicket.ticketId;
+      $scope.supportData.manageSupport.parent_id='0';
+      $scope.supportData.manageSupport.report_to=$scope.supportData.manageTicket.ticketResponseTo;
+      $scope.supportData.manageSupport.subject=$scope.supportData.manageTicket.ticketSubject;
+      $scope.supportData.manageSupport.description=$scope.supportData.manageTicket.ticketDescription;
+    } else {
+      var formData = new FormData();
+      formData.append('parentTicketId',angular.toJson($scope.supportData.manageTicket.ticketId));
+      $http({
+        method  : 'POST',
+        url     : varGlobalAdminBaseUrl+"ajaxgetticketresponse",
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined},                     
+        data:formData, 
+      }).success(function(returnData) {
+        console.log(returnData);
+      });
+    }
+    console.log($scope.supportData.manageSupport);
+    console.log($scope.supportData.manageTicket);
   };
 
   $scope.isNullOrEmptyOrUndefined = function (value) {

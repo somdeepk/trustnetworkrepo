@@ -6,7 +6,7 @@
           <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div class="iq-card-header d-flex justify-content-between">
               <div class="iq-header-title">
-                <h4 class="card-title">Create Support Ticket</h4>
+                <h4 class="card-title">{{(parseInt(supportData.manageSupport.id)>0)? 'Edit' : 'Create'}} Support Ticket</h4>
               </div>
             </div>
             <div class="iq-card-body">
@@ -14,6 +14,7 @@
                 <div class="form-group col-sm-6">
                   <label>Report To:</label>
                   <select class="form-control form-control-primary" ng-model="supportData.manageSupport.report_to">
+                    <option value="">Select Assignee</option>
                     <?php 
                     if ($membershipType=='CC' || $membershipType=='CM') {
                     ?>
@@ -80,14 +81,15 @@
           <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.myTickets.length)>0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center" ng-repeat="myTicket in supportData.listSupport.myTickets">
-                 <div class="stories-data ml-3">
-                    <h5>{{myTicket.myTicketSubject}}</h5>
-                    <p class="mb-0">To {{myTicket.responseToName}} on {{myTicket.myTicketCreation}}</p>
-                 </div>
+                <div class="stories-data ml-3" ng-click="viewTicketDetails(myTicket);" style="cursor: pointer;" title="View Ticket Details">
+                  <h5>{{myTicket.myTicketSubject}}</h5>
+                  <p class="mb-0">To {{myTicket.responseToName}}</p>
+                  <p class="mb-0">{{myTicket.myTicketCreation}}</p>
+                </div>
               </li>
             </ul>
           </div>
-          <div class="iq-card-body" ng-if="isNullOrEmptyOrUndefined(supportData.listSupport.myTickets)==true">
+          <div class="iq-card-body" ng-if="isNullOrEmptyOrUndefined(supportData.listSupport.myTickets)==true || parseInt(supportData.listSupport.myTickets.length)==0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center ">
                  <div class="stories-data ml-3">
@@ -103,20 +105,22 @@
               <h4 class="card-title">Assigned Tickets</h4>
             </div>
           </div>
-          <div class="iq-card-body">
+          <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.assignedTickets.length)>0">
             <ul class="media-story m-0 p-0">
-              <li class="d-flex mb-4 align-items-center">
-                <img src="http://localhost/trust-member/assets/images/user/01.jpg" alt="story-img" class="rounded-circle img-fluid">
-                <div class="stories-data ml-3">
-                    <h5>Anna Sthesia</h5>
-                    <p class="mb-0">Today</p>
+              <li class="d-flex mb-4 align-items-center" ng-repeat="assignTicket in supportData.listSupport.assignedTickets">
+                <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer;" title="View Ticket Details">
+                  <h5>{{assignTicket.assignTicketSubject}}</h5>
+                  <p class="mb-0">From {{assignTicket.ticketCameFromName}}</p>
+                  <p class="mb-0">{{assignTicket.assignTicketCreation}}</p>
                 </div>
               </li>
-              <li class="d-flex align-items-center">
-                 <img src="http://localhost/trust-member/assets/images/user/02.jpg" alt="story-img" class="rounded-circle img-fluid">
+            </ul>
+          </div>
+          <div class="iq-card-body" ng-if="isNullOrEmptyOrUndefined(supportData.listSupport.assignedTickets)==true || parseInt(supportData.listSupport.assignedTickets.length)==0">
+            <ul class="media-story m-0 p-0">
+              <li class="d-flex mb-4 align-items-center ">
                  <div class="stories-data ml-3">
-                    <h5>Paul Molive</h5>
-                    <p class="mb-0">Tomorrow</p>
+                    <h5>No Records Found</h5>
                  </div>
               </li>
             </ul>
