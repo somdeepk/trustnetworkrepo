@@ -179,40 +179,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Manny Petty</h6>
-                                            <p class="mb-0">3  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Marsha Mello</h6>
-                                            <p class="mb-0">15  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
+                                
                                 <div class="text-center">
                                    <a href="#" class="mr-3 btn text-primary">View More Request</a>
                                 </div>

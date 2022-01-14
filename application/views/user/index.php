@@ -193,8 +193,6 @@ div.postcontainer{
                               <div class="d-flex flex-wrap">
                                  <div class="media-support-user-img mr-3">
                                     <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
-
-
                                  </div>
                                  <div class="media-support-info mt-2">
                                     <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
@@ -252,7 +250,7 @@ div.postcontainer{
                               <p>{{valuePS.post_data.post}}</p>
                            </div>
                            <div ng-if="valuePS.post_file_data.length" class="user-post">
-                              <div class="d-flex" data-toggle="modal" data-target="#exampleModal">
+                              <div class="d-flex" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
 
                                  <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                                     <a href="javascript:void();">
@@ -272,22 +270,42 @@ div.postcontainer{
                               <div ng-if="valuePS.post_file_data.length>3" class="col-md-6" style="font-size:62px;">
                                  <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
                               </div>
-
                            </div>
-                           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
+
+                           <div class="modal fade" id="exampleModal_{{valuePS.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
                               <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                               <div class="modal-content iq-dark-box">
                               <div class="modal-header">
-
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                              </button>
+                                 <div class="user-post-data">
+                                    <div class="d-flex flex-wrap">
+                                       <div class="media-support-user-img mr-3">
+                                          <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
+                                       </div>
+                                       <div class="media-support-info mt-2">
+                                          <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
+                                          <!-- <p class="mb-0 d-inline-block">Add New Post</p> -->
+                                          <p class="mb-0 text-primary">{{valuePS.post_data.display_create_date}}<!--  ----{{valuePS.id}} --></p>
+                                       </div>                                       
+                                    </div>
+                                 </div>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                 </button>
                               </div>
                               <div class="modal-body">
                                  <div class="row">
-                                 <div class="col-md-6">
-                                 <img src="<?php echo base_url();?>assets/images/page-img/p2.jpg" alt="post-image" class="img-fluid rounded w-100">
+                                 <div class="col-md-12">
+                                    <p>{{valuePS.post_data.post}}</p>
                                  </div>
+
+                                 <div ng-if="valuePS.post_file_data.length" class="col-md-6">
+                                    <div class="col-md-12"  ng-repeat="(keyFileData, valueFileData) in valuePS.post_file_data">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valueFileData.file_name}}" class="img-fluid rounded w-100">
+                                       </a>
+                                    </div>
+                                 </div>
+
                                  <div class="col-md-6">
                                  <div class="comment-area mt-3">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -295,10 +313,11 @@ div.postcontainer{
                                           <div class="d-flex align-items-center">
                                              <div class="like-data">
                                                 <div class="dropdown">
-                                                   <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                   <img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt="">
+                                                   <span style="cursor:pointer" ng-click="likeTimelinePost(valuePS.id,valuePS.post_id)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                      <img  ng-show="valuePS.indv_post_like_unlike==0" src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt="">
+                                                      <img ng-show="valuePS.indv_post_like_unlike==1" src="<?php echo base_url();?>assets/images/icon/like2.png" class="img-fluid" alt="">
                                                    </span>
-                                                   <div class="dropdown-menu">
+                                                   <!-- <div class="dropdown-menu">
                                                       <a class="ml-2 mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
                                                       <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
                                                       <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
@@ -306,39 +325,30 @@ div.postcontainer{
                                                       <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
                                                       <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
                                                       <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
-                                                   </div>
+                                                   </div> -->
                                                 </div>
                                              </div>
+
                                              <div class="total-like-block ml-2 mr-3">
                                                 <div class="dropdown">
-                                                   <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                   140 Likes
+                                                   <span style="cursor:pointer" ng-click="likeTimelinePost(valuePS.id,valuePS.post_id)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                   {{(valuePS.post_like_data.length>0)? valuePS.post_like_data.length+' Likes':''}} 
                                                    </span>
-                                                   <div class="dropdown-menu">
-                                                      <a class="dropdown-item" href="#">Max Emum</a>
-                                                      <a class="dropdown-item" href="#">Bill Yerds</a>
-                                                      <a class="dropdown-item" href="#">Hap E. Birthday</a>
-                                                      <a class="dropdown-item" href="#">Tara Misu</a>
-                                                      <a class="dropdown-item" href="#">Midge Itz</a>
-                                                      <a class="dropdown-item" href="#">Sal Vidge</a>
-                                                      <a class="dropdown-item" href="#">Other</a>
+                                                   <div ng-if="valuePS.post_like_data.length>0" class="dropdown-menu">
+                                                      <a style="cursor: default;" ng-repeat="(keyLikeName, valueLikeName) in valuePS.post_like_data" class="dropdown-item" href="javascript:void();">{{valueLikeName.first_name+' '+valueLikeName.last_name}}</a>
                                                    </div>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="total-comment-block">
+
+                                          <div ng-if='valuePS.all_post_comment_data.length>0' class="total-comment-block">
                                              <div class="dropdown">
                                                 <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                20 Comment
+                                                {{valuePS.all_post_comment_data.length}} Comment
                                                 </span>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="#">Max Emum</a>
-                                                   <a class="dropdown-item" href="#">Bill Yerds</a>
-                                                   <a class="dropdown-item" href="#">Hap E. Birthday</a>
-                                                   <a class="dropdown-item" href="#">Tara Misu</a>
-                                                   <a class="dropdown-item" href="#">Midge Itz</a>
-                                                   <a class="dropdown-item" href="#">Sal Vidge</a>
-                                                   <a class="dropdown-item" href="#">Other</a>
+                                                   <a class="dropdown-item" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data" href="javascript:void();">{{valueComments.first_name+' '+valueComments.last_name}}</a>
+                                                   <a ng-if='valuePS.all_post_comment_data.length>3' class="dropdown-item" href="javascript:void();">Other</a>
                                                 </div>
                                              </div>
                                           </div>
@@ -348,49 +358,37 @@ div.postcontainer{
                                           <span class="ml-1">99 Share</span></a>
                                        </div>
                                     </div>
-                                    <hr>
-                                    <ul class="post-comments p-0 m-0">
-                                       <li class="mb-2">
-                                          <div class="d-flex flex-wrap">
-                                             <div class="user-img">
-                                                <img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="userimg" class="avatar-35 rounded-circle img-fluid">
-                                             </div>
-                                             <div class="comment-data-block ml-3">
-                                                <h6>Monty Carlo</h6>
-                                                <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                                                <div class="d-flex flex-wrap align-items-center comment-activity">
-                                                   <a href="javascript:void();">like</a>
-                                                   <a href="javascript:void();">reply</a>
-                                                   <a href="javascript:void();">translate</a>
-                                                   <span> 5 min </span>
+
+                                    <div ng-if='valuePS.all_post_comment_data.length>0'>
+                                       <hr>
+                                       <ul class="post-comments p-0 m-0">
+                                          <li class="mb-2" ng-repeat="(keyComments, valueComments) in valuePS.all_post_comment_data">
+                                             <div class="d-flex flex-wrap">
+                                                <div class="user-img">
+                                                   <img src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="userimg" class="avatar-35 rounded-circle img-fluid">
+                                                </div>
+                                                <div class="comment-data-block ml-3">
+                                                   <h6>{{valueComments.first_name+' '+valueComments.last_name}}</h6>
+                                                   <p class="mb-0">{{valueComments.member_comment}}</p>
+                                                   <div class="d-flex flex-wrap align-items-center comment-activity">
+                                                      <!-- <a href="javascript:void();">like</a>
+                                                      <a href="javascript:void();">reply</a>
+                                                      <a href="javascript:void();">translate</a> -->
+                                                      <span> {{valueComments.comment_date}} </span>
+                                                   </div>
                                                 </div>
                                              </div>
-                                          </div>
-                                       </li>
-                                       <li>
-                                          <div class="d-flex flex-wrap">
-                                             <div class="user-img">
-                                                <img src="<?php echo base_url();?>assets/images/user/03.jpg" alt="userimg" class="avatar-35 rounded-circle img-fluid">
-                                             </div>
-                                             <div class="comment-data-block ml-3">
-                                                <h6>Paul Molive</h6>
-                                                <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                                                <div class="d-flex flex-wrap align-items-center comment-activity">
-                                                   <a href="javascript:void();">like</a>
-                                                   <a href="javascript:void();">reply</a>
-                                                   <a href="javascript:void();">translate</a>
-                                                   <span> 5 min </span>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </li>
-                                    </ul>
+                                          </li>
+                                       </ul>
+                                    </div>
+
                                     <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                                       <input type="text" class="form-control rounded" placeholder="Enter Your Comment">
+                                       <input type="text" class="form-control rounded" ng-model="valuePS.member_comment" maxlength="300" placeholder="Enter Your Comment">
                                        <div class="comment-attagement d-flex">
-                                          <a href="javascript:void();"><i class="ri-link mr-3"></i></a>
-                                          <a href="javascript:void();"><i class="ri-user-smile-line mr-3"></i></a>
-                                          <a href="javascript:void();"><i class="ri-camera-line mr-3"></i></a>
+                                          <!-- <a href="javascript:void();"><i class="ri-link mr-3"></i></a>
+                                          <a href="javascript:void();"><i class="ri-user-smile-line mr-3"></i></a> 
+                                          <a href="javascript:void();"><i class="ri-camera-line mr-3"></i></a>-->
+                                          <a href="javascript:void();" ng-click="commentTimelinePost(valuePS)"><i class="ri-send-plane-2-fill mr-3"></i></a>
                                        </div>
                                     </form>
                                  </div>
@@ -406,8 +404,7 @@ div.postcontainer{
                                  <div class="like-block position-relative d-flex align-items-center">
                                     <div class="d-flex align-items-center">
                                        <div class="like-data">
-                                          <div class="dropdown">
-                                           
+                                          <div class="dropdown">                                           
                                              <img style="cursor: default;" src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt="">
                                          
                                           </div>
