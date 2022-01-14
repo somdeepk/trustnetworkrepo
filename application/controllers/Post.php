@@ -151,18 +151,28 @@ class Post extends CI_Controller
         $row=(isset($aryPostScrollData['row']) && !empty($aryPostScrollData['row']))? $aryPostScrollData['row']:'0';
         $rowperpage=(isset($aryPostScrollData['rowperpage']) && !empty($aryPostScrollData['rowperpage']))? $aryPostScrollData['rowperpage']:'0';
 
-        $sqlFindMemberPost="SELECT GROUP_CONCAT(DISTINCT (id)) as alltimelineids from tn_member_timeline WHERE ((from_member_id='".$user_auto_id."' AND to_member_id= '".$user_auto_id."') OR (to_member_id='".$user_auto_id."' AND from_member_id!= '".$user_auto_id."')) AND status='S' AND deleted='0'";
+        $sqlFindMemberPost="SELECT DISTINCT (id) as timelineid from tn_member_timeline WHERE ((from_member_id='".$user_auto_id."' AND to_member_id= '".$user_auto_id."') OR (to_member_id='".$user_auto_id."' AND from_member_id!= '".$user_auto_id."')) AND status='S' AND deleted='0' ORDER BY id DESC limit ".$row.",".$rowperpage;
   
         $queryFindMemberPost=$this->db->query($sqlFindMemberPost);
-		$rowFindMemberPost=$queryFindMemberPost->row();
-		if(!empty($rowFindMemberPost) && $rowFindMemberPost->alltimelineids!="")
+		$resultFindMemberPost=$queryFindMemberPost->result_array();
+
+		$strAllTimeLineIds="";
+		if(count($resultFindMemberPost)>0)
 		{
-			$alltimelineids=$rowFindMemberPost->alltimelineids;
+			foreach ($resultFindMemberPost as $key => $value)
+			{
+				$strAllTimeLineIds.=$value['timelineid'].",";
+			}
+			$strAllTimeLineIds=trim($strAllTimeLineIds,",");
+		}
+
+		if($strAllTimeLineIds!="")
+		{
 	    	$sql="SELECT tmt.*
 	    				FROM tn_member_timeline as tmt 
 	    				LEFT JOIN tn_post as tp ON tp.id=tmt.post_id
 	    				LEFT JOIN tn_members as tm on tm.id=tp.member_id
-	    				WHERE tmt.id in (".$alltimelineids.")  AND tp.deleted='0' AND tm.status='1' and tm.deleted='0' group by tmt.post_id order by tmt.create_date DESC limit ".$row.",".$rowperpage;
+	    				WHERE tmt.id in (".$strAllTimeLineIds.")  AND tp.deleted='0' AND tm.status='1' and tm.deleted='0' group by tmt.post_id order by tmt.create_date DESC"; //limit ".$row.",".$rowperpage;
 			$query=$this->db->query($sql);
 			$result=$query->result_array();
 
