@@ -81,6 +81,7 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
     $scope.supportData.manageTicket.ticketChildCount=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketChildCount)==false)? ticketData.assignTicketChildCount : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketChildCount)==false)? ticketData.myTicketChildCount : 0);
     $scope.supportData.manageTicket.ticketResponseTo=($scope.isNullOrEmptyOrUndefined(ticketData.myTicketRespTo)==false)? ticketData.myTicketRespTo : 0 ;
     $scope.supportData.manageTicket.ticketType=($scope.isNullOrEmptyOrUndefined(ticketData.assignTicketId)==false)? 'A' : (($scope.isNullOrEmptyOrUndefined(ticketData.myTicketId)==false)? 'M' : '');
+    $scope.supportData.manageTicket.response='';
     if ($scope.supportData.manageTicket.ticketType=='M' && parseInt($scope.supportData.manageTicket.ticketId)>0 && parseInt($scope.supportData.manageTicket.ticketChildCount)==0) {
       $scope.supportData.manageSupport.id=$scope.supportData.manageTicket.ticketId;
       $scope.supportData.manageSupport.parent_id='0';
@@ -88,6 +89,7 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
       $scope.supportData.manageSupport.subject=$scope.supportData.manageTicket.ticketSubject;
       $scope.supportData.manageSupport.description=$scope.supportData.manageTicket.ticketDescription;
     } else {
+      $scope.supportData.manageTicket.switch=1;
       var formData = new FormData();
       formData.append('parentTicketId',angular.toJson($scope.supportData.manageTicket.ticketId));
       $http({
@@ -102,6 +104,13 @@ mainApp.controller('supportController', function ($rootScope, $timeout, $interva
     }
     console.log($scope.supportData.manageSupport);
     console.log($scope.supportData.manageTicket);
+  };
+
+  $scope.backToUsual = function() {
+    $scope.supportData.manageTicket={};
+    $scope.supportData.manageSupport={};
+    $scope.supportData.manageSupport.id='0';
+    $scope.supportData.manageSupport.report_to='';
   };
 
   $scope.isNullOrEmptyOrUndefined = function (value) {

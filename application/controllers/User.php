@@ -2634,6 +2634,7 @@ class User extends CI_Controller
       $parentTicket = trim($this->input->post('parentTicketId'));
       $parentTicketId=json_decode($parentTicket, true);
       $user_auto_id=$this->session->userdata('user_auto_id');
+      
       $tql='SELECT a.id, a.description, a.response_to, a.response_from, a.created_on, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_to) AS responseToName, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_from) AS responseFromName FROM tn_support_ticket AS a WHERE a.parent_id="'.$parentTicketId.'" AND a.is_deleted="0" ORDER BY id DESC';
       $tquery=$this->db->query($tql);
       $returnArray=$tquery->result_array();

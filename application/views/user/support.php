@@ -1,7 +1,7 @@
 <div id="content-page" class="content-page" ng-controller="supportController" ng-init="initSupport();" >
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 row m-0 p-0">
+      <div class="col-lg-8 row m-0 p-0" ng-hide="isNullOrEmptyOrUndefined(supportData.manageTicket.switch)==false">
         <div class="col-sm-12">
           <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div class="iq-card-header d-flex justify-content-between">
@@ -52,6 +52,41 @@
                 <div class="form-group col-sm-12">
                   <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="submitTicket();">Submit</button>
                 </div>              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 row m-0 p-0" ng-show="isNullOrEmptyOrUndefined(supportData.manageTicket.switch)==false">
+        <div class="col-sm-12">
+          <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+            <div class="iq-card-header d-flex justify-content-between">
+              <div class="col-sm-8">
+                <div class="iq-header-title">
+                View Ticket
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="backToUsual();">Back</button>
+              </div>
+            </div>
+            <div class="iq-card-body">
+              <div class="row">
+                <div class="form-group col-sm-12">
+                  <p style="font-weight: bold; font-size: 16px;">
+                    {{supportData.manageTicket.ticketSubject}}
+                  </p>
+                </div>
+                <div class="form-group col-sm-12" style="border-bottom: 1px solid #fff;">
+                  <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="supportData.manageTicket.ticketDescription"></textarea>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label>Response:</label>
+                   <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px;" ng-model="supportData.manageTicket.response"></textarea>
+                </div>
+                <div class="form-group col-sm-12">
+                  <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="submitResponse();">Submit</button>
+                </div>
               </div>
             </div>
           </div>
