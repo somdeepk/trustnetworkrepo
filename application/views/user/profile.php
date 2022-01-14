@@ -150,11 +150,11 @@
                            </div>
                         </li>
                         <li ng-if="allFriendRequestObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                          There is no more friend request.
+                          There is not any friend request.
                         </li>
-                        <li class="d-block text-center">
+                        <!-- <li class="d-block text-center">
                            <a href="#" class="btn btn-request">View More Request</a>
-                        </li>
+                        </li> -->
                      </ul>
                   </div>
                </div>

@@ -123,7 +123,7 @@ exit;*/
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                  <?php if ($memberIsApproved=="Y"){ ?>
-                 <ul class="navbar-nav ml-auto navbar-list">
+                 <ul class="navbar-nav ml-auto navbar-list" ng-controller="notificationController" ng-init="get_all_notifiction(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('admin_id'); ?>');">
                     <li>
                        <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
                           <img id="header_profile_images" src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
@@ -137,74 +137,59 @@ exit;*/
                        <i class="ri-home-line"></i>
                        </a>
                     </li>
-                    <li class="nav-item">
-                       <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i></a>
+                    <li class="nav-item zNotifyPopUpz">
+                       <a class="search-toggle iq-waves-effect" href="javascript:void();"><i class="ri-group-line"></i></a>
                        <div class="iq-sub-dropdown iq-sub-dropdown-large">
                           <div class="iq-card shadow-none m-0">
                              <div class="iq-card-body p-0 ">
                                 <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">Friend Request<small class="badge  badge-light float-right pt-1">4</small></h5>
+                                   <h5 class="mb-0 text-white">Friend Request <small ng-if="allFriendRequestObj.length" class="badge  badge-light float-right pt-1">{{allFriendRequestObj.length}}</small></h5>
                                 </div>
-                                <div class="iq-friend-request">
+                                <div ng-if="allFriendRequestObj.length" class="iq-friend-request" ng-repeat="(key, value) in allFriendRequestObj">
                                    <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
                                       <div class="d-flex align-items-center">
                                          <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
+                                            <img class="avatar-40 " ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                            <img class="avatar-40 rounded" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
+
                                          </div>
                                          <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Jaques Amole</h6>
-                                            <p class="mb-0">40  friends</p>
+                                            <h6 class="mb-0 ">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
                                          </div>
                                       </div>
                                       <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="iq-friend-request">
-                                   <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                      <div class="d-flex align-items-center">
-                                         <div class="">
-                                            <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                                         </div>
-                                         <div class="media-body ml-3">
-                                            <h6 class="mb-0 ">Lucy Tania</h6>
-                                            <p class="mb-0">12  friends</p>
-                                         </div>
-                                      </div>
-                                      <div class="d-flex align-items-center">
-                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Confirm</a>
-                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete Request</a>
+                                         <a href="javascript:void();" ng-click="confirmFriendRequest(value.member_friends_aid);" class="mr-3 btn btn-primary rounded zconfirmFriendRequestz_{{value.member_friends_aid}}">Confirm</a>
+                                         <a href="javascript:void();" ng-click="deleteFromFriendRequest(value.member_friends_aid);" class="mr-3 btn btn-secondary rounded zdeleteFromFriendRequestz_{{value.member_friends_aid}}">Delete Request</a>
                                       </div>
                                    </div>
                                 </div>
                                 
-                                <div class="text-center">
+                                <div class="text-center" ng-if="allFriendRequestObj.length<=0">
+                                   <a href="javascript:void();#" class="mr-3 btn text-primary">There is not any friend request.</a>
+                                </div> 
+
+                                <!-- <div class="text-center">
                                    <a href="#" class="mr-3 btn text-primary">View More Request</a>
-                                </div>
+                                </div> -->
                              </div>
                           </div>
                        </div>
                     </li>
                     <li class="nav-item">
-                       <a href="#" class="search-toggle iq-waves-effect">
+                       <a href="javascript:void();" class="search-toggle iq-waves-effect">
                           <div id="lottie-beil"></div>
                           <span class="bg-danger dots"></span>
                        </a>
-
-                      <!--  ng-repeat="(key, value) in allVideoListObj" -->
-                       <div class="iq-sub-dropdown" ng-controller="notificationController" ng-init="get_all_notifiction(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('admin_id'); ?>');">
+                       <div class="iq-sub-dropdown">
                           <div class="iq-card shadow-none m-0">
                              <div class="iq-card-body p-0 ">
                                 <div class="bg-primary p-3">
-                                   <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">{{allNotificationObj.length}}</small></h5>
+                                   <h5 class="mb-0 text-white">All Notifications<small ng-if="allNotificationObj.length" class="badge  badge-light float-right pt-1">{{allNotificationObj.length}}</small></h5>
                                 </div>
-                                <a ng-repeat="(key, value) in allNotificationObj" href="#" class="iq-sub-card" >
+                                <a ng-if="allNotificationObj.length" ng-repeat="(key, value) in allNotificationObj" href="#" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                         <i class="{{value.stricon}}"></i>
-                                         <!-- <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt=""> -->
                                       </div>
                                       <div class="media-body ml-3">
                                          <h6 class="mb-0 ">{{value.strtext}}</h6>
@@ -213,42 +198,11 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <!-- <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">New customer is join</h6>
-                                         <small class="float-right font-size-12">5 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">Two customer is left</h6>
-                                         <small class="float-right font-size-12">2 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a>
-                                <a href="#" class="iq-sub-card" >
-                                   <div class="media align-items-center">
-                                      <div class="">
-                                         <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
-                                      </div>
-                                      <div class="media-body ml-3">
-                                         <h6 class="mb-0 ">New Mail from Fenny</h6>
-                                         <small class="float-right font-size-12">3 days ago</small>
-                                         <p class="mb-0">Cyst Bni</p>
-                                      </div>
-                                   </div>
-                                </a> -->
+
+                                <div class="text-center" ng-if="allNotificationObj.length<=0">
+                                   <a href="javascript:void();#" class="mr-3 btn text-primary">There is not any notification.</a>
+                                </div> 
+
                              </div>
                           </div>
                        </div>
