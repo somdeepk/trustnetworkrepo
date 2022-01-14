@@ -353,10 +353,10 @@ div.postcontainer{
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="share-block d-flex align-items-center feather-icon mr-3">
+                                       <!-- <div class="share-block d-flex align-items-center feather-icon mr-3">
                                           <a href="javascript:void();"><i class="ri-share-line"></i>
                                           <span class="ml-1">99 Share</span></a>
-                                       </div>
+                                       </div> -->
                                     </div>
 
                                     <div ng-if='valuePS.all_post_comment_data.length>0'>
@@ -432,10 +432,10 @@ div.postcontainer{
                                        </div>
                                     </div>
                                  </div>
-                                 <div class="share-block d-flex align-items-center feather-icon mr-3">
+                                 <!-- <div class="share-block d-flex align-items-center feather-icon mr-3">
                                     <a href="javascript:void();"><i class="ri-share-line"></i>
                                     <span class="ml-1">99 Share</span></a>
-                                 </div>
+                                 </div> -->
                               </div>
                               <hr>
                               
@@ -475,10 +475,10 @@ div.postcontainer{
                                          </div>
                                     </div> -->
                                  </div>
-                                 <div class="share-block d-flex align-items-center feather-icon mr-3">
+                                 <!-- <div class="share-block d-flex align-items-center feather-icon mr-3">
                                     <a href="javascript:void();"><i class="ri-share-line"></i>
                                     <span class="ml-1">Share Now</span></a>
-                                 </div>
+                                 </div> -->
                               </div>
 
                               <div ng-if='valuePS.post_comment_data.length>0'>
