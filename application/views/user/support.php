@@ -84,8 +84,27 @@
                   <label>Response:</label>
                    <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px;" ng-model="supportData.manageTicket.response"></textarea>
                 </div>
-                <div class="form-group col-sm-12">
+                <div class="form-group col-sm-12" style="border-bottom: 1px solid #fff; padding-bottom: 10px;">
                   <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="submitResponse();">Submit</button>
+                </div>
+                <div class="form-group col-sm-12">
+                  <label>Previous Response:</label>
+                  <div class="col-sm-12" ng-repeat="respData in supportData.manageTicket.responseList" style="padding:5px 0px;">
+                    <div class="col-sm-12" ng-if="parseInt(respData.imResponder)>0">
+                      <div class="form-group col-sm-10" style="width:80%; float:left; display: block;">
+                        <p>Replied to {{respData.responseToName}} on {{respData.responseOn}}</p>
+                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                      </div>
+                      <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
+                    </div>
+                    <div class="col-sm-12" ng-if="parseInt(respData.imReceiver)>0">
+                      <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
+                      <div class="form-group col-sm-10" style="float:right; display: block; width:80%;">
+                        <p>{{respData.responseFromName}} Responded on {{respData.responseOn}}</p>
+                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

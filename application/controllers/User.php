@@ -2592,7 +2592,7 @@ class User extends CI_Controller
             $assignTicketSubject=(strlen($aData['subject'])>20)? substr($aData['subject'],0, 20) .'...' : $aData['subject'];
             $assignTicketDescription=$aData['description'];
             $ticketCameFromId=$aData['response_from'];
-            $assignTicketCreation=date('m/d/Y H:i', strtotime($aData['created_on']));
+            $assignTicketCreation=date('d/m/Y H:i', strtotime($aData['created_on']));
             $assignTicketChildCount=$aData['childCount'];
 
             $nmaql='SELECT CONCAT(first_name, " ", last_name) AS ticketCameFromName FROM tn_members WHERE id="'.$ticketCameFromId.'"';
@@ -2619,7 +2619,7 @@ class User extends CI_Controller
               }
             }
 
-            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'ticketCameFromName'=>$ticketCameFromName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
+            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'ticketCameFromId'=>$ticketCameFromId, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'ticketCameFromName'=>$ticketCameFromName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
           }
         }
       }
@@ -2638,8 +2638,51 @@ class User extends CI_Controller
       $tql='SELECT a.id, a.description, a.response_to, a.response_from, a.created_on, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_to) AS responseToName, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_from) AS responseFromName FROM tn_support_ticket AS a WHERE a.parent_id="'.$parentTicketId.'" AND a.is_deleted="0" ORDER BY id DESC';
       $tquery=$this->db->query($tql);
       $returnArray=$tquery->result_array();
+      $retArray=array();
+      if (!empty($returnArray)) {
+        foreach ($returnArray as $retData) {
+          $responseId=$retData['id'];
+          $responseDescription=$retData['description'];
+          $responseTo=$retData['response_to'];
+          $responseFrom=$retData['response_from'];
+          $responseOn=date('d/m/Y H:i', strtotime($retData['created_on']));
+          $responseToName=$retData['responseToName'];
+          $responseFromName=$retData['responseFromName'];
+          $imResponder=0;
+          if ($responseFrom==$user_auto_id) {
+            $imResponder=1;
+          }
+          $imReceiver=0;
+          if ($responseTo==$user_auto_id) {
+            $imReceiver=1;
+          }
+          $retArray[]=array('responseId'=>$responseId, 'responseDescription'=>$responseDescription, 'responseOn'=>$responseOn, 'imResponder'=>$imResponder, 'imReceiver'=>$imReceiver, 'responseToName'=>$responseToName, 'responseFromName'=>$responseFromName);
+        }
+      }
+      echo json_encode(array('returnval'=>$retArray));
+      die();
+    }
 
-      echo json_encode(array('returnData'=>$returnArray, 'tSql'=>$tql));
+    public function ajaxsubmitresponse()
+    {
+
+      $user_auto_id=$this->session->userdata('user_auto_id');
+
+      $returnArray=array();
+      $manageTicket = $this->input->post('manageTicket');
+      $manageTicketData=json_decode($manageTicket, true);
+      //print $user_auto_id ;
+      //print "<pre>"; print_r($manageTicketData); print "</pre>";
+      //die();
+      $parentTicketId=$manageTicketData['ticketId'];
+      $responderId=$user_auto_id;
+      $respondTo=$manageTicketData['ticketResponseTo'];
+      $responseData=trim(addslashes($manageTicketData['response']));
+
+      $repArray=array('parent_id'=>$parentTicketId, 'response_from'=>$responderId, 'response_to'=>$respondTo, 'description'=>$responseData, 'created_on'=>date('Y-m-d H:i:s'), 'is_deleted'=>0);
+
+      $retId = $this->User_Model->submit_ticket($repArray, 0);
+      echo json_encode(array('retId'=>$retId));
       die();
     }
 }
