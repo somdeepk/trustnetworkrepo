@@ -5,7 +5,6 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	$scope.friendData={};
 	$scope.tagPostData={};
 	$scope.aryPostScroll=[];
-
 	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
 		$scope.memberData.user_auto_id=user_auto_id;
@@ -114,10 +113,6 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	{
 		$('#postModal').modal('show');
 		$('#tagPostToFriendModal').modal('hide');
-	};
-
-	$scope.isNullOrEmptyOrUndefined = function (value) {
-		return !value;
 	};
 
 	$scope.singlePostData.uploaddata=[];
@@ -260,8 +255,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        			$scope.postExist = false;
 	        		}
 
-	        		console.log("KANU")
-	        		console.log($scope.aryPostScroll)
+	        		// console.log("KANU")
+	        		// console.log($scope.aryPostScroll)
 	        	}
 	        	else
 	        	{
@@ -397,5 +392,9 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        	}
 			});
 	    }
+	};
+
+	$scope.isNullOrEmptyOrUndefined = function (value) {
+		return !value;
 	};
 });

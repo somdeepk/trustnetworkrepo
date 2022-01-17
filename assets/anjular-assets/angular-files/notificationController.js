@@ -4,6 +4,15 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	$scope.allNotificationObj={};
 	$scope.friendData={};
 	$scope.allFriendRequestObj={};
+
+	$rootScope.clickProfileTab='timelineTab';
+
+	$rootScope.tabPointer = function(typ)
+	{
+		$rootScope.clickProfileTab=typ;
+	};
+
+
     $scope.get_all_notifiction = function (user_auto_id,parent_id,membership_type,is_admin,admin_id)
 	{
 

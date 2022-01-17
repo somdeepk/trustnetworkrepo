@@ -2573,6 +2573,34 @@ class User extends CI_Controller
         exit;    	
     }
 
+    public function profile()
+	{
+		authenticate_user();
+		$data=array();
+
+		$membershipType=$this->session->userdata('membership_type');
+		if($membershipType=="RM")
+		{
+			$data['profileTab']='timelineTab';//$this->input->post_get('tab');
+			$msg=$this->input->post_get('msg');
+			if(!empty($msg))
+			{
+				$msg=base64_decode($msg);
+				$this->session->set_flashdata('success', $msg);
+			}
+			$this->load->view('user/header-script');
+			$this->load->view('user/header-bottom');
+			$this->load->view('user/profile', $data);
+			$this->load->view('user/footer-top');
+			$this->load->view('user/footer');
+		}
+		else
+		{
+			redirect('user/index');
+		}
+	}
+
+
 }
 	
 

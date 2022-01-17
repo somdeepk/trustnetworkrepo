@@ -1,5 +1,5 @@
 <style type="text/css">
-div.postcontainer{
+div.postWhenScrollContainer{
   height:1200px;
   /*background: #123213;
   color: #fff;*/
@@ -12,7 +12,7 @@ div.postcontainer{
 </style>
 <div ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');">
 
-   <div id="content-page" when-scrolled="getMorePostOnScroll()" class="content-page postcontainer">
+   <div id="content-page" when-scrolled="getMorePostOnScroll()" class="content-page postWhenScrollContainer">
       <div class="modal fade" id="tagPostToFriendModal" tabindex="-1" role="dialog" aria-labelledby="postTag-modalLabel" aria-hidden="true" style="display: none;">
          <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -184,8 +184,7 @@ div.postcontainer{
                   </div>
                </div>
 
-
-               <div  > <!-- infinite-scroll="getMorePostOnScroll()" infinite-scroll-disabled="busy" infinite-scroll-distance="3" -->
+               <div> <!-- infinite-scroll="getMorePostOnScroll()" infinite-scroll-disabled="busy" infinite-scroll-distance="3" -->
                   <div ng-repeat="(keyPS, valuePS) in aryPostScroll" class="col-sm-12">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">
@@ -519,11 +518,8 @@ div.postcontainer{
                   </div>
                </div>
 
-              
-
             </div>
-            <div class="col-lg-4">
-               
+            <div class="col-lg-4">               
                <div class="iq-card">
                   <div class="iq-card-header d-flex justify-content-between">
                      <div class="iq-header-title">

@@ -21,7 +21,7 @@ exit;*/
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
-                  <li><a href="profile.html" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
+                  <li><a href="<?php echo base_url();?>user/profile" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
                   <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
                   <?php if($membershipType=="RM"){ ?>
@@ -125,7 +125,7 @@ exit;*/
                  <?php if ($memberIsApproved=="Y"){ ?>
                  <ul class="navbar-nav ml-auto navbar-list" ng-controller="notificationController" ng-init="get_all_notifiction(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('admin_id'); ?>');">
                     <li>
-                       <a href="profile.html" class="iq-waves-effect d-flex align-items-center">
+                       <a href="<?php echo base_url();?>user/profile" class="iq-waves-effect d-flex align-items-center">
                           <img id="header_profile_images" src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" class="img-fluid rounded-circle mr-3" alt="user">
                           <div class="caption">
                              <h6 class="mb-0 line-height"><?php echo $this->session->userdata('first_name'); ?></h6>
@@ -292,7 +292,7 @@ exit;*/
                                    <h5 class="mb-0 text-white line-height">Hello <?php echo $this->session->userdata('user_full_name'); ?></h5>
                                    <!-- <span class="text-white font-size-12">Available</span> -->
                                 </div>
-                                <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
+                                <a href="<?php echo base_url();?>user/profile" class="iq-sub-card iq-bg-primary-hover">
                                    <div class="media align-items-center">
                                       <div class="rounded iq-card-icon iq-bg-primary">
                                          <i class="ri-file-user-line"></i>

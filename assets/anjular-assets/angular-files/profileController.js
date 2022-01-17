@@ -5,7 +5,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	$scope.allFriendListObj={};
 	$scope.allChurchMemberListObj={};
 	$scope.allAgeGroupObj={};
-	$scope.friendData.clickProfileTab='timelineTab';
 
 	$scope.coverImageData={};
 
@@ -387,7 +386,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 
 		hidden_profile_tab=$('#hidden_profile_tab').val();	
 		//alert(hidden_profile_tab)	
-		$scope.friendData.clickProfileTab=hidden_profile_tab;
+		//$rootScope.clickProfileTab=hidden_profile_tab;
+		$rootScope.tabPointer(hidden_profile_tab)
 
 		if(hidden_profile_tab=='friendlistTab' || hidden_profile_tab=='churchlistTab' || hidden_profile_tab=='memberlistTab')
 		{
@@ -402,7 +402,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		{
 			$scope.getAllChurchMember()
 		}
-		//alert($scope.friendData.clickProfileTab)
 	};
 
 	$scope.getAllFriendList = function()
