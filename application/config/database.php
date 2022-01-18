@@ -79,8 +79,8 @@ if(IS_LOCAL_HOST==1)
 	$db['default'] = array(
 		'dsn'	=> '',
 		'hostname' => 'localhost',
-		'username' => 'phpmyadmin',
-		'password' => 'acpl@123',
+		'username' => 'root',
+		'password' => '',
 		'database' => 'followme_trust_network',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
