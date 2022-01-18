@@ -24,20 +24,20 @@ exit;*/
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li <?php echo ($actionName=='index')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
-                  <li><a href="<?php echo base_url();?>user/profile" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
-                  <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
+                  <li <?php echo ($actionName=='profile')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/profile" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
+                  <li <?php echo ($actionName=='events')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/events" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
                   <?php if($membershipType=="RM"){ ?>
-                  <li><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
-                  <li><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
+                  <li <?php echo ($actionName=='friendrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
+                  <li <?php echo ($actionName=='friendlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
                   <?php }else{ ?>
-                      <li><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
-                      <li><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
+                      <li <?php echo ($actionName=='churchrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
+                      <li <?php echo ($actionName=='churchlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
+                      <li <?php echo ($actionName=='memberrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
+                      <li <?php echo ($actionName=='memberlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
                   <?php } ?>
 
-                   <li><a href="profile-video.html" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
+                   <li <?php echo ($actionName=='photos')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/photos" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
                    
                   <li>
                     <a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
