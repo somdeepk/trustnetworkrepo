@@ -245,6 +245,13 @@ class User_Model extends CI_Model
 	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="",$aryArgument=array())
 	{
 		$searchFriend=$aryArgument['searchFriend'];
+		$limit=$aryArgument['limit'];
+
+		$strLimit="";
+		if($limit!="")
+		{
+			$strLimit=" limit 0,".$limit;
+		}
 
 		$strWhereParam="";
 		if(!empty($clickProfileTab))
@@ -277,7 +284,7 @@ class User_Model extends CI_Model
     				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status='2') OR tm.id IN 
     				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='2')
     			)
-    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC ".$strLimit;
 
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();

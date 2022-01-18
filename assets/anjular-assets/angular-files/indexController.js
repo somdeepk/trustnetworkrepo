@@ -11,6 +11,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		$scope.memberData.membership_type=membership_type;
 		$scope.memberData.is_admin=is_admin;
 		$scope.memberData.parent_id=parent_id;
+
+		$scope.GetLimitFriendForTimeline();
 	};
    
    	$scope.submitPost = function(){
@@ -91,7 +93,31 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 				$('#postModal').modal('hide');
 			});			
 	    }		
+	};
+
+
+	$scope.GetLimitFriendForTimeline = function ()
+	{
+		if($scope.memberData.user_auto_id>0)
+		{
+			$scope.friendData.user_auto_id=$scope.memberData.user_auto_id;
+			$scope.friendData.limit=9;
+
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	$scope.limitTimelineFriendListObj=aryreturnData.data.friendListData;
+			});			
+	    }		
 	};	
+
 
 	$scope.aryPostTagFriend = [];
 	$scope.setTagFriendToPost = function(memberId)

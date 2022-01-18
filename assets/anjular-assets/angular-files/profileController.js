@@ -13,6 +13,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		if($scope.friendData.user_auto_id>0)
 		{
 			var formData = new FormData();
+			$scope.friendData.clickProfileTab=$rootScope.clickProfileTab;
+
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
 	            method  : 'POST',
@@ -272,6 +274,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		if($scope.friendData.user_auto_id>0)
 		{
 			var formData = new FormData();
+			$scope.friendData.clickProfileTab=$rootScope.clickProfileTab;
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
 	            method  : 'POST',
@@ -409,6 +412,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		if($scope.friendData.user_auto_id>0)
 		{
 			var formData = new FormData();
+			$scope.friendData.clickProfileTab=$rootScope.clickProfileTab;
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
 	            method  : 'POST',

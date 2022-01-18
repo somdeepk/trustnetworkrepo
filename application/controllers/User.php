@@ -281,8 +281,10 @@ class User extends CI_Controller
         $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
 
         $searchFriend=(isset($aryFriendData['searchFriend']) && !empty($aryFriendData['searchFriend']))? addslashes(trim($aryFriendData['searchFriend'])):'';
+        $limit=(isset($aryFriendData['limit']) && !empty($aryFriendData['limit']))? addslashes(trim($aryFriendData['limit'])):'';
 
         $aryArgument['searchFriend']=$searchFriend;
+        $aryArgument['limit']=$limit;
         
 		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab,$aryArgument);
 

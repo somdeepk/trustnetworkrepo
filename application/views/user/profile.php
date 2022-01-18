@@ -155,7 +155,7 @@ div.postWhenScrollContainer{
                              </div>
                              <div class="media-support-info ml-3">
                                 <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
-                                <p class="mb-0">40  friends</p>
+                               <!--  <p class="mb-0">40  friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
                                 <a href="javascript:void();" ng-click="confirmFriendRequest(value.member_friends_aid);" class="mr-3 btn btn-primary rounded zconfirmFriendRequestz_{{value.member_friends_aid}}">Confirm</a>
@@ -186,7 +186,7 @@ div.postWhenScrollContainer{
                               </div>
                              <div class="media-support-info ml-3">
                                 <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
-                                <p class="mb-0">4  friends</p>
+                                <!-- <p class="mb-0">4 friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
                                 <a href="javascript:void();" ng-disabled="value.request_status=='1'" ng-click="sendFriendRequest(value.id);" class="mr-3 btn btn-primary rounded zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'"class="ri-user-add-line"></i>{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
@@ -431,49 +431,18 @@ div.postWhenScrollContainer{
                                 <div class="iq-header-title">
                                    <h4 class="card-title">Friends</h4>
                                 </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
+                                <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                                    <p class="m-0"><a href="javacsript:void();">Add New </a></p>
-                                </div>
+                                </div> -->
                              </div>
                              <div class="iq-card-body">
                                 <ul class="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
+                                   <li ng-repeat="(key, value) in limitTimelineFriendListObj" class="col-md-4 col-6 pl-2 pr-0 pb-3">
                                       <a href="javascript:void();">
-                                      <img src="<?php echo base_url();?>assets/images/user/05.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Anna Rexia</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/06.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Tara Zona</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/07.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Polly Tech</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/08.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Bill Emia</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/09.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Moe Fugga</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/10.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Hal Appeno </h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/07.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Zack Lee</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/06.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Terry Aki</h6>
-                                   </li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                      <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/user/05.jpg" alt="gallary-image" class="img-fluid" /></a>
-                                      <h6 class="mt-2">Greta Life</h6>
-                                   </li>
+                                        <img style="width:86px;height:86px;" class="img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                        <img style="width:86px;height:86px;" class="img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
+                                      <h6 class="mt-2">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
+                                   </li>                                   
                                 </ul>
                              </div>
                           </div>
