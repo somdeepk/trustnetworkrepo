@@ -12,7 +12,6 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 		$rootScope.clickProfileTab=typ;
 	};
 
-
     $scope.get_all_notifiction = function (user_auto_id,parent_id,membership_type,is_admin,admin_id)
 	{
 
