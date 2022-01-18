@@ -6,9 +6,12 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 $memberIsApproved=$this->session -> userdata('is_approved');
 $membershipType=$this->session -> userdata('membership_type');
 $isAdmin=$this->session -> userdata('is_admin');
+$actionName=$this->router->fetch_method();
+
 //$user_auto_id=$this->session -> userdata('user_auto_id');
 /*echo $user_auto_id."ss<pre>";
 print_r($this->session -> userdata);
+
 exit;*/
 ?>
  <!-- Wrapper START -->
@@ -20,7 +23,7 @@ exit;*/
              <?php if ($memberIsApproved=="Y"){ ?>
              <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="active"><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
+                  <li <?php echo ($actionName=='index')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
                   <li><a href="<?php echo base_url();?>user/profile" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
                   <li><a href="profile-event.html" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
@@ -72,7 +75,7 @@ exit;*/
                   <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
                   <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
                  <!--  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
-                  <li><a href="#" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
+                  <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
                 </ul>
              </nav>
              <div class="p-3"></div>

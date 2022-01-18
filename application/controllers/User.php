@@ -2602,6 +2602,207 @@ class User extends CI_Controller
 		}
 	}
 
+	public function support()
+    {
+      authenticate_user();
+      $data=array();
+      $data['membershipType']=$this->session->userdata('membership_type');
+      $data['isAdmin']=$this->session->userdata('is_admin');
+      $data['user_auto_id']=$this->session->userdata('user_auto_id');
+      $data['parent_id']=$this->session->userdata('parent_id');
+      $data['parent_leader_id']=$this->session->userdata('parent_leader_id');
+
+      $msg=$this->input->post_get('msg');
+      if(!empty($msg))
+      {
+        $msg=base64_decode($msg);
+        $this->session->set_flashdata('success', $msg);
+      }
+      //$data['church_id']=$church_id;
+      $this->load->view('user/header-script');
+      $this->load->view('user/header-bottom');
+      $this->load->view('user/support', $data);
+      $this->load->view('user/footer-top');
+      $this->load->view('user/footer');
+    }
+
+    public function ajaxsubmitticket()
+    {
+        $returnData=array();
+        $user_auto_id=$this->session->userdata('user_auto_id');
+
+        $manageSupport = trim($this->input->post('manageSupport'));
+        $arySupportData=json_decode($manageSupport, true);
+
+        //print "<pre>"; print_r($arySupportData); print "</pre>";
+        $supportTicketId=(isset($arySupportData['id']) && !empty($arySupportData['id']))? $arySupportData['id'] : 0 ;
+        $supportParentId=(isset($arySupportData['parent_id']) && !empty($arySupportData['parent_id']))? $arySupportData['parent_id'] : 0 ;
+        $responseTo=(isset($arySupportData['report_to']) && !empty($arySupportData['report_to']))? $arySupportData['report_to'] : 0 ;
+        $responseSubject=(isset($arySupportData['subject']) && !empty($arySupportData['subject']))? $arySupportData['subject'] : NULL ;
+        $responseDescription=(isset($arySupportData['description']) && !empty($arySupportData['description']))? $arySupportData['description'] : NULL ;
+
+        $repArray=array('parent_id'=>$supportParentId, 'response_from'=>$user_auto_id, 'response_to'=>$responseTo, 'subject'=>$responseSubject, 'description'=>$responseDescription, 'created_on'=>date('Y-m-d H:i:s'), 'is_deleted'=>0);
+
+        $retId = $this->User_Model->submit_ticket($repArray, $supportTicketId);
+        echo json_encode(array('retId'=>$retId));
+        die();
+    }
+
+    public function ajaxgetallticket()
+    {
+      $returnData=array();
+      $user_auto_id=$this->session->userdata('user_auto_id');
+      $myTickets=array();
+      $aTickets=array();
+      $sql='SELECT a.id, a.subject, a.description, a.created_on, a.response_to, (SELECT COUNT(id) FROM tn_support_ticket WHERE parent_id=a.id AND is_deleted="0") AS childCount FROM tn_support_ticket AS a WHERE a.parent_id="0" AND a.response_from="'.$user_auto_id.'" AND a.is_deleted="0"';
+      $query=$this->db->query($sql);
+      $mTickets=$query->result_array();
+      // print "<pre>"; print_r($mTickets); print "</pre>";
+      // die();
+      if (!empty($mTickets)) {
+        foreach ($mTickets as $mData) {
+          if (!empty($mData['id'])) {
+            $myTicketId=$mData['id'];
+            $myTicketSubject=(strlen($mData['subject'])>20)? substr($mData['subject'],0, 20) .'...' : $mData['subject'];
+            $myTicketDescription=$mData['description'];
+            $myTicketRespTo=$mData['response_to'];
+            $myTicketCreation=date('m/d/Y H:i', strtotime($mData['created_on']));
+            $myTicketChildCount=$mData['childCount'];
+
+            $nmql='SELECT CONCAT(first_name, " ", last_name) AS responseToName FROM tn_members WHERE id="'.$myTicketRespTo.'"';
+            $nmquery=$this->db->query($nmql);
+            $nmDetails=$nmquery->result_array();
+            $responseToName=(isset($nmDetails[0]['responseToName']) && !empty($nmDetails[0]['responseToName']))? $nmDetails[0]['responseToName'] : 'Super Admin';
+
+            $tql='SELECT a.id, a.response_from FROM tn_support_ticket AS a WHERE a.parent_id="'.$myTicketId.'" AND a.is_deleted="0" ORDER BY id DESC LIMIT 1';
+            $tquery=$this->db->query($tql);
+            $tTickets=$tquery->result_array();
+
+            $lastChildTicket=(isset($tTickets[0]['id']) && !empty($tTickets[0]['id']))? $tTickets[0]['id'] : 0 ;
+            $lastResponseFrom=(isset($tTickets[0]['response_from']) && !empty($tTickets[0]['response_from']))? $tTickets[0]['response_from'] : 0 ;
+            $lastRespFrom=0;
+            $lastResponseFromName='';
+            if (!empty($lastChildTicket) && !empty($lastResponseFrom)) {
+              if ($lastResponseFrom!=$user_auto_id) {
+                $lastRespFrom=$lastResponseFrom;
+
+                $nmlql='SELECT CONCAT(first_name, " ", last_name) AS responseFromName FROM tn_members WHERE id="'.$lastRespFrom.'"';
+                $nmlquery=$this->db->query($nmlql);
+                $nmlDetails=$nmlquery->result_array();
+                $lastResponseFromName=(isset($nmlDetails[0]['responseFromName']) && !empty($nmlDetails[0]['responseFromName']))? $nmlDetails[0]['responseFromName'] : 'Super Admin';
+              }
+            }
+            $myTickets[]=array('myTicketId'=>$myTicketId, 'myTicketSubject'=>$myTicketSubject, 'myTicketDescription'=>$myTicketDescription, 'myTicketCreation'=>$myTicketCreation, 'myTicketChildCount'=>$myTicketChildCount, 'lastRespFrom'=>$lastRespFrom, 'myTicketRespTo'=>$myTicketRespTo, 'responseToName'=>$responseToName, 'lastResponseFromName'=>$lastResponseFromName);
+          }
+        }
+      }
+      
+
+      $sql2='SELECT a.id, a.subject, a.description, a.created_on, a.response_from, (SELECT COUNT(id) FROM tn_support_ticket WHERE parent_id=a.id AND is_deleted="0") AS childCount FROM tn_support_ticket AS a WHERE a.parent_id="0" AND a.response_to="'.$user_auto_id.'" AND a.is_deleted="0"';
+      $query2=$this->db->query($sql2);
+      $assignedTickets=$query2->result_array();
+      
+      if (!empty($assignedTickets)) {
+        foreach ($assignedTickets as $aData) {
+          if (!empty($aData['id'])) {
+            $assignTicketId=$aData['id'];
+            $assignTicketSubject=(strlen($aData['subject'])>20)? substr($aData['subject'],0, 20) .'...' : $aData['subject'];
+            $assignTicketDescription=$aData['description'];
+            $ticketCameFromId=$aData['response_from'];
+            $assignTicketCreation=date('d/m/Y H:i', strtotime($aData['created_on']));
+            $assignTicketChildCount=$aData['childCount'];
+
+            $nmaql='SELECT CONCAT(first_name, " ", last_name) AS ticketCameFromName FROM tn_members WHERE id="'.$ticketCameFromId.'"';
+            $nmaquery=$this->db->query($nmaql);
+            $nmaDetails=$nmaquery->result_array();
+            $ticketCameFromName=(isset($nmaDetails[0]['ticketCameFromName']) && !empty($nmaDetails[0]['ticketCameFromName']))? $nmaDetails[0]['ticketCameFromName'] : 'Super Admin';
+
+            $tql='SELECT a.id, a.response_from FROM tn_support_ticket AS a WHERE a.parent_id="'.$myTicketId.'" AND a.is_deleted="0" ORDER BY id DESC LIMIT 1';
+            $tquery=$this->db->query($tql);
+            $tTickets=$tquery->result_array();
+
+            $lastChildTicket=(isset($tTickets[0]['id']) && !empty($tTickets[0]['id']))? $tTickets[0]['id'] : 0 ;
+            $lastResponseFrom=(isset($tTickets[0]['response_from']) && !empty($tTickets[0]['response_from']))? $tTickets[0]['response_from'] : 0 ;
+            $lastAssignRespFrom=0;
+            $lastResponseAssignFromName='';
+            if (!empty($lastChildTicket) && !empty($lastResponseFrom)) {
+              if ($lastResponseFrom!=$user_auto_id) {
+                $lastAssignRespFrom=$lastResponseFrom;
+
+                $nmlql='SELECT CONCAT(first_name, " ", last_name) AS responseAssignFromName FROM tn_members WHERE id="'.$lastAssignRespFrom.'"';
+                $nmlquery=$this->db->query($nmlql);
+                $nmlDetails=$nmlquery->result_array();
+                $lastResponseAssignFromName=(isset($nmlDetails[0]['responseAssignFromName']) && !empty($nmlDetails[0]['responseAssignFromName']))? $nmlDetails[0]['responseAssignFromName'] : 'Super Admin';
+              }
+            }
+
+            $aTickets[]=array('assignTicketId'=>$assignTicketId, 'assignTicketSubject'=>$assignTicketSubject, 'assignTicketDescription'=>$assignTicketDescription, 'assignTicketCreation'=>$assignTicketCreation, 'ticketCameFromId'=>$ticketCameFromId, 'assignTicketChildCount'=>$assignTicketChildCount, 'lastAssignRespFrom'=>$lastAssignRespFrom, 'ticketCameFromName'=>$ticketCameFromName, 'lastResponseAssignFromName'=>$lastResponseAssignFromName);
+          }
+        }
+      }
+      
+      echo json_encode(array('myTickets'=>$myTickets, 'assignedTickets'=>$aTickets));
+      die();
+    }
+
+    public function ajaxgetticketresponse()
+    {
+      $returnArray=array();
+      $parentTicket = trim($this->input->post('parentTicketId'));
+      $parentTicketId=json_decode($parentTicket, true);
+      $user_auto_id=$this->session->userdata('user_auto_id');
+      
+      $tql='SELECT a.id, a.description, a.response_to, a.response_from, a.created_on, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_to) AS responseToName, (SELECT CONCAT(first_name, " ", last_name) FROM tn_members WHERE id=a.response_from) AS responseFromName FROM tn_support_ticket AS a WHERE a.parent_id="'.$parentTicketId.'" AND a.is_deleted="0" ORDER BY id DESC';
+      $tquery=$this->db->query($tql);
+      $returnArray=$tquery->result_array();
+      $retArray=array();
+      if (!empty($returnArray)) {
+        foreach ($returnArray as $retData) {
+          $responseId=$retData['id'];
+          $responseDescription=$retData['description'];
+          $responseTo=$retData['response_to'];
+          $responseFrom=$retData['response_from'];
+          $responseOn=date('d/m/Y H:i', strtotime($retData['created_on']));
+          $responseToName=$retData['responseToName'];
+          $responseFromName=$retData['responseFromName'];
+          $imResponder=0;
+          if ($responseFrom==$user_auto_id) {
+            $imResponder=1;
+          }
+          $imReceiver=0;
+          if ($responseTo==$user_auto_id) {
+            $imReceiver=1;
+          }
+          $retArray[]=array('responseId'=>$responseId, 'responseDescription'=>$responseDescription, 'responseOn'=>$responseOn, 'imResponder'=>$imResponder, 'imReceiver'=>$imReceiver, 'responseToName'=>$responseToName, 'responseFromName'=>$responseFromName);
+        }
+      }
+      echo json_encode(array('returnval'=>$retArray));
+      die();
+    }
+
+    public function ajaxsubmitresponse()
+    {
+
+      $user_auto_id=$this->session->userdata('user_auto_id');
+
+      $returnArray=array();
+      $manageTicket = $this->input->post('manageTicket');
+      $manageTicketData=json_decode($manageTicket, true);
+      //print $user_auto_id ;
+      //print "<pre>"; print_r($manageTicketData); print "</pre>";
+      //die();
+      $parentTicketId=$manageTicketData['ticketId'];
+      $responderId=$user_auto_id;
+      $respondTo=$manageTicketData['ticketResponseTo'];
+      $responseData=trim(addslashes($manageTicketData['response']));
+
+      $repArray=array('parent_id'=>$parentTicketId, 'response_from'=>$responderId, 'response_to'=>$respondTo, 'description'=>$responseData, 'created_on'=>date('Y-m-d H:i:s'), 'is_deleted'=>0);
+
+      $retId = $this->User_Model->submit_ticket($repArray, 0);
+      echo json_encode(array('retId'=>$retId));
+      die();
+    }
+
 
 }
 	
