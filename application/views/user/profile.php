@@ -266,16 +266,16 @@ div.postWhenScrollContainer{
                                   <div class="d-flex flex-wrap justify-content-between align-items-start">
                                      <div class="profile-detail d-flex">
                                         <div class="profile-img pr-4">
-                                            <img class="avatar-130 img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
-                                            <img class="avatar-130 img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
+                                            <img style="width: 130px;height: 110px;" class="avatar-130 img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                            <img style="width: 130px;height: 110px;" class="avatar-130 img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                                         </div>
                                         <div class="user-data-block">
                                            <h4 class="">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h4>
                                            <h6>{{value.user_email}}</h6>
-                                           <p>{{(isNullOrEmptyOrUndefined(value.church_first_name)==false)? value.church_first_name : ''}}</p>
+                                           <p>{{(isNullOrEmptyOrUndefined(value.church_first_name)==false)? value.church_first_name : '&nbsp;'}}</p>
                                         </div>
                                      </div>
-                                     <button type="submit" class="btn btn-primary">Following</button>
+                                     <button type="submit" class="btn btn-primary">Followings</button>
                                   </div>
                                </div>
                             </div>
