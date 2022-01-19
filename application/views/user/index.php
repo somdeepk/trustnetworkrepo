@@ -69,9 +69,9 @@ div.postWhenScrollContainer{
                         </div>
                         <hr>
                         <!-- <ul class="post-opt-block d-flex align-items-center list-inline m-0 p-0">
-                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video</li>
-                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</li>
-                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</li>
+                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video</li>
+                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</li>
+                           <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</li>
                            <li class="iq-bg-primary rounded p-2 pointer">
                               <div class="iq-card-header-toolbar d-flex align-items-center">
                                  <div class="dropdown">
@@ -79,7 +79,7 @@ div.postWhenScrollContainer{
                                     <i class="ri-more-fill"></i>
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="post-option" style="">
-                                       <a class="dropdown-item" href="#">Check in</a>
+                                       <a class="dropdown-item" href="javascript:void();">Check in</a>
                                     </div>
                                  </div>
                               </div>
@@ -133,7 +133,7 @@ div.postWhenScrollContainer{
                                              <span class="btn btn-primary">Friend</span>
                                              </span>
                                              <div class="dropdown-menu m-0 p-0">
-                                                <a class="dropdown-item p-3" href="#">
+                                                <a class="dropdown-item p-3" href="javascript:void();">
                                                    <div class="d-flex align-items-top">
                                                       <div class="icon font-size-20"><i class="ri-save-line"></i></div>
                                                       <div class="data ml-2">
@@ -142,7 +142,7 @@ div.postWhenScrollContainer{
                                                       </div>
                                                    </div>
                                                 </a>
-                                                <a class="dropdown-item p-3" href="#">
+                                                <a class="dropdown-item p-3" href="javascript:void();">
                                                    <div class="d-flex align-items-top">
                                                       <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
                                                       <div class="data ml-2">
@@ -151,7 +151,7 @@ div.postWhenScrollContainer{
                                                       </div>
                                                    </div>
                                                 </a>
-                                                <a class="dropdown-item p-3" href="#">
+                                                <a class="dropdown-item p-3" href="javascript:void();">
                                                    <div class="d-flex align-items-top">
                                                       <div class="icon font-size-20"><i class="ri-user-unfollow-line"></i></div>
                                                       <div class="data ml-2">
@@ -160,7 +160,7 @@ div.postWhenScrollContainer{
                                                       </div>
                                                    </div>
                                                 </a>
-                                                <a class="dropdown-item p-3" href="#">
+                                                <a class="dropdown-item p-3" href="javascript:void();">
                                                    <div class="d-flex align-items-top">
                                                       <div class="icon font-size-20"><i class="ri-notification-line"></i></div>
                                                       <div class="data ml-2">
@@ -204,7 +204,7 @@ div.postWhenScrollContainer{
                                        <i class="ri-more-fill"></i>
                                        </span>
                                        <div class="dropdown-menu m-0 p-0">
-                                          <!-- <a class="dropdown-item p-3" href="#">
+                                          <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                              <div class="d-flex align-items-top">
                                                 <div class="icon font-size-20"><i class="ri-save-line"></i></div>
                                                 <div class="data ml-2">
@@ -222,7 +222,7 @@ div.postWhenScrollContainer{
                                                 </div>
                                              </div>
                                           </a>
-                                          <!-- <a class="dropdown-item p-3" href="#">
+                                          <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                              <div class="d-flex align-items-top">
                                                 <div class="icon font-size-20"><i class="ri-user-unfollow-line"></i></div>
                                                 <div class="data ml-2">
@@ -231,7 +231,7 @@ div.postWhenScrollContainer{
                                                 </div>
                                              </div>
                                           </a> -->
-                                          <!-- <a class="dropdown-item p-3" href="#">
+                                          <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                              <div class="d-flex align-items-top">
                                                 <div class="icon font-size-20"><i class="ri-notification-line"></i></div>
                                                 <div class="data ml-2">
@@ -317,13 +317,13 @@ div.postWhenScrollContainer{
                                                       <img ng-show="valuePS.indv_post_like_unlike==1" src="<?php echo base_url();?>assets/images/icon/like2.png" class="img-fluid" alt="">
                                                    </span>
                                                    <!-- <div class="dropdown-menu">
-                                                      <a class="ml-2 mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
-                                                      <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
+                                                      <a class="ml-2 mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
+                                                      <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
                                                    </div> -->
                                                 </div>
                                              </div>
@@ -448,13 +448,13 @@ div.postWhenScrollContainer{
                                                 <img ng-show="valuePS.indv_post_like_unlike==1" src="<?php echo base_url();?>assets/images/icon/like2.png" class="img-fluid" alt="">
                                              </span>
                                             <!--  <div class="dropdown-menu">
-                                                <a class="ml-2 mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
-                                                <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
+                                                <a class="ml-2 mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
+                                                <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
                                              </div> -->
                                           </div>
                                        </div>
@@ -531,11 +531,11 @@ div.postWhenScrollContainer{
                            <i class="ri-more-fill"></i>
                            </span>
                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
-                              <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                              <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                              <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                              <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                              <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                              <a class="dropdown-item" href="javascript:void();"><i class="ri-eye-fill mr-2"></i>View</a>
+                              <a class="dropdown-item" href="javascript:void();"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                              <a class="dropdown-item" href="javascript:void();"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                              <a class="dropdown-item" href="javascript:void();"><i class="ri-printer-fill mr-2"></i>Print</a>
+                              <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
                            </div>
                         </div>
                      </div>

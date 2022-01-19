@@ -231,8 +231,9 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 	$scope.loadingPost = true;
 	$scope.postExist = true;
+	$scope.rowlimit = 3;
 	$scope.row = 0;
-    $scope.rowperpage = 3;
+    $scope.rowperpage = $scope.rowlimit;
 	$scope.getMorePostOnScroll = function ()
     {
     	$scope.postScrollData={};
@@ -263,7 +264,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	            aryreturnData=aryreturnData.data;
 	         	if(aryreturnData.status=='1')
 	        	{
-		            $scope.row=$scope.row+3;
+		            $scope.row=$scope.row+$scope.rowlimit;
 	        		angular.forEach(aryreturnData.data.postScrollData,function(item)
 					{
 						if( $.grep( $scope.aryPostScroll, function(olditem){ return olditem.post_id===item.post_id; }).length){

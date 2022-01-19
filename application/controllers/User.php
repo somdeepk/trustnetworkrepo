@@ -659,7 +659,22 @@ class User extends CI_Controller
 			$menu_arr['profile_image']=$imagename;
 			$this->session->set_userdata('profile_image',$imagename);
 
-			unlink( IMAGE_PATH.'images/members/'.$profile_image); // correct
+
+			//Start tracking all Images uploaded by Member
+			$menu_arr_post_file = array(
+	            'module_id'=>$id,
+	            'module_type'=>'members',
+	            'member_id'   =>$id,
+	            'file_original_name'=>$imagename,
+	            'file_name'   =>$imagename,
+	            'file_size'   =>'0',        
+	            'file_type'   =>'image/png',       
+	            'create_date'   =>$current_date       
+	        );
+			$this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+			//End tracking all Images uploaded by Member
+
+			//unlink( IMAGE_PATH.'images/members/'.$profile_image); // correct
 		}
 
         $strstatus="Updated";
@@ -2556,7 +2571,21 @@ class User extends CI_Controller
 			$menu_arr['cover_image']=$imagename;
 			$this->session->set_userdata('cover_image',$imagename);
 
-			unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
+			//Start tracking all Images uploaded by Member
+			$menu_arr_post_file = array(
+	            'module_id'=>$id,
+	            'module_type'=>'coverimages',
+	            'member_id'   =>$id,
+	            'file_original_name'=>$imagename,
+	            'file_name'   =>$imagename,
+	            'file_size'   =>'0',        
+	            'file_type'   =>'image/png',       
+	            'create_date'   =>$current_date       
+	        );
+			$this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+			//End tracking all Images uploaded by Member
+
+			//unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
 
 			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
 
@@ -2579,27 +2608,12 @@ class User extends CI_Controller
 	{
 		authenticate_user();
 		$data=array();
-
-		$membershipType=$this->session->userdata('membership_type');
-		if($membershipType=="RM")
-		{
-			$data['profileTab']='timelineTab';//$this->input->post_get('tab');
-			$msg=$this->input->post_get('msg');
-			if(!empty($msg))
-			{
-				$msg=base64_decode($msg);
-				$this->session->set_flashdata('success', $msg);
-			}
-			$this->load->view('user/header-script');
-			$this->load->view('user/header-bottom');
-			$this->load->view('user/profile', $data);
-			$this->load->view('user/footer-top');
-			$this->load->view('user/footer');
-		}
-		else
-		{
-			redirect('user/index');
-		}
+		$data['profileTab']='timelineTab';//$this->input->post_get('tab');
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profile', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
 	}
 
 	public function support()
@@ -2802,6 +2816,19 @@ class User extends CI_Controller
       echo json_encode(array('retId'=>$retId));
       die();
     }
+
+    public function photos()
+	{
+		authenticate_user();
+		$data=array();
+		$data['profileTab']='photoTab';//$this->input->post_get('tab');
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profile', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
+	}
+
 
 
 }

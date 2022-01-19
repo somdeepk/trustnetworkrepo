@@ -9,6 +9,16 @@ div.postWhenScrollContainer{
   padding: 0.5em;
   border: 1px dashed #11BD6D;*/
  }
+ div.photoWhenScrollContainer{
+  height:450px;
+  /*background: #123213;
+  color: #fff;*/
+  overflow:auto;
+  /*border-radius: 5px;
+  margin:0 auto;
+  padding: 0.5em;
+  border: 1px dashed #11BD6D;*/
+ }
 </style>
 <div id="content-page" class="content-page">
   
@@ -72,30 +82,30 @@ div.postWhenScrollContainer{
                          <div class="social-links">
                             <!-- <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/08.png" class="img-fluid rounded" alt="facebook"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/08.png" class="img-fluid rounded" alt="facebook"></a>
                                </li>
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/09.png" class="img-fluid rounded" alt="Twitter"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/09.png" class="img-fluid rounded" alt="Twitter"></a>
                                </li>
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/10.png" class="img-fluid rounded" alt="Instagram"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/10.png" class="img-fluid rounded" alt="Instagram"></a>
                                </li>
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/11.png" class="img-fluid rounded" alt="Google plus"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/11.png" class="img-fluid rounded" alt="Google plus"></a>
                                </li>
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/12.png" class="img-fluid rounded" alt="You tube"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/12.png" class="img-fluid rounded" alt="You tube"></a>
                                </li>
                                <li class="text-center pr-3">
-                                  <a href="#"><img src="<?php echo base_url();?>assets/images/icon/13.png" class="img-fluid rounded" alt="linkedin"></a>
+                                  <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/icon/13.png" class="img-fluid rounded" alt="linkedin"></a>
                                </li>
                             </ul> -->
                          </div>
                          <div class="social-info">
                             <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                                <li class="text-center pl-3">
-                                  <h6>Posts {{clickProfileTab}}</h6>
-                                  <p class="mb-0">690</p>
+                                  <h6>Posts</h6>
+                                  <p class="mb-0">690 <!-- {{clickProfileTab}} --></p>
                                </li>
                                <li class="text-center pl-3">
                                   <h6>Followers</h6>
@@ -116,19 +126,19 @@ div.postWhenScrollContainer{
                    <div class="user-tabing">
                       <ul class="nav nav-pills d-flex align-items-center justify-content-around profile-feed-items p-0 m-0">
                          <li class="p-0">
-                            <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('timelineTab')">Timeline</a>
+                            <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='timelineTab') ? 'active' : ''"  href="javascript:void(0)" ng-click="tabPointer('timelineTab')">Timeline</a>
                          </li>
                          <li class="p-0">
-                            <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('aboutTab')">About</a>
+                            <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='aboutTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('aboutTab')">About</a>
                          </li>
                          <li class="p-0">
                             <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('friendlistTab'); friendData.activeSubFrndTab='all'; getAllFriendList()" ng-class="(clickProfileTab=='churchlistTab' || clickProfileTab=='memberlistTab' || clickProfileTab=='friendlistTab' || friendData.activeSubFrndTab=='all') ? 'active' : ''" >Friends</a>
                          </li>
                          <li class="p-0">
-                            <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('photoTab')">Photos</a>
+                            <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='photoTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('photoTab')">Photos</a>
                          </li>
                          <li class="p-0">
-                            <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('eventsTab')">Events</a>
+                            <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='eventsTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('eventsTab')">Events</a>
                          </li>
                       </ul>
                    </div>
@@ -166,7 +176,7 @@ div.postWhenScrollContainer{
                             There is not any friend request.
                           </li>
                           <!-- <li class="d-block text-center">
-                             <a href="#" class="btn btn-request">View More Request</a>
+                             <a href="javascript:void();" class="btn btn-request">View More Request</a>
                           </li> -->
                        </ul>
                     </div>
@@ -332,7 +342,7 @@ div.postWhenScrollContainer{
                                   <div class="dropdown">
                                     <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded zmakeChurchAdminz_{{value.id}}" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-user-add-line"></i>Create Leader</a>
                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
-                                        <a ng-repeat="(keyAG, valueAG) in allAgeGroupObj" ng-click="toggleChurchAdmin(value,valueAG.id);" class="dropdown-item" href="#"><i class="ri-group-2-fill"></i> {{valueAG.agegroup_name}}</a>
+                                        <a ng-repeat="(keyAG, valueAG) in allAgeGroupObj" ng-click="toggleChurchAdmin(value,valueAG.id);" class="dropdown-item" href="javascript:void();"><i class="ri-group-2-fill"></i> {{valueAG.agegroup_name}}</a>
                                      </div>
                                   </div>
                                </div>
@@ -356,7 +366,7 @@ div.postWhenScrollContainer{
            <div class="iq-card">
               <div class="iq-card-body">
                  <div class="row">
-                    <div class="col-md-3">
+                   <!--  <div class="col-md-3">
                        <ul class="nav nav-pills basic-info-items list-inline d-block p-0 m-0">
                           <li>
                              <a class="nav-link active" data-toggle="pill" href="#basicinfo">Contact and Basic Info</a>
@@ -374,8 +384,8 @@ div.postWhenScrollContainer{
                              <a class="nav-link" data-toggle="pill" href="#details">Details About You</a>
                           </li>
                        </ul>
-                    </div>
-                    <div class="col-md-9 pl-4">
+                    </div> -->
+                    <div class="col-md-12 pl-4">
                        <div class="tab-content">
                           <div class="tab-pane fade active show" id="basicinfo" role="tabpanel">
                              <h4>Contact Information</h4>
@@ -385,59 +395,103 @@ div.postWhenScrollContainer{
                                    <h6>Email</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0"><a href="https://iqonic.design/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="87c5e9eeede8efe9c7e0eae6eeeba9e4e8ea">[email&#160;protected]</a></p>
+                                   <p class="mb-0"><?php echo $this->session->userdata('user_email'); ?></p>
                                 </div>
                                 <div class="col-3">
                                    <h6>Mobile</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">(001) 4544 565 456</p>
+                                   <p class="mb-0">
+                                    <?php 
+                                    $str_contact_mobile=(!empty(trim($this->session->userdata('contact_mobile'))))? trim($this->session->userdata('contact_mobile')):$this->session->userdata('contact_alt_mobile');
+                                    echo $str_contact_mobile;
+                                    ?>                                     
+                                   </p>
                                 </div>
-                                <div class="col-3">
+                                <!-- <div class="col-3">
                                    <h6>Address</h6>
                                 </div>
                                 <div class="col-9">
                                    <p class="mb-0">United States of America</p>
-                                </div>
+                                </div> -->
                              </div>
                              <h4 class="mt-3">Websites and Social Links</h4>
                              <hr>
                              <div class="row">
+                                <?php 
+                                $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
+                                ?>
+
+                                <?php if(!empty($str_website)){ ?>
                                 <div class="col-3">
                                    <h6>Website</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">www.bootstrap.com</p>
+                                   <p class="mb-0">
+                                    <?php
+                                    echo $str_website;
+                                    ?>  
+                                   </p>
                                 </div>
-                                <div class="col-3">
+                                <?php } ?>
+       <!--                          <div class="col-3">
                                    <h6>Social Link</h6>
                                 </div>
                                 <div class="col-9">
                                    <p class="mb-0">www.bootstrap.com</p>
-                                </div>
+                                </div> -->
                              </div>
                              <h4 class="mt-3">Basic Information</h4>
                              <hr>
                              <div class="row">
                                 <div class="col-3">
+                                  <?php if($this->session->userdata('membership_type')=='RM'){ ?>
                                    <h6>Birth Date</h6>
+                                  <?php }else{ ?>
+                                    <h6>Foundation Date</h6>
+                                  <?php } ?>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">24 January</p>
+                                   <p class="mb-0">
+                                    <?php echo date('d M',strtotime($this->session->userdata('dob'))); ?>
+                                   </p>
                                 </div>
                                 <div class="col-3">
+                                  <?php if($this->session->userdata('membership_type')=='RM'){ ?>
                                    <h6>Birth Year</h6>
+                                  <?php }else{ ?>
+                                    <h6>Foundation Year</h6>
+                                  <?php } ?>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">1994</p>
+                                   <p class="mb-0"><?php echo date('Y',strtotime($this->session->userdata('dob'))); ?></p>
                                 </div>
+
+                                <?php 
+                                if(!empty($this->session->userdata('gender')))
+                                {
+                                ?>
                                 <div class="col-3">
                                    <h6>Gender</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">Female</p>
+                                   <p class="mb-0">
+                                    <?php 
+                                      if(!empty($this->session->userdata('gender')) && $this->session->userdata('gender')=='M')
+                                      {
+                                        echo "Male";
+                                      }
+                                      elseif(!empty($this->session->userdata('gender')) && $this->session->userdata('gender')=='F')
+                                      {
+                                        echo "Female";
+                                      }
+                                    ?>
+                                    </p>
                                 </div>
-                                <div class="col-3">
+                                <?php
+                                }
+                                ?>
+                               <!--  <div class="col-3">
                                    <h6>interested in</h6>
                                 </div>
                                 <div class="col-9">
@@ -448,7 +502,7 @@ div.postWhenScrollContainer{
                                 </div>
                                 <div class="col-9">
                                    <p class="mb-0">English, French</p>
-                                </div>
+                                </div> -->
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">
@@ -613,7 +667,7 @@ div.postWhenScrollContainer{
                        <div class="col-lg-4">
                           <!-- <div class="iq-card">
                              <div class="iq-card-body">
-                                <a href="#"><span class="badge badge-pill badge-primary font-weight-normal ml-auto mr-1"><i class="ri-star-line"></i></span> 27 Items for yoou</a>
+                                <a href="javascript:void();"><span class="badge badge-pill badge-primary font-weight-normal ml-auto mr-1"><i class="ri-star-line"></i></span> 27 Items for yoou</a>
                              </div>
                           </div> -->
                           <div class="iq-card">
@@ -755,9 +809,9 @@ div.postWhenScrollContainer{
                                 </div>
                                 <hr>
                                 <!-- <ul class="post-opt-block d-flex align-items-center list-inline m-0 p-0">
-                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video</li>
-                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</li>
-                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="#"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</li>
+                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video</li>
+                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</li>
+                                   <li class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</li>
                                    <li class="iq-bg-primary rounded p-2 pointer">
                                       <div class="iq-card-header-toolbar d-flex align-items-center">
                                          <div class="dropdown">
@@ -765,7 +819,7 @@ div.postWhenScrollContainer{
                                             <i class="ri-more-fill"></i>
                                             </span>
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="post-option" style="">
-                                               <a class="dropdown-item" href="#">Check in</a>
+                                               <a class="dropdown-item" href="javascript:void();">Check in</a>
                                             </div>
                                          </div>
                                       </div>
@@ -819,7 +873,7 @@ div.postWhenScrollContainer{
                                                      <span class="btn btn-primary">Friend</span>
                                                      </span>
                                                      <div class="dropdown-menu m-0 p-0">
-                                                        <a class="dropdown-item p-3" href="#">
+                                                        <a class="dropdown-item p-3" href="javascript:void();">
                                                            <div class="d-flex align-items-top">
                                                               <div class="icon font-size-20"><i class="ri-save-line"></i></div>
                                                               <div class="data ml-2">
@@ -828,7 +882,7 @@ div.postWhenScrollContainer{
                                                               </div>
                                                            </div>
                                                         </a>
-                                                        <a class="dropdown-item p-3" href="#">
+                                                        <a class="dropdown-item p-3" href="javascript:void();">
                                                            <div class="d-flex align-items-top">
                                                               <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
                                                               <div class="data ml-2">
@@ -837,7 +891,7 @@ div.postWhenScrollContainer{
                                                               </div>
                                                            </div>
                                                         </a>
-                                                        <a class="dropdown-item p-3" href="#">
+                                                        <a class="dropdown-item p-3" href="javascript:void();">
                                                            <div class="d-flex align-items-top">
                                                               <div class="icon font-size-20"><i class="ri-user-unfollow-line"></i></div>
                                                               <div class="data ml-2">
@@ -846,7 +900,7 @@ div.postWhenScrollContainer{
                                                               </div>
                                                            </div>
                                                         </a>
-                                                        <a class="dropdown-item p-3" href="#">
+                                                        <a class="dropdown-item p-3" href="javascript:void();">
                                                            <div class="d-flex align-items-top">
                                                               <div class="icon font-size-20"><i class="ri-notification-line"></i></div>
                                                               <div class="data ml-2">
@@ -890,7 +944,7 @@ div.postWhenScrollContainer{
                                                <i class="ri-more-fill"></i>
                                                </span>
                                                <div class="dropdown-menu m-0 p-0">
-                                                  <!-- <a class="dropdown-item p-3" href="#">
+                                                  <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                                      <div class="d-flex align-items-top">
                                                         <div class="icon font-size-20"><i class="ri-save-line"></i></div>
                                                         <div class="data ml-2">
@@ -908,7 +962,7 @@ div.postWhenScrollContainer{
                                                         </div>
                                                      </div>
                                                   </a>
-                                                  <!-- <a class="dropdown-item p-3" href="#">
+                                                  <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                                      <div class="d-flex align-items-top">
                                                         <div class="icon font-size-20"><i class="ri-user-unfollow-line"></i></div>
                                                         <div class="data ml-2">
@@ -917,7 +971,7 @@ div.postWhenScrollContainer{
                                                         </div>
                                                      </div>
                                                   </a> -->
-                                                  <!-- <a class="dropdown-item p-3" href="#">
+                                                  <!-- <a class="dropdown-item p-3" href="javascript:void();">
                                                      <div class="d-flex align-items-top">
                                                         <div class="icon font-size-20"><i class="ri-notification-line"></i></div>
                                                         <div class="data ml-2">
@@ -1003,13 +1057,13 @@ div.postWhenScrollContainer{
                                                               <img ng-show="valuePS.indv_post_like_unlike==1" src="<?php echo base_url();?>assets/images/icon/like2.png" class="img-fluid" alt="">
                                                            </span>
                                                            <!-- <div class="dropdown-menu">
-                                                              <a class="ml-2 mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
-                                                              <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
+                                                              <a class="ml-2 mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
+                                                              <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
                                                            </div> -->
                                                         </div>
                                                      </div>
@@ -1134,13 +1188,13 @@ div.postWhenScrollContainer{
                                                         <img ng-show="valuePS.indv_post_like_unlike==1" src="<?php echo base_url();?>assets/images/icon/like2.png" class="img-fluid" alt="">
                                                      </span>
                                                     <!--  <div class="dropdown-menu">
-                                                        <a class="ml-2 mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
-                                                        <a class="mr-2" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
+                                                        <a class="ml-2 mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Like"><img src="<?php echo base_url();?>assets/images/icon/01.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Love"><img src="<?php echo base_url();?>assets/images/icon/02.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Happy"><img src="<?php echo base_url();?>assets/images/icon/03.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="HaHa"><img src="<?php echo base_url();?>assets/images/icon/04.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Think"><img src="<?php echo base_url();?>assets/images/icon/05.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sade"><img src="<?php echo base_url();?>assets/images/icon/06.png" class="img-fluid" alt=""></a>
+                                                        <a class="mr-2" href="javascript:void();" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lovely"><img src="<?php echo base_url();?>assets/images/icon/07.png" class="img-fluid" alt=""></a>
                                                      </div> -->
                                                   </div>
                                                </div>
@@ -1215,6 +1269,77 @@ div.postWhenScrollContainer{
           </div>          
         </div>
         <!-- END Time Line Tab-->
+
+
+        <!-- Start Photo Section Tab-->
+        <div ng-controller="photoController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'photoTab') ? '' : 'hiddenimportant'">
+          <div when-scrolled="getMorePhotoOnScroll()" class="photoWhenScrollContainer">             
+              <div class="container">
+                <div class="tab-pane fade active show">
+                   <div class="iq-card">
+                      <div class="iq-card-body">
+                         <h4 class="card-title">Photos of You</h4>
+                         <div class="friend-list-tab mt-2">
+                            <!-- <ul class="nav nav-pills d-flex align-items-center justify-content-left friend-list-items p-0 mb-2">
+                               <li>
+                                  <a class="nav-link active" data-toggle="pill" href="#photosofyou">Photos of You</a>
+                               </li>
+                               <li>
+                                  <a class="nav-link" data-toggle="pill" href="#your-photos">Your Photos</a>
+                               </li>
+                            </ul> -->
+                            <div class="tab-content">
+                               <div class="tab-pane fade active show" id="photosofyou" role="tabpanel">
+                                  <div class="iq-card-body p-0">
+                                     <div class="row">
+                                        <div class="col-md-6 col-lg-3 mb-3" ng-repeat="(keyPhto, valuePhto) in aryPhotoScroll">
+                                           <div class="user-images position-relative overflow-hidden">
+                                              <a href="javascript:void();">
+                                              <img style="width: 224px;height: 149px;" ng-src="{{valuePhto.all_file_n_photo_path}}" class="img-fluid rounded" alt="Responsive image">
+                                              </a>
+
+                                              <div class="image-hover-data">
+                                                 <div class="product-elements-icon">
+                                                    <ul class="d-flex align-items-center m-0 p-0 list-inline">
+                                                       <li><a style="font-size: 15px;" href="javascript:void();" class="pr-3 text-white">{{valuePhto.display_upload_date}} <i class="ri-time-line"></i></a></li><!-- 
+                                                       <li><a href="javascript:void();" class="pr-3 text-white"> 30 <i class="ri-chat-3-line"></i> </a></li>
+                                                       <li><a href="javascript:void();" class="pr-3 text-white"> 10 <i class="ri-share-forward-line"></i> </a></li> -->
+                                                    </ul>
+                                                 </div>
+                                              </div>
+                                              <!-- <div class="image-hover-data">
+                                                 <div class="product-elements-icon">
+                                                    <ul class="d-flex align-items-center m-0 p-0 list-inline">
+                                                       <li><a href="javascript:void();" class="pr-3 text-white"> 60 <i class="ri-thumb-up-line"></i> </a></li>
+                                                       <li><a href="javascript:void();" class="pr-3 text-white"> 30 <i class="ri-chat-3-line"></i> </a></li>
+                                                       <li><a href="javascript:void();" class="pr-3 text-white"> 10 <i class="ri-share-forward-line"></i> </a></li>
+                                                    </ul>
+                                                 </div>
+                                              </div>
+                                              <a href="javascript:void();" class="image-edit-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit or Remove"><i class="ri-edit-2-fill"></i></a> -->
+
+                                           </div>
+                                        </div>
+                                        <div  ng-show="loadingPhoto && photoExist" class="col-md-12 text-center">
+                                           <img src="<?php echo base_url();?>assets/images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">
+                                        </div>
+
+
+                                      
+                                        
+                                     </div>
+                                  </div>
+                               </div>
+                               
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              </div>
+          </div>
+        </div>
+         <!-- End Photo Section Tab-->
      </div>
   </div>
 </div>

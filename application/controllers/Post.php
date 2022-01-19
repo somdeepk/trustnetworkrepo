@@ -106,7 +106,8 @@ class Post extends CI_Controller
 		                    $image_data = $this->upload->data();
 		                    $file_name=$image_data['file_name'];
 		                    $menu_arr_post_file = array(
-					            'post_id'=>$lastPostId,
+					            'module_id'=>$lastPostId,
+					            'module_type'=>'postfiles',
 					            'member_id'   =>$member_id,
 					            'file_original_name'   =>$file_original_name,
 					            'file_name'   =>$file_name,
@@ -186,10 +187,9 @@ class Post extends CI_Controller
 					$finalPost[$key]['to_member_id']=$value['to_member_id'];
 					$finalPost[$key]['member_comment']='';
 
-					
 
 					//Start Get Post File Images/Video Data
-					$sqlPostFile="SELECT file_name FROM tn_post_file WHERE post_id='".$value['post_id']."' AND deleted='0'";
+					$sqlPostFile="SELECT file_name FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='postfiles' AND deleted='0'";
 					$queryPostFile=$this->db->query($sqlPostFile);
 					$resultPostFile=$queryPostFile->result_array();
 
@@ -462,5 +462,68 @@ class Post extends CI_Controller
 		}       
         echo json_encode($returnData);
         exit;
+    }
+
+
+    public function ajaxGetPhotoList() 
+    {
+    	$finalPost=array();
+
+    	$photoScrollData = $this->input->post('photoScrollData');
+        $aryPhotoScrollDataa=json_decode($photoScrollData, true);
+
+        $user_auto_id=$this->session->userdata('user_auto_id');
+        $row=(isset($aryPhotoScrollDataa['row']) && !empty($aryPhotoScrollDataa['row']))? $aryPhotoScrollDataa['row']:'0';
+        $rowperpage=(isset($aryPhotoScrollDataa['rowperpage']) && !empty($aryPhotoScrollDataa['rowperpage']))? $aryPhotoScrollDataa['rowperpage']:'0';
+
+        $sql="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND tpf.deleted='0' order by tpf.id DESC limit ".$row.",".$rowperpage;
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+
+		// echo "<pre>";
+		// print_r($result);
+		// exit;
+
+		$finalPhotoAry=array();
+		$incree=0;
+		if(count($result)>0)
+		{
+			foreach ($result as $k => $v)
+			{
+				$strPhotoPath='';
+				if($v['module_type']=='members')
+				{
+					$strPhotoPath="/images/members/";
+				}
+				elseif($v['module_type']=='coverimages')
+				{
+					$strPhotoPath="/images/members/coverimages/";
+				}
+				elseif($v['module_type']=='postfiles')
+				{
+					$strPhotoPath="/images/postfiles/";
+				}
+				if (file_exists(IMAGE_PATH.$strPhotoPath.$v['file_name']) && $v['file_name']!='')
+				{
+					$finalPhotoAry[$incree]['id']=$v['id'];
+					$finalPhotoAry[$incree]['module_type']=$v['module_type'];
+					$finalPhotoAry[$incree]['display_upload_date']=date('d M y h:i A',strtotime($v['create_date']));
+					$finalPhotoAry[$incree]['all_file_n_photo_path']=IMAGE_URL.$strPhotoPath.$v['file_name'];
+					$incree++;
+				}
+			}
+		}
+
+		// echo "<pre>";
+  //       print_r($finalPhotoAry);
+  //       exit;
+
+		$returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='';
+        $returnData['data']=array('photoScrollData'=>$finalPhotoAry,'photoExist'=>count($finalPhotoAry),'sql'=>$sql);
+        echo json_encode($returnData);
+        exit;
+
     }
 }

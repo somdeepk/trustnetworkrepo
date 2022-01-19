@@ -37,19 +37,18 @@ exit;*/
                       <li <?php echo ($actionName=='memberlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
                   <?php } ?>
 
-                   <li <?php echo ($actionName=='photos')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/photos" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
-                   
+                  <li <?php echo ($actionName=='photos')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/photos" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
                   <li>
                     <a href="#group" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-users"></i><span>Group</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="group" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                        <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
                        <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
                        <?php } ?>
-                       <li ng-repeat="(key, value) in allGroupObj"><a href="#"><i class="ri-device-line"></i>{{value.name}}</a></li>
-                       <!-- <li><a href="#"><i class="ri-toggle-line"></i>School Friends</a></li>
-                       <li><a href="#"><i class="ri-toggle-line"></i>College Friends</a></li>
-                       <li><a href="#"><i class="ri-checkbox-line"></i>Friends</a></li>
-                       <li><a href="#"><i class="ri-radio-button-line"></i>Prayer Friends</a></li> -->
+                       <li ng-repeat="(key, value) in allGroupObj"><a href="javascript:void();"><i class="ri-device-line"></i>{{value.name}}</a></li>
+                       <!-- <li><a href="javascript:void();"><i class="ri-toggle-line"></i>School Friends</a></li>
+                       <li><a href="javascript:void();"><i class="ri-toggle-line"></i>College Friends</a></li>
+                       <li><a href="javascript:void();"><i class="ri-checkbox-line"></i>Friends</a></li>
+                       <li><a href="javascript:void();"><i class="ri-radio-button-line"></i>Prayer Friends</a></li> -->
                     </ul>
                   </li>
                   <li>
@@ -72,9 +71,9 @@ exit;*/
                     <?php } ?>
                      <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
-                  <li><a href="#" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
-                  <li><a href="#" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
-                 <!--  <li><a href="#" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
+                  <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
+                  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
+                 <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
                   <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
                 </ul>
              </nav>
@@ -117,7 +116,7 @@ exit;*/
                  <?php if ($memberIsApproved=="Y"){ ?>
                  <form action="#" class="searchbox">
                     <input type="text" class="text search-input" placeholder="Type here to search...">
-                    <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                    <a class="search-link" href="javascript:void();"><i class="ri-search-line"></i></a>
                  </form>
                 <?php } ?>
               </div>
@@ -172,7 +171,7 @@ exit;*/
                                 </div> 
 
                                 <!-- <div class="text-center">
-                                   <a href="#" class="mr-3 btn text-primary">View More Request</a>
+                                   <a href="javascript:void();" class="mr-3 btn text-primary">View More Request</a>
                                 </div> -->
                              </div>
                           </div>
@@ -189,7 +188,7 @@ exit;*/
                                 <div class="bg-primary p-3">
                                    <h5 class="mb-0 text-white">All Notifications<small ng-if="allNotificationObj.length" class="badge  badge-light float-right pt-1">{{allNotificationObj.length}}</small></h5>
                                 </div>
-                                <a ng-if="allNotificationObj.length" ng-repeat="(key, value) in allNotificationObj" href="#" class="iq-sub-card" >
+                                <a ng-if="allNotificationObj.length" ng-repeat="(key, value) in allNotificationObj" href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                         <i class="{{value.stricon}}"></i>
@@ -211,7 +210,7 @@ exit;*/
                        </div>
                     </li>
                     <li class="nav-item dropdown">
-                       <a href="#" class="search-toggle iq-waves-effect">
+                       <a href="javascript:void();" class="search-toggle iq-waves-effect">
                           <div id="lottie-mail"></div>
                           <span class="bg-primary count-mail"></span>
                        </a>
@@ -221,7 +220,7 @@ exit;*/
                                 <div class="bg-primary p-3">
                                    <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
                                 </div>
-                                <a href="#" class="iq-sub-card" >
+                                <a href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
@@ -232,7 +231,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="#" class="iq-sub-card" >
+                                <a href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
@@ -243,7 +242,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="#" class="iq-sub-card" >
+                                <a href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
@@ -254,7 +253,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="#" class="iq-sub-card" >
+                                <a href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
@@ -265,7 +264,7 @@ exit;*/
                                       </div>
                                    </div>
                                 </a>
-                                <a href="#" class="iq-sub-card" >
+                                <a href="javascript:void();" class="iq-sub-card" >
                                    <div class="media align-items-center">
                                       <div class="">
                                          <img class="avatar-40 rounded" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
@@ -284,7 +283,7 @@ exit;*/
                  <?php } ?>
                  <ul class="navbar-list">
                     <li>
-                       <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                       <a href="javascript:void();" class="search-toggle iq-waves-effect d-flex align-items-center">
                        <i class="ri-arrow-down-s-fill"></i>
                        </a>
                        <div class="iq-sub-dropdown iq-user-dropdown">
@@ -365,7 +364,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Anna Sthesia</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Anna Sthesia</a></h6>
                           <p class="mb-0">Just Now</p>
                        </div>
                     </div>
@@ -374,7 +373,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Paul Molive</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Paul Molive</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -383,7 +382,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Anna Mull</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Anna Mull</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -392,7 +391,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/04.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Paige Turner</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Paige Turner</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -401,7 +400,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/11.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Bob Frapples</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Bob Frapples</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -410,7 +409,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Barb Ackue</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Barb Ackue</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -419,7 +418,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/03.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Greta Life</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Greta Life</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -428,7 +427,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/12.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Ira Membrit</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Ira Membrit</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -437,7 +436,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/01.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Pete Sariya</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Pete Sariya</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
@@ -446,7 +445,7 @@ exit;*/
                           <img class="rounded-circle avatar-50" src="<?php echo base_url();?>assets/images/user/02.jpg" alt="">
                        </div>
                        <div class="media-body ml-3">
-                          <h6 class="mb-0"><a href="#">Monty Carlo</a></h6>
+                          <h6 class="mb-0"><a href="javascript:void();">Monty Carlo</a></h6>
                           <p class="mb-0">Admin</p>
                        </div>
                     </div>
