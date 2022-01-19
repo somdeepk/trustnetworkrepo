@@ -275,7 +275,7 @@ div.postWhenScrollContainer{
                                            <p>{{(isNullOrEmptyOrUndefined(value.church_first_name)==false)? value.church_first_name : '&nbsp;'}}</p>
                                         </div>
                                      </div>
-                                     <button type="submit" class="btn btn-primary">Followings</button>
+                                     <!-- <button type="submit" class="btn btn-primary">Followings</button> -->
                                   </div>
                                </div>
                             </div>

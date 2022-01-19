@@ -2828,6 +2828,17 @@ class User extends CI_Controller
 		$this->load->view('user/footer-top');
 		$this->load->view('user/footer');
 	}
+    public function myprofile()
+	{
+		authenticate_user();
+		$data=array();
+		$data['profileTab']='aboutTab';//$this->input->post_get('tab');
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profile', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
+	}
 
 
 

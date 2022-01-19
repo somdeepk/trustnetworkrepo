@@ -114,10 +114,10 @@ exit;*/
               </div>
               <div class="iq-search-bar">
                  <?php if ($memberIsApproved=="Y"){ ?>
-                 <form action="#" class="searchbox">
+                 <!-- <form action="#" class="searchbox">
                     <input type="text" class="text search-input" placeholder="Type here to search...">
                     <a class="search-link" href="javascript:void();"><i class="ri-search-line"></i></a>
-                 </form>
+                 </form> -->
                 <?php } ?>
               </div>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
@@ -294,7 +294,7 @@ exit;*/
                                    <h5 class="mb-0 text-white line-height">Hello <?php echo $this->session->userdata('user_full_name'); ?></h5>
                                    <!-- <span class="text-white font-size-12">Available</span> -->
                                 </div>
-                                <a href="<?php echo base_url();?>user/profile" class="iq-sub-card iq-bg-primary-hover">
+                                <a href="<?php echo base_url();?>user/myprofile" class="iq-sub-card iq-bg-primary-hover">
                                    <div class="media align-items-center">
                                       <div class="rounded iq-card-icon iq-bg-primary">
                                          <i class="ri-file-user-line"></i>
