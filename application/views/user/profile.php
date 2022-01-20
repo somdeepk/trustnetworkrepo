@@ -107,14 +107,14 @@ div.postWhenScrollContainer{
                                   <h6>Posts</h6>
                                   <p class="mb-0">690 <!-- {{clickProfileTab}} --></p>
                                </li>
-                               <li class="text-center pl-3">
+                               <!-- <li class="text-center pl-3">
                                   <h6>Followers</h6>
                                   <p class="mb-0">206</p>
                                </li>
                                <li class="text-center pl-3">
                                   <h6>Following</h6>
                                   <p class="mb-0">100</p>
-                               </li>
+                               </li> -->
                             </ul>
                          </div>
                       </div>
@@ -360,8 +360,8 @@ div.postWhenScrollContainer{
            </div>
           </div>
           <!-- END Church Member-->
-          <!-- Start About Me-->
 
+          <!-- Start About Me-->
           <div class="container" ng-class="(clickProfileTab == 'aboutTab') ? '' : 'hiddenimportant'">
            <div class="iq-card">
               <div class="iq-card-body">
@@ -711,25 +711,17 @@ div.postWhenScrollContainer{
                           <div class="iq-card">
                              <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
-                                   <h4 class="card-title">Photos</h4>
+                                   <h4 class="card-title">Photos of You</h4>
                                 </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
+                                <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                                    <p class="m-0"><a href="javacsript:void();">Add Photo </a></p>
-                                </div>
+                                </div> -->
                              </div>
                              <div class="iq-card-body">
                                 <ul class="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g1.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g2.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g3.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g4.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g5.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g6.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g7.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g8.jpg" alt="gallary-image" class="img-fluid" /></a></li>
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-0"><a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/g9.jpg" alt="gallary-image" class="img-fluid" /></a></li>
+                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3" ng-repeat="(keyPhto, valuePhto) in limitTimelinePhotoListObj"><a href="javascript:void();"><img style="width:86px;height:86px" ng-src="{{valuePhto.all_file_n_photo_path}}" alt="gallary-image" class="img-fluid" /></a></li>
                                 </ul>
-                             </div>
+                             </div> 
                           </div>
                           <div class="iq-card">
                              <div class="iq-card-header d-flex justify-content-between">
@@ -851,12 +843,12 @@ div.postWhenScrollContainer{
                                             <li class="col-md-6 mb-3" ng-click="tagPostToFriend();">
                                                <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</div>
                                             </li>
-                                            <li class="col-md-6 mb-3">
+                                            <!-- <li class="col-md-6 mb-3">
                                                <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</div>
                                             </li>
                                             <li class="col-md-6 mb-3">
                                                <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/10.png" alt="icon" class="img-fluid"> Check in</div>
-                                            </li>
+                                            </li> -->
                                          </ul>
                                          <hr>
                                          <!-- <div class="other-option">
@@ -1340,6 +1332,510 @@ div.postWhenScrollContainer{
           </div>
         </div>
          <!-- End Photo Section Tab-->
+
+        <!-- Start Event Section Tab-->
+        <div ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-12">                    
+                     <div class="iq-card">
+                        <div class="iq-card-body p-0">
+                           <div class="user-tabing">
+                              <ul class="nav nav-pills justify-content-end profile-feed-items p-0 m-0">
+                                 <li>
+                                 <div class="d-flex">
+                                    <a href="javascript:void();" ng-click="showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>
+                                    <a href="javascript:void();" ng-click="showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">All Events</a>
+                                 </div>
+                                 </li>    
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Start Display All Events Tab-->
+                  <div ng-show="showEventOrCalendar=='allevents'">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/51.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Jan</span>
+                                     <h5>01</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>New Year Celibration</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/52.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Jan</span>
+                                     <h5>24</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Birthday Celibration</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/53.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Jan</span>
+                                     <h5>26</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Republic Day</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/54.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Feb</span>
+                                     <h5>04</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Meetings & Conventions</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/55.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>March</span>
+                                     <h5>01</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Fun Events and Festivals </h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/56.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>March</span>
+                                     <h5>10</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Atlanta Retail Show</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/57.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>March</span>
+                                     <h5>14</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Holi in the City</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/58.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Mar</span>
+                                     <h5>16</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>Insurance Innovators</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                        <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-md-6 col-lg-4">
+                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
+                            <div class="event-images">
+                               <a href="#">
+                               <img src="<?php echo base_url();?>assets/images/page-img/59.jpg" class="img-fluid" alt="Responsive image">
+                               </a>
+                            </div>
+                            <div class="iq-card-body">
+                               <div class="d-flex">
+                                  <div class="date-of-event">
+                                     <span>Apr</span>
+                                     <h5>12</h5>
+                                  </div>
+                                  <div class="events-detail ml-3">
+                                     <h5>BIG 5G Event</h5>
+                                     <p>Lorem Ipsum is simply dummy text</p>
+                                     <div class="event-member">
+                                        <div class="iq-media-group">
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
+                                           </a>
+                                           <a href="#" class="iq-media">
+                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           </a>
+                                        </div>
+                                       <div class="d-flex">
+                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
+                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+                                     </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Display All Events Tab-->
+
+                  <!-- Start Event Calendar Tab-->
+                  <div ng-show="showEventOrCalendar=='calendar'">
+                    <div class="row">
+                      <div class="row row-eq-height">
+                          <div class="col-md-3">
+                             <div class="iq-card calender-small">
+                                <div class="iq-card-body">
+                                   <input type="text" class="flatpicker d-none">
+                                </div>
+                             </div>
+                             <div class="iq-card">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title ">Classification</h4>
+                                   </div>
+                                   <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <a href="#"><i class="fa fa-plus  mr-0" aria-hidden="true"></i></a>
+                                   </div>
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="m-0 p-0 job-classification">
+                                      <li class=""><i class="ri-check-line bg-danger"></i>Meeting</li>
+                                      <li class=""><i class="ri-check-line bg-success"></i>Business travel</li>
+                                      <li class=""><i class="ri-check-line bg-warning"></i>Personal Work</li>
+                                      <li class=""><i class="ri-check-line bg-info"></i>Team Project</li>
+                                   </ul>
+                                </div>
+                             </div>
+                             <div class="iq-card">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title">Today's Schedule</h4>
+                                   </div>
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="m-0 p-0 today-schedule">
+                                      <li class="d-flex">
+                                         <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-primary"></i></div>
+                                         <div class="schedule-text"> <span>Web Design</span>
+                                            <span>09:00 to 12:00</span>
+                                         </div>
+                                      </li>
+                                      <li class="d-flex">
+                                         <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-success"></i></div>
+                                         <div class="schedule-text"> <span>Participate in Design</span>
+                                            <span>09:00 to 12:00</span>
+                                         </div>
+                                      </li>
+                                   </ul>
+                                </div>
+                             </div>
+                          </div>
+                          <div class="col-md-9">
+                             <div class="iq-card">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title">Create Events</h4>
+                                   </div>
+                                   <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <a href="#" class="btn btn-primary"><i class="ri-add-line mr-2"></i>View Events</a>
+                                   </div>
+                                </div>
+                                <div class="iq-card-body">
+                                   <div id='calendar1'></div>
+                                </div>
+                             </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Event Calendar Tab-->
+                  
+                  
+
+               </div>
+            </div>
+        </div>
+
+        <!-- End Event Section Tab-->
      </div>
   </div>
 </div>

@@ -13,6 +13,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		$scope.memberData.parent_id=parent_id;
 
 		$scope.GetLimitFriendForTimeline();
+		$scope.GetLimitPhotoForTimeline();
 	};
    
    	$scope.submitPost = function(){
@@ -117,6 +118,40 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 			});			
 	    }		
 	};	
+
+	$scope.GetLimitPhotoForTimeline = function ()
+	{
+		if($scope.memberData.user_auto_id>0)
+		{
+			$scope.photoScrollData={};
+			$scope.photoScrollData.row=0;
+			$scope.photoScrollData.rowperpage=9;
+
+			var formData = new FormData();
+			formData.append('photoScrollData',angular.toJson($scope.photoScrollData));
+	        $http({
+	            method: 'POST',
+	            url     : varBaseUrl+"post/ajaxGetPhotoList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+		        data:formData,
+	        }).success(function(returnData)
+	        {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.limitTimelinePhotoListObj=aryreturnData.data.photoScrollData;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }		
+	};
 
 
 	$scope.aryPostTagFriend = [];

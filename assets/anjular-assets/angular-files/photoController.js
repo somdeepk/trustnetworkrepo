@@ -62,9 +62,8 @@ mainApp.controller('photoController', function ($rootScope, $timeout, $interval,
 	        		{
 	        			$scope.photoExist = false;
 	        		}
-
-	        		console.log("PHOTO KANU")
-	        		console.log($scope.aryPhotoScroll)
+	        		// console.log("PHOTO KANU")
+	        		// console.log($scope.aryPhotoScroll)
 	        	}
 	        	else
 	        	{

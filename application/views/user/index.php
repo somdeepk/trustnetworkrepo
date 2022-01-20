@@ -111,12 +111,12 @@ div.postWhenScrollContainer{
                                     <li class="col-md-6 mb-3" ng-click="tagPostToFriend();">
                                        <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/08.png" alt="icon" class="img-fluid"> Tag Friend</div>
                                     </li>
-                                    <li class="col-md-6 mb-3">
+                                    <!-- <li class="col-md-6 mb-3">
                                        <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/09.png" alt="icon" class="img-fluid"> Feeling/Activity</div>
                                     </li>
                                     <li class="col-md-6 mb-3">
                                        <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/10.png" alt="icon" class="img-fluid"> Check in</div>
-                                    </li>
+                                    </li> -->
                                  </ul>
                                  <hr>
                                  <!-- <div class="other-option">

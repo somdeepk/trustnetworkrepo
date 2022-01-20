@@ -521,7 +521,7 @@ class Post extends CI_Controller
 		$returnData['status']='1';
         $returnData['msg']='success';
         $returnData['msgstring']='';
-        $returnData['data']=array('photoScrollData'=>$finalPhotoAry,'photoExist'=>count($finalPhotoAry),'sql'=>$sql);
+        $returnData['data']=array('photoScrollData'=>$finalPhotoAry,'photoExist'=>count($finalPhotoAry));
         echo json_encode($returnData);
         exit;
 
