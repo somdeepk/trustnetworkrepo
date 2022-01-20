@@ -1758,15 +1758,9 @@ div.postWhenScrollContainer{
                   <!-- End Display All Events Tab-->
 
                   <!-- Start Event Calendar Tab-->
-                  <div ng-show="showEventOrCalendar=='calendar'">
-                    <div class="row">
+                  <div class="container" ng-show="showEventOrCalendar=='calendar'">
                       <div class="row row-eq-height">
                           <div class="col-md-3">
-                             <div class="iq-card calender-small">
-                                <div class="iq-card-body">
-                                   <input type="text" class="flatpicker d-none">
-                                </div>
-                             </div>
                              <div class="iq-card">
                                 <div class="iq-card-header d-flex justify-content-between">
                                    <div class="iq-header-title">
@@ -1825,7 +1819,6 @@ div.postWhenScrollContainer{
                              </div>
                           </div>
                       </div>
-                    </div>
                   </div>
                   <!-- End Event Calendar Tab-->
                   
