@@ -943,7 +943,7 @@ Avatar Size
 	font-size: 1.6rem;
 }
 .avatar-90 {
-	height: 90px;
+	height: 90px !important;
 	width: 90px;
 	line-height: 90px;
 	font-size: 1.6rem;

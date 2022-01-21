@@ -4280,3 +4280,10 @@ input {
 .datepicker {color: var(--iq-dark-title-text) ;}
 .timepicker {color: var(--iq-dark-title-text) ;}
 .bootstrap-datetimepicker-widget table td span {color: var(--iq-dark-title-text) ;}
+
+.user-post{position: relative;}
+.photo-count-value{position: absolute; bottom: 0; right: 0; width: 100%; height: 100%; z-index: 9; display: flex;
+    justify-content: center;
+    align-items: center;}
+.photo-count-value a{z-index: 2; z-index: 9;}
+.photo-count-value:before{content: ""; background: rgb(0,0,0,.5); width: 100%; height: 100%; position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
