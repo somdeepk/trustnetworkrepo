@@ -190,10 +190,10 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 		},2000);
 	};
 
-	$rootScope.openPostModalPopup = function(valuePS)
-    {
-    	$('#exampleModal_'+valuePS.id).modal('show')
-    };
+	// $rootScope.openPostModalPopup = function(valuePS)
+ //    {
+ //    	$('#exampleModal_'+valuePS.id).modal('show')
+ //    };
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
