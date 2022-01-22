@@ -44,7 +44,7 @@ exit;*/
                        <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
                        <li><a href="<?php echo base_url();?>user/churchmember"><i class="ri-tablet-line"></i>Church Members</a></li>
                        <?php } ?>
-                       <li ng-repeat="(key, value) in allGroupObj"><a href="javascript:void();"><i class="ri-device-line"></i>{{value.name}}</a></li>
+                       <!-- <li ng-repeat="(key, value) in allGroupObj"><a href="javascript:void();"><i class="ri-device-line"></i>{{value.name}}</a></li> -->
                        <!-- <li><a href="javascript:void();"><i class="ri-toggle-line"></i>School Friends</a></li>
                        <li><a href="javascript:void();"><i class="ri-toggle-line"></i>College Friends</a></li>
                        <li><a href="javascript:void();"><i class="ri-checkbox-line"></i>Friends</a></li>

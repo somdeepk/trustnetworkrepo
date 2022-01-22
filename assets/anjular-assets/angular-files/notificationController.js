@@ -12,6 +12,34 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 		$rootScope.clickProfileTab=typ;
 	};
 
+	$rootScope.getUserOtherData = function()
+	{
+		if($scope.friendData.user_auto_id>0)
+		{
+			//alert("OD")
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"getUserOtherData",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$rootScope.totalPostCount=aryreturnData.data.totalPostCount;
+	        	}
+	        	else
+	        	{
+	        		console.log("Something went wrong. Please try again later!",)
+	        	}
+			});
+			
+	    }
+    };
+
     $scope.get_all_notifiction = function (user_auto_id,parent_id,membership_type,is_admin,admin_id)
 	{
 
@@ -47,6 +75,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 
 		$scope.friendData.user_auto_id=user_auto_id;
 		$scope.getAllFriendRequest()
+		$rootScope.getUserOtherData()
 	};
 
 	$scope.getAllFriendRequest = function()
@@ -160,6 +189,11 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 			});
 		},2000);
 	};
+
+	$rootScope.openPostModalPopup = function(valuePS)
+    {
+    	$('#exampleModal_'+valuePS.id).modal('show')
+    };
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;

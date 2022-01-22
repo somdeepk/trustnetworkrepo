@@ -2840,6 +2840,43 @@ class User extends CI_Controller
 		$this->load->view('user/footer');
 	}
 
+	public function events()
+	{
+		authenticate_user();
+		$data=array();
+		$data['profileTab']='eventsTab';//$this->input->post_get('tab');
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/profile', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
+	}
+
+
+	public function getUserOtherData() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
+
+		$totalPostCount = $this->User_Model->getTotalPostCount($user_auto_id);
+
+		/*echo "<pre>";
+		print_r($aryFriendData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('totalPostCount'=>$totalPostCount);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
 
 
 }
