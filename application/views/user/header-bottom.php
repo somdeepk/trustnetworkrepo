@@ -71,7 +71,7 @@ exit;*/
                     <?php } ?>
                      <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
-                  <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li>
+                  <!-- <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li> -->
                   <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
                   <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
@@ -356,7 +356,7 @@ exit;*/
     <div class="right-sidebar-mini right-sidebar">
         <div class="right-sidebar-panel p-0">
            <div class="iq-card shadow-none">
-              <?php if ($memberIsApproved=="Y"){ ?>
+              <?php if ($memberIsApproved=="YXXXX"){ ?>
               <div class="iq-card-body p-0">
                  <div class="media-height p-3">
                     <div class="media align-items-center mb-4">
