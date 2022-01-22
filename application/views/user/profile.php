@@ -51,12 +51,13 @@ div.postWhenScrollContainer{
                          
                           <ul class="header-nav d-flex flex-wrap justify-end p-0 m-0 crop-list">
                             <li style="z-index: 99">
-                              <a class="file-upload-icon zeditCoverz" style="position: relative;" href="javascript:void();"><i class="ri-pencil-line">
+                              <a class="file-upload-icon zeditCoverz mt-3" style="position: relative;" href="javascript:void();"><i class="ri-pencil-line">
                               <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
                               </a>
-
-                              <i class="ri-crop-line zCropCancelz hiddenimportant" ng-click="cropCoverImage();"></i>
-                              <i class="ri-close-circle-line zCropCancelz hiddenimportant" ng-click="clearCoverImage();" ></i>
+                              <div class="mt-3">
+                              <i class="ri-crop-line zCropCancelz hiddenimportant image-modify-icon mr-2" style="color: #50b5ff" ng-click="cropCoverImage();"></i>
+                              <i class="ri-close-circle-line zCropCancelz hiddenimportant image-modify-icon mr-4 " style="color: #fb8a8a" ng-click="clearCoverImage();" ></i>
+                            </div>
                             </li>
                             <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
                           </ul>
@@ -1335,14 +1336,14 @@ div.postWhenScrollContainer{
          <!-- End Photo Section Tab-->
 
         <!-- Start Event Section Tab-->
-        <div ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'">
+        <div ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'" class="w-100">
             <div class="container">
                <div class="row">
                   <div class="col-sm-12">                    
                      <div class="iq-card">
                         <div class="iq-card-body p-0">
                            <div class="user-tabing">
-                              <ul class="nav nav-pills justify-content-end profile-feed-items p-0 m-0">
+                              <ul class="nav nav-pills justify-content-end profile-feed-items py-2 m-0">
                                  <li>
                                  <div class="d-flex">
                                     <a href="javascript:void();" ng-click="showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>

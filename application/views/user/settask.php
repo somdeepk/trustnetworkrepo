@@ -64,7 +64,7 @@
             </div>
             <div class="modal-footer">
               <button ng-if="session_is_admin=='Y'" class="btn btn-success zuploadlivestreamvideoz" ng-click="submitLiveStreamVideo()" >Submit Schedule</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
       </div>

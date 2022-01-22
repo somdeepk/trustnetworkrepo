@@ -4271,7 +4271,7 @@ input {
 
 .correct-answer{margin-left: 85px;}
 
-.crop-list{bottom: 0 !important;}
+.crop-list{top: 0 !important; right: 20px;}
 .zeditCoverz{margin-bottom: 20px !important;}
 .zCropCancelz{font-size: 20px; color: #fff}
 .zCropCancelz{font-size: 20px; color: #fff;}
@@ -4290,3 +4290,5 @@ input {
 
 .photo-upload-field{position: relative; overflow: hidden;}
 .photo-upload-field input[type=file]{position: absolute; opacity: 0; left: 0;}
+
+.image-modify-icon{background: #fff; border-radius: 50%; padding: 5px; font-size: 24px; margin-top: 20px;}
