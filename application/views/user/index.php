@@ -35,10 +35,10 @@ div.postWhenScrollContainer{
                         <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setTagFriendToPost(value.id)">
                            <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
                            <img class="rounded-circle img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
-                           <div class="stories-data ml-3">
+                           <div class="stories-data ml-3 mr-3">
                               <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                            </div>
-                           <i style="font-size: 22px;cursor: pointer;float: right;" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
+                           <i style="font-size: 22px;cursor: pointer;float: right; border: none;" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
 
                         </li>
                      </ul>
@@ -105,7 +105,7 @@ div.postWhenScrollContainer{
                                  <hr>
                                  <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                                     <li class="col-md-6 mb-3">
-                                       <div class="iq-bg-primary rounded p-2 pointer mr-3"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video <input type="file" accept=".jpg, .jpeg, .png" multiple name="input-file-preview" id="post_file_upload" post-file-upload class="ng-scope"></div>
+                                       <div class="iq-bg-primary rounded p-2 pointer mr-3 photo-upload-field"><a href="javascript:void();"></a><img src="<?php echo base_url();?>assets/images/small/07.png" alt="icon" class="img-fluid"> Photo/Video <input type="file" accept=".jpg, .jpeg, .png" multiple name="input-file-preview" id="post_file_upload" post-file-upload class="ng-scope"></div>
                                     </li>
 
                                     <li class="col-md-6 mb-3" ng-click="tagPostToFriend();">
@@ -569,7 +569,7 @@ div.postWhenScrollContainer{
                   </div>
                   <div class="iq-card-body">
                      <?php if(count($aryUpcomingBirthDay)>0){ ?>
-                     <ul class="media-story m-0 p-0">
+                     <ul class="media-story m-0 p-0 ">
                         <?php foreach($aryUpcomingBirthDay as $keyBD=>$valBD){ ?>
                         <li class="d-flex mb-4 align-items-center">
                            <img src="<?php echo IMAGE_URL;?>images/<?php if($valBD['profile_image']!=""){ echo "members/".$valBD['profile_image']; }else{ echo "member-no-imgage.jpg"; } ?>" alt="story-img" class="rounded-circle img-fluid">
