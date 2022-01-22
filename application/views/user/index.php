@@ -262,13 +262,14 @@ div.postWhenScrollContainer{
                                        <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="img-fluid rounded w-100" style="width: 291px; height:187px;"></a>
                                     </div>
                                     <div class="col-sm-12 mt-3" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
+                                       <div ng-if="valuePS.post_file_data.length>3" class="photo-count-value" style="font-size:62px;">
+                                         <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
+                                      </div>
                                        <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="img-fluid rounded w-100" style="width: 291px; height:187px;"></a>
                                     </div>
                                  </div>
                               </div>
-                              <div ng-if="valuePS.post_file_data.length>3" class="col-md-6" style="font-size:62px;">
-                                 <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
-                              </div>
+                             
                            </div>
 
                            <div class="modal fade" id="exampleModal_{{valuePS.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
