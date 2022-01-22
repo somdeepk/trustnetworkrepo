@@ -1266,17 +1266,31 @@ class User_Model extends CI_Model
 	}
 
 	public function submit_ticket($paramArray=array(), $pId=0)
-  {
-    if (!empty($paramArray)) {
-      if (!empty($pId)) {
-        $this->db->where('id',$pId)->update('tn_support_ticket',$paramArray);
-        return $pId;
-      } else {
-        $this->db->insert('tn_support_ticket',$paramArray);
-        return $this->db->insert_id();
-      }
-    }
-  }
+	{
+		if (!empty($paramArray))
+		{
+			if (!empty($pId)) {
+				$this->db->where('id',$pId)->update('tn_support_ticket',$paramArray);
+				return $pId;
+			} else {
+				$this->db->insert('tn_support_ticket',$paramArray);
+				return $this->db->insert_id();
+			}
+		}
+	}
+
+	public function getTotalPostCount($user_auto_id)
+	{
+		$sql="SELECT count(*) as totalPostCount FROM tn_post WHERE member_id='".$user_auto_id."' AND status='1' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$rowData=$query->row();
+		if(!empty($rowData) && $rowData->totalPostCount>0)
+		{
+			return $rowData->totalPostCount;
+		}else{
+			return 0;
+		}
+	}
 
 }
 ?>

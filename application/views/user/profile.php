@@ -105,7 +105,7 @@ div.postWhenScrollContainer{
                             <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                                <li class="text-center pl-3">
                                   <h6>Posts</h6>
-                                  <p class="mb-0">690 <!-- {{clickProfileTab}} --></p>
+                                  <p class="mb-0">{{totalPostCount}} <!-- {{clickProfileTab}} --></p>
                                </li>
                                <!-- <li class="text-center pl-3">
                                   <h6>Followers</h6>
@@ -978,10 +978,10 @@ div.postWhenScrollContainer{
                                       </div>
                                    </div>
                                    <div class="mt-3">
-                                      <p>{{valuePS.post_data.post}}</p>
+                                      <p><a href="javascript:void();" ng-click="openPostModalPopup(valuePS)">{{valuePS.post_data.post}}</a></p>
                                    </div>
                                    <div ng-if="valuePS.post_file_data.length" class="user-post">
-                                      <div class="d-flex" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
+                                      <div class="d-flex" ng-click="openPostModalPopup(valuePS)">
 
                                          <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                                             <a href="javascript:void();">
@@ -1003,7 +1003,7 @@ div.postWhenScrollContainer{
                                       </div>
                                    </div>
 
-                                   <div class="modal fade" id="exampleModal_{{valuePS.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
+                                   <div class="modal" id="exampleModal_{{valuePS.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
                                       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                       <div class="modal-content iq-dark-box">
                                       <div class="modal-header">
@@ -1151,7 +1151,7 @@ div.postWhenScrollContainer{
                                                   </div>
                                                </div>
                                             </div>
-                                            <div ng-if='valuePS.all_post_comment_data.length>0' class="total-comment-block">
+                                            <div ng-if='valuePS.all_post_comment_data.length>0' ng-click="openPostModalPopup(valuePS)" class="total-comment-block">
                                                <div class="dropdown">
                                                   <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                                                   {{valuePS.all_post_comment_data.length}} Comment
