@@ -712,7 +712,7 @@ div.postWhenScrollContainer{
                           <div class="iq-card">
                              <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
-                                   <h4 class="card-title">Photos of You</h4>
+                                   <h4 class="card-title">Photos</h4>
                                 </div>
                                 <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                                    <p class="m-0"><a href="javacsript:void();">Add Photo </a></p>
@@ -1272,7 +1272,7 @@ div.postWhenScrollContainer{
                 <div class="tab-pane fade active show">
                    <div class="iq-card">
                       <div class="iq-card-body">
-                         <h4 class="card-title">Photos of You</h4>
+                         <h4 class="card-title">Photos</h4>
                          <div class="friend-list-tab mt-2">
                             <!-- <ul class="nav nav-pills d-flex align-items-center justify-content-left friend-list-items p-0 mb-2">
                                <li>
@@ -1336,7 +1336,7 @@ div.postWhenScrollContainer{
          <!-- End Photo Section Tab-->
 
         <!-- Start Event Section Tab-->
-        <div ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'" class="w-100">
+        <div ng-controller="eventController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'" class="w-100">
             <div class="container">
                <div class="row">
                   <div class="col-sm-12">                    
@@ -1346,7 +1346,7 @@ div.postWhenScrollContainer{
                               <ul class="nav nav-pills justify-content-end profile-feed-items py-2 m-0">
                                  <li>
                                  <div class="d-flex">
-                                    <a href="javascript:void();" ng-click="showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>
+                                    <a href="javascript:void();" ng-click="loadEventCalender(); showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>
                                     <a href="javascript:void();" ng-click="showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">All Events</a>
                                  </div>
                                  </li>    
@@ -1811,12 +1811,56 @@ div.postWhenScrollContainer{
                                    <div class="iq-header-title">
                                       <h4 class="card-title">Create Events</h4>
                                    </div>
-                                   <div class="iq-card-header-toolbar d-flex align-items-center">
+                                   <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                                       <a href="#" class="btn btn-primary"><i class="ri-add-line mr-2"></i>View Events</a>
-                                   </div>
+                                   </div> -->
                                 </div>
                                 <div class="iq-card-body">
-                                   <div id='calendar1'></div>
+                                    <header class="myCalendar">
+                                    <h4 class="mb-4 text-center">
+                                      <i class="fa fa-arrow-circle-o-left" aria-hidden="true" style="cursor: pointer;" ng-click="goToDate('prev');"></i>&nbsp;&nbsp;
+                                        <select ng-change="loadEventCalender();" ng-model="eventCalender.calenderData.selectedMonth" class="noBorderSelect">
+                                          <option ng-repeat="( monthKey, monthVal) in eventCalender.calenderData.monthArray" value='{{monthVal.monthNum}}'>{{monthVal.monthName}}</option>
+                                        </select>
+                                        <select ng-change="loadEventCalender();" ng-model="eventCalender.calenderData.selectedYear" class="noBorderSelect">
+                                          <option ng-repeat="(yearKey, yearVal) in eventCalender.calenderData.yearArray" value='{{yearVal}}'>{{yearVal}}</option>
+                                        </select>
+                                      &nbsp;&nbsp;<i class="fa fa-arrow-circle-o-right"  style="cursor: pointer;" ng-click="goToDate('next');" aria-hidden="true"></i>
+
+                                      <button type="button" class="btn btn-outline-info ng-scope" ng-click="goToDate('today');" style="float: right;">Today</button>
+                                    </h4>
+                                  </header>
+                                  <table class="table" cellspacing="0" cellpadding="0" width="100%" style="margin-bottom:5px;">
+                                    <tr class="dayHeader">
+                                      <td class="calenderHeader ftz12"><strong>Mon</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Tue</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Wed</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Thu</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Fri</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Sat</strong></td>
+                                      <td class="calenderHeader ftz12"><strong>Sun</strong></td>
+                                    </tr>
+                                    <tr class="calDayTr" ng-repeat="calendarVal in eventCalender.calenderData.dateData" >
+                                      <td style="cursor: pointer;" ng-repeat="datesVal in calendarVal.allDates" class="calDayHgt" ng-class="[(datesVal.activeDate==1)? '' :'greyBG', (datesVal.weekDayNumber==0 || datesVal.weekDayNumber==6)? 'weekendBG' :'', (datesVal.isToday==1)? 'calToday' : '', (datesVal.isEventPresent==1)? 'eventFlag' : 'eventHoverPop']" ng-click="addCalendarEvent(datesVal)">
+                                        <div class="col-md-12 col-sm-12 padding-lr0 mb10 text-left ftz1" >
+                                          <strong>{{datesVal.dayNum}} {{(isNullOrEmptyOrUndefined(datesVal.shortMonthNm)==false)? datesVal.shortMonthNm : ''}}</strong>
+                                        </div>
+
+                                        <div class="hover-content"  ng-if="datesVal.dayEventData.length">
+                                          <div href="javascript:void(0);" class="up-arrow"></div>
+                                          <div style="margin-bottom:12px" ng-repeat="eveVal in datesVal.dayEventData" >
+                                            <p>
+                                              <a href="javascript:void(0);" ng-show="eveVal.is_editable=='Y'" style="color: #000000;text-decoration: none;" ng-click="editCalendarEvent(eveVal.id,datesVal)">{{eveVal.disEventTime}} [{{eveVal.event_type}}] &nbsp;&nbsp;<i style="font-size: 12px" class="fa fa-edit fa-lg"></i></a>
+                                              <a href="javascript:void(0);" ng-show="eveVal.is_editable=='N'" style="color: #000000;text-decoration: none;">{{eveVal.disEventTime}} [{{eveVal.event_type}}]</a>
+                                            </p>
+                                            {{eveVal.event_title}}
+                                            <br>
+                                            Duration: {{eveVal.disEventDuration}}
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
                                 </div>
                              </div>
                           </div>

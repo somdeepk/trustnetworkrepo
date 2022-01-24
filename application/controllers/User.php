@@ -2876,9 +2876,147 @@ class User extends CI_Controller
         exit;
     }
 
+    public function loadEventCalender()
+	{
+	    $monthArray=array();
+	    $mArray=array();
+	    for ($t=1; $t<=12; $t++)
+	    {
+	      $monthNum=str_pad($t, 2, 0, STR_PAD_LEFT);
+	      $monthName = date('F', mktime(0, 0, 0, $monthNum, 10));
+	      $monthArray[]=array('monthNum'=>$monthNum, 'monthName'=>$monthName);
+	      $mArray[$monthNum]=$monthName;
+	    }
 
 
+	    $paramMonth=(isset($_POST['currentMonthNumber']) && !empty($_POST['currentMonthNumber']))? $_POST['currentMonthNumber'] : date('m');
+	    $paramYear=(isset($_POST['currentYearNumber']) && !empty($_POST['currentYearNumber']))? $_POST['currentYearNumber'] : date('Y');
 
+	    $paramMonthName=$mArray[$paramMonth];
+	    $startDate = "01-".$paramMonth."-".$paramYear;
+	    $startTime = strtotime($startDate);
+	    $endTime = strtotime("+1 month", $startTime);
+
+	    $allDatesOfParamMonth=array();
+	    $weekArray=array();
+	    $checkArray=array();
+	    for ($i=$startTime; $i<$endTime; $i+=86400) {
+	      $dateStr=date('Y-m-d', $i);
+	      array_push($allDatesOfParamMonth, $dateStr);
+	      $weekNumber=date("W", strtotime($dateStr));
+	      $yearNumber=date('Y', $i);
+	      $mNumber=date('m', $i);
+	      $monthNumber=ltrim($mNumber, "0");
+	      if (!in_array($weekNumber, $checkArray)) {
+	        $weekArray[$yearNumber][]=array('monthNumber'=>$monthNumber, 'weekNumber'=>$weekNumber) ;
+	        $checkArray[]=$weekNumber;
+	      }
+	    }
+	    $finalArray=array();
+	    $currDay=date('d');
+	    $currMonth=date('m');
+	    $currYear=date('Y');
+	    $i=0;
+	    foreach ($weekArray as $wkYear=>$wkNums) {
+	      if (!empty($wkNums)) {
+	        foreach ($wkNums as $weeksData) {
+	          $weekVal=$weeksData['weekNumber'];
+	          $monthNum=$weeksData['monthNumber'];
+	          if ($weekVal==52 && $monthNum==1) {
+	            $weekYear=$wkYear-1 ;
+	          } else {
+	            $weekYear=$wkYear ;
+	          }
+	          $i++;
+	          $weekStartDate = date("Y-m-d", strtotime($weekYear.'W'.str_pad($weekVal, 2, 0, STR_PAD_LEFT)));
+	          $weekEndDate = date("Y-m-d", strtotime($weekYear.'W'.str_pad($weekVal, 2, 0, STR_PAD_LEFT).' +6 days'));
+	          $allDates=array();
+	          $inactiveDateCount=0;
+	          for ($j=strtotime($weekStartDate); $j<=strtotime($weekEndDate); $j+=86400) {
+	            $dateStr=date('Y-m-d', $j);
+	            $dayNum=date('d', $j);
+	            $weekDayNumber=date('w', $j);
+	            $shortMonthNm='';
+	            $activeDate=0;
+	            if (in_array($dateStr, $allDatesOfParamMonth)) {
+	              $activeDate=1;
+	            } else {
+	              $inactiveDateCount++;
+	            }
+	            $shortMonthNm=date('M', $j);
+	            $shortYear=date('Y', $j);
+
+	            $isToday=0;
+	            if($dateStr==date('Y-m-d'))
+	            {
+	              $isToday=1;
+	            }
+
+	            $weekStartDay=date("Y-m-d 00:00:00", strtotime($dateStr));
+	            $weekEndDay=date("Y-m-d 23:59:59", strtotime($dateStr));
+
+	            $ary_argument=array();
+	            $ary_argument['weekStartDay']=$weekStartDay;
+	            $ary_argument['weekEndDay']=$weekEndDay;
+	            $resultUserThisWeekEvents=array();//$this->commonHelper()->getEventData($this,$ary_argument);
+	            $isEventPresent=0;
+	            if(count($resultUserThisWeekEvents)>0)
+	            {
+	              $isEventPresent=1;
+
+	              foreach($resultUserThisWeekEvents as $key => $value)
+	              {
+	                $disEventDuration='NA';
+	                if(!empty($value['event_start']) && !empty($value['event_end']))
+	                {
+	                  $date1=date_create($value['event_start']);
+	                  $date2=date_create($value['event_end']);
+	                  $diff=(array)date_diff($date1,$date2);
+	                  $disEventDuration=$this->commonHelper()->get_displayable_duration($diff);
+	                }
+	                $resultUserThisWeekEvents[$key]['disEventDuration']=$disEventDuration;
+
+	                if(date('Y-m-d', strtotime($value['event_start']))== date('Y-m-d', strtotime($value['event_end'])))
+	                {
+	                  $disEventTime=date('h:i A', strtotime($value['event_start']));
+	                }
+	                else
+	                {
+	                  $disEventTime=date('jS M h:i A', strtotime($value['event_start']))." to ".date('jS M h:i A', strtotime($value['event_end']));
+	                }
+	                $resultUserThisWeekEvents[$key]['disEventTime']=$disEventTime;
+
+	                $resultUserThisWeekEvents[$key]['is_editable']='Y';
+	                if(time()>strtotime($value['event_start']))
+	                {
+	                  $resultUserThisWeekEvents[$key]['is_editable']='N';
+	                }
+	              }
+	            }
+
+	            $allDates[]=array('ymdDate'=>$dateStr, 'dayNum'=>$dayNum, 'weekDayNumber'=>$weekDayNumber, 'activeDate'=>$activeDate, 'shortMonthNm'=>$shortMonthNm, 'shortYear'=>$shortYear, 'isEventPresent'=>$isEventPresent, 'dayEventData'=>$resultUserThisWeekEvents, 'isToday'=>$isToday);
+	          }
+	          $hideWeek=0;
+	          if ($inactiveDateCount>=6 && in_array($weekEndDate, $allDatesOfParamMonth))
+	          {
+	            $hideWeek=1;
+	          }
+	          $finalArray[]=array('weekNumber'=>$i, 'weekStartDate'=>$weekStartDate, 'weekEndDate'=>$weekEndDate, 'allDates'=>$allDates, 'hideWeek'=>$hideWeek);
+	        }
+	      }
+	    }
+	    
+	    $yearArray=array();
+	    $minYear=date('Y');
+	    $maxYear=date('Y')+13;
+	    for ($y=$minYear; $y<=$maxYear; $y++)
+	    {
+	      $yearArray[]=$y;
+	    }
+
+	    echo json_encode(array('dateData'=>$finalArray, 'monthArray'=>$monthArray, 'yearArray'=>$yearArray, 'currentMonthNumber'=>$paramMonth, 'paramMonthName'=>$paramMonthName, 'currentYearNumber'=>$paramYear, 'weekArray'=>$weekArray, 'currYear'=>$currYear, 'currDay'=>$currDay,'currMonth'=>$currMonth, 'minYear'=>$minYear, 'maxYear'=>$maxYear));
+	    exit;
+	}
 }
 	
 
