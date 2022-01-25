@@ -17,7 +17,7 @@ div.postWhenScrollContainer{
          <div class="modal-dialog" role="document">
             <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title">Create Post</h5>
+                  <h5 class="modal-title">Tag Friend</h5>
                   <button type="button" class="btn btn-secondary" ng-click="closeTagPostModal()"><i class="ri-close-fill"></i></button>
                </div>
                <div class="modal-body">

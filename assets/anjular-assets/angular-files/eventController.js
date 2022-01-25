@@ -1,18 +1,26 @@
 mainApp.controller('eventController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
 	$scope.eventCalender={};
+	$scope.inviteEventData={};
 	$scope.eventCalender.calenderData={};	
-
+	$scope.eventData={}
 	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
+		//alert("initiateData")
+		$scope.memberData={};
 		$scope.memberData.user_auto_id=user_auto_id;
 		$scope.memberData.membership_type=membership_type;
 		$scope.memberData.is_admin=is_admin;
 		$scope.memberData.parent_id=parent_id;
+
+		//$timeout(function()
+		//{
+			$scope.loadEventCalender();
+		//},3000);
 	};
 
 	$scope.loadEventCalender = function ()
-	{	
+	{		
 	    var response = $http({
 	      method: 'POST',
 	      url     : varGlobalAdminBaseUrl+"loadEventCalender",
@@ -74,6 +82,13 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    $scope.loadEventCalender();
 	};
 
+	$scope.editFromThisWeekEvent= function (eventId)
+	{ 
+		dataVal=$scope.eventDataVal;
+		$scope.addCalendarEvent(dataVal,eventId);
+		$scope.isEventPopClick=1;
+	};
+
 	$scope.editCalendarEvent= function (eventId,dataVal)
 	{
 		$scope.addCalendarEvent(dataVal,eventId);
@@ -95,33 +110,88 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    $scope.eventFormData={};
 	    $scope.eventFormData.eventId=eventId;
 	    $scope.eventFormData.selectedymdDate=dtVal.ymdDate;
-	    $scope.eventFormData.clientId=$scope.eventCalender.genData.clientId;
-	    var response = $http({
-	      method: 'POST',
-	      url     : varGlobalAdminBaseUrl+"geteventform",
-	      data: $.param({'eventFormData' : $scope.eventFormData }),
-	      headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-	    });
-	    response.success(function (data, status, headers, config) {
-	      var element = angular.element('#appCreateEventContainer').html(data);
-	      $compile(element.contents())($scope);
-	      $('#eventFormModal').modal('show');
+   		
+   		var formData = new FormData();
+		formData.append('eventFormData',angular.toJson($scope.eventFormData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"addCalendarEvent",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+        	var element = angular.element('.zcalnedarEventContainerz').html(returnData);
+	        $compile(element.contents())($scope);
+		    $('#calnedarEventModal').modal('show');
+			$scope.eventData={};
+			if(eventId>0)
+			{
+			  $scope.isEventPopClick=0;
+			  var baseEventData=$scope.baseencoded_eventData;
+			  var baseEventDataStr=atob(baseEventData);
+			  var baseEventDataObj=jQuery.parseJSON(baseEventDataStr);
+			  $scope.aryInviteEventFriend=baseEventDataObj.aryInviteEventFriend;
+			  $scope.totalInvitedFriend=baseEventDataObj.aryInviteEventFriend.length;
 
-	      $scope.eventData={};
-	      if(eventId>0)
-	      {
-	        $scope.isEventPopClick=0;
-	        var baseEventData=$scope.baseencoded_event_data;
-	        var baseEventDataStr=atob(baseEventData);
-	        var baseEventDataObj=jQuery.parseJSON(baseEventDataStr);
-	        $scope.eventData=baseEventDataObj;
-	      }
-	    });
-	    response.error(function (data, status, headers, config)
-	    {
-	      console.log("Error.");
-	    });
+			  $scope.eventData=baseEventDataObj;
+			}
+		});
   	};
+
+  	$scope.totalInvitedFriend = 0;
+  	$scope.aryInviteEventFriend = [];
+	$scope.setInviteFriendToEvent = function(memberId)
+	{
+		if($scope.aryInviteEventFriend.length>0)
+		{
+		  if($.inArray(memberId, $scope.aryInviteEventFriend) != -1){
+		    $scope.aryInviteEventFriend.splice( $.inArray(memberId, $scope.aryInviteEventFriend), 1 );
+		  }else{
+		    $scope.aryInviteEventFriend.push(memberId);
+		  }
+		}else{
+		  $scope.aryInviteEventFriend.push(memberId);
+		}
+
+		$scope.totalInvitedFriend=$scope.aryInviteEventFriend.length;
+	};
+
+  	$scope.inviteFriendToEvent = function ()
+	{
+		if($scope.memberData.user_auto_id>0)
+		{
+			$scope.friendData={};
+			$scope.friendData.user_auto_id=$scope.memberData.user_auto_id;
+			$scope.friendData.searchFriend=$scope.inviteEventData.searchFriend;
+
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	$scope.allFriendListObj=aryreturnData.data.friendListData;
+
+	        	$('#calnedarEventModal').modal('hide');
+	        	$('#inviteFriendToEventModal').modal('show');
+			});			
+	    }		
+	};
+
+	$scope.closeInviteFriendToEvent = function ()
+	{
+		$('#inviteFriendToEventModal').modal('hide');
+		$('#calnedarEventModal').modal('show');
+	};
+
+	$scope.closeEventModal = function ()
+	{
+		$('#calnedarEventModal').modal('hide');
+	};
 
   	$scope.submiCalendarEvent = function ()
   	{
@@ -135,22 +205,11 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    {
 	      all_day_event=1;
 	    }
-
-	    if($scope.eventCalender.genData.IdFire=="LEAD")
-	    {
-	      $scope.eventData.event_for_module_id=$scope.eventCalender.genData.custId;
-	      $scope.eventData.event_for_module_type='LEAD';
-	    }
-	    else
-	    {
-	      $scope.eventData.event_for_module_id=$scope.eventCalender.genData.appId;
-	      $scope.eventData.event_for_module_type='APPLICATION';
-	    }
-	    
+    
 	    $scope.eventData.event_start_time=event_start_time;
 	    $scope.eventData.event_end_time=event_end_time;
 	    $scope.eventData.all_day_event=all_day_event;
-	    $scope.eventData.selectedymdDate=$scope.eventFormData.selectedymdDate
+	    $scope.eventData.selectedymdDate=$scope.eventFormData.selectedymdDate;
 
 	    if($scope.isNullOrEmptyOrUndefined($scope.eventData.event_type)==true)
 	    {
@@ -158,9 +217,9 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	      $scope.validator=true;
 	    }
 
-	    if($scope.isNullOrEmptyOrUndefined($scope.eventData.related_person)==true)
+	    if($scope.totalInvitedFriend<=0)
 	    {
-	      errorData.push('Related to');
+	      errorData.push('Invite Friend');
 	      $scope.validator=true;
 	    }
 
@@ -183,34 +242,48 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    }
 	    else
 	    {
-	      $('#eventFormModal').find('#eventSubmitButton').addClass('cssdisabled');
-	      var response = $http({
-	        method: 'POST',
-	        url: '/application/liveapp/submitevent',
-	        data: $.param({'eventData' : $scope.eventData }),
-	        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-	        async:true,
-	      });
-	      response.success(function (data, status, headers, config)
-	      {
-	        $('#eventFormModal').find('#eventSubmitButton').removeClass('cssdisabled');
-	        $('#eventFormModal').modal('hide');
-	        if($scope.eventData.id>0)
-	        {
-	          $scope.showSuccess('Event Updated Successfully', 0,1500);
-	        }
-	        else
-	        {
-	         $scope.showSuccess('Event Added Successfully', 0,1500); 
-	        }
-	        $scope.eventData={};
-	        $scope.viewApplicationCalender();
-	      });
-	      response.error(function (data, status, headers, config)
-	      {
-	        $('#eventFormModal').find('#eventSubmitButton').removeClass('cssdisabled');
-	        console.log("Error.");
-	      });
+	      	$scope.buttonSavingAnimation('zeventSubmitButtonz','Saving..','loader');
+			$timeout(function()
+			{	
+				var formData = new FormData();
+
+				$scope.eventData.aryInviteEventFriend=$scope.aryInviteEventFriend;
+				$scope.eventData.user_auto_id=$scope.memberData.user_auto_id;
+				formData.append('eventData',angular.toJson( $scope.eventData));
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"submitCalendarEvent",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.memberDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zeventSubmitButtonz','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zeventSubmitButtonz','Submit','onlytext');
+							$('#calnedarEventModal').modal('hide');
+							$scope.eventData={};
+							$scope.totalInvitedFriend = 0;
+							$scope.aryInviteEventFriend = [];
+							$scope.loadEventCalender();							
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zeventSubmitButtonz','Submit','onlytext');
+	            		swal("Error!",
+			        		"Event Creation Failed!",
+			        		"error"
+			        	)
+	            	}
+				});
+			},1200);
+	     
 	    }
   	};
 

@@ -4316,7 +4316,7 @@ header.myCalendar h5
 	margin-bottom: 0;
 } 
 .dayHeader{
-	background-color: #e6dbef;
+	background-color: #dbd8dd;
 }
 .day h5{
 	font-size: 14px;
@@ -4334,14 +4334,14 @@ header.myCalendar h5
 	opacity:0;
 	transition:all 0.5s;
 	position:absolute;
-	top:70px;
+	top:30px;
 	left:0;
 	width:230px;
 	border:1px solid #555;
 	padding:5px 10px;
 	background:#FFF;
 	color:#000;
-	z-index:999;
+	z-index:999999;
 	left:50%;
 	margin-left:-115px;
 	font-size:12px;
@@ -4376,7 +4376,7 @@ header.myCalendar h5
 }
 .greyBG {
     background-color: #fcfcfc;
-    color: #999999;
+    color: #6;
 }
 .eventFlag{
 	position: relative;
@@ -4384,6 +4384,7 @@ header.myCalendar h5
 
 .eventHoverPop
 {
+	z-index: 9999;
 	position: relative;
 }
 
@@ -4427,3 +4428,16 @@ header.myCalendar h5
 	border-right: 1px solid #000;
 	border-bottom: 1px solid #000;
 }
+
+
+.blurEvent {
+	content: "Past EVE";
+	pointer-events:none;
+	-webkit-filter: blur(1.5px);
+	-moz-filter: blur(1.5px);
+	-o-filter: blur(1.5px);
+	-ms-filter: blur(1.5px);
+	filter: blur(1.5px);
+}
+
+.error-red-bd{border:1px solid #ce4654 !important;}

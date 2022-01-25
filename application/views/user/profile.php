@@ -752,7 +752,7 @@ div.postWhenScrollContainer{
                          <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                <div class="modal-header">
-                                  <h5 class="modal-title">Create Post</h5>
+                                  <h5 class="modal-title">Tag Friend</h5>
                                   <button type="button" class="btn btn-secondary" ng-click="closeTagPostModal()"><i class="ri-close-fill"></i></button>
                                </div>
                                <div class="modal-body">
@@ -1337,6 +1337,65 @@ div.postWhenScrollContainer{
 
         <!-- Start Event Section Tab-->
         <div ng-controller="eventController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'eventsTab') ? '' : 'hiddenimportant'" class="w-100">
+
+
+            <!-- Start Event Modal -->
+            <div id="calnedarEventModal" class="modal" role="dialog" style="z-index:999999 ">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Add Event</h4> 
+                        <button type="button" class="btn btn-secondary" ng-click="closeEventModal()"><i class="ri-close-fill"></i></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row zcalnedarEventContainerz">
+                                           
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            <!-- End Event Modal -->
+
+            <!-- Start Invite Friend Modal -->
+            <div class="modal fade" id="inviteFriendToEventModal" tabindex="-1" role="dialog" aria-labelledby="postTag-modalLabel" aria-hidden="true" style="display: none;">
+               <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title">Invite Friend</h5>
+                        <button type="button" class="btn btn-secondary" ng-click="closeInviteFriendToEvent()"><i class="ri-close-fill"></i></button>
+                     </div>
+                     <div class="modal-body">
+                        <div class="d-flex align-items-center">
+                           <div class="user-img">
+                              <i class="ri-search-line"></i>
+                           </div>
+                           <form class="post-text ml-3 w-100" action="javascript:void();">
+                              <input type="text" class="form-control rounded" ng-model="inviteEventData.searchFriend" ng-keyup="inviteFriendToEvent()" placeholder="Search friend" style="border:none;">
+                           </form>
+                        </div>
+
+                        <div class="iq-card-body">
+                           <ul class="media-story m-0 p-0">
+                              <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setInviteFriendToEvent(value.id)">
+                                 <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                 <img class="rounded-circle img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
+                                 <div class="stories-data ml-3 mr-3">
+                                    <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
+                                 </div>
+                                 <i style="font-size: 22px;cursor: pointer;float: right; border: none;" ng-class="(aryInviteEventFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
+
+                              </li>
+                           </ul>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Start Invite Friend Modal -->
+
+
             <div class="container">
                <div class="row">
                   <div class="col-sm-12">                    
@@ -1760,7 +1819,7 @@ div.postWhenScrollContainer{
                   <!-- End Display All Events Tab-->
 
                   <!-- Start Event Calendar Tab-->
-                  <div class="container" ng-show="showEventOrCalendar=='calendar'">
+                  <div class="container" ng-show="(showEventOrCalendar=='calendar' || isNullOrEmptyOrUndefined(showEventOrCalendar)==true)">
                       <div class="row row-eq-height">
                           <div class="col-md-3">
                              <div class="iq-card">
@@ -1827,7 +1886,7 @@ div.postWhenScrollContainer{
                                         </select>
                                       &nbsp;&nbsp;<i class="fa fa-arrow-circle-o-right"  style="cursor: pointer;" ng-click="goToDate('next');" aria-hidden="true"></i>
 
-                                      <button type="button" class="btn btn-outline-info ng-scope" ng-click="goToDate('today');" style="float: right;">Today</button>
+                                      <button type="button" class="btn btn-success" ng-click="goToDate('today');" style="float: right;">Today</button>
                                     </h4>
                                   </header>
                                   <table class="table" cellspacing="0" cellpadding="0" width="100%" style="margin-bottom:5px;">
