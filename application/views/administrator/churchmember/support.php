@@ -1,6 +1,53 @@
 <style>
-.selectedBorder {
-  border: 2px solid #ccc;
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
 }
 </style>
 <div id="content-page" class="content-page" ng-controller="supportController" ng-init="initSupport();" >
@@ -20,8 +67,8 @@
                 View Ticket
                 </div>
               </div>
-              <div class="col-sm-4">
-                <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="backToUsual();">Back</button>
+              <div class="col-sm-4">&nbsp;
+                <!--<button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="backToUsual();">Back</button>-->
               </div>
             </div>
             <div class="iq-card-body">
@@ -75,7 +122,7 @@
           <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.assignedTickets.length)>0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center znewdataz" ng-repeat="assignTicket in supportData.listSupport.assignedTickets">
-                <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer; width:100%;" title="View Ticket Details" ng-class="(supportData.manageTicket.ticketId==assignTicket.assignTicketId)? 'selectedBorder' : ''">
+                <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer; width:100%;" title="View Ticket Details" ng-class="(supportData.manageTicket.ticketId==assignTicket.assignTicketId)? 'blink_me' : ''">
                   <h5>{{assignTicket.assignTicketSubject}}</h5>
                   <p class="mb-0">From {{assignTicket.ticketCameFromName}}</p>
                   <p class="mb-0">{{assignTicket.assignTicketCreation}}</p>
