@@ -83,7 +83,12 @@
                     </ul>
                 </li>
 
-             
+                <li class="nav-item">
+                  <a href="<?php echo base_url(); ?>administrator/support">
+                    <i class="ti-home"></i>
+                    <span>Support</span>
+                  </a>
+                </li>
                <!--  <li class="nav-item">
                     <a href="#!">
                         <i class="ti-layout"></i>

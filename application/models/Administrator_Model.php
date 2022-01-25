@@ -248,5 +248,19 @@ class Administrator_Model extends CI_Model
 		return $resultData;
 	}
 
+  public function submit_ticket($paramArray=array(), $pId=0)
+  {
+    if (!empty($paramArray))
+    {
+      if (!empty($pId)) {
+        $this->db->where('id',$pId)->update('tn_support_ticket',$paramArray);
+        return $pId;
+      } else {
+        $this->db->insert('tn_support_ticket',$paramArray);
+        return $this->db->insert_id();
+      }
+    }
+  }
+
 }
 ?>
