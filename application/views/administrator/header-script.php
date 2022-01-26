@@ -75,18 +75,11 @@
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/bootstrap-datetimepicker.css" > -->
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/moment.js_2.9.0_moment-with-locales.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/src_js_bootstrap-datetimepicker.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-pages/select.js"></script>
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/select2.css">    
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/selectize.default.css">
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-pages/select.css"> -->
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/churchModule.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/groupController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/memberController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/supportController.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
-    <!-- <script type="text/javascript" src="orderProcessing/js/ui-bootstrap-tpls-0.12.1.min.js"></script>
- -->
-<!-- 
-    <script src="http://cdn.ckeditor.com/4.7.1/full/ckeditor.js"></script> -->
 </head>
 <body ng-app="trustApp" class="vertical-static">
 <!-- Pre-loader start -->
