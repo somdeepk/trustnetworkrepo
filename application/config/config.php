@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 if(IS_LOCAL_HOST==1)
 {
-	$config['base_url'] = 'http://localhost/trust-network';
+	$config['base_url'] = '';
 }
 else
 {
