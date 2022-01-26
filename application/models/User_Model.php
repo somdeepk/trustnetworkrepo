@@ -1341,6 +1341,13 @@ class User_Model extends CI_Model
 				}
 			}
 
+			$result[0]['event_start_time']=date("H:i:s",strtotime($result[0]['event_start']));
+			$result[0]['event_end_time']=date("H:i:s",strtotime($result[0]['event_end']));
+
+			$result[0]['display_event_start_time']=date("h:i A",strtotime($result[0]['event_start']));
+			$result[0]['display_event_end_time']=date("h:i A",strtotime($result[0]['event_end']));
+
+
 			$result[0]['aryInviteEventFriend']=$aryInviteEventFriend;
 			return $result[0];
 		}

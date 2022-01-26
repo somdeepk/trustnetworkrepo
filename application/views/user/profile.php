@@ -105,8 +105,8 @@ div.postWhenScrollContainer{
                          <div class="social-info">
                             <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                                <li class="text-center pl-3">
-                                  <h6>Posts</h6>
-                                  <p class="mb-0">{{totalPostCount}} <!-- {{clickProfileTab}} --></p>
+                                  <!-- <h6>Posts</h6>
+                                  <p class="mb-0">{{totalPostCount}}</p> -->
                                </li>
                                <!-- <li class="text-center pl-3">
                                   <h6>Followers</h6>
