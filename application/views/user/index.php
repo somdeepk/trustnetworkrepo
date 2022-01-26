@@ -38,7 +38,7 @@ div.postWhenScrollContainer{
                            <div class="stories-data ml-3 mr-3">
                               <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                            </div>
-                           <i style="font-size: 22px;cursor: pointer;float: right; border: none;" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
+                           <i style="font-size: 22px;cursor: pointer;border: none;" class="ml-auto" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
 
                         </li>
                      </ul>
