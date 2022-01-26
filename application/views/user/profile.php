@@ -1443,11 +1443,13 @@ div.postWhenScrollContainer{
                                      <span><strong>Event Type :</strong> {{value.event_type}}</span>
                                      <hr>
                                      <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
-                                     <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</h5>
+                                     <br>
+                                     <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span>
                                   </div>
                                   <div class="events-detail">
-                                     <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</h5>
-                                     <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</p>
+                                     <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                     <br>
+                                     <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</span>
                                      <div class="event-member">
                                         <!-- <div class="iq-media-group">
                                            <a href="#" class="iq-media">
