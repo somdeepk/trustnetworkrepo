@@ -249,25 +249,37 @@ div.postWhenScrollContainer{
                               <p><a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.post_data.post}}</a></p>
                            </div>
                            <div ng-if="valuePS.post_file_data.length" class="user-post">
-                              <div class="d-flex" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
+                              <div data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
+                                 <div class="row">
 
-                                 <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
-                                    <a href="javascript:void();">
-                                       <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
-                                    </a>
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[3].file_name)==false)">
+                                       <div ng-if="valuePS.post_file_data.length>4" class="photo-count-value" style="font-size:62px;">
+                                            <a href="javascript:void();"> + {{valuePS.post_file_data.length-4}}</a>
+                                       </div>
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[3].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
                                  </div>
 
-                                 <div class="col-md-6 row m-0 p-0" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
-                                    <div class="col-sm-12">
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto"></a>
-                                    </div>
-                                    <div class="col-sm-12 mt-3" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
-                                       <div ng-if="valuePS.post_file_data.length>3" class="photo-count-value" style="font-size:62px;">
-                                         <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
-                                      </div>
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto"></a>
-                                    </div>
-                                 </div>
                               </div>
                              
                            </div>

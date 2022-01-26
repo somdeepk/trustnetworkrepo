@@ -300,10 +300,6 @@ class Post extends CI_Controller
 						$finalPost[$key]['all_post_comment_data']=$resultPostComments;
 					}
 					//End Get Post All Comment data
-
-
-
-
 				}
 			}
 		}
