@@ -3763,6 +3763,7 @@ ul.profile-img-gallary {
 	list-style: none;
 	margin: 0 -1px 0 -4px !important;
 }
+ul.profile-img-gallary img{width: 86px; height: 86px; object-fit: cover;}
 .twit-feed p span i {
 	background: var(--iq-primary);
 	color: var(--iq-white);
@@ -4439,5 +4440,6 @@ header.myCalendar h5
 	-ms-filter: blur(1.5px);
 	filter: blur(1.5px);
 }
-
 .error-red-bd{border:1px solid #ce4654 !important;}
+.post-ptoto{width: 100%; height: 200px; object-fit: cover; border-radius: 10px;}
+.user-photo-list img{width: 100%; height: 200px; object-fit: cover;}
