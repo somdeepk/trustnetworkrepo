@@ -1451,7 +1451,7 @@ div.postWhenScrollContainer{
                                      <br>
                                      <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</span>
                                      <div class="event-member">
-                                        <!-- <div class="iq-media-group">
+                                        <div class="iq-media-group">
                                            <a href="#" class="iq-media">
                                            <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
                                            </a>
@@ -1467,7 +1467,7 @@ div.postWhenScrollContainer{
                                            <a href="#" class="iq-media">
                                            <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
                                            </a>
-                                        </div> -->
+                                        </div>
                                         <div class="d-flex">
                                         <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
                                         <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
