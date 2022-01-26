@@ -1471,6 +1471,19 @@ class User_Model extends CI_Model
 		{
 			foreach ($result as $key => $value)
 			{
+
+				$sqlFriend="SELECT 
+				tef.id,
+				tm.profile_image,
+				tm.membership_type,
+				tm.first_name,
+		        tm.last_name
+				FROM tn_events_friend as tef
+		        LEFT JOIN tn_members as tm ON tm.id=tef.friend_id
+				WHERE tef.event_id='".$value['id']."' AND tm.status='1' AND tm.deleted='0' order by rand() limit 5";
+				$queryFriend=$this->db->query($sqlFriend);
+				$ary_all_invited_friend=$queryFriend->result_array();
+
 				$finalData[$key]=$value;
 				$finalData[$key]['displayStartDate']= date("d M Y",strtotime($value['event_start']));
 				$finalData[$key]['displayStartTime']= date("h:i A",strtotime($value['event_start']));
@@ -1479,6 +1492,13 @@ class User_Model extends CI_Model
 		        $diff=(array)date_diff($date1,$date2);
 		        $disEventDuration=$this->CalculateDisplayDuration($diff);
 		        $finalData[$key]['disEventDuration']=$disEventDuration;
+
+		        $finalData[$key]['all_invited_friend']=array();
+		        if(count($ary_all_invited_friend)>0)
+		        {
+		        	$finalData[$key]['all_invited_friend']=$ary_all_invited_friend;
+		        }
+		        
 			}
 		}
 		return $finalData;

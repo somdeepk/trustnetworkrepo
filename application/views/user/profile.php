@@ -1452,20 +1452,9 @@ div.postWhenScrollContainer{
                                      <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</span>
                                      <div class="event-member">
                                         <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           <a href="javascript:void();" ng-repeat="(keyeInvitedFrnd, valueInvitedFrnd) in value.all_invited_friend" class="iq-media">    
+                                            <img class="img-fluid avatar-40 rounded-circle" title=" {{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}" ng-if="valueInvitedFrnd.profile_image == '' || !valueInvitedFrnd.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                            <img class="img-fluid avatar-40 rounded-circle"  title=" {{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}" ng-if="valueInvitedFrnd.profile_image && valueInvitedFrnd.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{valueInvitedFrnd.profile_image}}" alt="{{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}">
                                            </a>
                                         </div>
                                         <div class="d-flex">
