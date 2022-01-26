@@ -2958,6 +2958,7 @@ class User extends CI_Controller
 	            $ary_argument=array();
 	            $ary_argument['weekStartDay']=$weekStartDay;
 	            $ary_argument['weekEndDay']=$weekEndDay;
+	            $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
 	            $resultUserThisWeekEvents=$this->User_Model->getEventThisWeekData($ary_argument);
 
 	            $isEventPresent=0;
@@ -3035,6 +3036,7 @@ class User extends CI_Controller
 	    $ary_argument=array();
 	    $ary_argument['weekStartDay']=$weekStartDay;
 	    $ary_argument['weekEndDay']=$weekEndDay;
+	    $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
 	    $resultUserThisWeekEvents=$this->User_Model->getEventThisWeekData($ary_argument);
     
 
@@ -3187,6 +3189,24 @@ class User extends CI_Controller
 
 
         echo json_encode($returnData);
+        exit;
+	}
+
+	public function loadDateRangeSchedule()
+	{
+	    $todayStart=date("Y-m-d 00:00:00");
+        $todayEnd=date("Y-m-d 23:59:59");
+        $ary_argument=array();
+        $ary_argument['weekStartDay']=$todayStart;
+        $ary_argument['weekEndDay']=$todayEnd;
+        $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
+        $resultTodayEvents=$this->User_Model->getEventThisWeekData($ary_argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='DateRange Schedule';
+        $returnData['data']=array('resultTodayEvents'=>$resultTodayEvents,'totalSchedule'=>count($resultTodayEvents));
+		echo json_encode($returnData);
         exit;
 	}
 }

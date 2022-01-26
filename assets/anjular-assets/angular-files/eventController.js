@@ -3,7 +3,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	$scope.eventCalender={};
 	$scope.inviteEventData={};
 	$scope.eventCalender.calenderData={};	
-	$scope.eventData={}
+	$scope.eventData={};
+	$scope.loadDateRangeScheduleObj={};
 	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
 		//alert("initiateData")
@@ -16,7 +17,33 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 		//$timeout(function()
 		//{
 			$scope.loadEventCalender();
+			$scope.loadDateRangeSchedule();
 		//},3000);
+	};
+
+	$scope.loadDateRangeSchedule = function ()
+	{		
+	    $scope.loadScheduleData={};
+		var formData = new FormData();
+		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"loadDateRangeSchedule",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.loadDateRangeScheduleObj=aryreturnData.data.resultTodayEvents;
+        	}
+        	else
+        	{
+        		console.log("'DateRange Schedule Failed")
+        	}
+		});
+
 	};
 
 	$scope.loadEventCalender = function ()
@@ -270,7 +297,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 							$scope.eventData={};
 							$scope.totalInvitedFriend = 0;
 							$scope.aryInviteEventFriend = [];
-							$scope.loadEventCalender();							
+							$scope.loadEventCalender();	
+							$scope.loadDateRangeSchedule();						
 						},1200);
 	            	}
 	            	else

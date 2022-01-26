@@ -47,7 +47,7 @@
          </div>
       </div>
 
-      <div class="col-md-6" style="max-height: 385px;overflow: scroll;padding-left: 22px">
+      <div class="col-md-6" style="max-height: 675px;overflow: scroll;padding-left: 22px">
             <div class="activity-timeline" >
                <h6 class="mb-4" style="margin-left:-20px;">Events This Week</h6>
                <div class="month-sec" >                
@@ -95,22 +95,25 @@
 <script>
 
 <?php 
-if(isset($resultEventDetails['all_day_event']))
+if(isset($resultEventDetails) && count($resultEventDetails)>0)
 { 
 ?>
   $( document ).ready(function()
   {
-    $('#event_start_time').val('<?php echo $resultEventDetails['event_start_time']; ?>');
-    $('#event_end_time').val('<?php echo $resultEventDetails['event_end_time']; ?>');
-    $("#slider-range").slider({
-        range: true,
-        min: 0,
-        max: 1440,
-        step: 15,
-        values: [<?php echo $resultEventDetails['starttimesecond']; ?>, <?php echo $resultEventDetails['endtimesecond']; ?>],
-    });
-    $('.slider-time').html('<?php echo $resultEventDetails['display_event_start_time']; ?>');
-    $('.slider-time2').html('<?php echo $resultEventDetails['display_event_end_time']; ?>');
+    setTimeout(function () {
+      $('#event_start_time').val('<?php echo $resultEventDetails['event_start_time']; ?>');
+      $('#event_end_time').val('<?php echo $resultEventDetails['event_end_time']; ?>');
+      $("#slider-range").slider({
+          range: true,
+          min: 0,
+          max: 1440,
+          step: 15,
+          values: [<?php echo $resultEventDetails['starttimeminute']; ?>, <?php echo $resultEventDetails['endtimeminute']; ?>],
+      });
+      $('.slider-time').html('<?php echo $resultEventDetails['display_event_start_time']; ?>');
+      $('.slider-time2').html('<?php echo $resultEventDetails['display_event_end_time']; ?>');
+
+     }, 300);
   });
 <?php  
 }

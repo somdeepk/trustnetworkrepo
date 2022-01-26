@@ -1821,7 +1821,7 @@ div.postWhenScrollContainer{
                   <div class="container" ng-show="(showEventOrCalendar=='calendar' || isNullOrEmptyOrUndefined(showEventOrCalendar)==true)">
                       <div class="row row-eq-height">
                           <div class="col-md-3">
-                             <div class="iq-card">
+                             <!-- <div class="iq-card">
                                 <div class="iq-card-header d-flex justify-content-between">
                                    <div class="iq-header-title">
                                       <h4 class="card-title ">Classification</h4>
@@ -1838,7 +1838,7 @@ div.postWhenScrollContainer{
                                       <li class=""><i class="ri-check-line bg-info"></i>Team Project</li>
                                    </ul>
                                 </div>
-                             </div>
+                             </div> -->
                              <div class="iq-card">
                                 <div class="iq-card-header d-flex justify-content-between">
                                    <div class="iq-header-title">
@@ -1847,18 +1847,18 @@ div.postWhenScrollContainer{
                                 </div>
                                 <div class="iq-card-body">
                                    <ul class="m-0 p-0 today-schedule">
-                                      <li class="d-flex">
+                                      <li class="d-flex" ng-repeat="(key, value) in loadDateRangeScheduleObj">
                                          <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-primary"></i></div>
-                                         <div class="schedule-text"> <span>Web Design</span>
-                                            <span>09:00 to 12:00</span>
+                                         <div class="schedule-text"> <span style="color:#50b5ff;">{{value.event_title}}</span>
+                                            <span>Started On : {{value.displayStartTime}}</span>
+                                            <span>Duration: {{value.disEventDuration}}</span>
                                          </div>
                                       </li>
-                                      <li class="d-flex">
-                                         <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-success"></i></div>
-                                         <div class="schedule-text"> <span>Participate in Design</span>
-                                            <span>09:00 to 12:00</span>
-                                         </div>
+
+                                      <li class="d-flex" ng-if="loadDateRangeScheduleObj.length<=0">
+                                        No scheduled for today!
                                       </li>
+                                      
                                    </ul>
                                 </div>
                              </div>
