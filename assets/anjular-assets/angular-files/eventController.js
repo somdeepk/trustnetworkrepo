@@ -151,6 +151,9 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	        $compile(element.contents())($scope);
 		    $('#calnedarEventModal').modal('show');
 			$scope.eventData={};
+			$scope.totalInvitedFriend = 0;
+  			$scope.aryInviteEventFriend = [];
+
 			if(eventId>0)
 			{
 			  $scope.isEventPopClick=0;
@@ -314,6 +317,32 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	     
 	    }
   	};
+
+  	$scope.loadInvitedToMeEvents = function ()
+	{		
+	    $scope.loadScheduleData={};
+	    $scope.loadScheduleData.user_auto_id=$scope.memberData.user_auto_id;
+
+		var formData = new FormData();
+		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"loadInvitedToMeEvents",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.loadInvitedToMeEventsObj=aryreturnData.data.resultMyEvents;
+        	}
+        	else
+        	{
+        		console.log("'DateRange Schedule Failed")
+        	}
+		});
+	};
 
 	$scope.pad = function (str, max)
 	{

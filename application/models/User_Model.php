@@ -1441,5 +1441,48 @@ class User_Model extends CI_Model
 		return $strReturn;		
 	}
 
+	public function loadInvitedToMeEvents($ary_argument=array())
+	{
+	    $startDate=$ary_argument['startDate'];
+	    $endDate=$ary_argument['endDate'];
+	    $user_auto_id=$ary_argument['user_auto_id'];
+
+		$sql="SELECT 
+		te.*,
+		tef.id as tefAutoId,
+		tm.membership_type,
+		tm.first_name,
+        tm.last_name
+		FROM tn_events as te
+		LEFT JOIN tn_events_friend as tef ON tef.event_id=te.id
+        LEFT JOIN tn_members as tm ON tm.id=te.member_id
+
+		WHERE ((te.event_start>='".$startDate."' OR te.event_end>='".$startDate."' ) OR ( te.event_start<='".$endDate."')) AND te.status='1' AND te.deleted='0' AND tef.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' order by te.event_start";
+
+		/*echo $sql;
+		exit;*/
+
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+
+
+		$finalData=array();
+		if(count($result)>0)
+		{
+			foreach ($result as $key => $value)
+			{
+				$finalData[$key]=$value;
+				$finalData[$key]['displayStartDate']= date("d M Y",strtotime($value['event_start']));
+				$finalData[$key]['displayStartTime']= date("h:i A",strtotime($value['event_start']));
+				$date1=date_create($value['event_start']);
+		        $date2=date_create($value['event_end']);
+		        $diff=(array)date_diff($date1,$date2);
+		        $disEventDuration=$this->CalculateDisplayDuration($diff);
+		        $finalData[$key]['disEventDuration']=$disEventDuration;
+			}
+		}
+		return $finalData;
+	}
+
 }
 ?>

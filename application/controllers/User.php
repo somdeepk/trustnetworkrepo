@@ -3209,6 +3209,33 @@ class User extends CI_Controller
 		echo json_encode($returnData);
         exit;
 	}
+
+	public function loadInvitedToMeEvents()
+	{
+		$returnData=array();
+        $loadScheduleData = trim($this->input->post('loadScheduleData'));
+        $aryLoadScheduleData=json_decode($loadScheduleData, true);
+
+        $user_auto_id=(isset($aryLoadScheduleData['user_auto_id']) && !empty($aryLoadScheduleData['user_auto_id']))? addslashes(trim($aryLoadScheduleData['user_auto_id'])):0;
+
+        $startDate=date("Y-m-d 00:00:00");
+        $withinOneMonthTime = date("Y-m-d",strtotime("+1 months", time()));
+		$withinOneMonthTime=strtotime($withinOneMonthTime);
+
+        $ary_argument=array();
+        $ary_argument['startDate']=$startDate;
+        $ary_argument['endDate']=$withinOneMonthTime;
+        $ary_argument['user_auto_id']=$user_auto_id;
+
+        $resultMyEvents=$this->User_Model->loadInvitedToMeEvents($ary_argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='My Events';
+        $returnData['data']=array('resultMyEvents'=>$resultMyEvents,'totalMyEvents'=>count($resultMyEvents));
+		echo json_encode($returnData);
+        exit;
+	}
 }
 	
 
