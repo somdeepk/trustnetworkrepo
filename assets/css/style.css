@@ -3763,6 +3763,7 @@ ul.profile-img-gallary {
 	list-style: none;
 	margin: 0 -1px 0 -4px !important;
 }
+ul.profile-img-gallary img{width: 86px; height: 86px; object-fit: cover;}
 .twit-feed p span i {
 	background: var(--iq-primary);
 	color: var(--iq-white);
@@ -4292,3 +4293,7 @@ input {
 .photo-upload-field input[type=file]{position: absolute; opacity: 0; left: 0;}
 
 .image-modify-icon{background: #fff; border-radius: 50%; padding: 5px; font-size: 24px; margin-top: 20px;}
+
+.post-ptoto{width: 100%; height: 200px; object-fit: cover; border-radius: 10px;}
+.user-photo-list img{width: 100%; height: 200px; object-fit: cover;}
+

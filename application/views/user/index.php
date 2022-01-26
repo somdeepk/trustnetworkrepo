@@ -253,19 +253,19 @@ div.postWhenScrollContainer{
 
                                  <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                                     <a href="javascript:void();">
-                                       <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="img-fluid rounded w-100" style="width: 291px; height:391px;">
+                                       <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
                                     </a>
                                  </div>
 
                                  <div class="col-md-6 row m-0 p-0" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
                                     <div class="col-sm-12">
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="img-fluid rounded w-100" style="width: 291px; height:187px;"></a>
+                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto"></a>
                                     </div>
                                     <div class="col-sm-12 mt-3" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
                                        <div ng-if="valuePS.post_file_data.length>3" class="photo-count-value" style="font-size:62px;">
                                          <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
                                       </div>
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="img-fluid rounded w-100" style="width: 291px; height:187px;"></a>
+                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto"></a>
                                     </div>
                                  </div>
                               </div>
@@ -299,7 +299,7 @@ div.postWhenScrollContainer{
                                  </div>
 
                                  <div ng-if="valuePS.post_file_data.length" class="col-md-6">
-                                    <div class="col-md-12"  ng-repeat="(keyFileData, valueFileData) in valuePS.post_file_data">
+                                    <div class="col-md-12 mb-3"  ng-repeat="(keyFileData, valueFileData) in valuePS.post_file_data">
                                        <a href="javascript:void();">
                                           <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valueFileData.file_name}}" class="img-fluid rounded w-100">
                                        </a>
