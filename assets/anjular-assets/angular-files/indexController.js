@@ -456,6 +456,11 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	    }
 	};
 
+	$scope.OpenPostPopUp = function (id) {
+		$('#exampleModal_'+id).modal('show');
+	};
+
+
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
 	};

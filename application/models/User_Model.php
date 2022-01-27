@@ -1450,6 +1450,7 @@ class User_Model extends CI_Model
 		$sql="SELECT 
 		te.*,
 		tef.id as tefAutoId,
+		tef.event_accept_reject,
 		tm.membership_type,
 		tm.first_name,
         tm.last_name

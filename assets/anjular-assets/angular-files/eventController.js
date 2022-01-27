@@ -344,6 +344,41 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 		});
 	};
 
+
+	$scope.acceptRejectEvent = function(value,status)
+    {
+    	if(status=="A")
+    	{
+    		$scope.buttonSavingAnimation('zBtnAcceptEventz_'+value.tefAutoId,'Accepting..','loader');
+    	}
+    	else
+    	{
+    		$scope.buttonSavingAnimation('zBtnRejectEventz_'+value.tefAutoId,'Accepting..','loader');
+    	}
+
+		$timeout(function()
+		{
+			$scope.loadScheduleData={};
+	    	$scope.loadScheduleData.user_auto_id=$scope.memberData.user_auto_id;
+	    	$scope.loadScheduleData.status=status;
+	    	$scope.loadScheduleData.tefAutoId=value.tefAutoId;
+
+			var formData = new FormData();
+			formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxAcceptRejectEvent",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	$scope.loadInvitedToMeEvents();
+			});
+		},600);
+	};
+
 	$scope.pad = function (str, max)
 	{
 		str = str.toString();

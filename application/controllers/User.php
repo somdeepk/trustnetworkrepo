@@ -3236,6 +3236,48 @@ class User extends CI_Controller
 		echo json_encode($returnData);
         exit;
 	}
+
+
+	public function ajaxAcceptRejectEvent() 
+    {
+    	$returnData=array();
+        $loadScheduleData = trim($this->input->post('loadScheduleData'));
+        $aryLoadScheduleData=json_decode($loadScheduleData, true);
+
+        $user_auto_id=(isset($aryLoadScheduleData['user_auto_id']) && !empty($aryLoadScheduleData['user_auto_id']))? addslashes(trim($aryLoadScheduleData['user_auto_id'])):0;
+        $status=(isset($aryLoadScheduleData['status']) && !empty($aryLoadScheduleData['status']))? addslashes(trim($aryLoadScheduleData['status'])):'R';
+        $tefAutoId=(isset($aryLoadScheduleData['tefAutoId']) && !empty($aryLoadScheduleData['tefAutoId']))? addslashes(trim($aryLoadScheduleData['tefAutoId'])):0;
+
+        $menu_arr = array(
+            'event_accept_reject'  =>$status
+        );
+
+        $lastId=0;
+        if($tefAutoId>0)
+		{
+			$lastId=$this->User_Model->addUpdatEventFriends($menu_arr,$tefAutoId);
+		}
+
+		$returnData=array();
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Acccepted Or Rejected';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Acccepted Or Rejected Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
 }
 	
 

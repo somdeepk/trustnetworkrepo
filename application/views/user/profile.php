@@ -348,7 +348,7 @@ div.postWhenScrollContainer{
                                   </div>
                                </div>
 
-                                <a data-toggle="tooltip" title="Hooray!" ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level [ '+value.coursename+': '+value.maxmemberlevel+' ]' : 'Set Level'}}</a>
+                                <a data-toggle="tooltip" title="Hooray!" ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? ((value.maxmemberlevel!='999')? 'Unset Level [ '+value.coursename+': '+value.maxmemberlevel+' ]':'Unset Level [ '+value.coursename+' ]') : 'Set Level'}}</a>
                              </div>
                           </li>
                           <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
@@ -357,6 +357,8 @@ div.postWhenScrollContainer{
                        </ul>
                     </div>
                  </div>
+
+                 
               </div>
            </div>
           </div>
@@ -978,10 +980,10 @@ div.postWhenScrollContainer{
                                       </div>
                                    </div>
                                    <div class="mt-3">
-                                      <p><a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.post_data.post}}</a></p>
+                                      <p><a href="javascript:void();" ng-click="OpenPostPopUp(valuePS.id)">{{valuePS.post_data.post}}</a></p>
                                    </div>
                                    <div ng-if="valuePS.post_file_data.length" class="user-post">
-                                      <div data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
+                                      <div ng-click="OpenPostPopUp(valuePS.id)">
                                          <div class="row">
                                             <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                                                <a href="javascript:void();">
@@ -1165,8 +1167,7 @@ div.postWhenScrollContainer{
                                             </div>
                                             <div ng-if='valuePS.all_post_comment_data.length>0' class="total-comment-block">
                                                <div class="dropdown">
-                                                  <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                  <a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.all_post_comment_data.length}} Comment</a>
+                                                  <span ng-click="OpenPostPopUp(valuePS.id)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">{{valuePS.all_post_comment_data.length}} Comment
                                                   </span>
                                                   <div class="dropdown-menu">
                                                      <a class="dropdown-item" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data" href="javascript:void();">{{valueComments.first_name+' '+valueComments.last_name}}</a>
@@ -1297,9 +1298,29 @@ div.postWhenScrollContainer{
                                   <div class="iq-card-body p-0">
                                      <div class="row">
                                         <div class="col-md-6 col-lg-3 mb-3" ng-repeat="(keyPhto, valuePhto) in aryPhotoScroll">
+                                           
+                                          <div class="modal" id="examplePhotoModal_{{valuePhto.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                              <div class="modal-content iq-dark-box">
+                                                <div class="modal-header">
+                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                                   </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <div class="row">
+                                                     <div class="col-md-12">
+                                                        <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                     </div>
+                                                   </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+
                                            <div class="user-images user-photo-list position-relative overflow-hidden">
                                               <a href="javascript:void();">
-                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" class="img-fluid rounded" alt="Responsive image">
+                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
                                               </a>
 
                                               <div class="image-hover-data">
@@ -1458,8 +1479,15 @@ div.postWhenScrollContainer{
                                            </a>
                                         </div>
                                         <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+  
+                                        <a ng-if="value.event_accept_reject!='A'" href="javascript:void();" ng-click="acceptRejectEvent(value,'A')" class="mr-3 btn btn-primary rounded zBtnAcceptEventz_{{value.tefAutoId}}">Accept {{value.event_accept_rejec}}</a>
+
+                                        <a ng-if="value.event_accept_reject=='A'" href="javascript:void();" class="mr-3 btn btn-info"><i class="ri-check-double-line"></i>Accepted</a>
+
+
+                                        <a ng-if="value.event_accept_reject!='R'" href="javascript:void();" ng-click="acceptRejectEvent(value,'R')" class="mr-3 btn btn-secondary rounded zBtnRejectEventz_{{value.tefAutoId}}">Reject</a>
+
+                                        <a ng-if="value.event_accept_reject=='R'" href="javascript:void();" class="mr-3 btn btn-danger"><i class="ri-close-circle-line bg-danger"></i>Rejected</a>
                                      </div>
                                      </div>
                                   </div>
