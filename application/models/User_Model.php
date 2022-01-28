@@ -1447,6 +1447,13 @@ class User_Model extends CI_Model
 	    $endDate=$ary_argument['endDate'];
 	    $user_auto_id=$ary_argument['user_auto_id'];
 
+	    $strWhereParam="";
+	    if(!empty($ary_argument['event_accept_reject']))
+	    {
+	    	$event_accept_reject=$ary_argument['event_accept_reject'];
+	    	$strWhereParam=" AND tef.event_accept_reject='".$event_accept_reject."'";
+	    }
+
 		$sql="SELECT 
 		te.*,
 		tef.id as tefAutoId,
@@ -1458,10 +1465,10 @@ class User_Model extends CI_Model
 		LEFT JOIN tn_events_friend as tef ON tef.event_id=te.id
         LEFT JOIN tn_members as tm ON tm.id=te.member_id
 
-		WHERE ((te.event_start>='".$startDate."' OR te.event_end>='".$startDate."' ) OR ( te.event_start<='".$endDate."')) AND te.status='1' AND te.deleted='0' AND tef.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' order by te.event_start";
+		WHERE ((te.event_start>='".$startDate."' OR te.event_end>='".$startDate."' ) AND ( te.event_start<='".$endDate."')) AND te.status='1' AND te.deleted='0' AND tef.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by te.event_start";
 
-		/*echo $sql;
-		exit;*/
+		// echo $sql;
+		// exit;
 
 		$query=$this->db->query($sql);
 		$result=$query->result_array();

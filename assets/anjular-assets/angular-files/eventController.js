@@ -18,7 +18,15 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 		//{
 			$scope.loadEventCalender();
 			$scope.loadDateRangeSchedule();
+			$rootScope.loadAcceptedInvitedToMeEvents();
 		//},3000);
+	};
+
+	$rootScope.loadCalenderTab = function()
+	{
+		$scope.loadEventCalender();
+		$scope.loadDateRangeSchedule();
+		$rootScope.loadAcceptedInvitedToMeEvents();
 	};
 
 	$scope.loadDateRangeSchedule = function ()
@@ -40,7 +48,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
         	}
         	else
         	{
-        		console.log("'DateRange Schedule Failed")
+        		console.log("DateRange Schedule Failed")
         	}
 		});
 
@@ -318,31 +326,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    }
   	};
 
-  	$scope.loadInvitedToMeEvents = function ()
-	{		
-	    $scope.loadScheduleData={};
-	    $scope.loadScheduleData.user_auto_id=$scope.memberData.user_auto_id;
-
-		var formData = new FormData();
-		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"loadInvitedToMeEvents",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData) {
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		$scope.loadInvitedToMeEventsObj=aryreturnData.data.resultMyEvents;
-        	}
-        	else
-        	{
-        		console.log("'DateRange Schedule Failed")
-        	}
-		});
-	};
+  	
 
 
 	$scope.acceptRejectEvent = function(value,status)
@@ -374,7 +358,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	            data:formData, 
 	        }).success(function(returnData) {
 				aryreturnData=angular.fromJson(returnData);
-	        	$scope.loadInvitedToMeEvents();
+	        	$rootScope.loadInvitedToMeEvents();
 			});
 		},600);
 	};

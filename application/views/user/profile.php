@@ -674,43 +674,44 @@ div.postWhenScrollContainer{
                              </div>
                           </div> -->
                           <div class="iq-card">
-                             <div class="iq-card-header d-flex justify-content-between">
-                                <div class="iq-header-title">
-                                   <h4 class="card-title">Life Event</h4>
-                                </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
-                                   <p class="m-0"><a href="javacsript:void();"> Create </a></p>
-                                </div>
-                             </div>
-                             <div class="iq-card-body">
-                                <div class="row">
-                                   <div class="col-sm-12">
-                                      <div class="event-post position-relative">
-                                         <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/07.jpg" alt="gallary-image" class="img-fluid rounded"></a>
-                                         <div class="job-icon-position">
-                                            <div class="job-icon bg-primary p-2 d-inline-block rounded-circle"><i class="ri-briefcase-line"></i></div>
-                                         </div>
-                                         <div class="iq-card-body text-center p-2">
-                                            <h5>Started New Job at Apple</h5>
-                                            <p>January 24, 2019</p>
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title" style="font-size: 11px;font-weight: bold;color:#50b5ff;">My <i>Upcoming 7 days</i> Invitation</h4>
+                                   </div>
+                                   <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <div class="dropdown">
+                                         <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
+                                         <i class="ri-more-fill"></i>
+                                         </span>
+                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-eye-fill mr-2"></i>View</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
                                          </div>
                                       </div>
-                                   </div>
-                                   <div class="col-sm-12">
-                                      <div class="event-post position-relative">
-                                         <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/06.jpg" alt="gallary-image" class="img-fluid rounded"></a>
-                                         <div class="job-icon-position">
-                                            <div class="job-icon bg-primary p-2 d-inline-block rounded-circle"><i class="ri-briefcase-line"></i></div>
+                                   </div> -->
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="media-story m-0 p-0">
+                                      <li class="d-flex mb-4 align-items-center"  ng-repeat="(key, value) in loadAcceptedInvitedToMeEventsObj">
+                                         <div class="stories-data ml-3">
+                                             <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                                             <br>
+                                             <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                                             <br>                               
+                                             <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                             <br>
+                                             <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                                             <br>
+                                             <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span> 
                                          </div>
-                                         <div class="iq-card-body text-center p-2">
-                                            <h5>Freelance Photographer</h5>
-                                            <p>January 24, 2019</p>
-                                         </div>
-                                      </div>
-                                   </div>
+                                      </li>
+                                      
+                                   </ul>
                                 </div>
                              </div>
-                          </div>
                           <div class="iq-card">
                              <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
@@ -1436,8 +1437,8 @@ div.postWhenScrollContainer{
                               <ul class="nav nav-pills justify-content-end profile-feed-items py-2 m-0">
                                  <li>
                                  <div class="d-flex">
-                                    <a href="javascript:void();" ng-click="loadEventCalender(); showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>
-                                    <a href="javascript:void();" ng-click="loadInvitedToMeEvents(); showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">All Events</a>
+                                    <a href="javascript:void();" ng-click="loadCalenderTab(); showEventOrCalendar='calendar'" class="mr-3 btn btn-secondary rounded">Calender</a>
+                                    <a href="javascript:void();" ng-click="loadInvitedToMeEvents(); showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">My Invitation</a>
                                  </div>
                                  </li>    
                               </ul>
@@ -1463,13 +1464,13 @@ div.postWhenScrollContainer{
                                      <br>
                                      <span><strong>Event Type :</strong> {{value.event_type}}</span>
                                      <hr>
+                                     <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                     <br>
                                      <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
                                      <br>
                                      <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span>
                                   </div>
                                   <div class="events-detail">
-                                     <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
-                                     <br>
                                      <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</span>
                                      <div class="event-member">
                                         <div class="iq-media-group">
@@ -1544,6 +1545,46 @@ div.postWhenScrollContainer{
                                    </ul>
                                 </div>
                              </div>
+                             <div class="iq-card">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title" style="font-size: 11px;font-weight: bold;color:#50b5ff;">My <i>Upcoming 7 days</i> Invitation</h4>
+                                   </div>
+                                   <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <div class="dropdown">
+                                         <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
+                                         <i class="ri-more-fill"></i>
+                                         </span>
+                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-eye-fill mr-2"></i>View</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                                         </div>
+                                      </div>
+                                   </div> -->
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="media-story m-0 p-0">
+                                      <li class="d-flex mb-4 align-items-center"  ng-repeat="(key, value) in loadAcceptedInvitedToMeEventsObj">
+                                         <div class="stories-data ml-3">
+                                             <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                                             <br>
+                                             <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                                             <br>                               
+                                             <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                             <br>
+                                             <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                                             <br>
+                                             <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span> 
+                                         </div>
+                                      </li>
+                                      
+                                   </ul>
+                                </div>
+                             </div>
+                             
                           </div>
                           <div class="col-md-9">
                              <div class="iq-card">

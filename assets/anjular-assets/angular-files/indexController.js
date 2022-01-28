@@ -1,5 +1,5 @@
 mainApp.controller('indexController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
-		
+	$scope.parseInt = parseInt ;	
 	$scope.singlePostData={};
 	$scope.memberData={};
 	$scope.friendData={};
@@ -14,6 +14,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 		$scope.GetLimitFriendForTimeline();
 		$scope.GetLimitPhotoForTimeline();
+		$rootScope.loadAcceptedInvitedToMeEvents();
 	};
    
    	$scope.submitPost = function(){

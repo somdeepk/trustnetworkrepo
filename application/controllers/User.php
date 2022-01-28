@@ -3217,15 +3217,30 @@ class User extends CI_Controller
         $aryLoadScheduleData=json_decode($loadScheduleData, true);
 
         $user_auto_id=(isset($aryLoadScheduleData['user_auto_id']) && !empty($aryLoadScheduleData['user_auto_id']))? addslashes(trim($aryLoadScheduleData['user_auto_id'])):0;
+        $date_range=(isset($aryLoadScheduleData['date_range']) && !empty($aryLoadScheduleData['date_range']))? addslashes(trim($aryLoadScheduleData['date_range'])):'';
+        $event_accept_reject=(isset($aryLoadScheduleData['event_accept_reject']) && !empty($aryLoadScheduleData['event_accept_reject']))? addslashes(trim($aryLoadScheduleData['event_accept_reject'])):'';
 
-        $startDate=date("Y-m-d 00:00:00");
-        $withinOneMonthTime = date("Y-m-d",strtotime("+1 months", time()));
-		$withinOneMonthTime=strtotime($withinOneMonthTime);
-
+        if($date_range=='7days')
+        {
+        	$startDate=date("Y-m-d 00:00:00");
+	        $withinOneMonthTime = date("Y-m-d",strtotime("+7 day", time()));
+        }
+        else //1 month
+        {
+        	$startDate=date("Y-m-d 00:00:00");
+	        $withinOneMonthTime = date("Y-m-d",strtotime("+1 months", time()));
+        }
+        
         $ary_argument=array();
         $ary_argument['startDate']=$startDate;
         $ary_argument['endDate']=$withinOneMonthTime;
         $ary_argument['user_auto_id']=$user_auto_id;
+        $ary_argument['event_accept_reject']=$event_accept_reject;
+        $ary_argument['date_range']=$date_range;
+
+        // echo "<pre>";
+        // print_r($ary_argument);
+        // exit;
 
         $resultMyEvents=$this->User_Model->loadInvitedToMeEvents($ary_argument);
 
