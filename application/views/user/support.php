@@ -1,3 +1,55 @@
+<style>
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+</style>
 <div id="content-page" class="content-page" ng-controller="supportController" ng-init="initSupport();" >
   <div class="container">
     <div class="row">
@@ -78,7 +130,7 @@
                   </p>
                 </div>
                 <div class="form-group col-sm-12" style="border-bottom: 1px solid #fff;">
-                  <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="supportData.manageTicket.ticketDescription"></textarea>
+                  <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="supportData.manageTicket.ticketDescription"></textarea>
                 </div>
                 <div class="form-group col-sm-12">
                   <label>Response:</label>
@@ -93,7 +145,7 @@
                     <div class="col-sm-12" ng-if="parseInt(respData.imResponder)>0">
                       <div class="form-group col-sm-10" style="width:80%; float:left; display: block;">
                         <p>Replied to {{respData.responseToName}} on {{respData.responseOn}}</p>
-                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                        <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
                       </div>
                       <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
                     </div>
@@ -101,7 +153,7 @@
                       <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
                       <div class="form-group col-sm-10" style="float:right; display: block; width:80%;">
                         <p>{{respData.responseFromName}} Responded on {{respData.responseOn}}</p>
-                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                        <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px; color: #50b5ff" readonly ng-model="respData.responseDescription"></textarea>
                       </div>
                     </div>
                   </div>
@@ -135,7 +187,7 @@
           <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.myTickets.length)>0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center" ng-repeat="myTicket in supportData.listSupport.myTickets">
-                <div class="stories-data ml-3" ng-click="viewTicketDetails(myTicket);" style="cursor: pointer;" title="View Ticket Details">
+                <div class="stories-data ml-3" ng-click="viewTicketDetails(myTicket);" style="cursor: pointer;" title="View Ticket Details" ng-class="(supportData.manageTicket.ticketId==myTicket.myTicketId)? 'blink_me' : ''">
                   <h5>{{myTicket.myTicketSubject}}</h5>
                   <p class="mb-0">To {{myTicket.responseToName}}</p>
                   <p class="mb-0">{{myTicket.myTicketCreation}}</p>
@@ -162,7 +214,7 @@
           <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.assignedTickets.length)>0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center" ng-repeat="assignTicket in supportData.listSupport.assignedTickets">
-                <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer;" title="View Ticket Details">
+                <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer;" title="View Ticket Details" ng-class="(supportData.manageTicket.ticketId==assignTicket.assignTicketId)? 'blink_me' : ''">
                   <h5>{{assignTicket.assignTicketSubject}}</h5>
                   <p class="mb-0">From {{assignTicket.ticketCameFromName}}</p>
                   <p class="mb-0">{{assignTicket.assignTicketCreation}}</p>

@@ -348,7 +348,7 @@ div.postWhenScrollContainer{
                                   </div>
                                </div>
 
-                                <a data-toggle="tooltip" title="Hooray!" ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? 'Unset Level [ '+value.coursename+': '+value.maxmemberlevel+' ]' : 'Set Level'}}</a>
+                                <a data-toggle="tooltip" title="Hooray!" ng-if="(friendData.membership_type == 'RM' && friendData.is_admin =='Y') " href="javascript:void();" ng-click="toggleSetMemberLevel(value);" ng-class="(value.maxmemberlevel>0) ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded ztoggleSetMemberLevelz_{{value.id}}"><i ng-if="value.maxmemberlevel>0" class="ri-stack-fill"></i><i ng-if="value.maxmemberlevel<=0" class="ri-stack-line"></i>{{(value.maxmemberlevel>0)? ((value.maxmemberlevel!='999')? 'Unset Level [ '+value.coursename+': '+value.maxmemberlevel+' ]':'Unset Level [ '+value.coursename+' ]') : 'Set Level'}}</a>
                              </div>
                           </li>
                           <li ng-if="allChurchMemberListObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
@@ -357,6 +357,8 @@ div.postWhenScrollContainer{
                        </ul>
                     </div>
                  </div>
+
+                 
               </div>
            </div>
           </div>
@@ -672,43 +674,44 @@ div.postWhenScrollContainer{
                              </div>
                           </div> -->
                           <div class="iq-card">
-                             <div class="iq-card-header d-flex justify-content-between">
-                                <div class="iq-header-title">
-                                   <h4 class="card-title">Life Event</h4>
-                                </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
-                                   <p class="m-0"><a href="javacsript:void();"> Create </a></p>
-                                </div>
-                             </div>
-                             <div class="iq-card-body">
-                                <div class="row">
-                                   <div class="col-sm-12">
-                                      <div class="event-post position-relative">
-                                         <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/07.jpg" alt="gallary-image" class="img-fluid rounded"></a>
-                                         <div class="job-icon-position">
-                                            <div class="job-icon bg-primary p-2 d-inline-block rounded-circle"><i class="ri-briefcase-line"></i></div>
-                                         </div>
-                                         <div class="iq-card-body text-center p-2">
-                                            <h5>Started New Job at Apple</h5>
-                                            <p>January 24, 2019</p>
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title" style="font-size: 11px;font-weight: bold;color:#50b5ff;">My <i>Upcoming 7 days</i> Invitation</h4>
+                                   </div>
+                                   <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <div class="dropdown">
+                                         <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
+                                         <i class="ri-more-fill"></i>
+                                         </span>
+                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-eye-fill mr-2"></i>View</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
                                          </div>
                                       </div>
-                                   </div>
-                                   <div class="col-sm-12">
-                                      <div class="event-post position-relative">
-                                         <a href="javascript:void();"><img src="<?php echo base_url();?>assets/images/page-img/06.jpg" alt="gallary-image" class="img-fluid rounded"></a>
-                                         <div class="job-icon-position">
-                                            <div class="job-icon bg-primary p-2 d-inline-block rounded-circle"><i class="ri-briefcase-line"></i></div>
+                                   </div> -->
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="media-story m-0 p-0">
+                                      <li class="d-flex mb-4 align-items-center"  ng-repeat="(key, value) in loadAcceptedInvitedToMeEventsObj">
+                                         <div class="stories-data ml-3">
+                                             <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                                             <br>
+                                             <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                                             <br>                               
+                                             <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                             <br>
+                                             <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                                             <br>
+                                             <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span> 
                                          </div>
-                                         <div class="iq-card-body text-center p-2">
-                                            <h5>Freelance Photographer</h5>
-                                            <p>January 24, 2019</p>
-                                         </div>
-                                      </div>
-                                   </div>
+                                      </li>
+                                      
+                                   </ul>
                                 </div>
                              </div>
-                          </div>
                           <div class="iq-card">
                              <div class="iq-card-header d-flex justify-content-between">
                                 <div class="iq-header-title">
@@ -978,30 +981,41 @@ div.postWhenScrollContainer{
                                       </div>
                                    </div>
                                    <div class="mt-3">
-                                      <p><a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.post_data.post}}</a></p>
+                                      <p><a href="javascript:void();" ng-click="OpenPostPopUp(valuePS.id)">{{valuePS.post_data.post}}</a></p>
                                    </div>
                                    <div ng-if="valuePS.post_file_data.length" class="user-post">
-                                      <div class="d-flex" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
-
-                                         <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
-                                            <a href="javascript:void();">
-                                               <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
-                                            </a>
-                                         </div>
-
-                                         <div class="col-md-6 row m-0 p-0" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
-                                            <div class="col-sm-12">
-                                               <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto"></a>
+                                      <div ng-click="OpenPostPopUp(valuePS.id)">
+                                         <div class="row">
+                                            <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
+                                               <a href="javascript:void();">
+                                                  <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
+                                               </a>
                                             </div>
-                                            <div class="col-sm-12 mt-3" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
-                                              <div ng-if="valuePS.post_file_data.length>3" class="photo-count-value" style="font-size:62px;">
-                                         <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
-                                      </div>
-                                               <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto"></a>
+
+                                            <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
+                                               <a href="javascript:void();">
+                                                  <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto" >
+                                               </a>
                                             </div>
+
+                                            <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
+                                               <a href="javascript:void();">
+                                                  <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto" >
+                                               </a>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[3].file_name)==false)">
+                                               <div ng-if="valuePS.post_file_data.length>4" class="photo-count-value" style="font-size:62px;">
+                                                    <a href="javascript:void();"> + {{valuePS.post_file_data.length-4}}</a>
+                                               </div>
+                                               <a href="javascript:void();">
+                                                  <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[3].file_name}}" class="post-ptoto" >
+                                               </a>
+                                            </div>
+
                                          </div>
                                       </div>
-                                      
+
                                    </div>
 
                                    <div class="modal" id="exampleModal_{{valuePS.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">                  
@@ -1154,8 +1168,7 @@ div.postWhenScrollContainer{
                                             </div>
                                             <div ng-if='valuePS.all_post_comment_data.length>0' class="total-comment-block">
                                                <div class="dropdown">
-                                                  <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                  <a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.all_post_comment_data.length}} Comment</a>
+                                                  <span ng-click="OpenPostPopUp(valuePS.id)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">{{valuePS.all_post_comment_data.length}} Comment
                                                   </span>
                                                   <div class="dropdown-menu">
                                                      <a class="dropdown-item" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data" href="javascript:void();">{{valueComments.first_name+' '+valueComments.last_name}}</a>
@@ -1286,9 +1299,29 @@ div.postWhenScrollContainer{
                                   <div class="iq-card-body p-0">
                                      <div class="row">
                                         <div class="col-md-6 col-lg-3 mb-3" ng-repeat="(keyPhto, valuePhto) in aryPhotoScroll">
+                                           
+                                          <div class="modal" id="examplePhotoModal_{{valuePhto.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                              <div class="modal-content iq-dark-box">
+                                                <div class="modal-header">
+                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                                   </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <div class="row">
+                                                     <div class="col-md-12">
+                                                        <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                     </div>
+                                                   </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+
                                            <div class="user-images user-photo-list position-relative overflow-hidden">
                                               <a href="javascript:void();">
-                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" class="img-fluid rounded" alt="Responsive image">
+                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
                                               </a>
 
                                               <div class="image-hover-data">
@@ -1404,8 +1437,8 @@ div.postWhenScrollContainer{
                               <ul class="nav nav-pills justify-content-end profile-feed-items py-2 m-0">
                                  <li>
                                  <div class="d-flex">
-                                    <a href="javascript:void();" ng-click="loadEventCalender(); showEventOrCalendar='calendar'" class="mr-3 btn btn-primary rounded">Calender</a>
-                                    <a href="javascript:void();" ng-click="showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">All Events</a>
+                                    <a href="javascript:void();" ng-click="loadCalenderTab(); showEventOrCalendar='calendar'" class="mr-3 btn btn-secondary rounded">Calender</a>
+                                    <a href="javascript:void();" ng-click="loadInvitedToMeEvents(); showEventOrCalendar='allevents'" class="mr-3 btn btn-secondary rounded">My Invitation</a>
                                  </div>
                                  </li>    
                               </ul>
@@ -1417,7 +1450,7 @@ div.postWhenScrollContainer{
                   <!-- Start Display All Events Tab-->
                   <div ng-show="showEventOrCalendar=='allevents'">
                     <div class="row">
-                      <div class="col-md-6 col-lg-4">
+                      <div class="col-md-6 col-lg-4" ng-repeat="(key, value) in loadInvitedToMeEventsObj">
                          <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
                             <div class="event-images">
                                <a href="#">
@@ -1425,387 +1458,37 @@ div.postWhenScrollContainer{
                                </a>
                             </div>
                             <div class="iq-card-body">
-                               <div class="d-flex">
+                               <div > <!-- class="d-flex" -->
                                   <div class="date-of-event">
-                                     <span>Jan</span>
-                                     <h5>01</h5>
+                                     <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                                     <br>
+                                     <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                                     <hr>
+                                     <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                     <br>
+                                     <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                                     <br>
+                                     <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span>
                                   </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>New Year Celibration</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
+                                  <div class="events-detail">
+                                     <span class="pb-2"><strong>Desc :</strong> {{value.event_desc}}</span>
                                      <div class="event-member">
                                         <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
+                                           <a href="javascript:void();" ng-repeat="(keyeInvitedFrnd, valueInvitedFrnd) in value.all_invited_friend" class="iq-media">    
+                                            <img class="img-fluid avatar-40 rounded-circle" title=" {{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}" ng-if="valueInvitedFrnd.profile_image == '' || !valueInvitedFrnd.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
+                                            <img class="img-fluid avatar-40 rounded-circle"  title=" {{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}" ng-if="valueInvitedFrnd.profile_image && valueInvitedFrnd.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{valueInvitedFrnd.profile_image}}" alt="{{(valueInvitedFrnd.membership_type=='CM')? valueInvitedFrnd.first_name : valueInvitedFrnd.first_name+' '+valueInvitedFrnd.last_name}}">
                                            </a>
                                         </div>
                                         <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/52.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>Jan</span>
-                                     <h5>24</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Birthday Celibration</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/53.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>Jan</span>
-                                     <h5>26</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Republic Day</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/54.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>Feb</span>
-                                     <h5>04</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Meetings & Conventions</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/55.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>March</span>
-                                     <h5>01</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Fun Events and Festivals </h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/56.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>March</span>
-                                     <h5>10</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Atlanta Retail Show</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/57.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>March</span>
-                                     <h5>14</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Holi in the City</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/58.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>Mar</span>
-                                     <h5>16</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>Insurance Innovators</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                        <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accepted</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Delete</a>                                    
-                                     </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                         <div class="iq-card rounded iq-card-block iq-card-stretch iq-card-height">
-                            <div class="event-images">
-                               <a href="#">
-                               <img src="<?php echo base_url();?>assets/images/page-img/59.jpg" class="img-fluid" alt="Responsive image">
-                               </a>
-                            </div>
-                            <div class="iq-card-body">
-                               <div class="d-flex">
-                                  <div class="date-of-event">
-                                     <span>Apr</span>
-                                     <h5>12</h5>
-                                  </div>
-                                  <div class="events-detail ml-3">
-                                     <h5>BIG 5G Event</h5>
-                                     <p>Lorem Ipsum is simply dummy text</p>
-                                     <div class="event-member">
-                                        <div class="iq-media-group">
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/05.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/06.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/07.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/08.jpg" alt="">
-                                           </a>
-                                           <a href="#" class="iq-media">
-                                           <img class="img-fluid avatar-40 rounded-circle" src="<?php echo base_url();?>assets/images/user/09.jpg" alt="">
-                                           </a>
-                                        </div>
-                                       <div class="d-flex">
-                                        <a href="javascript:void();" class="mr-3 btn btn-primary rounded">Accept</a>
-                                        <a href="javascript:void();" class="mr-3 btn btn-secondary rounded">Ignore</a>                                    
+  
+                                        <a ng-if="value.event_accept_reject!='A'" href="javascript:void();" ng-click="acceptRejectEvent(value,'A')" class="mr-3 btn btn-primary rounded zBtnAcceptEventz_{{value.tefAutoId}}">Accept {{value.event_accept_rejec}}</a>
+
+                                        <a ng-if="value.event_accept_reject=='A'" href="javascript:void();" class="mr-3 btn btn-info"><i class="ri-check-double-line"></i>Accepted</a>
+
+
+                                        <a ng-if="value.event_accept_reject!='R'" href="javascript:void();" ng-click="acceptRejectEvent(value,'R')" class="mr-3 btn btn-secondary rounded zBtnRejectEventz_{{value.tefAutoId}}">Reject</a>
+
+                                        <a ng-if="value.event_accept_reject=='R'" href="javascript:void();" class="mr-3 btn btn-danger"><i class="ri-close-circle-line bg-danger"></i>Rejected</a>
                                      </div>
                                      </div>
                                   </div>
@@ -1821,7 +1504,7 @@ div.postWhenScrollContainer{
                   <div class="container" ng-show="(showEventOrCalendar=='calendar' || isNullOrEmptyOrUndefined(showEventOrCalendar)==true)">
                       <div class="row row-eq-height">
                           <div class="col-md-3">
-                             <div class="iq-card">
+                             <!-- <div class="iq-card">
                                 <div class="iq-card-header d-flex justify-content-between">
                                    <div class="iq-header-title">
                                       <h4 class="card-title ">Classification</h4>
@@ -1838,7 +1521,7 @@ div.postWhenScrollContainer{
                                       <li class=""><i class="ri-check-line bg-info"></i>Team Project</li>
                                    </ul>
                                 </div>
-                             </div>
+                             </div> -->
                              <div class="iq-card">
                                 <div class="iq-card-header d-flex justify-content-between">
                                    <div class="iq-header-title">
@@ -1847,21 +1530,61 @@ div.postWhenScrollContainer{
                                 </div>
                                 <div class="iq-card-body">
                                    <ul class="m-0 p-0 today-schedule">
-                                      <li class="d-flex">
+                                      <li class="d-flex" ng-repeat="(key, value) in loadDateRangeScheduleObj">
                                          <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-primary"></i></div>
-                                         <div class="schedule-text"> <span>Web Design</span>
-                                            <span>09:00 to 12:00</span>
+                                         <div class="schedule-text"> <span style="color:#50b5ff;">{{value.event_title}}</span>
+                                            <span>Started On : {{value.displayStartTime}}</span>
+                                            <span>Duration: {{value.disEventDuration}}</span>
                                          </div>
                                       </li>
-                                      <li class="d-flex">
-                                         <div class="schedule-icon"><i class="ri-checkbox-blank-circle-fill text-success"></i></div>
-                                         <div class="schedule-text"> <span>Participate in Design</span>
-                                            <span>09:00 to 12:00</span>
-                                         </div>
+
+                                      <li class="d-flex" ng-if="loadDateRangeScheduleObj.length<=0">
+                                        No scheduled for today!
                                       </li>
+                                      
                                    </ul>
                                 </div>
                              </div>
+                             <div class="iq-card">
+                                <div class="iq-card-header d-flex justify-content-between">
+                                   <div class="iq-header-title">
+                                      <h4 class="card-title" style="font-size: 11px;font-weight: bold;color:#50b5ff;">My <i>Upcoming 7 days</i> Invitation</h4>
+                                   </div>
+                                   <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
+                                      <div class="dropdown">
+                                         <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
+                                         <i class="ri-more-fill"></i>
+                                         </span>
+                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-eye-fill mr-2"></i>View</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                            <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                                         </div>
+                                      </div>
+                                   </div> -->
+                                </div>
+                                <div class="iq-card-body">
+                                   <ul class="media-story m-0 p-0">
+                                      <li class="d-flex mb-4 align-items-center"  ng-repeat="(key, value) in loadAcceptedInvitedToMeEventsObj">
+                                         <div class="stories-data ml-3">
+                                             <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                                             <br>
+                                             <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                                             <br>                               
+                                             <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                                             <br>
+                                             <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                                             <br>
+                                             <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span> 
+                                         </div>
+                                      </li>
+                                      
+                                   </ul>
+                                </div>
+                             </div>
+                             
                           </div>
                           <div class="col-md-9">
                              <div class="iq-card">

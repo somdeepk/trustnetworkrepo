@@ -3,7 +3,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	$scope.eventCalender={};
 	$scope.inviteEventData={};
 	$scope.eventCalender.calenderData={};	
-	$scope.eventData={}
+	$scope.eventData={};
+	$scope.loadDateRangeScheduleObj={};
 	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
 		//alert("initiateData")
@@ -16,7 +17,41 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 		//$timeout(function()
 		//{
 			$scope.loadEventCalender();
+			$scope.loadDateRangeSchedule();
+			$rootScope.loadAcceptedInvitedToMeEvents();
 		//},3000);
+	};
+
+	$rootScope.loadCalenderTab = function()
+	{
+		$scope.loadEventCalender();
+		$scope.loadDateRangeSchedule();
+		$rootScope.loadAcceptedInvitedToMeEvents();
+	};
+
+	$scope.loadDateRangeSchedule = function ()
+	{		
+	    $scope.loadScheduleData={};
+		var formData = new FormData();
+		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"loadDateRangeSchedule",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.loadDateRangeScheduleObj=aryreturnData.data.resultTodayEvents;
+        	}
+        	else
+        	{
+        		console.log("DateRange Schedule Failed")
+        	}
+		});
+
 	};
 
 	$scope.loadEventCalender = function ()
@@ -124,6 +159,9 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	        $compile(element.contents())($scope);
 		    $('#calnedarEventModal').modal('show');
 			$scope.eventData={};
+			$scope.totalInvitedFriend = 0;
+  			$scope.aryInviteEventFriend = [];
+
 			if(eventId>0)
 			{
 			  $scope.isEventPopClick=0;
@@ -270,7 +308,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 							$scope.eventData={};
 							$scope.totalInvitedFriend = 0;
 							$scope.aryInviteEventFriend = [];
-							$scope.loadEventCalender();							
+							$scope.loadEventCalender();	
+							$scope.loadDateRangeSchedule();						
 						},1200);
 	            	}
 	            	else
@@ -286,6 +325,43 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	     
 	    }
   	};
+
+  	
+
+
+	$scope.acceptRejectEvent = function(value,status)
+    {
+    	if(status=="A")
+    	{
+    		$scope.buttonSavingAnimation('zBtnAcceptEventz_'+value.tefAutoId,'Accepting..','loader');
+    	}
+    	else
+    	{
+    		$scope.buttonSavingAnimation('zBtnRejectEventz_'+value.tefAutoId,'Accepting..','loader');
+    	}
+
+		$timeout(function()
+		{
+			$scope.loadScheduleData={};
+	    	$scope.loadScheduleData.user_auto_id=$scope.memberData.user_auto_id;
+	    	$scope.loadScheduleData.status=status;
+	    	$scope.loadScheduleData.tefAutoId=value.tefAutoId;
+
+			var formData = new FormData();
+			formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxAcceptRejectEvent",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	$rootScope.loadInvitedToMeEvents();
+			});
+		},600);
+	};
 
 	$scope.pad = function (str, max)
 	{

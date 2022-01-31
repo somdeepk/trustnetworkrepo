@@ -1,5 +1,6 @@
 mainApp.controller('notificationController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
+	$scope.parseInt = parseInt ;
 	$scope.notificationData={};
 	$scope.allNotificationObj={};
 	$scope.friendData={};
@@ -7,10 +8,74 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 
 	$rootScope.clickProfileTab='timelineTab';
 
+	
+
 	$rootScope.tabPointer = function(typ)
 	{
 		$rootScope.clickProfileTab=typ;
+		if(typ=="timelineTab")
+		{
+			$rootScope.loadAcceptedInvitedToMeEvents();
+		}
 	};
+
+	$rootScope.loadAcceptedInvitedToMeEvents = function ()
+	{
+		$scope.loadScheduleData={};
+	    $scope.loadScheduleData.user_auto_id=$scope.friendData.user_auto_id;
+	    $scope.loadScheduleData.date_range='7days';
+	    $scope.loadScheduleData.event_accept_reject='A';
+	    var formData = new FormData();
+		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"loadInvitedToMeEvents",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$rootScope.loadAcceptedInvitedToMeEventsObj=aryreturnData.data.resultMyEvents;
+        	}
+        	else
+        	{
+        		console.log("'DateRange Schedule Failed")
+        	}
+		});
+	};
+
+	$rootScope.loadInvitedToMeEvents = function ()
+	{
+		$scope.loadScheduleData={};
+	    $scope.loadScheduleData.user_auto_id=$scope.friendData.user_auto_id;
+	    $scope.loadScheduleData.date_range='1month';
+	    $scope.loadScheduleData.event_accept_reject='';
+	    
+	    var formData = new FormData();
+		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"loadInvitedToMeEvents",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$rootScope.loadInvitedToMeEventsObj=aryreturnData.data.resultMyEvents;
+        	}
+        	else
+        	{
+        		console.log("'DateRange Schedule Failed")
+        	}
+		});
+	};
+
+	
+
 
 	$rootScope.getUserOtherData = function()
 	{

@@ -246,28 +246,40 @@ div.postWhenScrollContainer{
                               </div>
                            </div>
                            <div class="mt-3">
-                              <p><a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.post_data.post}}</a></p>
+                              <p><a href="javascript:void();" ng-click="OpenPostPopUp(valuePS.id)">{{valuePS.post_data.post}}</a></p>
                            </div>
                            <div ng-if="valuePS.post_file_data.length" class="user-post">
-                              <div class="d-flex" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">
+                              <div ng-click="OpenPostPopUp(valuePS.id)">
+                                 <div class="row">
 
-                                 <div class="col-md-6" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
-                                    <a href="javascript:void();">
-                                       <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
-                                    </a>
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[3].file_name)==false)">
+                                       <div ng-if="valuePS.post_file_data.length>4" class="photo-count-value" style="font-size:62px;">
+                                            <a href="javascript:void();"> + {{valuePS.post_file_data.length-4}}</a>
+                                       </div>
+                                       <a href="javascript:void();">
+                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[3].file_name}}" class="post-ptoto" >
+                                       </a>
+                                    </div>
                                  </div>
 
-                                 <div class="col-md-6 row m-0 p-0" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
-                                    <div class="col-sm-12">
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto"></a>
-                                    </div>
-                                    <div class="col-sm-12 mt-3" ng-show="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
-                                       <div ng-if="valuePS.post_file_data.length>3" class="photo-count-value" style="font-size:62px;">
-                                         <a href="javascript:void();"> + {{valuePS.post_file_data.length-3}}</a>
-                                      </div>
-                                       <a href="javascript:void();"><img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto"></a>
-                                    </div>
-                                 </div>
                               </div>
                              
                            </div>
@@ -421,9 +433,8 @@ div.postWhenScrollContainer{
                                        </div>
                                     </div>
                                     <div ng-if='valuePS.all_post_comment_data.length>0'class="total-comment-block">
-                                       <div class="dropdown">
-                                          <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                          <a href="javascript:void();" data-toggle="modal" data-target="#exampleModal_{{valuePS.id}}">{{valuePS.all_post_comment_data.length}} Comment</a>
+                                       <div class="dropdown">                                          
+                                          <span ng-click="OpenPostPopUp(valuePS.id)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">{{valuePS.all_post_comment_data.length}} Comment
                                           </span>
                                           <div class="dropdown-menu">
                                              <a class="dropdown-item" ng-repeat="(keyComments, valueComments) in valuePS.post_comment_data" href="javascript:void();">{{valueComments.first_name+' '+valueComments.last_name}}</a>
@@ -524,9 +535,9 @@ div.postWhenScrollContainer{
                <div class="iq-card">
                   <div class="iq-card-header d-flex justify-content-between">
                      <div class="iq-header-title">
-                        <h4 class="card-title">Events</h4>
+                        <h4 class="card-title" style="font-size: 16px;font-weight: bold;color:#50b5ff;">My <i>Upcoming 7 days</i> Invitation</h4>
                      </div>
-                     <div class="iq-card-header-toolbar d-flex align-items-center">
+                     <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                         <div class="dropdown">
                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button">
                            <i class="ri-more-fill"></i>
@@ -539,24 +550,26 @@ div.postWhenScrollContainer{
                               <a class="dropdown-item" href="javascript:void();"><i class="ri-file-download-fill mr-2"></i>Download</a>
                            </div>
                         </div>
-                     </div>
+                     </div> -->
                   </div>
                   <div class="iq-card-body">
                      <ul class="media-story m-0 p-0">
-                        <li class="d-flex mb-4 align-items-center ">
-                           <img src="<?php echo base_url();?>assets/images/page-img/s4.jpg" alt="story-img" class="rounded-circle img-fluid">
+                        <li class="d-flex mb-4 align-items-center"  ng-repeat="(key, value) in loadAcceptedInvitedToMeEventsObj">
+                           <div class="schedule-icon">{{parseInt(key)+1}}</div>
                            <div class="stories-data ml-3">
-                              <h5>Web Workshop</h5>
-                              <p class="mb-0">1 hour ago</p>
+                               <span><strong style="color:#50b5ff;">Invited From :</strong> {{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}} </span>
+                               <br>
+                               <span><strong>Event Type :</strong> {{value.event_type}}</span>
+                               <br>                               
+                               <span class="pb-2"><strong>Title :</strong> {{value.event_title}}</span>
+                               <br>
+                               <span class="pb-2"><strong>Started On :</strong> {{value.displayStartDate}} {{value.displayStartTime}} </span>
+                               <br>
+                               <span class="pb-2"><strong>Duration :</strong> {{value.disEventDuration}}</span>
+                              <hr>
                            </div>
                         </li>
-                        <li class="d-flex align-items-center">
-                           <img src="<?php echo base_url();?>assets/images/page-img/s5.jpg" alt="story-img" class="rounded-circle img-fluid">
-                           <div class="stories-data ml-3">
-                              <h5>Fun Events and Festivals</h5>
-                              <p class="mb-0">1 hour ago</p>
-                           </div>
-                        </li>
+                        
                      </ul>
                   </div>
                </div>

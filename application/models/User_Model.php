@@ -1344,11 +1344,31 @@ class User_Model extends CI_Model
 			$result[0]['event_start_time']=date("H:i:s",strtotime($result[0]['event_start']));
 			$result[0]['event_end_time']=date("H:i:s",strtotime($result[0]['event_end']));
 
+
+			if($result[0]['event_start_time']=='00:00:00')
+			{
+				$result[0]['starttimeminute']=0;
+			}
+			else
+			{
+				$aryStartTimeMinute=explode(":",$result[0]['event_start_time']);
+				$strStartTimeMinute=($aryStartTimeMinute[0]*60)+($aryStartTimeMinute[1]);
+				$result[0]['starttimeminute']=$strStartTimeMinute;
+			}
+			$aryEndTimeMinute=explode(":",$result[0]['event_end_time']);
+			$strEndTimeMinute=($aryEndTimeMinute[0]*60)+($aryEndTimeMinute[1]);
+			$result[0]['endtimeminute']=$strEndTimeMinute;
+
+
 			$result[0]['display_event_start_time']=date("h:i A",strtotime($result[0]['event_start']));
 			$result[0]['display_event_end_time']=date("h:i A",strtotime($result[0]['event_end']));
 
-
 			$result[0]['aryInviteEventFriend']=$aryInviteEventFriend;
+
+			// echo "<pre>";
+			// print_r($result[0]);
+			// exit;
+
 			return $result[0];
 		}
 		else
@@ -1361,11 +1381,33 @@ class User_Model extends CI_Model
 	{
 		$weekStartDay=$ary_argument['weekStartDay'];
 	    $weekEndDay=$ary_argument['weekEndDay'];
+	    $strWhereParam="";
+	    if(!empty($ary_argument['user_auto_id']) && $ary_argument['user_auto_id']>0)
+	    {
+	    	$user_auto_id=$ary_argument['user_auto_id'];
+	    	$strWhereParam=" AND member_id='".$user_auto_id."'";
+	    }
 
-		$sql="SELECT * FROM tn_events WHERE (event_start>='".$weekStartDay."' AND event_end<='".$weekEndDay."') AND status='1' AND deleted='0' ";
+		$sql="SELECT * FROM tn_events WHERE (event_start>='".$weekStartDay."' AND event_end<='".$weekEndDay."') ".$strWhereParam." AND status='1' AND deleted='0' order by event_start";
 		$query=$this->db->query($sql);
 		$result=$query->result_array();
-		return $result;
+
+		$finalData=array();
+		if(count($result)>0)
+		{
+			foreach ($result as $key => $value)
+			{
+				$finalData[$key]=$value;
+				$finalData[$key]['displayStartTime']= date("h:i A",strtotime($value['event_start']));
+
+				$date1=date_create($value['event_start']);
+		        $date2=date_create($value['event_end']);
+		        $diff=(array)date_diff($date1,$date2);
+		        $disEventDuration=$this->CalculateDisplayDuration($diff);
+		        $finalData[$key]['disEventDuration']=$disEventDuration;
+			}
+		}
+		return $finalData;
 	}
 
 
@@ -1397,6 +1439,77 @@ class User_Model extends CI_Model
 			$strReturn.=$ary_argument['i']." Min ";
 		}
 		return $strReturn;		
+	}
+
+	public function loadInvitedToMeEvents($ary_argument=array())
+	{
+	    $startDate=$ary_argument['startDate'];
+	    $endDate=$ary_argument['endDate'];
+	    $user_auto_id=$ary_argument['user_auto_id'];
+
+	    $strWhereParam="";
+	    if(!empty($ary_argument['event_accept_reject']))
+	    {
+	    	$event_accept_reject=$ary_argument['event_accept_reject'];
+	    	$strWhereParam=" AND tef.event_accept_reject='".$event_accept_reject."'";
+	    }
+
+		$sql="SELECT 
+		te.*,
+		tef.id as tefAutoId,
+		tef.event_accept_reject,
+		tm.membership_type,
+		tm.first_name,
+        tm.last_name
+		FROM tn_events as te
+		LEFT JOIN tn_events_friend as tef ON tef.event_id=te.id
+        LEFT JOIN tn_members as tm ON tm.id=te.member_id
+
+		WHERE ((te.event_start>='".$startDate."' OR te.event_end>='".$startDate."' ) AND ( te.event_start<='".$endDate."')) AND te.status='1' AND te.deleted='0' AND tef.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by te.event_start";
+
+		// echo $sql;
+		// exit;
+
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+
+
+		$finalData=array();
+		if(count($result)>0)
+		{
+			foreach ($result as $key => $value)
+			{
+
+				$sqlFriend="SELECT 
+				tef.id,
+				tm.profile_image,
+				tm.membership_type,
+				tm.first_name,
+		        tm.last_name
+				FROM tn_events_friend as tef
+		        LEFT JOIN tn_members as tm ON tm.id=tef.friend_id
+				WHERE tef.event_id='".$value['id']."' AND tm.status='1' AND tm.deleted='0' order by rand() limit 5";
+				$queryFriend=$this->db->query($sqlFriend);
+				$ary_all_invited_friend=$queryFriend->result_array();
+
+				$finalData[$key]=$value;
+				$finalData[$key]['displayStartDate']= date("d M Y",strtotime($value['event_start']));
+				$finalData[$key]['displayStartTime']= date("h:i A",strtotime($value['event_start']));
+				$date1=date_create($value['event_start']);
+		        $date2=date_create($value['event_end']);
+		        $diff=(array)date_diff($date1,$date2);
+		        $disEventDuration=$this->CalculateDisplayDuration($diff);
+		        $finalData[$key]['disEventDuration']=$disEventDuration;
+
+		        $finalData[$key]['all_invited_friend']=array();
+		        if(count($ary_all_invited_friend)>0)
+		        {
+		        	$finalData[$key]['all_invited_friend']=$ary_all_invited_friend;
+		        }
+		        
+			}
+		}
+		return $finalData;
 	}
 
 }

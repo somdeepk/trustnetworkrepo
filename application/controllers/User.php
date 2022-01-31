@@ -2958,6 +2958,7 @@ class User extends CI_Controller
 	            $ary_argument=array();
 	            $ary_argument['weekStartDay']=$weekStartDay;
 	            $ary_argument['weekEndDay']=$weekEndDay;
+	            $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
 	            $resultUserThisWeekEvents=$this->User_Model->getEventThisWeekData($ary_argument);
 
 	            $isEventPresent=0;
@@ -3035,6 +3036,7 @@ class User extends CI_Controller
 	    $ary_argument=array();
 	    $ary_argument['weekStartDay']=$weekStartDay;
 	    $ary_argument['weekEndDay']=$weekEndDay;
+	    $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
 	    $resultUserThisWeekEvents=$this->User_Model->getEventThisWeekData($ary_argument);
     
 
@@ -3189,6 +3191,108 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
 	}
+
+	public function loadDateRangeSchedule()
+	{
+	    $todayStart=date("Y-m-d 00:00:00");
+        $todayEnd=date("Y-m-d 23:59:59");
+        $ary_argument=array();
+        $ary_argument['weekStartDay']=$todayStart;
+        $ary_argument['weekEndDay']=$todayEnd;
+        $ary_argument['user_auto_id']=$this->session->userdata('user_auto_id');
+        $resultTodayEvents=$this->User_Model->getEventThisWeekData($ary_argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='DateRange Schedule';
+        $returnData['data']=array('resultTodayEvents'=>$resultTodayEvents,'totalSchedule'=>count($resultTodayEvents));
+		echo json_encode($returnData);
+        exit;
+	}
+
+	public function loadInvitedToMeEvents()
+	{
+		$returnData=array();
+        $loadScheduleData = trim($this->input->post('loadScheduleData'));
+        $aryLoadScheduleData=json_decode($loadScheduleData, true);
+
+        $user_auto_id=(isset($aryLoadScheduleData['user_auto_id']) && !empty($aryLoadScheduleData['user_auto_id']))? addslashes(trim($aryLoadScheduleData['user_auto_id'])):0;
+        $date_range=(isset($aryLoadScheduleData['date_range']) && !empty($aryLoadScheduleData['date_range']))? addslashes(trim($aryLoadScheduleData['date_range'])):'';
+        $event_accept_reject=(isset($aryLoadScheduleData['event_accept_reject']) && !empty($aryLoadScheduleData['event_accept_reject']))? addslashes(trim($aryLoadScheduleData['event_accept_reject'])):'';
+
+        if($date_range=='7days')
+        {
+        	$startDate=date("Y-m-d 00:00:00");
+	        $withinOneMonthTime = date("Y-m-d",strtotime("+7 day", time()));
+        }
+        else //1 month
+        {
+        	$startDate=date("Y-m-d 00:00:00");
+	        $withinOneMonthTime = date("Y-m-d",strtotime("+1 months", time()));
+        }
+        
+        $ary_argument=array();
+        $ary_argument['startDate']=$startDate;
+        $ary_argument['endDate']=$withinOneMonthTime;
+        $ary_argument['user_auto_id']=$user_auto_id;
+        $ary_argument['event_accept_reject']=$event_accept_reject;
+        $ary_argument['date_range']=$date_range;
+
+        // echo "<pre>";
+        // print_r($ary_argument);
+        // exit;
+
+        $resultMyEvents=$this->User_Model->loadInvitedToMeEvents($ary_argument);
+
+        $returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='My Events';
+        $returnData['data']=array('resultMyEvents'=>$resultMyEvents,'totalMyEvents'=>count($resultMyEvents));
+		echo json_encode($returnData);
+        exit;
+	}
+
+
+	public function ajaxAcceptRejectEvent() 
+    {
+    	$returnData=array();
+        $loadScheduleData = trim($this->input->post('loadScheduleData'));
+        $aryLoadScheduleData=json_decode($loadScheduleData, true);
+
+        $user_auto_id=(isset($aryLoadScheduleData['user_auto_id']) && !empty($aryLoadScheduleData['user_auto_id']))? addslashes(trim($aryLoadScheduleData['user_auto_id'])):0;
+        $status=(isset($aryLoadScheduleData['status']) && !empty($aryLoadScheduleData['status']))? addslashes(trim($aryLoadScheduleData['status'])):'R';
+        $tefAutoId=(isset($aryLoadScheduleData['tefAutoId']) && !empty($aryLoadScheduleData['tefAutoId']))? addslashes(trim($aryLoadScheduleData['tefAutoId'])):0;
+
+        $menu_arr = array(
+            'event_accept_reject'  =>$status
+        );
+
+        $lastId=0;
+        if($tefAutoId>0)
+		{
+			$lastId=$this->User_Model->addUpdatEventFriends($menu_arr,$tefAutoId);
+		}
+
+		$returnData=array();
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Acccepted Or Rejected';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Acccepted Or Rejected Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
 }
 	
 
