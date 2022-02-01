@@ -30,52 +30,52 @@
                   </div>
                   <!-- form body -->
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
-                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='RM'">
-                        <input class="line__input" type="text" id="first_name"  autocomplete="off" ng-model="profileSettingData.memberData.first_name" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(profileSettingData.memberData.first_name)==true)? 'redBorder' : ''">
+                     <div class="line" ng-if="generalData.membership_type=='RM'">
+                        <input class="line__input" type="text" id="first_name"  autocomplete="off" ng-model="generalData.first_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.first_name)==true)? 'redBorder' : ''">
                         <span for="username" class="line__placeholder">First Name</span>
                      </div>
-                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='RM'">
-                        <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="profileSettingData.memberData.last_name" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(profileSettingData.memberData.last_name)==true)? 'redBorder' : ''">
+                     <div class="line" ng-if="generalData.membership_type=='RM'">
+                        <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="generalData.last_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.last_name)==true)? 'redBorder' : ''">
                         <span for="username" class="line__placeholder">Last Name</span>
                      </div>
-                     <div class="line" ng-if="profileSettingData.memberData.membership_type=='PM'">
-                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="profileSettingData.memberData.first_name" maxlength="25">
+                     <div class="line" ng-if="generalData.membership_type=='PM'">
+                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25">
                         <span for="username" class="line__placeholder">Church Name</span>
                      </div>
 
                      <div class="line">
-                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="profileSettingData.memberData.user_email" emailvalidate ng-disabled="true" maxlength="25">
+                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="generalData.user_email" emailvalidate ng-disabled="true" maxlength="25">
                         <span for="username" class="line__placeholder">Email </span>
                      </div>
-                     <div class="line h-32" ng-if="profileSettingData.memberData.membership_type=='RM'">
-                        <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="profileSettingData.memberData.about_church"></textarea>
+                     <div class="line h-32" ng-if="generalData.membership_type=='RM'">
+                        <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="generalData.about_church"></textarea>
                         <span for="username" class="line__placeholder">About Church </span>
                      </div>
                      <div class="line">
-                        <input class="line__input" id="address" autocomplete="off" type="text" ng-model="profileSettingData.memberData.address">
+                        <input class="line__input" id="address" autocomplete="off" type="text" ng-model="generalData.address">
                         <span for="username" class="line__placeholder">Address </span>
                      </div>
                      
                      <!-- <div class="line">
-                        <select ng-model="profileSettingData.memberData.country" id="country" ng-change="getStateData(profileSettingData.memberData.country)" class="form-control">
+                        <select ng-model="generalData.country" id="country" ng-change="getStateData(generalData.country)" class="form-control">
                             <option value="0">Select Country</option>
                             <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
                         </select>
                      </div>
                      <div class="line">
-                        <select ng-disabled="!profileSettingData.memberData.country"  ng-model="profileSettingData.memberData.state" id="state"  ng-change="getCityData(profileSettingData.memberData.state)" style="background: transparent;" class="form-control form-control-primary">
+                        <select ng-disabled="!generalData.country"  ng-model="generalData.state" id="state"  ng-change="getCityData(generalData.state)" style="background: transparent;" class="form-control form-control-primary">
                          <option value="0">Select State</option>
                          <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
                        </select>
                      </div>
                      <div class="line">
-                        <select ng-disabled="!profileSettingData.memberData.state" ng-model="profileSettingData.memberData.city" id="city" style="background: transparent;" class="form-control form-control-primary">
+                        <select ng-disabled="!generalData.state" ng-model="generalData.city" id="city" style="background: transparent;" class="form-control form-control-primary">
                            <option value="0">Select City</option>
                            <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
                        </select>
                      </div> -->
                      <div class="line">
-                        <input class="line__input" autocomplete="off" ng-model="profileSettingData.memberData.postal_code" id="postal_code" type="text">
+                        <input class="line__input" autocomplete="off" ng-model="generalData.postal_code" id="postal_code" type="text">
                         <span for="username" class="line__placeholder">Zip Code </span>
                      </div>
                   </div>
@@ -139,37 +139,37 @@
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <h3>What is the name of your church?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q1" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q1)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q1" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q1)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>What is the name of the Pastor?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q2" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q2)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q2" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q2)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>Do you have a denomination affiliation?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q3" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q3)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q3" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q3)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>What are your service times?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q4" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q4)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q4" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q4)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>Please provide us with information of your church founder?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q5" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q5)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q5" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q5)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>How many ministries do you have?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q6" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q6)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q6" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q6)==true)? 'redBorder' : ''">
                         </div>
 
                         <h3>Would your Pastor be interested in taking speaking engagements?</h3>
                         <div class="line">
-                           <input class="line__input" type="text"  ng-model="questionData.q7" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q7)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="text"  ng-model="questionData.q7" ng-class="(questionDataCheck==true && isNullOrEmptyOrUndefined(questionData.q7)==true)? 'redBorder' : ''">
                         </div>
 
                      </div>

@@ -216,9 +216,8 @@ class User extends CI_Controller
 
 	public function ajaxupdateeditgeneraldata() 
     {
-        $profileGeneralData = trim($this->input->post('profileGeneralData'));
-        $aryProfileGeneralData=json_decode($profileGeneralData, true);
-        $aryMemberData=$aryProfileGeneralData['memberData'];
+        $generalData = trim($this->input->post('generalData'));
+        $aryMemberData=json_decode($generalData, true);
 
         $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
         $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';

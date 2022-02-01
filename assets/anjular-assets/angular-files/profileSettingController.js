@@ -9,11 +9,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	    var profileSettingDataStr=atob(profileSettingData);
 	    var profileSettingDataObj=jQuery.parseJSON(profileSettingDataStr);
 		$scope.profileSettingData=profileSettingDataObj;
+		$scope.generalData=profileSettingDataObj.memberData;
 		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
 
-		console.log('sddsd')
-		console.log($scope.questionData)
-
+		// console.log('sddsd');
+		// console.log($scope.generalData);
+		
 		// $scope.getGlobalCountryData($http);
 		// if($scope.profileSettingData.memberData.id>0)
 		// {
@@ -24,24 +25,24 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
     $scope.submitProfileGeneralData = function()
     {
-		$scope.memberDataCheck=true ;
+		$scope.generalDataCheck=true ;
 		$timeout(function()
 		{
-			$scope.memberDataCheck=false ;
+			$scope.generalDataCheck=false ;
 		},2000);
 
 		var validator=0;
-		if (($scope.isNullOrEmptyOrUndefined($scope.profileSettingData.memberData.first_name)==true) || ($scope.profileSettingData.memberData.first_name=='¿'))
+		if (($scope.isNullOrEmptyOrUndefined($scope.generalData.first_name)==true) || ($scope.generalData.first_name=='¿'))
 		{
 			validator++ ;
 		}
 
-		if (($scope.profileSettingData.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.profileSettingData.memberData.last_name)==true) || ($scope.profileSettingData.memberData.last_name=='¿')))
+		if (($scope.generalData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.generalData.last_name)==true) || ($scope.generalData.last_name=='¿')))
 		{
 			validator++ ;
 		}
 
-		if (($scope.profileSettingData.memberData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.profileSettingData.memberData.last_name)==true) || ($scope.profileSettingData.memberData.last_name=='¿')))
+		if (($scope.generalData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.generalData.last_name)==true) || ($scope.generalData.last_name=='¿')))
 		{
 			validator++ ;
 		}
@@ -53,7 +54,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			$timeout(function()
 			{	
 				var formData = new FormData();
-				formData.append('profileGeneralData',angular.toJson($scope.profileSettingData));
+				formData.append('generalData',angular.toJson($scope.generalData));
 
 				$http({
 	                method  : 'POST',
@@ -62,7 +63,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	                headers: {'Content-Type': undefined},                     
 	                data:formData, 
 	            }).success(function(returnData) {
-					$scope.memberDataCheck=false ;
+					$scope.generalDataCheck=false ;
 					aryreturnData=angular.fromJson(returnData);
 	            	if(aryreturnData.status=='1')
 	            	{
@@ -84,10 +85,10 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
     $scope.submitQuestionData = function()
     {
-		$scope.memberDataCheck=true ;
+		$scope.questionDataCheck=true ;
 		$timeout(function()
 		{
-			$scope.memberDataCheck=false ;
+			$scope.questionDataCheck=false ;
 		},2000);
 
 		var validator=0;
@@ -139,7 +140,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	                headers: {'Content-Type': undefined},                     
 	                data:formData, 
 	            }).success(function(returnData) {
-					$scope.memberDataCheck=false ;
+					$scope.questionDataCheck=false ;
 					aryreturnData=angular.fromJson(returnData);
 	            	if(aryreturnData.status=='1')
 	            	{
