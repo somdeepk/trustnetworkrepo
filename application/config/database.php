@@ -103,9 +103,9 @@ if(IS_LOCAL_HOST==1)
 	$db['default'] = array(
 		'dsn'	=> '',
 		'hostname' => 'localhost',
-		'username' => 'followme_followmenow',
-		'password' => ')VYfpa(zXt=q', 
-		'database' => 'followme_trust_network',
+		'username' => 'demoproj_christtube',
+		'password' => '-#-#f0?QwaeY', 
+		'database' => 'demoproj_christtube',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
 		'pconnect' => FALSE,
