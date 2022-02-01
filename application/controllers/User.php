@@ -9,7 +9,7 @@ class User extends CI_Controller
 		}
 
 		$data['title'] = ucfirst($page);
-		$data['ignoreHeadFoot'] = 1;
+		$data['ignoreHeadFoot'] = true;
 		$data['content'] = 'user/signup';
 		$this->load->view('layout/template', $data);
 	}
@@ -124,7 +124,7 @@ class User extends CI_Controller
 		$jsonCookieRememberMe = json_encode($ary_cockie);
 		$data['jsonCookieRememberMe'] = $jsonCookieRememberMe;
 
-		$data['ignoreHeadFoot'] = 1;
+		$data['ignoreHeadFoot'] = true;
 		$data['content'] = 'user/login';
 		$this->load->view('layout/template', $data);
 	}
@@ -207,6 +207,7 @@ class User extends CI_Controller
 		$profileSettingData['memberData']=$memberData;
 
 		$data['profileSettingData'] = $profileSettingData;
+		$data['hideLayout'] = true;
 
 
         $data['content'] = 'user/profilesetting';
@@ -254,6 +255,45 @@ class User extends CI_Controller
         exit;    	
     }
 
+    public function ajaxupdateeditquestiondata() 
+    {
+        $questionData = trim($this->input->post('questionData'));
+        $questionData=json_decode($questionData, true);
+
+        $id=(isset($questionData['id']) && !empty($questionData['id']))? addslashes(trim($questionData['id'])):0;
+
+        $q1=(isset($questionData['q1']) && !empty($questionData['q1']))? addslashes(trim($questionData['q1'])):'';
+        $q2=(isset($questionData['q2']) && !empty($questionData['q2']))? addslashes(trim($questionData['q2'])):'';
+        $q3=(isset($questionData['q3']) && !empty($questionData['q3']))? addslashes(trim($questionData['q3'])):'';
+        $q4=(isset($questionData['q4']) && !empty($questionData['q4']))? addslashes(trim($questionData['q4'])):'';
+        $q5=(isset($questionData['q5']) && !empty($questionData['q5']))? addslashes(trim($questionData['q5'])):'';
+        $q6=(isset($questionData['q6']) && !empty($questionData['q6']))? addslashes(trim($questionData['q6'])):'';
+        $q7=(isset($questionData['q7']) && !empty($questionData['q7']))? addslashes(trim($questionData['q7'])):'';
+           
+		$aryProfileQuestion['q1']=$q1;
+		$aryProfileQuestion['q2']=$q2;
+		$aryProfileQuestion['q3']=$q3;
+		$aryProfileQuestion['q4']=$q4;
+		$aryProfileQuestion['q5']=$q5;
+		$aryProfileQuestion['q6']=$q6;
+		$aryProfileQuestion['q7']=$q7;
+
+		$strProfileQuestion=json_encode($aryProfileQuestion);
+
+       	$menu_arr = array(
+            'profile_question' => $strProfileQuestion
+        );
+
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Question Answer Updated Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
     // log admin out
 	public function logout()
 	{

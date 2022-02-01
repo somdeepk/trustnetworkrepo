@@ -1,17 +1,39 @@
 <?php
-$this->load->view('layout/header-script');
+if(isset($hideLayout) && $hideLayout==true)
+{
 
-if(!isset($ignoreHeadFoot))
+}
+else
+{
+	$this->load->view('layout/header-script');
+}
+
+if((isset($ignoreHeadFoot) && $ignoreHeadFoot==true) || (isset($hideLayout) && $hideLayout==true) )
+{
+	
+}
+else
 {
 	$this->load->view('layout/header-bottom');
 }
 
 $this->load->view($content);
 
-if(!isset($ignoreHeadFoot))
+if((isset($ignoreHeadFoot) && $ignoreHeadFoot==true) || (isset($hideLayout) && $hideLayout==true) )
+{
+	
+}
+else
 {
 	$this->load->view('layout/footer-top');
 }
 
-$this->load->view('layout/footer');
+if(isset($hideLayout) && $hideLayout==true)
+{
+
+}
+else
+{
+	$this->load->view('layout/footer');
+}
 ?>

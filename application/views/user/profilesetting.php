@@ -7,7 +7,7 @@
                   uk-sticky="top:30 ; offset:80 ; media:@m ;bottom:true; animation: uk-animation-slide-top">
                   <h4 class="mb-0 p-3 uk-visible@m "> Profile Setting </h4>
                   <ul class="tabs">
-                     <li class="tab-link current"  data-tab="tab-1"><a href="#"> <i class="uil-cog"></i> General </a></li>
+                     <li class="tab-link current" data-tab="tab-1"><a href="#"> <i class="uil-cog"></i> General </a></li>
                      <li class="tab-link" data-tab="tab-2"><a href="#"> <i class="uil-scenery"></i> Profile Picture & Cover</a></li>
                      <li tab-link data-tab="tab-3"><a href="#"> <i class="uil-user"></i> Profile Question  </a></li>
                      <li tab-link data-tab="tab-4"><a href="#"> <i class="uil-unlock-alt"></i> Password </a></li>
@@ -56,7 +56,7 @@
                         <span for="username" class="line__placeholder">Address </span>
                      </div>
                      
-                     <div class="line">
+                     <!-- <div class="line">
                         <select ng-model="profileSettingData.memberData.country" id="country" ng-change="getStateData(profileSettingData.memberData.country)" class="form-control">
                             <option value="0">Select Country</option>
                             <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
@@ -73,7 +73,7 @@
                            <option value="0">Select City</option>
                            <option ng-repeat="option in cityData" value="{{option.id}}">{{option.name}}
                        </select>
-                     </div>
+                     </div> -->
                      <div class="line">
                         <input class="line__input" autocomplete="off" ng-model="profileSettingData.memberData.postal_code" id="postal_code" type="text">
                         <span for="username" class="line__placeholder">Zip Code </span>
@@ -139,37 +139,43 @@
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <h3>What is the name of your church?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q1" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q1)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>What is the name of the Pastor?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q2" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q2)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>Do you have a denomination affiliation?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q3" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q3)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>What are your service times?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q4" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q4)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>Please provide us with information of your church founder?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q5" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q5)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>How many ministries do you have?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q6" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q6)==true)? 'redBorder' : ''">
                         </div>
+
                         <h3>Would your Pastor be interested in taking speaking engagements?</h3>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
+                           <input class="line__input" type="text"  ng-model="questionData.q7" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(questionData.q7)==true)? 'redBorder' : ''">
                         </div>
+
                      </div>
                   </form>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                     <button type="button" ng-click="submitQuestionData()" class="zsubmitQuestionDataz button bg-blue-700"> Save </button>
                   </div>
                </div>
             </div>                                 
@@ -666,4 +672,19 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+   $('ul.tabs li').click(function()
+   {
+      var tab_id = $(this).attr('data-tab');
+      $('ul.tabs li').removeClass('current');
+      $('.tab-content').removeClass('current');
+
+      $(this).addClass('current');
+      $("#"+tab_id).addClass('current');
+   })
+})
+</script>
 

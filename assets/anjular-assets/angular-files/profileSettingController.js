@@ -9,15 +9,17 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	    var profileSettingDataStr=atob(profileSettingData);
 	    var profileSettingDataObj=jQuery.parseJSON(profileSettingDataStr);
 		$scope.profileSettingData=profileSettingDataObj;
+		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
 
-		$scope.getGlobalCountryData($http);
+		console.log('sddsd')
+		console.log($scope.questionData)
 
-		if($scope.profileSettingData.memberData.id>0)
-		{
-    		$scope.getGlobalStateData($http,$scope.profileSettingData.memberData.country);
-    		$scope.getGlobalCityData($http,$scope.profileSettingData.memberData.state);
-			
-	    }
+		// $scope.getGlobalCountryData($http);
+		// if($scope.profileSettingData.memberData.id>0)
+		// {
+		// 	$scope.getGlobalStateData($http,$scope.profileSettingData.memberData.country);
+		// 	$scope.getGlobalCityData($http,$scope.profileSettingData.memberData.state);
+		// }
     };
 
     $scope.submitProfileGeneralData = function()
@@ -73,10 +75,84 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	else
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitGeneralDataz','Save','onlytext');
-	            		swal("Error!",
-			        		"Member addition Failed!",
-			        		"error"
-			        	)
+	            		console.log("Member addition Failed!")
+	            	}
+				});
+			},1200);
+		}
+	};
+
+    $scope.submitQuestionData = function()
+    {
+		$scope.memberDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.memberDataCheck=false ;
+		},2000);
+
+		var validator=0;
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q1)==true) || ($scope.questionData.q1=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q2)==true) || ($scope.questionData.q2=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q3)==true) || ($scope.questionData.q3=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q4)==true) || ($scope.questionData.q4=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q5)==true) || ($scope.questionData.q5=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q6)==true) || ($scope.questionData.q6=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.questionData.q7)==true) || ($scope.questionData.q7=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zsubmitQuestionDataz','Saving..','loader');
+		
+			$timeout(function()
+			{	
+
+				$scope.questionData.id=$scope.profileSettingData.memberData.id
+
+				var formData = new FormData();
+				formData.append('questionData',angular.toJson($scope.questionData));
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditquestiondata",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.memberDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitQuestionDataz','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zsubmitQuestionDataz','Save','onlytext');
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitQuestionDataz','Save','onlytext');
+	            		console.log("Question Answer addition Failed!")
 	            	}
 				});
 			},1200);

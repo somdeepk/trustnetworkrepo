@@ -185,19 +185,7 @@
     <script src="<?php echo base_url();?>assets/js/bootstrap-select.min.js"></script>
     <!-- <script src="../../unpkg.com/ionicons%405.2.3/dist/ionicons.js"></script> -->
 
-    <script type="text/javascript">
-    $(document).ready(function(){
-        $('ul.tabs li').click(function(){
-            var tab_id = $(this).attr('data-tab');
-
-            $('ul.tabs li').removeClass('current');
-            $('.tab-content').removeClass('current');
-
-            $(this).addClass('current');
-            $("#"+tab_id).addClass('current');
-        })
-    })
-    </script>
+    
 
 </body>
 </html>
