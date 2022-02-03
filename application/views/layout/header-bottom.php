@@ -408,94 +408,94 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	</header>
 
 	<!-- sidebar -->
-	<div class="sidebar" ng-controller="menuController" ng-init="menuPointer();">
+	<div class="sidebar " ng-controller="menuController" ng-init="menuPointer(); initiateMenuPointer('<?php echo $this->session->userdata('user_auto_id'); ?>');">
 	    <div class="sidebar_inner" data-simplebar>
 	        <ul>
-	            <li><a href="feed.html"> 
+	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" > 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
 	                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
 	                </svg>
 	                <span> Newsfeeds </span> </a> 
 	            </li>
-	            <li  class="active-submenu"><a href="#"> 
+	            <li class="active-submenu"><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
 	                  <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
 	                </svg> 
 	                <span> Wall </span> </a> 
 	                <ul>
-	                    <li><a href="generalwall.html">General Wall</a></li>
-	                    <li><a href="prayerwall.html">Prayer Wall</a></li>
-	                    <li><a href="praisereportwall.html">Praise Report Wall</a></li>
-	                    <li><a href="testimonialwall.html">Testimony Wall 2</a></li>
-	                    <li><a href="myfollowerswall.html">My Followers Wall</a></li>
-	                    <li><a href="fanswall.html">Fans Wall</a></li>
-	                    <li><a href="favouritewall.html">Favourite Wall</a></li>
-	                    <li><a href="churchmemberswall.html">My Church Members</a></li>
-	                    <li><a href="virtualmemberswall.html">My Virtual Church Members</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">General Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Prayer Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Praise Report Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Testimony Wall 2</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">My Followers Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Fans Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Favourite Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">My Church Members</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">My Virtual Church Members</a></li>
 	                </ul>
 	            </li>
 	            
-	            <li><a href="#"> 
+	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
 	                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
 	                </svg>  <span>  Communication </span></a> 
 	                 <ul>
-	                    <li><a href="photos.html">Photos</a></li>
-	                    <li><a href="events.html">Events</a></li>
-	                    <li><a href="news.html">News</a></li>
-	                    <li><a href="findfriends.html">Find Connection</a></li>
-	                    <li><a href="friendsisting.html">Connection List</a></li>
-	                    <li><a href="memberslisting.html">Members List</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Photos</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Events</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">News</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Find Connection</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Connection List</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Members List</a></li>
 	                </ul>
 	            </li> 
-	            <li id="more-veiw" ><a href="#"> 
+	            <li id="more-veiw" ><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
 	                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
 	                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
 	                </svg>
 	               <span> Mailbox</span> </a> 
 	                <ul>
-	                    <li><a href="inbox.html">Inbox</a></li>
-	                    <li><a href="compose.html">Compose</a></li>
-	                    <li><a href="sent.html">Sent</a></li>
-	                    <li><a href="trash.html">Trash</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Inbox</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Compose</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Sent</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Trash</a></li>
 	                </ul>
 	            </li>
 	            
-	            <li><a href="videos.html">
+	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-red-500">
 	                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clip-rule="evenodd" />
 	                </svg>
 	                <span> Featured Apps</span></a> 
 	                 <ul>
-	                    <li><a href="videotube.html">Video Tube</a></li>
-	                    <li><a href="liveevents.html">Live Events</a></li>
-	                    <li><a href="audio.html">Audio Tube</a></li>
-	                    <li><a href="rhemes.html">Rhemes</a></li>
-	                    <li><a href="donation.html">Donation</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Video Tube</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Live Events</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Audio Tube</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Rhemes</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Donation</a></li>
 	                </ul>  
 	            </li> 
 	            
-	            <li><a href="groups.html"> 
+	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
 	                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
 	                </svg><span> Groups </span></a> 
 	                  <ul>
-	                    <li><a href="leaderships.html">Leadership</a></li>
-	                    <li><a href="staff.html">Staff</a></li>
-	                    <li><a href="clergy.html">Clergy</a></li>
-	                    <li><a href="ministers.html">Ministers</a></li>
-	                    <li><a href="virtualmembers.html">Virtual Members</a></li>
-	                    <li><a href="fans.html">Fans</a></li>
-	                    <li><a href="followers.html">Followers</a></li>
-	                    <li><a href="partners.html">Partners</a></li>
-	                    <li><a href="sponsors.html">Sponsors</a></li>
-	                    <li><a href="businesses.html">Businesses</a></li>
-	                    <li><a href="advertisers.html">Advertisers</a></li>
-	                    <li><a href="mensgroups.html">Mens Groups</a></li>
-	                    <li><a href="womengroups.html">Women Groups</a></li>
-	                    <li><a href="adultsgroup.html">Adults Groups</a></li>
-	                    <li><a href="media.html">Media</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Leadership</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Staff</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Clergy</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Ministers</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Virtual Members</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Fans</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Followers</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Partners</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Sponsors</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Businesses</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Advertisers</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Mens Groups</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Women Groups</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Adults Groups</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Media</a></li>
 	                </ul> 
 	            </li>
 	        </ul>
@@ -505,20 +505,20 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	            <li><a href="feed.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
 	                <ul>
 	                    <li><a href="javascript:void(0);" ng-click="profileSetting()">Profile Settings</a></li>
-	                    <li><a href="profile-setting.html">Privacy Settings</a></li>
-	                    <li><a href="profile-setting.html">Create Groups</a></li>
-	                    <li><a href="profile-setting.html">Notifications and Settings</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Privacy Settings</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Create Groups</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Notifications and Settings</a></li>
 	                </ul>
 	            </li>
-	            <li><a href="#"> <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Pages </span>  </a> 
+	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Pages </span>  </a> 
 	                <ul>
-	                    <li><a href="faith.html"> Statement of faith </a></li>
-	                    <li><a href="churchinfo.html"> Church Information </a></li>
-	                    <li><a href="church.html"> Church Members </a></li>
-	                    <li><a href="connections.html"> Our Connections </a></li>
-	                    <li><a href="corevalue.html"> Core Value </a></li>
-	                    <li><a href="ourpastors.html"> Our Pastor </a></li>
-	                    <li><a href="ourleaderships.html"> Our Leaderships </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Statement of faith </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Church Information </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Church Members </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Connections </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Core Value </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Pastor </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Leaderships </a></li>
 	                </ul>
 	            </li>
 	        </ul>

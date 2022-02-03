@@ -192,13 +192,14 @@
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <div class="line">
                            <input class="line__input" type="password" ng-model="memberData.current_password" id="current_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''">
+                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataOldNotMtchCheck==true)? 'Old Password doesnt match!' : ''}}</div>
                         </div>
                         <div class="line">
                            <input class="line__input" type="password" ng-model="memberData.new_password" id="new_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''">
                         </div>
                         <div class="line">
                            <input class="line__input"  type="Password" ng-model="memberData.verify_password" id="verify_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''">
-                           <span for="username" class="line__placeholder">{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</span>
+                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</div>
                         </div>
                      </div>
                   </form>

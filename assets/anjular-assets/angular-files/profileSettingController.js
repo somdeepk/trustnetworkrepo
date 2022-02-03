@@ -68,6 +68,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	if(aryreturnData.status=='1')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitGeneralDataz','Saved!','onlytext');
+	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitGeneralDataz','Save','onlytext');
@@ -145,6 +146,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	if(aryreturnData.status=='1')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitQuestionDataz','Saved!','onlytext');
+	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitQuestionDataz','Save','onlytext');
@@ -187,7 +189,6 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 		if ( (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==false) && ($scope.memberData.new_password!='¿')) && (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==false) && ($scope.memberData.verify_password!='¿')) && ($scope.memberData.new_password!=$scope.memberData.verify_password) )
 		{
-
 			$scope.memberDataPassNotMtchCheck=true ;
 			$timeout(function()
 			{
@@ -203,6 +204,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		
 			$timeout(function()
 			{	
+				$scope.memberData.id=$scope.profileSettingData.memberData.id;
 				var formData = new FormData();
 				formData.append('memberData',angular.toJson($scope.memberData));
 				$http({
@@ -227,6 +229,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
@@ -235,7 +238,6 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	else
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-
 	            		swal("Error!",
 			        		"Password Changed Failed!",
 			        		"error"

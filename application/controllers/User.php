@@ -213,6 +213,30 @@ class User extends CI_Controller
         $data['content'] = 'user/profilesetting';
 		$this->load->view('layout/template', $data);
 	}
+	public function checkProfileSettingToBlur()
+	{
+		$data=array();
+
+		$profileSettingData = trim($this->input->post('profileSettingData'));
+        $profileSettingData=json_decode($profileSettingData, true);
+        $user_auto_id=(isset($profileSettingData['user_auto_id']) && !empty($profileSettingData['user_auto_id']))? addslashes(trim($profileSettingData['user_auto_id'])):0;
+
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+
+		$flagBlurMenu=0;
+		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])=="" || trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])=="" || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N')
+		{
+			$flagBlurMenu=1;
+		}
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Profile Setting Successfully Checked.');
+        $returnData['data']=array('flagBlurMenu'=>$flagBlurMenu);
+
+        echo json_encode($returnData);
+        exit; 
+	}
 
 	public function ajaxupdateeditgeneraldata() 
     {
@@ -303,6 +327,68 @@ class User extends CI_Controller
 		redirect(base_url().'user/login');
 	}
 	
+	public function ajaxupdatechangepassword() 
+    {
+    	$returnData=array();
+        $memberData = trim($this->input->post('memberData'));
+        $aryMemberData=json_decode($memberData, true);
+
+        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
+        $current_password=(isset($aryMemberData['current_password']) && !empty($aryMemberData['current_password']))? addslashes(trim($aryMemberData['current_password'])):'';
+       	$encrypt_password = $current_password;
+
+        $new_password=(isset($aryMemberData['new_password']) && !empty($aryMemberData['new_password']))? addslashes(trim($aryMemberData['new_password'])):'';
+
+        $verify_password=(isset($aryMemberData['verify_password']) && !empty($aryMemberData['verify_password']))? addslashes(trim($aryMemberData['verify_password'])):'';
+
+        $flagPasswordCheck = $this->User_Model->check_current_password($id,$encrypt_password);
+
+            
+		if($flagPasswordCheck==0)
+		{
+			$returnData['status']='2';
+			$returnData['msg']='old_password_doesnt_match';
+			$returnData['msgstring']='Old Password doesnt match!';
+			$returnData['data']=array();
+		}
+		else
+		{
+			$menu_arr = array(
+	            'password' => $new_password,
+	            'is_pass_changed' => 'Y'
+	        );
+
+			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+			if($lastId>0)
+			{
+		        $returnData['status']='1';
+		        $returnData['msg']='success';
+		        $returnData['msgstring']='Password Changed Successfully';
+		        $returnData['data']=array();
+			}
+			else
+			{
+				$returnData['status']='0';
+		        $returnData['msg']='error';
+		        $returnData['msgstring']='Password Changed Failed';
+		        $returnData['data']=array();
+			}
+		}
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 	public function ajaxgetPeopleYouMayNowData() 
@@ -831,57 +917,7 @@ class User extends CI_Controller
         exit;    	
     }
 
-    public function ajaxupdatechangepassword() 
-    {
-    	$returnData=array();
-        $memberData = trim($this->input->post('memberData'));
-        $aryMemberData=json_decode($memberData, true);
-
-        $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
-        $current_password=(isset($aryMemberData['current_password']) && !empty($aryMemberData['current_password']))? addslashes(trim($aryMemberData['current_password'])):'';
-       	$encrypt_password = $current_password;
-
-        $new_password=(isset($aryMemberData['new_password']) && !empty($aryMemberData['new_password']))? addslashes(trim($aryMemberData['new_password'])):'';
-
-        $verify_password=(isset($aryMemberData['verify_password']) && !empty($aryMemberData['verify_password']))? addslashes(trim($aryMemberData['verify_password'])):'';
-
-        $flagPasswordCheck = $this->User_Model->check_current_password($id,$encrypt_password);
-
-            
-		if($flagPasswordCheck==0)
-		{
-			$returnData['status']='2';
-			$returnData['msg']='old_password_doesnt_match';
-			$returnData['msgstring']='Old Password doesnt match!';
-			$returnData['data']=array();
-		}
-		else
-		{
-			$menu_arr = array(
-	            'password' => $new_password
-	        );
-
-			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
-
-			if($lastId>0)
-			{
-		        $returnData['status']='1';
-		        $returnData['msg']='success';
-		        $returnData['msgstring']='Password Changed Successfully';
-		        $returnData['data']=array();
-			}
-			else
-			{
-				$returnData['status']='0';
-		        $returnData['msg']='error';
-		        $returnData['msgstring']='Password Changed Failed';
-		        $returnData['data']=array();
-			}
-		}
-
-        echo json_encode($returnData);
-        exit;    	
-    }
+    
 
 
 	
