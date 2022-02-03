@@ -160,6 +160,99 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		}
 	};
 
+
+	$scope.submitChangePasswordInfo = function()
+    {
+		$scope.memberDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.memberDataCheck=false ;
+		},2000);
+
+		var validator=0;
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.current_password)==true) || ($scope.memberData.current_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==true) || ($scope.memberData.new_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==true) || ($scope.memberData.verify_password=='¿'))
+		{
+			validator++ ;
+		}
+
+		if ( (($scope.isNullOrEmptyOrUndefined($scope.memberData.new_password)==false) && ($scope.memberData.new_password!='¿')) && (($scope.isNullOrEmptyOrUndefined($scope.memberData.verify_password)==false) && ($scope.memberData.verify_password!='¿')) && ($scope.memberData.new_password!=$scope.memberData.verify_password) )
+		{
+
+			$scope.memberDataPassNotMtchCheck=true ;
+			$timeout(function()
+			{
+				$scope.memberDataPassNotMtchCheck=false ;
+			},2000);				
+			validator++;
+		}
+
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zsubmitMemberz','Saving..','loader');
+		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+				formData.append('memberData',angular.toJson($scope.memberData));
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdatechangepassword",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.memberDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status==2)
+	            	{
+	            		$scope.memberDataOldNotMtchCheck=true ;
+						$timeout(function()
+						{
+							$scope.memberDataOldNotMtchCheck=false ;
+						},2000);
+
+						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');	            		
+	            	}
+	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+
+	            		swal("Error!",
+			        		"Password Changed Failed!",
+			        		"error"
+			        	)
+	            	}
+				});
+			},1200);
+		}
+	};
+
+	$scope.resetChangePasswordForm = function()
+	{
+		$scope.memberData.current_password='';
+		$scope.memberData.new_password='';
+		$scope.memberData.verify_password='';
+	};
+
 	$scope.getStateData = function(countryId)
 	{
 		$scope.getGlobalStateData($http,countryId);

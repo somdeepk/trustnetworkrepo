@@ -191,22 +191,20 @@
                   <form>
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                           <span for="username" class="line__placeholder"> Current Password   </span>
+                           <input class="line__input" type="password" ng-model="memberData.current_password" id="current_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''">
                         </div>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                           <span for="username" class="line__placeholder"> New Password </span>
+                           <input class="line__input" type="password" ng-model="memberData.new_password" id="new_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''">
                         </div>
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                           <span for="username" class="line__placeholder">Confirm Password </span>
+                           <input class="line__input"  type="Password" ng-model="memberData.verify_password" id="verify_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''">
+                           <span for="username" class="line__placeholder">{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</span>
                         </div>
                      </div>
                   </form>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500" ng-click="resetChangePasswordForm();"> Reset </button>
+                     <button type="button" class="button bg-blue-700 zsubmitMemberz" ng-click="submitChangePasswordInfo();"> Save </button>
                   </div>
                </div>
             </div>                    
