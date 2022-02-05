@@ -280,8 +280,6 @@ switch (ENVIRONMENT)
 	    $protocol = 'http';
 	}
 
-	
-
 	$IS_LOCAL_HOST=1;
 	$whitelist = array(
 	    '127.0.0.1',
@@ -294,21 +292,13 @@ switch (ENVIRONMENT)
 
 	if(IS_LOCAL_HOST==1)
 	{
-		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
-
-		$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
-		$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);
-		$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads\\";
-
+		$IMAGE_PATH=str_replace("/","\\",FCPATH."assets/uploaddata/");
 	}else{
-		$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/trust-member-uploads/";
 
-		$IMAGE_PATH=str_replace("trust-member\\","",FCPATH);
-		$IMAGE_PATH=str_replace("trust-member//","",$IMAGE_PATH);
-		$IMAGE_PATH=str_replace("trust-member/","",$IMAGE_PATH);
-		$IMAGE_PATH=$IMAGE_PATH."trust-member-uploads/";
+		$IMAGE_PATH=FCPATH."assets/uploaddata/";
 	}
 
+	$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/christtube/assets/uploaddata/";
 	defined('IMAGE_URL') OR define('IMAGE_URL', $IMAGE_URL);
 	defined('IMAGE_PATH') OR define('IMAGE_PATH', $IMAGE_PATH);
 

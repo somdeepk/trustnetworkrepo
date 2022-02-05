@@ -1,24 +1,60 @@
 mainApp.controller('menuController', function($rootScope, $scope, $http, $compile, ngDialog, $timeout) {
 
-	$rootScope.flagBlurMenu=0;
+	$scope.flagBlurMenu=0;
+	$rootScope.loggedUserDataObj={};
+	$rootScope.sgtnType='';
 
-	$rootScope.initiateMenuPointer = function(user_auto_id)
+	$scope.initiateMenuPointer = function(loggedUserId)
 	{
-		$rootScope.checkProfileSettingToBlur(user_auto_id);
+		$rootScope.loggedUserId=loggedUserId;
+		$scope.getLoggedUserData(loggedUserId);
 	};
 
-	$rootScope.menuPointer = function(typ)
+	$scope.getLoggedUserData = function (loggedUserId)
 	{
-		//$rootScope.profileSetting();
+		$scope.profileSettingData={};
+	    $scope.profileSettingData.loggedUserId=loggedUserId;
+
+	    var formData = new FormData();
+		formData.append('profileSettingData',angular.toJson($scope.profileSettingData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"getLoggedUserData",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData)
+        {
+			aryreturnData=angular.fromJson(returnData);
+			if(aryreturnData.status=='1')
+        	{
+				var loggedUserData=aryreturnData.data.memberData;	    
+			    var loggedUserDataStr=atob(loggedUserData);
+			    var loggedUserDataObj=jQuery.parseJSON(loggedUserDataStr);
+				$rootScope.loggedUserDataObj=loggedUserDataObj;
+
+				console.log('Gloab Member Data')
+				console.log($rootScope.loggedUserDataObj)
+
+	       		$scope.flagBlurMenu=aryreturnData.data.flagBlurMenu;
+        	}
+        	else
+        	{
+        		$scope.flagBlurMenu=1;
+        		swal("Error!",
+	        		"Logged Member Data Not Found! Please logged out and try after some time..",
+	        		"error"
+	        	);
+        	}
+		});
 	};
 
-	$rootScope.profileSetting = function()
+	$scope.viewProfileSetting = function()
 	{
-		//alert("dsd")
 		$('.loaderOverlay').fadeIn(200);
 		var response = $http({
 		    method: 'POST',
-		    url: varGlobalAdminBaseUrl+"profilesetting",
+		    url: varGlobalAdminBaseUrl+"viewProfileSetting",
 		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
 		    async:true,
 		});
@@ -33,29 +69,27 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 		});
 	};
 
-	$rootScope.checkProfileSettingToBlur = function (user_auto_id)
+	$scope.viewConnection = function(sgtnType)
 	{
-		$scope.profileSettingData={};
-	    $scope.profileSettingData.user_auto_id=user_auto_id;
+		$rootScope.sgtnType=sgtnType;
 
-	    var formData = new FormData();
-		formData.append('profileSettingData',angular.toJson($scope.profileSettingData));
-		$http({
-            method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"checkProfileSettingToBlur",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData) {
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		$rootScope.flagBlurMenu=aryreturnData.data.flagBlurMenu;
-        	}
-        	else
-        	{
-        		$rootScope.flagBlurMenu=1;
-        	}
+		$('.loaderOverlay').fadeIn(200);
+		var response = $http({
+		    method: 'POST',
+		    url: varGlobalAdminBaseUrl+"viewConnection",
+		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+		    async:true,
+		});
+		response.success(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+			var element = angular.element('#angularMainContent').html(data);
+			$compile(element.contents())($scope);
+
+			$rootScope.peopleYouMayNowDataAllFriendRequest();
+
+		});
+		response.error(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
 		});
 	};
 

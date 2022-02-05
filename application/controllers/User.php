@@ -39,7 +39,7 @@ class User extends CI_Controller
         $password=(isset($aryMemberData['password']) && !empty($aryMemberData['password']))? addslashes(trim($aryMemberData['password'])):'';     
 		$current_date=date('Y-m-d H:i:s');
 
-		$str_is_approved='N';
+		$str_is_approved='Y';
 		if($membership_type=="PM")
 		{
 			$first_name=$church_name;
@@ -196,35 +196,33 @@ class User extends CI_Controller
 		$this->load->view('layout/template', $data);
 	}
 
-	public function profilesetting()
+	public function viewProfileSetting()
 	{
 		$data=array();
 		$profileSettingData=array();
 
 		$user_auto_id=$this->session->userdata('user_auto_id');
-
 		$memberData = $this->User_Model->get_member_data($user_auto_id);
 		$profileSettingData['memberData']=$memberData;
 
 		$data['profileSettingData'] = $profileSettingData;
 		$data['hideLayout'] = true;
 
-
-        $data['content'] = 'user/profilesetting';
+        $data['content'] = 'user/viewprofilesetting';
 		$this->load->view('layout/template', $data);
 	}
-	public function checkProfileSettingToBlur()
+	public function getLoggedUserData()
 	{
 		$data=array();
 
 		$profileSettingData = trim($this->input->post('profileSettingData'));
         $profileSettingData=json_decode($profileSettingData, true);
-        $user_auto_id=(isset($profileSettingData['user_auto_id']) && !empty($profileSettingData['user_auto_id']))? addslashes(trim($profileSettingData['user_auto_id'])):0;
+        $loggedUserId=(isset($profileSettingData['loggedUserId']) && !empty($profileSettingData['loggedUserId']))? addslashes(trim($profileSettingData['loggedUserId'])):0;
 
-		$memberData = $this->User_Model->get_member_data($user_auto_id);
+		$memberData = $this->User_Model->get_member_data($loggedUserId);
 
 		$flagBlurMenu=0;
-		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])=="" || trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])=="" || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N')
+		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N') //|| trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])==""
 		{
 			$flagBlurMenu=1;
 		}
@@ -232,8 +230,7 @@ class User extends CI_Controller
 		$returnData=array();
         $returnData['status']='1';
         $returnData['msg']=base64_encode('Profile Setting Successfully Checked.');
-        $returnData['data']=array('flagBlurMenu'=>$flagBlurMenu);
-
+        $returnData['data']=array('memberData'=>base64_encode(json_encode($memberData)),'flagBlurMenu'=>$flagBlurMenu);
         echo json_encode($returnData);
         exit; 
 	}
@@ -380,30 +377,30 @@ class User extends CI_Controller
         exit;    	
     }
 
+    public function viewConnection()
+	{
+		$data=array();
+		$profileSettingData=array();
 
+		$data['hideLayout'] = true;
 
-
-
-
-
-
-
-
-
+        $data['content'] = 'user/viewconnection';
+		$this->load->view('layout/template', $data);
+	}
 
 	public function ajaxgetPeopleYouMayNowData() 
     {
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
 
-    	/*echo "<pre>";
+/*    	echo "<pre>";
 		print_r($aryFriendData);
         exit;*/
 
-        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
-        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
+        $loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
+        $sgtnType=(isset($aryFriendData['sgtnType']) && !empty($aryFriendData['sgtnType']))? addslashes(trim($aryFriendData['sgtnType'])):'';
 
-		$friendData = $this->User_Model->ajaxgetPeopleYouMayNowData($user_auto_id,$clickProfileTab);
+		$friendData = $this->User_Model->ajaxgetPeopleYouMayNowData($loggedUserId,$sgtnType);
 
 		/*echo "<pre>";
 		print_r($friendData);
@@ -418,88 +415,19 @@ class User extends CI_Controller
         exit;
     }
 
-	public function ajaxGetAllFriendRequest() 
-    {
-    	$friendData=$this->input->get_post('friendData');
-    	$aryFriendData=json_decode($friendData, true);
-
-        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
-        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
-
-		$friendData = $this->User_Model->ajaxGetAllFriendRequest($user_auto_id,$clickProfileTab);
-
-		/*echo "<pre>";
-		print_r($aryFriendData);
-        exit;*/
-
-		$returnData=array();
-        $returnData['status']='1';
-        $returnData['msg']='';
-        $returnData['data']=array('friendData'=>$friendData);
-       
-        echo json_encode($returnData);
-        exit;
-    }
-
-    public function ajaxGetAllFriendList() 
-    {
-    	$friendData=$this->input->get_post('friendData');
-    	$aryFriendData=json_decode($friendData, true);
-
-        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
-        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
-
-        $searchFriend=(isset($aryFriendData['searchFriend']) && !empty($aryFriendData['searchFriend']))? addslashes(trim($aryFriendData['searchFriend'])):'';
-
-        $aryArgument['searchFriend']=$searchFriend;
-        
-		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab,$aryArgument);
-
-		/*echo "ss<pre>";
-		print_r($friendListData);
-        exit;*/
-
-		$returnData=array();
-        $returnData['status']='1';
-        $returnData['msg']='';
-        $returnData['data']=array('friendListData'=>$friendListData);
-       
-        echo json_encode($returnData);
-        exit;
-    }
-    public function ajaxGetAllChurchMember() 
-    {
-    	$friendData=$this->input->get_post('friendData');
-    	$aryFriendData=json_decode($friendData, true);
-		$churchMemberListData = $this->User_Model->ajaxGetAllChurchMember($aryFriendData);
-		$allAgeGroupData = $this->User_Model->get_all_age_group_data(0);
-
-		/*echo "ss<pre>";
-		print_r($churchMemberListData);
-        exit;*/
-
-		$returnData=array();
-        $returnData['status']='1';
-        $returnData['msg']='';
-        $returnData['data']=array('churchMemberListData'=>$churchMemberListData,'allAgeGroupData'=>$allAgeGroupData);
-       
-        echo json_encode($returnData);
-        exit;
-    }
-
-    public function ajaxSendFriendRequest() 
+     public function ajaxSendFriendRequest() 
     {
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
     	$aryFriendData['tn_member_friends']=0;
         
         //$member_friends_aid=(isset($aryFriendData['member_friends_aid']) && !empty($aryFriendData['member_friends_aid']))? addslashes(trim($aryFriendData['member_friends_aid'])):0;
-		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+		$loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
         $friend_id=(isset($aryFriendData['friend_id']) && !empty($aryFriendData['friend_id']))? addslashes(trim($aryFriendData['friend_id'])):0;
         $current_date=date('Y-m-d H:i:s');
 
         $menu_arr = array(
-            'member_id' => $user_auto_id,
+            'member_id' => $loggedUserId,
             'friend_id'  =>$friend_id,
             'request_status'  =>'1', //Requser Send
             'request_date'  =>$current_date
@@ -527,87 +455,18 @@ class User extends CI_Controller
         exit;
     }
 
-    public function toggleChurchAdmin() 
-    {
-    	$returnData=array();
-
-    	$friendData=$this->input->get_post('friendData');
-    	$aryFriendData=json_decode($friendData, true);
-  
-  		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
-		$adminid=(isset($aryFriendData['adminid']) && !empty($aryFriendData['adminid']))? addslashes(trim($aryFriendData['adminid'])):0;
-		$strAdmin=(isset($aryFriendData['strAdmin']) && !empty($aryFriendData['strAdmin']))? addslashes(trim($aryFriendData['strAdmin'])):'N';
-		$agegroup_id=(isset($aryFriendData['agegroup_id']) && !empty($aryFriendData['agegroup_id']))? addslashes(trim($aryFriendData['agegroup_id'])):'N';
-        $current_date=date('Y-m-d H:i:s');
-
-        $flagAdminExist = $this->User_Model->check_age_group_admin_exist($user_auto_id,$adminid,$agegroup_id);
-
-		if($flagAdminExist==1)
-		{
-			$returnData['status']='2';
-			$returnData['msg']='admin_aleady_exist';
-			$returnData['msgstring']='Leader already Exist Of This Age Group';
-			$returnData['data']=array();
-		}
-		else
-		{
-			$menu_arr = array(
-	            'agegroup_id'  =>$agegroup_id,
-	            'admin_id'  =>0,
-	            'is_admin'  =>$strAdmin,
-	            'admin_create_date'  =>$current_date
-	        );
-
-			$lastId = $this->User_Model->addupdatemember($adminid,$menu_arr);
-		
-			if($strAdmin=='Y')
-			{
-				$ary_member_under_group=$this->User_Model->get_abandon_member_under_church($user_auto_id);
-				if(count($ary_member_under_group)>0)
-				{
-					foreach($ary_member_under_group as $k=>$v)
-					{
-						$parent_leader_id=$this->User_Model->assign_under_group_admin($v['id']);
-					}
-				}			
-			}
-			elseif($strAdmin=='N')
-			{
-				$ary_member_under_group=$this->User_Model->remove_member_from_group_admin($adminid,$user_auto_id);
-			}
-
-	 		if($lastId>0)
-			{
-		        $returnData['status']='1';
-		        $returnData['msg']='success';
-		        $returnData['msgstring']='Leader Created Successfully';
-		        $returnData['data']=array('userLoginData'=>$userLoginData);
-			}
-			else
-			{
-				$returnData['status']='0';
-		        $returnData['msg']='error';
-		        $returnData['msgstring']='Leader Creation Failed';
-		        $returnData['data']=array();
-			}
-		}
-       
-        echo json_encode($returnData);
-        exit;
-    }
-
     public function ajaxRemoveFromSuggestion() 
     {
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
     	$aryFriendData['tn_member_friends']=0;
         
-		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+		$loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
         $friend_id=(isset($aryFriendData['friend_id']) && !empty($aryFriendData['friend_id']))? addslashes(trim($aryFriendData['friend_id'])):0;
         $current_date=date('Y-m-d H:i:s');
 
         $menu_arr = array(
-            'member_id' => $user_auto_id,
+            'member_id' => $loggedUserId,
             'friend_id'  =>$friend_id,
             'request_status'  =>'3', //Requser Send
             'remove_date'  =>$current_date
@@ -630,6 +489,28 @@ class User extends CI_Controller
 	        $returnData['msgstring']='Removal Failed';
 	        $returnData['data']=array();
 		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+    public function ajaxGetAllFriendRequest() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
+        $sgtnType=(isset($aryFriendData['sgtnType']) && !empty($aryFriendData['sgtnType']))? addslashes(trim($aryFriendData['sgtnType'])):'';
+
+		$friendData = $this->User_Model->ajaxGetAllFriendRequest($loggedUserId,$sgtnType);
+
+		/*echo "<pre>";
+		print_r($aryFriendData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('friendData'=>$friendData);
        
         echo json_encode($returnData);
         exit;
@@ -706,6 +587,153 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+    public function ajaxGetAllFriendList() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+
+        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
+
+        $searchFriend=(isset($aryFriendData['searchFriend']) && !empty($aryFriendData['searchFriend']))? addslashes(trim($aryFriendData['searchFriend'])):'';
+
+        $aryArgument['searchFriend']=$searchFriend;
+        
+		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab,$aryArgument);
+
+		/*echo "ss<pre>";
+		print_r($friendListData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('friendListData'=>$friendListData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+    public function ajaxGetAllChurchMember() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+		$churchMemberListData = $this->User_Model->ajaxGetAllChurchMember($aryFriendData);
+		$allAgeGroupData = $this->User_Model->get_all_age_group_data(0);
+
+		/*echo "ss<pre>";
+		print_r($churchMemberListData);
+        exit;*/
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('churchMemberListData'=>$churchMemberListData,'allAgeGroupData'=>$allAgeGroupData);
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+   
+
+    public function toggleChurchAdmin() 
+    {
+    	$returnData=array();
+
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+  
+  		$user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
+		$adminid=(isset($aryFriendData['adminid']) && !empty($aryFriendData['adminid']))? addslashes(trim($aryFriendData['adminid'])):0;
+		$strAdmin=(isset($aryFriendData['strAdmin']) && !empty($aryFriendData['strAdmin']))? addslashes(trim($aryFriendData['strAdmin'])):'N';
+		$agegroup_id=(isset($aryFriendData['agegroup_id']) && !empty($aryFriendData['agegroup_id']))? addslashes(trim($aryFriendData['agegroup_id'])):'N';
+        $current_date=date('Y-m-d H:i:s');
+
+        $flagAdminExist = $this->User_Model->check_age_group_admin_exist($user_auto_id,$adminid,$agegroup_id);
+
+		if($flagAdminExist==1)
+		{
+			$returnData['status']='2';
+			$returnData['msg']='admin_aleady_exist';
+			$returnData['msgstring']='Leader already Exist Of This Age Group';
+			$returnData['data']=array();
+		}
+		else
+		{
+			$menu_arr = array(
+	            'agegroup_id'  =>$agegroup_id,
+	            'admin_id'  =>0,
+	            'is_admin'  =>$strAdmin,
+	            'admin_create_date'  =>$current_date
+	        );
+
+			$lastId = $this->User_Model->addupdatemember($adminid,$menu_arr);
+		
+			if($strAdmin=='Y')
+			{
+				$ary_member_under_group=$this->User_Model->get_abandon_member_under_church($user_auto_id);
+				if(count($ary_member_under_group)>0)
+				{
+					foreach($ary_member_under_group as $k=>$v)
+					{
+						$parent_leader_id=$this->User_Model->assign_under_group_admin($v['id']);
+					}
+				}			
+			}
+			elseif($strAdmin=='N')
+			{
+				$ary_member_under_group=$this->User_Model->remove_member_from_group_admin($adminid,$user_auto_id);
+			}
+
+	 		if($lastId>0)
+			{
+		        $returnData['status']='1';
+		        $returnData['msg']='success';
+		        $returnData['msgstring']='Leader Created Successfully';
+		        $returnData['data']=array('userLoginData'=>$userLoginData);
+			}
+			else
+			{
+				$returnData['status']='0';
+		        $returnData['msg']='error';
+		        $returnData['msgstring']='Leader Creation Failed';
+		        $returnData['data']=array();
+			}
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    
+
+    
     
 
     public function ajaxupdateeditprofile() 

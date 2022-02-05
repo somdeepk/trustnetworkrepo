@@ -58,6 +58,77 @@ class User_Model extends CI_Model
 		return $resultData[0];
 	}
 
+	public function ajaxgetPeopleYouMayNowData($loggedUserId,$sgtnType="")
+	{
+		$strWhereParam="";
+		if(!empty($sgtnType))
+		{
+			if($sgtnType=="chrchSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='PM'";
+			}
+			elseif($sgtnType=="memberSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+			elseif ($sgtnType=="frndSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' OR tm.membership_type='PM')";
+			}
+		}
+
+		$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status ,
+				tmf.member_id 
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id AND tmf.member_id ='".$loggedUserId."'
+				WHERE 
+				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."' AND tmf.request_status!='1')
+
+    			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND (tmf.request_status='1' OR tmf.request_status='2'))
+
+    			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."'  AND tmf.request_status!='1')
+
+    			AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0'".$strWhereParam." order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+	public function ajaxGetAllFriendRequest($loggedUserId,$sgtnType="")
+	{
+		$strWhereParam="";
+		if(!empty($sgtnType))
+		{
+			if($sgtnType=="chrchSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='PM'";
+			}
+			elseif($sgtnType=="memberSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+			elseif ($sgtnType=="frndSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' OR tm.membership_type='PM')";
+			}
+		}
+
+		$sql="SELECT 
+				tm.*,
+				tmf.id as member_friends_aid, 
+				tmf.request_status 
+				FROM tn_members as tm
+				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
+				WHERE tm.id IN 
+    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND tmf.request_status='1' ) AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' and  tmf.friend_id='".$loggedUserId."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by first_name ASC";
+
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
 
 
 	public function ajaxAddUpdateMemberFriends($menu_arr=NULL,$member_friends_aid=0)
@@ -83,6 +154,8 @@ class User_Model extends CI_Model
 			return $this->db->insert_id();
 		}
 	}
+
+
 	
 	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
 	{
@@ -182,69 +255,9 @@ class User_Model extends CI_Model
 		return $admin_id;
 	}
 
-	public function ajaxgetPeopleYouMayNowData($user_auto_id,$clickProfileTab="")
-	{
-		$strWhereParam="";
-		if(!empty($clickProfileTab))
-		{
-			if($clickProfileTab=="churchrequestTab")
-			{
-				$strWhereParam=" AND tm.membership_type='CM'";
-			}
-			elseif($clickProfileTab=="memberrequestTab")
-			{
-				$strWhereParam=" AND tm.membership_type='RM'";
-			}
-		}
+	
 
-		$sql="SELECT 
-				tm.*,
-				tmf.id as member_friends_aid, 
-				tmf.request_status ,
-				tmf.member_id 
-				FROM tn_members as tm
-				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id AND tmf.member_id ='".$user_auto_id."'
-				WHERE 
-				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status!='1')
-
-    			AND tm.id NOT IN (SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND (tmf.request_status='1' OR tmf.request_status='2'))
-
-    			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."'  AND tmf.request_status!='1')
-
-    			AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' AND tm.membership_type!='CC' ".$strWhereParam." order by first_name ASC";
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData;
-	}
-
-	public function ajaxGetAllFriendRequest($user_auto_id,$clickProfileTab="")
-	{
-		$strWhereParam="";
-		if(!empty($clickProfileTab))
-		{
-			if($clickProfileTab=="churchrequestTab")
-			{
-				$strWhereParam=" AND tm.membership_type='CM'";
-			}
-			elseif($clickProfileTab=="memberrequestTab")
-			{
-				$strWhereParam=" AND tm.membership_type='RM'";
-			}
-		}
-
-		$sql="SELECT 
-				tm.*,
-				tmf.id as member_friends_aid, 
-				tmf.request_status 
-				FROM tn_members as tm
-				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
-				WHERE tm.id IN 
-    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y'and  tmf.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by first_name ASC";
-
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData;
-	}
+	
 
 	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="",$aryArgument=array())
 	{

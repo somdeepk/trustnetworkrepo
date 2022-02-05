@@ -408,7 +408,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	</header>
 
 	<!-- sidebar -->
-	<div class="sidebar " ng-controller="menuController" ng-init="menuPointer(); initiateMenuPointer('<?php echo $this->session->userdata('user_auto_id'); ?>');">
+	<div class="sidebar" ng-controller="menuController" ng-init="initiateMenuPointer('<?php echo $this->session->userdata('user_auto_id'); ?>');">
 	    <div class="sidebar_inner" data-simplebar>
 	        <ul>
 	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" > 
@@ -442,8 +442,10 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                 <ul>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Photos</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Events</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">News</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Find Connection</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">News  </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='RM'" href="javascript:void(0);" ng-click="viewConnection('frndSgtn')">Friend Suggestion</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewConnection('memberSgtn')">Member Suggestion</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewConnection('chrchSgtn')">Church Suggestion</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Connection List</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Members List</a></li>
 	                </ul>
@@ -504,7 +506,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	           
 	            <li><a href="feed.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
 	                <ul>
-	                    <li><a href="javascript:void(0);" ng-click="profileSetting()">Profile Settings</a></li>
+	                    <li><a href="javascript:void(0);" ng-click="viewProfileSetting()">Profile Settings</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Privacy Settings</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Create Groups</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Notifications and Settings</a></li>
