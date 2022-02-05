@@ -7,10 +7,10 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 	$scope.initiateMenuPointer = function(loggedUserId)
 	{
 		$rootScope.loggedUserId=loggedUserId;
-		$scope.getLoggedUserData(loggedUserId);
+		$rootScope.getLoggedUserData(loggedUserId);
 	};
 
-	$scope.getLoggedUserData = function (loggedUserId)
+	$rootScope.getLoggedUserData = function (loggedUserId)
 	{
 		$scope.profileSettingData={};
 	    $scope.profileSettingData.loggedUserId=loggedUserId;
@@ -86,6 +86,29 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$compile(element.contents())($scope);
 
 			$rootScope.peopleYouMayNowDataAllFriendRequest();
+
+		});
+		response.error(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+		});
+	};
+
+	$scope.viewFriends = function(sgtnType)
+	{
+		$rootScope.sgtnType=sgtnType;
+
+		$('.loaderOverlay').fadeIn(200);
+		var response = $http({
+		    method: 'POST',
+		    url: varGlobalAdminBaseUrl+"viewFriends",
+		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+		    async:true,
+		});
+		response.success(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+			var element = angular.element('#angularMainContent').html(data);
+			$compile(element.contents())($scope);
+			$rootScope.viewFriends();
 
 		});
 		response.error(function(data, status, headers, config) {

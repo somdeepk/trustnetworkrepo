@@ -39,12 +39,12 @@
                         <span for="username" class="line__placeholder">Last Name</span>
                      </div>
                      <div class="line" ng-if="generalData.membership_type=='PM'">
-                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25">
+                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25" >
                         <span for="username" class="line__placeholder">Church Name</span>
                      </div>
 
                      <div class="line">
-                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="generalData.user_email" emailvalidate ng-disabled="true" maxlength="25">
+                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="generalData.user_email" emailvalidate ng-disabled="true" maxlength="25" >
                         <span for="username" class="line__placeholder">Email </span>
                      </div>
                      <div class="line h-32" ng-if="generalData.membership_type=='RM'">

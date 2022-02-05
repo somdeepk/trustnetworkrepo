@@ -8,6 +8,10 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 		$scope.peopleYouMayNowData();
 		$scope.getAllFriendRequest();
 	};
+	$rootScope.viewFriends = function()
+	{
+		$scope.getAllFriendList();
+	};
 
 	$scope.peopleYouMayNowData = function()
 	{
@@ -215,6 +219,73 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
+	        		swal("Error!",
+		        		"Deletion Failed!",
+		        		"error"
+		        	)
+	        	}
+			});
+		},600);
+	};
+
+	$scope.getAllFriendList = function()
+	{
+		if($rootScope.loggedUserId>0)
+		{
+			var formData = new FormData();
+			$scope.friendData.sgtnType=$rootScope.sgtnType;
+			$scope.friendData.loggedUserId=$rootScope.loggedUserId;
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.allFriendListObj=aryreturnData.data.friendListData;
+	        		console.log('FLIST')
+	        		console.log($scope.allFriendListObj)
+	        	}
+	        	else
+	        	{
+	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});			
+	    }
+    };
+
+    $scope.deleteMyFriend = function(myFriendId)
+    {
+    	$scope.buttonSavingAnimation('zdeleteMyFriendz_'+myFriendId,'Removing..','loader');
+		$timeout(function()
+		{
+			$scope.friendData.loggedUserId=$rootScope.loggedUserId;
+			$scope.friendData.myFriendId=myFriendId;
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxDeleteMyFriend",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.getAllFriendList();	
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zdeleteMyFriendz_'+myFriendId,'Remove Friend','onlytext');
 	        		swal("Error!",
 		        		"Deletion Failed!",
 		        		"error"

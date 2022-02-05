@@ -446,8 +446,10 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='RM'" href="javascript:void(0);" ng-click="viewConnection('frndSgtn')">Friend Suggestion</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewConnection('memberSgtn')">Member Suggestion</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewConnection('chrchSgtn')">Church Suggestion</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Connection List</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Members List</a></li>
+
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='RM'" href="javascript:void(0);" ng-click="viewFriends('frndSgtn')">Friend List</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewFriends('chrchSgtn')">Connection List</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewFriends('memberSgtn')">Members List</a></li>
 	                </ul>
 	            </li> 
 	            <li id="more-veiw" ><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 

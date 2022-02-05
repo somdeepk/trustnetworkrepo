@@ -68,7 +68,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	if(aryreturnData.status=='1')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitGeneralDataz','Saved!','onlytext');
-	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
+	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitGeneralDataz','Save','onlytext');
@@ -146,7 +146,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	if(aryreturnData.status=='1')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitQuestionDataz','Saved!','onlytext');
-	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
+	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitQuestionDataz','Save','onlytext');
@@ -229,7 +229,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
-	            		$rootScope.checkProfileSettingToBlur($scope.profileSettingData.memberData.id);
+	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
 							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');

@@ -155,6 +155,62 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function ajaxGetAllFriendList($loggedUserId,$sgtnType="",$aryArgument=array())
+	{
+		$searchFriend=$aryArgument['searchFriend'];
+
+		$strWhereParam="";
+		if(!empty($sgtnType))
+		{
+			if($sgtnType=="chrchSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='PM'";
+			}
+			elseif($sgtnType=="memberSgtn")
+			{
+				$strWhereParam=" AND tm.membership_type='RM'";
+			}
+			elseif ($sgtnType=="frndSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' OR tm.membership_type='PM')";
+			}
+		}
+
+		if(!empty($searchFriend))
+		{
+			$strWhereParam.=" AND (tm.first_name LIKE '%".$searchFriend."%' OR tm.last_name LIKE '%".$searchFriend."%') ";
+		}
+
+		$sql="SELECT 
+				tm.*,
+				tm2.first_name as church_first_name,
+				tm2.last_name as church_last_name
+
+				FROM tn_members as tm
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id
+				WHERE 
+				(
+					tm.id IN
+    				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."' AND tmf.request_status='2') OR tm.id IN 
+    				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND tmf.request_status='2')
+    			)
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
+
+
+	public function ajaxDeleteMyFriend($loggedUserId=0,$myFriendId=0)
+	{
+		$current_date=date('Y-m-d H:i:s');
+
+		$sql="UPDATE tn_member_friends SET request_status='4', deletion_date='".$current_date."' WHERE ( (member_id='".$loggedUserId."' AND friend_id='".$myFriendId."' AND request_status='2') OR (member_id='".$myFriendId."' AND friend_id='".$loggedUserId."' AND request_status='2'))";
+		$query=$this->db->query($sql);
+		return 1;
+	}
+
 
 	
 	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
@@ -259,47 +315,7 @@ class User_Model extends CI_Model
 
 	
 
-	public function ajaxGetAllFriendList($user_auto_id,$clickProfileTab="",$aryArgument=array())
-	{
-		$searchFriend=$aryArgument['searchFriend'];
-
-		$strWhereParam="";
-		if(!empty($clickProfileTab))
-		{
-			if($clickProfileTab=="churchlistTab")
-			{
-				$strWhereParam.=" AND tm.membership_type='CM'";
-			}
-			if($clickProfileTab=="memberlistTab")
-			{
-				$strWhereParam.=" AND tm.membership_type='RM'";
-			}
-		}
-
-		if(!empty($searchFriend))
-		{
-			$strWhereParam.=" AND (tm.first_name LIKE '%".$searchFriend."%' OR tm.last_name LIKE '%".$searchFriend."%') ";
-		}
-
-		$sql="SELECT 
-				tm.*,
-				tm2.first_name as church_first_name,
-				tm2.last_name as church_last_name
-
-				FROM tn_members as tm
-				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id
-				WHERE 
-				(
-					tm.id IN
-    				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$user_auto_id."' AND tmf.request_status='2') OR tm.id IN 
-    				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='2')
-    			)
-    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
-
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData;
-	}
+	
 
 	public function ajaxGetAllChurchMember($aryFriendData)
 	{

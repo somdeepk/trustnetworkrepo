@@ -224,7 +224,7 @@ class User extends CI_Controller
 		$flagBlurMenu=0;
 		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N') //|| trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])==""
 		{
-			$flagBlurMenu=1;
+			//$flagBlurMenu=1;
 		}
 
 		$returnData=array();
@@ -415,7 +415,7 @@ class User extends CI_Controller
         exit;
     }
 
-     public function ajaxSendFriendRequest() 
+    public function ajaxSendFriendRequest() 
     {
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
@@ -588,45 +588,30 @@ class User extends CI_Controller
         exit;
     }
 
+    public function viewFriends()
+	{
+		$data=array();
+		$profileSettingData=array();
 
+		$data['hideLayout'] = true;
 
+        $data['content'] = 'user/viewfriends';
+		$this->load->view('layout/template', $data);
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-
-    public function ajaxGetAllFriendList() 
+	public function ajaxGetAllFriendList() 
     {
     	$friendData=$this->input->get_post('friendData');
     	$aryFriendData=json_decode($friendData, true);
 
-        $user_auto_id=(isset($aryFriendData['user_auto_id']) && !empty($aryFriendData['user_auto_id']))? addslashes(trim($aryFriendData['user_auto_id'])):0;
-        $clickProfileTab=(isset($aryFriendData['clickProfileTab']) && !empty($aryFriendData['clickProfileTab']))? addslashes(trim($aryFriendData['clickProfileTab'])):'';
+        $loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
+        $sgtnType=(isset($aryFriendData['sgtnType']) && !empty($aryFriendData['sgtnType']))? addslashes(trim($aryFriendData['sgtnType'])):'';
 
         $searchFriend=(isset($aryFriendData['searchFriend']) && !empty($aryFriendData['searchFriend']))? addslashes(trim($aryFriendData['searchFriend'])):'';
 
         $aryArgument['searchFriend']=$searchFriend;
         
-		$friendListData = $this->User_Model->ajaxGetAllFriendList($user_auto_id,$clickProfileTab,$aryArgument);
+		$friendListData = $this->User_Model->ajaxGetAllFriendList($loggedUserId,$sgtnType,$aryArgument);
 
 		/*echo "ss<pre>";
 		print_r($friendListData);
@@ -640,6 +625,69 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+    public function ajaxDeleteMyFriend() 
+    {
+    	$friendData=$this->input->get_post('friendData');
+    	$aryFriendData=json_decode($friendData, true);
+    	$aryFriendData['tn_member_friends']=0;
+        
+		$loggedUserId=(isset($aryFriendData['loggedUserId']) && !empty($aryFriendData['loggedUserId']))? addslashes(trim($aryFriendData['loggedUserId'])):0;
+		$myFriendId=(isset($aryFriendData['myFriendId']) && !empty($aryFriendData['myFriendId']))? addslashes(trim($aryFriendData['myFriendId'])):0;
+        //$current_date=date('Y-m-d H:i:s');
+
+        /*$menu_arr = array(
+            'request_status'  =>'4', //Requser Send
+            'deletion_date'  =>$current_date
+        );*/
+
+		$deleteFlag = $this->User_Model->ajaxDeleteMyFriend($loggedUserId,$myFriendId);
+
+		$returnData=array();
+ 		if($deleteFlag>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Friend Deleted';
+	        $returnData['data']=array('deleteFlag'=>$deleteFlag);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Friend Deletion Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+    
     public function ajaxGetAllChurchMember() 
     {
     	$friendData=$this->input->get_post('friendData');
