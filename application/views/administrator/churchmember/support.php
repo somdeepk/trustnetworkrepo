@@ -79,7 +79,7 @@
                   </p>
                 </div>
                 <div class="form-group col-sm-12" style="border-bottom: 1px solid #fff;">
-                  <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="supportData.manageTicket.ticketDescription"></textarea>
+                  <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: #dfdfdf; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="supportData.manageTicket.ticketDescription"></textarea>
                 </div>
                 <div class="form-group col-sm-12">
                   <label>Response:</label>
@@ -88,25 +88,27 @@
                 <div class="form-group col-sm-12" style="border-bottom: 1px solid #fff; padding-bottom: 10px;">
                   <button type="button" class="btn btn-primary mr-2 zsubmitTicketz" style="width:80px; float: right;" ng-click="submitResponse();">Submit</button>
                 </div>
+                <div class="card py-3" style="width: 100%;">
                 <div class="form-group col-sm-12">
                   <label>Previous Response:</label>
                   <div class="col-sm-12" ng-repeat="respData in supportData.manageTicket.responseList" style="padding:5px 0px;">
                     <div class="col-sm-12" ng-if="parseInt(respData.imResponder)>0">
-                      <div class="form-group col-sm-10" style="width:80%; float:left; display: block;">
-                        <p>Replied to {{respData.responseToName}} on {{respData.responseOn}}</p>
-                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                      <div class="form-group col-sm-9" style="width:80%; float:left; display: block;">
+                        <p>Replied to {{respData.responseToName}} on <br> <small>{{respData.responseOn}}</small></p>
+                        <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: #cbf7ee; border: none; resize: none; font-weight: bold; font-size: 14px; font-style: italic;" readonly ng-model="respData.responseDescription"></textarea>
                       </div>
                       <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
                     </div>
                     <div class="col-sm-12" ng-if="parseInt(respData.imReceiver)>0">
-                      <div class="form-group col-sm-2" style="width:20%; float:left; display: block;">&nbsp;</div>
-                      <div class="form-group col-sm-10" style="float:right; display: block; width:80%;">
-                        <p>{{respData.responseFromName}} Responded on {{respData.responseOn}}</p>
-                        <textarea class="form-control" autocomplete="off" rows="5" style="line-height: 22px; background: transparent; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
+                      <div class="form-group col-sm-3" style="width:20%; float:left; display: block;">&nbsp;</div>
+                      <div class="form-group col-sm-9" style="float:right; display: block; width:80%;">
+                        <p>{{respData.responseFromName}} Responded on <br> <small>{{respData.responseOn}}</small></p>
+                        <textarea class="form-control" autocomplete="off" rows="3" style="line-height: 22px; background: #d9d9d9; border: none; resize: none; font-weight: bold; font-size: 14px;" readonly ng-model="respData.responseDescription"></textarea>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -116,10 +118,10 @@
         <div class="iq-card">
           <div class="iq-card-header d-flex justify-content-between">
             <div class="iq-header-title">
-              <h4 class="card-title">Assigned Tickets</h4>
+              <h5 class="card-title">Assigned Tickets</h5>
             </div>
           </div>
-          <div class="iq-card-body" ng-if="parseInt(supportData.listSupport.assignedTickets.length)>0">
+          <div class="iq-card-body mt-3" ng-if="parseInt(supportData.listSupport.assignedTickets.length)>0">
             <ul class="media-story m-0 p-0">
               <li class="d-flex mb-4 align-items-center znewdataz" ng-repeat="assignTicket in supportData.listSupport.assignedTickets">
                 <div class="stories-data ml-3" ng-click="viewTicketDetails(assignTicket);" style="cursor: pointer; width:100%;" title="View Ticket Details" ng-class="(supportData.manageTicket.ticketId==assignTicket.assignTicketId)? 'blink_me' : ''">
