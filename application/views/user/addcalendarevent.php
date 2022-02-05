@@ -47,7 +47,7 @@
          </div>
       </div>
 
-      <div class="col-md-6" style="max-height: 675px;overflow: scroll;padding-left: 22px">
+      <div class="col-md-6" style="max-height: 500px; overflow-y: scroll; padding-left: 22px">
             <div class="activity-timeline" >
                <h6 class="mb-4" style="margin-left:-20px;">Events This Week</h6>
                <div class="month-sec" >                
@@ -58,18 +58,18 @@
                   {
                 ?>
                  <div class="row my-timeline small">
-                    <div class="col-md-3 timeline-dot task-added small">
+                    <div class="col-md-3 timeline-dot task-added">
                        <?php echo $ev['disEventTime']; ?>
                     </div>
                     <div class="col-md-9 d-flex">
                        <span class="float-left task-icon"><i class="fa fa-tasks"></i></span>
-                       <div class="timeline-text small">
+                       <div class="timeline-text">
                           <?php if($ev['is_editable']=='N'){ ?>
-                            <p class="text-upper" style="font-size: 12px;color:#FFF;padding-left: 8px"><?php echo $ev['event_title']; ?></p>
+                            <p class="text-upper mb-0" style="font-size: 12px;color:#FFF;padding-left: 8px"><?php echo $ev['event_title']; ?></p>
                           <?php }else{ ?>
-                            <p class="text-upper" style="font-size: 12px;color:#FFF;padding-left: 8px"><a href="javascript:void(0);" style="color: #FFF;text-decoration: none;" ng-click="editFromThisWeekEvent(<?php echo $ev['id']; ?>)" style=""><?php echo $ev['event_title']; ?> &nbsp;&nbsp;<i style="font-size: 12px" class="fa fa-edit fa-lg"></i></a></p>
+                            <p class="text-upper mb-0" style="font-size: 12px;color:#FFF;padding-left: 8px"><a href="javascript:void(0);" style="color: #FFF;text-decoration: none;" ng-click="editFromThisWeekEvent(<?php echo $ev['id']; ?>)" style=""><?php echo $ev['event_title']; ?> &nbsp;&nbsp;<i style="font-size: 12px" class="fa fa-edit fa-lg"></i></a></p>
                           <?php } ?>
-                          <p> 
+                          <p class="mb-0"> 
                             <?php echo $ev['event_desc']; ?> 
                           </p>
                           <p>Duration: <?php echo $ev['disEventDuration']; ?></p>
@@ -82,7 +82,7 @@
                  else
                  {
                  ?>
-                 <div class="row my-timeline small">Hurray!! No event is present in this week.</div>
+                 <div class="row my-timeline">Hurray!! No event is present in this week.</div>
 
                  <?php
                  }
