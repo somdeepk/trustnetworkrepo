@@ -49,7 +49,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 		});
 	};
 
-	$scope.viewProfileSetting = function()
+	$rootScope.viewProfileSetting = function(TabName='')
 	{
 		$('.loaderOverlay').fadeIn(200);
 		var response = $http({
@@ -62,6 +62,13 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$('.loaderOverlay').fadeOut(200);
 			var element = angular.element('#angularMainContent').html(data);
 			$compile(element.contents())($scope);
+			if($scope.isNullOrEmptyOrUndefined(TabName)==false)
+			{
+				$timeout(function()
+				{
+					$('.'+TabName).click();
+				},75);
+			}
 
 		});
 		response.error(function(data, status, headers, config) {

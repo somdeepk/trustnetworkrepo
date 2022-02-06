@@ -16,7 +16,7 @@
                    <ul class="request-list list-inline m-0 p-0">
                       <li class="d-flex align-items-center  justify-content-between flex-wrap" ng-repeat="(key, value) in allFriendRequestObj">
                          <div class="user-img img-fluid flex-shrink-0">
-                          <img class="rounded-circle avatar-40" src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}">
+                          <img class="rounded-circle avatar-40" ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}">
                          </div>
                          <div class="flex-grow-1 ml-3">
                            <h6>{{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
@@ -52,7 +52,7 @@
                    <ul class="request-list list-inline m-0 p-0">
                       <li class="d-flex align-items-center  justify-content-between flex-wrap" ng-repeat="(key, value) in peopleYouMayNowObj">
                          <div class="user-img img-fluid flex-shrink-0">
-                          <img class="rounded-circle avatar-40" src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}">
+                          <img class="rounded-circle avatar-40" ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}">
                          </div>
                          <div class="flex-grow-1 ml-3">
                            <h6>{{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h6>

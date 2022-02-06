@@ -12,14 +12,14 @@
                   <!-- create post  -->       
 
                   <div class="card-header">
-                    <div class="text-2xl">{{(sgtnType=='frndSgtn')? 'Friend Request' : (sgtnType=='memberSgtn')? 'Member Request' : 'Church Request'}}</div>
+                    <div class="text-2xl">{{(sgtnType=='frndSgtn')? 'Friends' : (sgtnType=='memberSgtn')? 'Members' : 'Connections'}}</div>
                   </div> 
 
                   <ul class="uk-slider-items uk-child-width-1-3@m uk-child-width-1-3@s uk-child-width-1-2 uk-grid-small flex-wrap">
                     <li class="mb-5" ng-repeat="(key, value) in allFriendListObj">
                         <a href="timeline-page.html" class="uk-link-reset">
                             <div class="card">
-                                <img src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" class="h-44 object-cover rounded-t-md shadow-sm w-full">
+                                <img ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" class="h-44 object-cover rounded-t-md shadow-sm w-full">
                                 <div class="p-4">
                                     <h4 class="text-base font-semibold mb-1"> {{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h4>                                                   
                                 </div>

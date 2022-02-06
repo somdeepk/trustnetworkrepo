@@ -249,7 +249,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                         </div>
 	                    </div>
 
-	                    <!-- Message -->
+	                    <!-- Start Message Pop -->
 	                    <a href="#" class="is_icon" uk-tooltip="title: Message">
 	                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg>
 	                        <span>4</span>
@@ -353,28 +353,29 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                        </div>
 	                        <a href="#" class="see-all"> See all in Messages</a>
 	                    </div>
+	                    <!-- End Message Pop -->
 
 
 	                    <a href="#">
-	                        <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" class="is_avatar" alt="">
+	                        <img ng-src="<?php echo IMAGE_URL;?>images/{{(loggedUserDataObj.profile_image  == '' || !loggedUserDataObj.profile_image )? 'member-no-imgage.jpg':'members/'+loggedUserDataObj.profile_image }}" class="is_avatar" alt="{{(loggedUserDataObj.membership_type=='PM')? loggedUserDataObj.first_name : loggedUserDataObj.first_name+' '+loggedUserDataObj.last_name}}" title="{{(loggedUserDataObj.membership_type=='PM')? loggedUserDataObj.first_name : loggedUserDataObj.first_name+' '+loggedUserDataObj.last_name}}">
 	                    </a>
 	                    <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
 	                        <a href="timeline.html" class="user">
 	                            <div class="user_avatar">
-	                                <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="">
+	                                <img ng-src="<?php echo IMAGE_URL;?>images/{{(loggedUserDataObj.profile_image  == '' || !loggedUserDataObj.profile_image )? 'member-no-imgage.jpg':'members/'+loggedUserDataObj.profile_image }}" alt="{{(loggedUserDataObj.membership_type=='PM')? loggedUserDataObj.first_name : loggedUserDataObj.first_name+' '+loggedUserDataObj.last_name}}">
 	                            </div>
 	                            <div class="user_name">
-	                                <div> Stella Johnson </div>
-	                                <span> @johnson</span>
+	                                <div>  {{(loggedUserDataObj.membership_type=='PM')? loggedUserDataObj.first_name : loggedUserDataObj.first_name+' '+loggedUserDataObj.last_name}} </div>
+	                                <span> {{loggedUserDataObj.user_email}}</span>
 	                            </div>
 	                        </a>
 
-	                        <a href="profile-setting.html">
+	                        <a href="javascript:void(0);" ng-click="viewProfileSetting()">
 	                            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
 	                            Profile Settings
 	                        </a>
-	                        <a href="profile-setting.html">
+	                        <a href="javascript:void(0);" ng-click="viewProfileSetting('zTabPrivSettZ')">
 	                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 	                                <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"  clip-rule="evenodd" />
 	                            </svg>
@@ -485,21 +486,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
 	                </svg><span> Groups </span></a> 
 	                  <ul>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Leadership</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Staff</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Clergy</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Ministers</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Virtual Members</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Fans</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Followers</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Partners</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Sponsors</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Businesses</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Advertisers</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Mens Groups</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Women Groups</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Adults Groups</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Media</a></li>
+	                    <li ng-repeat="(key, value) in loggedUserDataObj.GroupData"><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">{{value.name}}</a></li>
 	                </ul> 
 	            </li>
 	        </ul>

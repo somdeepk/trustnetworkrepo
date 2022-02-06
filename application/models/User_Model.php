@@ -211,6 +211,13 @@ class User_Model extends CI_Model
 		return 1;
 	}
 
+	public function get_group_data($loggedUserId=0)
+	{
+		$sql="SELECT * from tn_group WHERE status='1' AND deleted='0' AND (member_id='".$loggedUserId."' OR member_id=0)";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
 
 	
 	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
@@ -771,13 +778,7 @@ class User_Model extends CI_Model
 		return array();
 	}
 
-	public function get_group_data()
-	{
-		$sql='SELECT * from tn_group WHERE status="1" AND deleted="0"';
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData;
-	}
+	
 
 	public function get_abandon_member_under_church($parent_id)
 	{

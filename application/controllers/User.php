@@ -220,6 +220,7 @@ class User extends CI_Controller
         $loggedUserId=(isset($profileSettingData['loggedUserId']) && !empty($profileSettingData['loggedUserId']))? addslashes(trim($profileSettingData['loggedUserId'])):0;
 
 		$memberData = $this->User_Model->get_member_data($loggedUserId);
+		$memberData['GroupData'] = $this->User_Model->get_group_data($loggedUserId);
 
 		$flagBlurMenu=0;
 		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N') //|| trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])==""
