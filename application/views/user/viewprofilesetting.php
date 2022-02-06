@@ -11,11 +11,11 @@
                      <li class="tab-link zTabPPCZ" data-tab="tab-2"><a href="#"> <i class="uil-scenery"></i> Profile Picture & Cover</a></li>
                      <li class="tab-link zTabPQZ" data-tab="tab-3"><a href="#"> <i class="uil-user"></i> Profile Question  </a></li>
                      <li class="tab-link zTabPassZ" data-tab="tab-4"><a href="#"> <i class="uil-unlock-alt"></i> Password </a></li>
-                     <li class="tab-link zTabCGZ" data-tab="tab-5"><a href="#"> <i class="uil-user"></i> Create Groups</a></li>
-                     <li class="tab-link zTabCPlZ" data-tab="tab-6"><a href="#"> <i class="uil-unlock-alt"></i> Create Pages</a></li>
+                     <li class="tab-link zTabCrtGrpZ" data-tab="tab-5"><a href="#"> <i class="uil-user"></i> Create Groups</a></li>
+                     <li class="tab-link zTabCrtPageZ" data-tab="tab-6"><a href="#"> <i class="uil-unlock-alt"></i> Create Pages</a></li>
                      <li class="tab-link zTabSecurityZ" data-tab="tab-7"><a href="#"> <i class="uil-shield-check"></i> Security</a></li>
                      <li class="tab-link zTabPrivSettZ" data-tab="tab-8"><a href="#"> <i class="uil-dollar-alt"></i> Privacy Settings</a></li>
-                     <li class="tab-link zTabNotiSettZ" data-tab="tab-9"><a href="#"> <i class="uil-usd-circle"></i> Notifications and Settings</a></li>
+                     <li class="tab-link zTabNotifySettingZ" data-tab="tab-9"><a href="#"> <i class="uil-usd-circle"></i> Notifications and Settings</a></li>
                      <li class="tab-link zTabDelAccZ" data-tab="tab-10"><a href="#"> <i class="uil-trash-alt"></i> Delete account</a></li>
                   </ul>
                </nav>

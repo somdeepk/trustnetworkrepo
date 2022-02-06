@@ -361,7 +361,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    </a>
 	                    <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
-	                        <a href="timeline.html" class="user">
+	                        <a  href="javascript:void(0);" class="user">
 	                            <div class="user_avatar">
 	                                <img ng-src="<?php echo IMAGE_URL;?>images/{{(loggedUserDataObj.profile_image  == '' || !loggedUserDataObj.profile_image )? 'member-no-imgage.jpg':'members/'+loggedUserDataObj.profile_image }}" alt="{{(loggedUserDataObj.membership_type=='PM')? loggedUserDataObj.first_name : loggedUserDataObj.first_name+' '+loggedUserDataObj.last_name}}">
 	                            </div>
@@ -496,9 +496,9 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	            <li><a href="feed.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
 	                <ul>
 	                    <li><a href="javascript:void(0);" ng-click="viewProfileSetting()">Profile Settings</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Privacy Settings</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Create Groups</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Notifications and Settings</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" ng-click="viewProfileSetting('zTabPrivSettZ')">Privacy Settings</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" href="javascript:void(0);" ng-click="viewProfileSetting('zTabCrtGrpZ')">Create Groups</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" ng-click="viewProfileSetting('zTabNotifySettingZ')">Notifications and Settings</a></li>
 	                </ul>
 	            </li>
 	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Pages </span>  </a> 
