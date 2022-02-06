@@ -228,6 +228,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	}
 	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
 	            	{
+	            		$scope.resetChangePasswordForm();
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Saved!','onlytext');
 	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()

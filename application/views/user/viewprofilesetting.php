@@ -31,29 +31,47 @@
                   <!-- form body -->
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                      <div class="line" ng-if="generalData.membership_type=='RM'">
-                        <input class="line__input" type="text" id="first_name"  autocomplete="off" ng-model="generalData.first_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.first_name)==true)? 'redBorder' : ''">
+                        <input class="line__input" type="text" id="first_name"  autocomplete="off" ng-model="generalData.first_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.first_name)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
                         <span for="username" class="line__placeholder">First Name</span>
                      </div>
                      <div class="line" ng-if="generalData.membership_type=='RM'">
-                        <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="generalData.last_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.last_name)==true)? 'redBorder' : ''">
+                        <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="generalData.last_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.last_name)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
                         <span for="username" class="line__placeholder">Last Name</span>
                      </div>
                      <div class="line" ng-if="generalData.membership_type=='PM'">
-                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25" >
+                        <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25" onKeyUp="this.setAttribute('value', this.value);">
                         <span for="username" class="line__placeholder">Church Name</span>
                      </div>
 
+                     <div ng-if="generalData.membership_type=='PM'">
+                       <label for="">Denomination </label>
+                       <select ng-model="generalData.denomination" class="shadow-none with-border ">
+                        <option value="0">None</option>
+                        <option value="1">Anabaptist Groups</option>
+                        <option value="2">Baptist General Conference</option>
+                        <option value="3">Calvary Chapel</option>
+                        <option value="4">Catholic Charismatic Church</option>
+                        <option value="5">Church of God (Holiness)</option>
+                        <option value="6">Disciples of Christ</option>
+                        <option value="7">Episcopal Church</option>
+                        <option value="8">Fellowship of Christian Assemblies</option>
+                        <option value="9">IFCA International</option>
+                        <option value="10">Islamic Society of North America</option>
+                      </select>
+                     </div>
+
                      <div class="line">
-                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="generalData.user_email" emailvalidate ng-disabled="true" maxlength="25" >
+                        <input class="line__input" type="text" id="user_email" autocomplete="off" ng-model="generalData.user_email" emailvalidate ng-disabled="true" maxlength="50" >
                         <span for="username" class="line__placeholder">Email </span>
                      </div>
+
                      <div class="line h-32" ng-if="generalData.membership_type=='RM'">
-                        <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="generalData.about_church"></textarea>
+                        <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="generalData.about_church" onKeyUp="this.setAttribute('value', this.value);"></textarea>
                         <span for="username" class="line__placeholder">About Church </span>
                      </div>
                      <div class="line">
-                        <input class="line__input" id="address" autocomplete="off" type="text" ng-model="generalData.address">
-                        <span for="username" class="line__placeholder">Address </span>
+                        <input class="line__input" id="address" autocomplete="off" type="text" ng-model="generalData.address" onKeyUp="this.setAttribute('value', this.value);">
+                        <span for="username" class="line__placeholder" >Address </span>
                      </div>
                      
                      <!-- <div class="line">
@@ -75,12 +93,12 @@
                        </select>
                      </div> -->
                      <div class="line">
-                        <input class="line__input" autocomplete="off" ng-model="generalData.postal_code" id="postal_code" type="text">
+                        <input class="line__input" autocomplete="off" ng-model="generalData.postal_code" id="postal_code" type="text" onKeyUp="this.setAttribute('value', this.value);" maxlength="8">
                         <span for="username" class="line__placeholder">Zip Code </span>
                      </div>
                   </div>
-                  <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3"><!-- 
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
+                  <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                     <!-- <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
                      <button type="button" ng-click="submitProfileGeneralData()" class="zsubmitGeneralDataz button bg-blue-700"> Save </button>
                   </div>
                </div>
@@ -191,14 +209,18 @@
                   <form>
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <div class="line">
-                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.current_password" id="current_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.current_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <span for="username" class="line__placeholder"> Current Password   </span>
                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataOldNotMtchCheck==true)? 'Old Password doesnt match!' : ''}}</div>
                         </div>
                         <div class="line">
-                           <input class="line__input" type="password" ng-model="memberData.new_password" id="new_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.new_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <span for="username" class="line__placeholder"> New Password </span>
                         </div>
                         <div class="line">
-                           <input class="line__input"  type="Password" ng-model="memberData.verify_password" id="verify_password" maxlength="15" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.verify_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <span for="username" class="line__placeholder">Confirm Password </span>
+
                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</div>
                         </div>
                      </div>

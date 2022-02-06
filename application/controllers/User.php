@@ -244,6 +244,7 @@ class User extends CI_Controller
         $id=(isset($aryMemberData['id']) && !empty($aryMemberData['id']))? addslashes(trim($aryMemberData['id'])):0;
         $first_name=(isset($aryMemberData['first_name']) && !empty($aryMemberData['first_name']))? addslashes(trim($aryMemberData['first_name'])):'';
         $last_name=(isset($aryMemberData['last_name']) && !empty($aryMemberData['last_name']))? addslashes(trim($aryMemberData['last_name'])):'';
+        $denomination=(isset($aryMemberData['denomination']) && !empty($aryMemberData['denomination']))? addslashes(trim($aryMemberData['denomination'])):'';
         $about_church=(isset($aryMemberData['about_church']) && !empty($aryMemberData['about_church']))? addslashes(trim($aryMemberData['about_church'])):'';
         $address=(isset($aryMemberData['address']) && !empty($aryMemberData['address']))? addslashes(trim($aryMemberData['address'])):'';
         $city=(isset($aryMemberData['city']) && !empty($aryMemberData['city']))? addslashes(trim($aryMemberData['city'])):'';
@@ -256,6 +257,7 @@ class User extends CI_Controller
        	$menu_arr = array(
             'first_name' => $first_name,
             'last_name'  =>$last_name,
+            'denomination'  =>$denomination,
             'about_church'  =>$about_church,
             'address'  =>$address,
             'city'  =>$city,
@@ -597,6 +599,17 @@ class User extends CI_Controller
 		$data['hideLayout'] = true;
 
         $data['content'] = 'user/viewfriends';
+		$this->load->view('layout/template', $data);
+	}
+
+    public function viewPostPages()
+	{
+		$data=array();
+		$profileSettingData=array();
+
+		$data['hideLayout'] = true;
+
+        $data['content'] = 'user/viewpostpages';
 		$this->load->view('layout/template', $data);
 	}
 

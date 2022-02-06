@@ -123,6 +123,27 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 		});
 	};
 
+	$scope.viewPostPages = function()
+	{
+		$('.loaderOverlay').fadeIn(200);
+		var response = $http({
+		    method: 'POST',
+		    url: varGlobalAdminBaseUrl+"viewPostPages",
+		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+		    async:true,
+		});
+		response.success(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+			var element = angular.element('#angularMainContent').html(data);
+			$compile(element.contents())($scope);
+			$rootScope.viewFriends();
+
+		});
+		response.error(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+		});
+	};
+
 	$rootScope.ucwords=function(str)
 	{
 		return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1)

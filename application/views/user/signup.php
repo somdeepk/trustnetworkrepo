@@ -51,7 +51,7 @@
 
                         <input type="text" placeholder="{{(signupData.membership_type=='PM')? 'Date of Establishment' : 'DOB'}}" autocomplete="off" readonly="true" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.dob)==true)? 'redBorder' : ''" ng-model="signupData.dob" id="dob" class="with-border mt-2 mb-2 bootCal " dobdatesignup>
 
-                        <input type="text" placeholder="Email Id" ng-model="signupData.user_email" id="user_email" emailvalidate class="with-border mt-2 mb-2 pl-1" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.user_email)==true)? 'redBorder' : ''">
+                        <input type="text" placeholder="Email Id" ng-model="signupData.user_email" id="user_email" emailvalidate class="with-border mt-2 mb-2 pl-1" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.user_email)==true)? 'redBorder' : ''" maxlength="50">
                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(InvalidEmailCheck==true)? 'Invalid Email' : ''}}</div>
                         <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataEmailDupCheck==true)? 'This Email already Exist' : ''}}</div>
 

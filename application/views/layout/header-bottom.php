@@ -424,7 +424,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                </svg> 
 	                <span> Wall </span> </a> 
 	                <ul>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">General Wall</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" ng-click="viewPostPages()">General Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Prayer Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Praise Report Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Testimony Wall 2</a></li>
