@@ -65,7 +65,7 @@
                         <span for="username" class="line__placeholder">Email </span>
                      </div>
 
-                     <div class="line h-32" ng-if="generalData.membership_type=='RM'">
+                     <div class="line h-32" ng-if="generalData.membership_type=='PM'">
                         <textarea class="line__input h-32" autocomplete="off" type="text" id="note" ng-model="generalData.about_church" onKeyUp="this.setAttribute('value', this.value);"></textarea>
                         <span for="username" class="line__placeholder">About Church </span>
                      </div>
