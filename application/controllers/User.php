@@ -2673,6 +2673,67 @@ class User extends CI_Controller
         exit;    	
     }
 
+
+    public function ajaxupdateeditGroupData() 
+    {
+    	$groupData = trim($this->input->post('groupData'));
+        $aryGroupData=json_decode($groupData, true);
+
+        $id = NULL;
+        $member_id=(isset($aryGroupData['loggedUserId']) && !empty($aryGroupData['loggedUserId']))? addslashes(trim($aryGroupData['loggedUserId'])):0;
+        $group_name=(isset($aryGroupData['group_name']) && !empty($aryGroupData['group_name']))? addslashes(trim($aryGroupData['group_name'])):'';        
+        $group_description=(isset($aryGroupData['group_description']) && !empty($aryGroupData['group_description']))? addslashes(trim($aryGroupData['group_description'])):'';
+        $current_date=date('Y-m-d H:i:s');  
+
+        $menu_arr = array(
+            'member_id' => $member_id,
+            'name' => $group_name,
+            'group_desc'  =>$group_description,            
+            'is_editable'  =>'Y',
+            'create_date'  =>$current_date,
+        );
+
+        $lastId = $this->User_Model->addupdategroup($id, $menu_arr);
+
+    	$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Group Created Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;  
+    }
+
+
+    public function ajaxupdatesecurity() 
+    {
+        $securityData = trim($this->input->post('securityData'));
+        $aryMemberData=json_decode($securityData, true);
+
+        $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0;   
+        $ary_security['who_can_follow_me']=(isset($aryMemberData['who_can_follow_me']) && !empty($aryMemberData['who_can_follow_me']))? $aryMemberData['who_can_follow_me']:false;
+        $ary_security['show_my_activities']=(isset($aryMemberData['show_my_activities']) && !empty($aryMemberData['show_my_activities']))? $aryMemberData['show_my_activities']:false;
+        $ary_security['encrypted_notification_emails']=(isset($aryMemberData['encrypted_notification_emails']) && !empty($aryMemberData['encrypted_notification_emails']))? $aryMemberData['encrypted_notification_emails']:false;
+        $ary_security['allow_commenting']=(isset($aryMemberData['allow_commenting']) && !empty($aryMemberData['allow_commenting']))? $aryMemberData['allow_commenting']:false;
+
+       	$menu_arr = array(
+            'security_data' => json_encode($ary_security),
+        );
+        
+        $strstatus="Updated";
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Security '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+
 }
 	
 

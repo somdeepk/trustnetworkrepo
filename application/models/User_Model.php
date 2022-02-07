@@ -1279,5 +1279,21 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function addupdategroup($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_group',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_group',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+	
+
 }
 ?>
