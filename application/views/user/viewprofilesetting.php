@@ -226,8 +226,8 @@
 
                         <div class="line">
                            
-                           <input class="line__input" type="text" id="group_name" autocomplete="off" ng-model="groupData.group_name" maxlength="25" ng-class="(groupDataCheck==true && isNullOrEmptyOrUndefined(groupData.group_name)==true)? 'redBorder' : ''">
-
+                           <input class="line__input" id="group_name" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off" ng-model="groupData.group_name" maxlength="25" ng-class="(groupDataCheck==true && isNullOrEmptyOrUndefined(groupData.group_name)==true)? 'redBorder' : ''">
+                           
                            <span for="group_name" class="line__placeholder">Group Name</span>
 
                         </div>
@@ -264,6 +264,7 @@
                </div>
             </div>                           
 
+
             <div id="tab-6" class="tab-content lg:w-2/3">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
@@ -273,45 +274,94 @@
                         <div class="text-center border-b border-gray-100 py-6">
                            <h3 class="font-bold text-xl"> Create New Page </h3>
                         </div>
+
                         <!-- form body -->
+
                         <div class="p-5 space-y-7">
+
+                           <label for=""> Page Content </label>
+
                            <div class="line">
-                              <input class="line__input" id="" name="" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off">
-                              <span for="username" class="line__placeholder"> Page Name </span>
+                             
+                              <input class="line__input" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" id="page_name" autocomplete="off" ng-model="pageData.page_name" maxlength="25" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.page_name)==true)? 'redBorder' : ''" >
+
+                              <span for="page_name" class="line__placeholder"> Page Name </span>
+
                            </div>
+
                            <div class="flex items-center">
                               <div class="-mr-1 bg-gray-100 border px-3 py-3 rounded-l-md">  https://christtube.com/   </div>
-                              <input type="text" class="with-border" placeholder="">
+
+                              <input class="with-border" type="text" id="page_url" autocomplete="off" ng-model="pageData.page_url" maxlength="99" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.page_url)==true)? 'redBorder' : ''">
+
                            </div>
-                           <div>
-                              <label for=""> Page Category </label>
-                              <select id="" name="" class="shadow-none selectpicker with-border ">
-                                 <option value="1">Church Information</option>
-                                 <option value="2"> Statement of faith </option>
-                                 <option value="3"> Church Members </option>
-                                 <option value="4"> Our Connections </option>
-                                 <option value="5"> Core Value </option>
-                                 <option value="6">Our Pastor</option>
-                                 <option value="7"> Our Leaderships</option>
+
+                           <div>          
+                              <label for="page_category"> Page Category </label>                    
+                              <select id="page_category" class="shadow-none with-border" ng-model="pageData.page_category" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.page_category)==true)? 'redBorder' : ''">
+                                 <option value="Church Information"> Church Information </option>
+                                 <option value="Statement of faith"> Statement of faith </option>
+                                 <option value="Church Members"> Church Members </option>
+                                 <option value="Our Connections"> Our Connections </option>
+                                 <option value="Core Value"> Core Value </option>
+                                 <option value="Our Pastor"> Our Pastor </option>
+                                 <option value="Our Leaderships"> Our Leaderships </option>
                               </select>
                            </div>
+
                            <div class="line h-32"> 
-                              <textarea class="line__input h-32" id="" name="" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off"></textarea>
-                              <span for="username" class="line__placeholder"> Page description </span> 
+
+                              <textarea class="line__input h-32"  id="page_description" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off" ng-model="pageData.page_description" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.page_description)==true)? 'redBorder' : ''"></textarea>
+
+                              <span for="page_description" class="line__placeholder"> Page description </span> 
+
                            </div>
+
+                           <label for=""> SEO Content </label>
+
+                           <div class="line">
+
+                              <input class="line__input" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" id="meta_title" autocomplete="off" ng-model="pageData.meta_title" maxlength="25" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.meta_title)==true)? 'redBorder' : ''" >
+
+                              <span for="meta_title" class="line__placeholder"> Meta title </span>
+
+                           </div>
+
+                           <div class="line h-32"> 
+
+                              <textarea class="line__input h-32"  id="meta_keyword" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off" ng-model="pageData.meta_keyword" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.meta_keyword)==true)? 'redBorder' : ''"></textarea>
+
+                              <span for="meta_keyword" class="line__placeholder"> Meta keyword (Please enter the keywords separated by comma) </span> 
+
+                           </div>
+                         
+                           <div class="line h-32"> 
+                              
+                              <textarea class="line__input h-32"  id="meta_description" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off" ng-model="pageData.meta_description" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.meta_description)==true)? 'redBorder' : ''"></textarea>
+
+                              <span for="meta_description" class="line__placeholder"> Meta description </span> 
+
+                           </div>
+
                         </div>
+
                         <!-- form footer -->
+
                         <div class="border-t flex justify-between lg:space-x-10 p-7 bg-gray-50 rounded-b-md">
+
                            <p class="text-sm leading-6"> You can add images, contact info and other details after you create the Page. </p>
-                           <button type="button" class="button lg:w-1/2">
-                           Create Now
+
+                           <button type="button" class="button lg:w-1/2 zcreatePage" ng-click="submitPage()">
+                              Create Now
                            </button>
+
                         </div>
                      </div>
                   </form>
                </div>
             </div>    
                 
+
             <div id="tab-7" class="tab-content lg:w-2/3">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
@@ -528,6 +578,7 @@
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-up right-4 text-xl top-1/2 transform text-gray-400   " id="comment" aria-hidden="true" style="" hidden=""></i>
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-down right-4 text-xl top-1/2 transform text-gray-400  " id="comment" aria-hidden="false" style=""></i>
                      </div>
+                     
                      <div class=" m-0 sm:space-y-8 space-y-4 p-5" id="comment" aria-hidden="false" style="" hidden="">
                         <div class="flex justify-between items-center">
                            <div>
@@ -535,20 +586,48 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.comment_email" id="comment_email" ng-checked="notificationData.comment_email == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>Push</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.comment_push" id="comment_push" ng-checked="notificationData.comment_push == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+
+                        <div class="flex justify-between items-center">
+                           <div>
+                              <h4>SMS</h4>
+                           </div>
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.comment_sms" id="comment_sms" ng-checked="notificationData.comment_sms == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
+                              </div>
+                           </div>
+                        </div>
+
                      </div>
                   </div>
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
@@ -559,6 +638,7 @@
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-up right-4 text-xl top-1/2 transform text-gray-400   " id="people" aria-hidden="true" style="" hidden=""></i>
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-down right-4 text-xl top-1/2 transform text-gray-400  " id="people" aria-hidden="false" style=""></i>
                      </div>
+                     
                      <div class=" m-0 sm:space-y-8 space-y-4 p-5" id="people" aria-hidden="false" style="" hidden="">
                         <div class="flex justify-between items-center">
                            <div>
@@ -566,20 +646,48 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.people_email" id="people_email" ng-checked="notificationData.people_email == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>Push</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.people_push" id="people_push" ng-checked="notificationData.people_push == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+
+                        <div class="flex justify-between items-center">
+                           <div>
+                              <h4>SMS</h4>
+                           </div>
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.people_sms" id="people_sms" ng-checked="notificationData.people_sms == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
+                              </div>
+                           </div>
+                        </div>
+
                      </div>
                   </div>
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
@@ -597,20 +705,48 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.birthday_email" id="birthday_email" ng-checked="notificationData.birthday_email == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>Push</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.birthday_push" id="birthday_push" ng-checked="notificationData.birthday_push == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+
+                        <div class="flex justify-between items-center">
+                           <div>
+                              <h4>SMS</h4>
+                           </div>
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.birthday_sms" id="birthday_sms" ng-checked="notificationData.birthday_sms == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
+                              </div>
+                           </div>
+                        </div>
+
                      </div>
                   </div>
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
@@ -628,25 +764,53 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.event_email" id="event_email" ng-checked="notificationData.event_email == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>Push</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.event_push" id="event_push" ng-checked="notificationData.event_push == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+
+                        <div class="flex justify-between items-center">
+                           <div>
+                              <h4>SMS</h4>
+                           </div>
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="notificationData.event_sms" id="event_sms" ng-checked="notificationData.event_sms == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+
+                              </div>
+                           </div>
+                        </div>
+
                      </div>
                   </div>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                     <!-- <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
+                     <button type="button" class="button bg-blue-700 zsubmitNotification" ng-click="submitNotification();"> Save </button>
                   </div>
                </div>
             </div>         

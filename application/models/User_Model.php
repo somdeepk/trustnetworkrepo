@@ -219,6 +219,13 @@ class User_Model extends CI_Model
 		return $resultData;
 	}
 
+	public function get_page_data($loggedUserId=0)
+	{
+		$sql="SELECT * from tn_page WHERE status='1' AND deleted='0' AND (member_id='".$loggedUserId."' OR member_id=0)";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
 	
 	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
 	{
@@ -1279,6 +1286,7 @@ class User_Model extends CI_Model
 		}
 	}
 
+
 	public function addupdategroup($id=NULL,$menu_arr=NULL)
 	{
 		if(!empty($id))
@@ -1294,6 +1302,21 @@ class User_Model extends CI_Model
 	}
 
 	
+	public function addupdatepage($id=NULL,$menu_arr=NULL)
+	{
+		if(!empty($id))
+		{
+			$this->db->where('id',$id)->update('tn_page',$menu_arr);
+			return $id;
+		}
+		else
+		{
+			$this->db->insert('tn_page',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
+
 
 }
 ?>
