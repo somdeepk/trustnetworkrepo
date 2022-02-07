@@ -222,6 +222,7 @@ class User extends CI_Controller
 		$memberData = $this->User_Model->get_member_data($loggedUserId);
 		$memberData['GroupData'] = $this->User_Model->get_group_data($loggedUserId);
 		$memberData['ChurchData'] = $this->User_Model->get_all_approve_church();
+		$memberData['PageData'] = $this->User_Model->get_page_data($loggedUserId);
 
 		$flagBlurMenu=0;
 		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N') //|| trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])==""
@@ -2710,7 +2711,7 @@ class User extends CI_Controller
     }
 
 
-    public function ajaxupdateeditGroupData() 
+    public function ajaxupdateeditgroupdata() 
     {
     	$groupData = trim($this->input->post('groupData'));
         $aryGroupData=json_decode($groupData, true);
@@ -2741,7 +2742,7 @@ class User extends CI_Controller
     }
 
 
-    public function ajaxupdatesecurity() 
+    public function ajaxupdatesecuritydata() 
     {
         $securityData = trim($this->input->post('securityData'));
         $aryMemberData=json_decode($securityData, true);
@@ -2766,6 +2767,89 @@ class User extends CI_Controller
 
         echo json_encode($returnData);
         exit;    	
+    }
+
+
+    public function ajaxupdatenotificationdata() 
+    {
+        $notificationData = trim($this->input->post('notificationData'));
+        $aryMemberData=json_decode($notificationData, true);
+
+        $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0; 
+
+        $ary_notification['comment_email']=(isset($aryMemberData['comment_email']) && !empty($aryMemberData['comment_email']))? $aryMemberData['comment_email']:false;
+        $ary_notification['comment_push']=(isset($aryMemberData['comment_push']) && !empty($aryMemberData['comment_push']))? $aryMemberData['comment_push']:false;
+        $ary_notification['comment_sms']=(isset($aryMemberData['comment_sms']) && !empty($aryMemberData['comment_sms']))? $aryMemberData['comment_sms']:false;
+
+        $ary_notification['people_email']=(isset($aryMemberData['people_email']) && !empty($aryMemberData['people_email']))? $aryMemberData['people_email']:false;
+        $ary_notification['people_push']=(isset($aryMemberData['people_push']) && !empty($aryMemberData['people_push']))? $aryMemberData['people_push']:false;
+        $ary_notification['people_sms']=(isset($aryMemberData['people_sms']) && !empty($aryMemberData['people_sms']))? $aryMemberData['people_sms']:false;
+
+        $ary_notification['birthday_email']=(isset($aryMemberData['birthday_email']) && !empty($aryMemberData['birthday_email']))? $aryMemberData['birthday_email']:false;
+        $ary_notification['birthday_push']=(isset($aryMemberData['birthday_push']) && !empty($aryMemberData['birthday_push']))? $aryMemberData['birthday_push']:false;
+        $ary_notification['birthday_sms']=(isset($aryMemberData['birthday_sms']) && !empty($aryMemberData['birthday_sms']))? $aryMemberData['birthday_sms']:false;
+
+        $ary_notification['event_email']=(isset($aryMemberData['event_email']) && !empty($aryMemberData['event_email']))? $aryMemberData['event_email']:false;
+        $ary_notification['event_push']=(isset($aryMemberData['event_push']) && !empty($aryMemberData['event_push']))? $aryMemberData['event_push']:false;
+        $ary_notification['event_sms']=(isset($aryMemberData['event_sms']) && !empty($aryMemberData['event_sms']))? $aryMemberData['event_sms']:false;
+
+       	$menu_arr = array(
+            'notification_data' => json_encode($ary_notification),
+        );
+        
+        $strstatus="Updated";
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Notification '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+    public function ajaxupdateeditpagedata() 
+    {
+    	$pageData = trim($this->input->post('pageData'));
+        $aryPageData=json_decode($pageData, true);
+
+        $id = NULL;
+        
+        $member_id=(isset($aryPageData['loggedUserId']) && !empty($aryPageData['loggedUserId']))? addslashes(trim($aryPageData['loggedUserId'])):0;
+        
+        $page_name=(isset($aryPageData['page_name']) && !empty($aryPageData['page_name']))? addslashes(trim($aryPageData['page_name'])):'';
+        $page_url=(isset($aryPageData['page_url']) && !empty($aryPageData['page_url']))? addslashes(trim($aryPageData['page_url'])):'';        
+        $page_category=(isset($aryPageData['page_category']) && !empty($aryPageData['page_category']))? addslashes(trim($aryPageData['page_category'])):'';
+        $page_description=(isset($aryPageData['page_description']) && !empty($aryPageData['page_description']))? addslashes(trim($aryPageData['page_description'])):'';
+        $meta_title=(isset($aryPageData['meta_title']) && !empty($aryPageData['meta_title']))? addslashes(trim($aryPageData['meta_title'])):'';
+        $meta_keyword=(isset($aryPageData['meta_keyword']) && !empty($aryPageData['meta_keyword']))? addslashes(trim($aryPageData['meta_keyword'])):'';
+        $meta_description=(isset($aryPageData['meta_description']) && !empty($aryPageData['meta_description']))? addslashes(trim($aryPageData['meta_description'])):'';
+        
+        $current_date=date('Y-m-d H:i:s');  
+
+        $menu_arr = array(
+            'member_id' => $member_id,
+            'name' => $page_name,
+            'page_url'  =>$page_url,            
+            'page_category'  =>$page_category,
+            'page_desc'  =>$page_description,
+            'meta_title'  =>$meta_title,
+            'meta_keyword'  =>$meta_keyword,
+            'meta_description'  =>$meta_description,
+            'create_date'  =>$current_date,
+        );
+
+        $lastId = $this->User_Model->addupdatepage($id, $menu_arr);
+
+    	$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Page Created Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;  
     }
 
 

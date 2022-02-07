@@ -501,13 +501,14 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	            </li>
 	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> <ion-icon name="document-outline" class="side-icon"></ion-icon> <span> Pages </span>  </a> 
 	                <ul>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Statement of faith </a></li>
+	                    <!-- <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Statement of faith </a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Church Information </a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Church Members </a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Connections </a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Core Value </a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Pastor </a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Leaderships </a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> Our Leaderships </a></li> -->
+	                    <li ng-repeat="(key, value) in loggedUserDataObj.PageData"><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">{{value.name}}</a></li>
 	                </ul>
 	            </li>
 	        </ul>

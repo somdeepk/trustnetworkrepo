@@ -4,6 +4,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
    	$scope.memberDataOldNotMtchCheck=false;
    	$scope.groupData={};
    	$scope.srchChurchData={};
+   	$scope.pageData={};
 
 	$scope.initProfileSetting = function()
 	{
@@ -15,6 +16,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
 		$scope.securityData=jQuery.parseJSON(profileSettingDataObj.memberData.security_data);
+		$scope.notificationData=jQuery.parseJSON(profileSettingDataObj.memberData.notification_data);
 
 		// console.log('sddsd');
 		// console.log($scope.generalData);
@@ -323,7 +325,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 				$http({
 	                method  : 'POST',
-	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditGroupData",
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditgroupdata",
 	                transformRequest: angular.identity,
 	                headers: {'Content-Type': undefined},                     
 	                data:formData, 
@@ -353,10 +355,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 	};
 
+
 	$scope.resetGroup = function()
 	{
 		$scope.groupData={};
 	};
+
 
 	$scope.submitSecurity = function()
     {	
@@ -370,12 +374,11 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 			$http({
 	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxupdatesecurity",
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatesecuritydata",
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': undefined},                     
 	            data:formData, 
 	        }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
@@ -394,6 +397,132 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			});
 		},1200);
 	};
+
+
+	$scope.submitNotification = function()
+    {	
+		
+		$scope.buttonSavingAnimation('zsubmitNotification','Saving..','loader');
+		$timeout(function()
+		{
+			var formData = new FormData();
+			$scope.notificationData.loggedUserId = $rootScope.loggedUserId;
+			formData.append('notificationData',angular.toJson($scope.notificationData));
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatenotificationdata",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitNotification','Saved!','onlytext');
+	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitNotification','Submit','onlytext');
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitNotification','Submit','onlytext');
+	        		console.log("Notification Updation Failed!");	        		
+	        	}
+			});
+		},1200);
+	};
+
+
+	$scope.submitPage = function()
+    {		
+		$scope.pageDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.pageDataCheck=false ;
+		},2000);
+
+		var validator=0;
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.page_name)==true) || ($scope.pageData.page_name=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.page_url)==true) || ($scope.pageData.page_url=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.page_category)==true) || ($scope.pageData.page_category=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.page_description)==true) || ($scope.pageData.page_description=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.meta_title)==true) || ($scope.pageData.meta_title=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.meta_keyword)==true) || ($scope.pageData.meta_keyword=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.pageData.meta_description)==true) || ($scope.pageData.meta_description=='¿'))
+		{
+			validator++ ;
+		}
+
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zcreatePage','Saving..','loader');		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+				$scope.pageData.loggedUserId = $rootScope.loggedUserId;
+				formData.append('pageData',angular.toJson($scope.pageData));
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditpagedata",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.pageDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zcreatePage','Saved!','onlytext');
+	            		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	            		$timeout(function()
+						{
+							$scope.resetPage();
+							$scope.buttonSavingAnimation('zcreatePage','Create Now','onlytext');
+						},1200);
+
+
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zcreatePage','Create Now','onlytext');
+	            		console.log("Page Ceation Failed!");
+	            	}
+				});
+			},1200);
+		}	
+
+	};
+
+
+	$scope.resetPage = function()
+	{
+		$scope.pageData={};
+	};
+
 
 
 });
