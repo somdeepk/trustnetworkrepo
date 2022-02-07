@@ -239,17 +239,29 @@
                      <h3 class="font-bold mb-2 text-xl">  Create Groups</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                   </div>
+
                   <!-- form body -->
+
                   <form>
+
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
+
                         <div class="line">
-                           <input class="line__input" id="password" autocomplete="off" name="password" type="text" onKeyUp="this.setAttribute('value', this.value);" value="">
-                           <span for="username" class="line__placeholder"> Group Name   </span>
+                           
+                           <input class="line__input" type="text" id="group_name" autocomplete="off" ng-model="groupData.group_name" maxlength="25" ng-class="(groupDataCheck==true && isNullOrEmptyOrUndefined(groupData.group_name)==true)? 'redBorder' : ''">
+
+                           <span for="group_name" class="line__placeholder">Group Name</span>
+
                         </div>
+
                         <div class="line h-32"> 
-                           <textarea class="line__input h-32"  id="" name="" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off"></textarea>
-                           <span for="username" class="line__placeholder"> Group description </span> 
+
+                           <textarea class="line__input h-32"  id="group_description" type="text" onKeyUp="this.setAttribute('value', this.value);" value="" autocomplete="off" ng-model="groupData.group_description" ng-class="(groupDataCheck==true && isNullOrEmptyOrUndefined(groupData.group_description)==true)? 'redBorder' : ''"></textarea>
+
+                           <span for="group_description" class="line__placeholder"> Group description </span> 
+
                         </div>
+
                         <div class="px-2 space-y-2">
                            <label for="" class="font-semibold text-base"> Choose Privacy </label> 
                            <div> Anyone can see who's in the group and what they post. </div>
@@ -259,12 +271,18 @@
                               <option data-icon="uil-globe" selected>Puplic</option>
                            </select>
                         </div>
+
                      </div>
                   </form>
+
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Create Now </button>
+
+                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500" ng-click="resetGroup()"> Reset </button>
+
+                     <button type="button" class="button bg-blue-700 zcreateGroup" ng-click="submitGroup()" > Create Now </button>
+
                   </div>
+
                </div>
             </div>                           
 
@@ -333,7 +351,10 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="securityData.who_can_follow_me" id="who_can_follow_me" ng-checked="securityData.who_can_follow_me == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
                               </div>
                            </div>
                         </div>
@@ -345,7 +366,10 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox"><span class="switch-button"></span> </label>
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="securityData.show_my_activities" id="show_my_activities" ng-checked="securityData.show_my_activities == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
                               </div>
                            </div>
                         </div>
@@ -357,7 +381,10 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="securityData.encrypted_notification_emails" id="encrypted_notification_emails" ng-checked="securityData.encrypted_notification_emails == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
                               </div>
                            </div>
                         </div>
@@ -369,15 +396,18 @@
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox"><span class="switch-button"></span> </label>
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="securityData.allow_commenting" id="allow_commenting" ng-checked="securityData.allow_commenting == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                     <!-- <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
+                     <button type="button" class="button bg-blue-700 zsubmitSecurity" ng-click="submitSecurity();"> Save </button>
                   </div>
                </div>
             </div>                        

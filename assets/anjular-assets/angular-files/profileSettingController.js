@@ -2,6 +2,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		
    	$scope.memberDataPassNotMtchCheck=false;
    	$scope.memberDataOldNotMtchCheck=false;
+   	$scope.groupData={};
 
 	$scope.initProfileSetting = function()
 	{
@@ -10,7 +11,9 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	    var profileSettingDataObj=jQuery.parseJSON(profileSettingDataStr);
 		$scope.profileSettingData=profileSettingDataObj;
 		$scope.generalData=profileSettingDataObj.memberData;
+
 		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
+		$scope.securityData=jQuery.parseJSON(profileSettingDataObj.memberData.security_data);
 
 		// console.log('sddsd');
 		// console.log($scope.generalData);
@@ -270,4 +273,108 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		return !value;
 	};
 	
+
+	$scope.submitGroup = function()
+    {		
+		$scope.groupDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.groupDataCheck=false ;
+		},2000);
+
+		var validator=0;
+
+		if (($scope.isNullOrEmptyOrUndefined($scope.groupData.group_name)==true) || ($scope.groupData.group_name=='¿'))
+		{
+			validator++ ;
+		}
+		if (($scope.isNullOrEmptyOrUndefined($scope.groupData.group_description)==true) || ($scope.groupData.group_description=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zcreateGroup','Saving..','loader');		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+				$scope.groupData.loggedUserId = $rootScope.loggedUserId;
+				formData.append('groupData',angular.toJson($scope.groupData));
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditGroupData",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.groupDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zcreateGroup','Saved!','onlytext');
+	            		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	            		$timeout(function()
+						{
+							$scope.resetGroup();
+							$scope.buttonSavingAnimation('zcreateGroup','Create Now','onlytext');
+						},1200);
+
+
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zcreateGroup','Create Now','onlytext');
+	            		console.log("Group Ceation Failed!");
+	            	}
+				});
+			},1200);
+		}	
+
+	};
+
+	$scope.resetGroup = function()
+	{
+		$scope.groupData={};
+	};
+
+	$scope.submitSecurity = function()
+    {	
+		
+		$scope.buttonSavingAnimation('zsubmitSecurity','Saving..','loader');
+		$timeout(function()
+		{
+			var formData = new FormData();
+			$scope.securityData.loggedUserId = $rootScope.loggedUserId;
+			formData.append('securityData',angular.toJson($scope.securityData));
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatesecurity",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				$scope.memberDataCheck=false ;
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitSecurity','Saved!','onlytext');
+	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitSecurity','Submit','onlytext');
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitSecurity','Submit','onlytext');
+	        		console.log("Security Updation Failed!");	        		
+	        	}
+			});
+		},1200);
+	};
+
+
 });
