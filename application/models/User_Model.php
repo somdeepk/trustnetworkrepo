@@ -219,6 +219,18 @@ class User_Model extends CI_Model
 		return $resultData;
 	}
 
+	public function get_all_approve_church($searchChurch='')
+	{
+		$strWhereParam="";
+		if(!empty($searchChurch))
+		{
+			$strWhereParam=" AND (first_name LIKE '%".$searchChurch."%') ";
+		}
+		$sql="SELECT id, first_name, church_type, profile_image FROM tn_members WHERE is_approved='Y' AND membership_type='PM' AND status='1' AND deleted='0' ".$strWhereParam." order by first_name ASC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+		return $resultData;
+	}
 	
 	public function ajaxAddUpdateStreamingMember($argu_arr=NULL)
 	{
@@ -373,13 +385,7 @@ class User_Model extends CI_Model
 	}
 
 
-	public function get_all_approve_church()
-	{
-		$sql="SELECT * from tn_members WHERE is_approved='Y' AND membership_type='CM' AND type!='9999' AND status='1' AND deleted='0' order by first_name ASC";
-		$query=$this->db->query($sql);
-		$resultData=$query->result_array();
-		return $resultData;
-	}
+	
 
 	
 

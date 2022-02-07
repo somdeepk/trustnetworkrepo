@@ -221,6 +221,7 @@ class User extends CI_Controller
 
 		$memberData = $this->User_Model->get_member_data($loggedUserId);
 		$memberData['GroupData'] = $this->User_Model->get_group_data($loggedUserId);
+		$memberData['ChurchData'] = $this->User_Model->get_all_approve_church();
 
 		$flagBlurMenu=0;
 		if(trim($memberData['first_name'])=="" || trim($memberData['last_name'])=="" || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N') //|| trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])==""
@@ -232,6 +233,28 @@ class User extends CI_Controller
         $returnData['status']='1';
         $returnData['msg']=base64_encode('Profile Setting Successfully Checked.');
         $returnData['data']=array('memberData'=>base64_encode(json_encode($memberData)),'flagBlurMenu'=>$flagBlurMenu);
+        echo json_encode($returnData);
+        exit; 
+	}
+
+	public function ajaxGetAllChurches()
+	{
+		$data=array();
+
+		$srchChurchData = trim($this->input->post('srchChurchData'));
+        $srchChurchData=json_decode($srchChurchData, true);
+        $searchChurch=(isset($srchChurchData['searchChurch']) && !empty($srchChurchData['searchChurch']))? addslashes(trim($srchChurchData['searchChurch'])):'';
+
+        /*echo $searchChurch."ss<pre>";
+		print_r($searchChurch);
+        exit;*/
+
+		$churchData = $this->User_Model->get_all_approve_church($searchChurch);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Profile Setting Successfully Checked.');
+        $returnData['data']=array('churchData'=>$churchData);
         echo json_encode($returnData);
         exit; 
 	}

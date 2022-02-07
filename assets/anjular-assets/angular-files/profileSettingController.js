@@ -3,6 +3,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
    	$scope.memberDataPassNotMtchCheck=false;
    	$scope.memberDataOldNotMtchCheck=false;
    	$scope.groupData={};
+   	$scope.srchChurchData={};
 
 	$scope.initProfileSetting = function()
 	{
@@ -257,6 +258,24 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		$scope.memberData.current_password='';
 		$scope.memberData.new_password='';
 		$scope.memberData.verify_password='';
+	};
+
+	$scope.searchChurchToTag = function ()
+	{
+		$scope.srchChurchData.searchChurch=$scope.srchChurchData.searchChurch;
+
+		var formData = new FormData();
+		formData.append('srchChurchData',angular.toJson($scope.srchChurchData));
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxGetAllChurches",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	$rootScope.allChurchMemberObj=aryreturnData.data.churchData;
+		});
 	};
 
 	$scope.getStateData = function(countryId)

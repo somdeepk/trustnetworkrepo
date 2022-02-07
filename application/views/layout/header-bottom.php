@@ -25,7 +25,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                </div>
 	            </div>
 
-	          <!-- search icon for mobile -->
+	          	<!-- search icon for mobile -->
 	            <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
 	            <div class="header_search"><i class="uil-search-alt"></i>
 	                <input value="" type="text" class="form-control" placeholder="Search for Friends , Videos and more.." autocomplete="off">
@@ -71,8 +71,6 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	            <div class="right_side">
 
 	                <div class="header_widgets">
-
-	                    
 
 	                    <a href="#" class="is_icon" uk-tooltip="title: Notifications">
 	                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>

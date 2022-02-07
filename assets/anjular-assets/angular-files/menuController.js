@@ -2,6 +2,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$scope.flagBlurMenu=0;
 	$rootScope.loggedUserDataObj={};
+	$rootScope.allChurchMemberObj={};
 	$rootScope.sgtnType='';
 
 	$scope.initiateMenuPointer = function(loggedUserId)
@@ -31,8 +32,10 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 				var loggedUserData=aryreturnData.data.memberData;	    
 			    var loggedUserDataStr=atob(loggedUserData);
 			    var loggedUserDataObj=jQuery.parseJSON(loggedUserDataStr);
-				$rootScope.loggedUserDataObj=loggedUserDataObj;
 
+				$rootScope.loggedUserDataObj=loggedUserDataObj;
+				$rootScope.allChurchMemberObj=$rootScope.loggedUserDataObj.ChurchData;
+				
 				console.log('Gloab Member Data')
 				console.log($rootScope.loggedUserDataObj)
 

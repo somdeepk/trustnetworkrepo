@@ -43,9 +43,26 @@
                         <span for="username" class="line__placeholder">Church Name</span>
                      </div>
 
+                     <!-- search icon for mobile -->
+                     <div ng-if="generalData.membership_type=='RM'" class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"></div>
+                     <div ng-if="generalData.membership_type=='RM'" class="header_search"><i class="uil-search-alt"></i>
+                        <input type="text" ng-model="srchChurchData.searchChurch" ng-keyup="searchChurchToTag()" class="form-control" placeholder="Search Church.." autocomplete="off">
+                        <div uk-drop="mode: click" class="header_search_dropdown">
+                           <h4 class="search_title"> Recently </h4>
+                           <ul>
+                              <li ng-repeat="(key, value) in allChurchMemberObj">
+                                 <a href="javascript:void(0);">
+                                    <img src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" alt="{{value.first_name}}" class="list-avatar">
+                                    <div class="list-name">{{value.first_name}}</div>
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+
                      <div ng-if="generalData.membership_type=='PM'">
-                       <label for="">Denomination </label>
-                       <select ng-model="generalData.denomination" class="shadow-none with-border ">
+                        <label for="">Denomination </label>
+                        <select ng-model="generalData.denomination" class="shadow-none with-border ">
                         <option value="0">None</option>
                         <option value="1">Anabaptist Groups</option>
                         <option value="2">Baptist General Conference</option>
@@ -57,7 +74,7 @@
                         <option value="8">Fellowship of Christian Assemblies</option>
                         <option value="9">IFCA International</option>
                         <option value="10">Islamic Society of North America</option>
-                      </select>
+                        </select>
                      </div>
 
                      <div class="line">
