@@ -176,16 +176,13 @@
     </script>
 
     <!-- Javascript
-    ================================================== -->
-    <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
+    ================================================== --><!-- 
+    <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script> -->
     <script src="<?php echo base_url();?>assets/js/tippy.all.min.js"></script>
     <script src="<?php echo base_url();?>assets/js/uikit.js"></script>
     <script src="<?php echo base_url();?>assets/js/simplebar.js"></script>
     <script src="<?php echo base_url();?>assets/js/custom.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap-select.min.js"></script>
     <!-- <script src="../../unpkg.com/ionicons%405.2.3/dist/ionicons.js"></script> -->
-
-    
-
 </body>
 </html>

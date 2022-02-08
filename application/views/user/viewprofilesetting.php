@@ -1,5 +1,7 @@
-    <script src="<?php echo base_url();?>assets/crop-image/croppie.js"></script>
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/crop-image/croppie.css">
+<script src="<?php echo base_url();?>assets/crop-image/croppie.js"></script>
+<link rel="stylesheet" href="<?php echo base_url();?>assets/crop-image/croppie.css">
+<!-- <script src="<?php echo base_url();?>assets/js_2/popper.min.js"></script>
+<script src="<?php echo base_url();?>assets/js_2/bootstrap.min.js"></script> -->
 
 <!-- Main Contents -->
 <div class="main_content" ng-controller="profileSettingController" ng-init="baseencoded_profileSettingData='<?php echo base64_encode(json_encode($profileSettingData)) ;?>'; initProfileSetting();">
@@ -55,7 +57,7 @@
                            <ul>
                               <li ng-repeat="(key, value) in allChurchMemberObj">
                                  <a href="javascript:void(0);">
-                                    <img src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" alt="{{value.first_name}}" class="list-avatar">
+                                    <img ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" alt="{{value.first_name}}" class="list-avatar">
                                     <div class="list-name">{{value.first_name}}</div>
                                  </a>
                               </li>
@@ -150,15 +152,15 @@
                                   <div class="col-md-12">
                                      <div class="profile-img-edit">
                                       <div id="uploaded_image">
-                                        <img class="profile-pic" ng-if="memberData.profile_image == '' || !memberData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
-                                        <img class="profile-pic" ng-if="memberData.profile_image && memberData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" style="margin:0 auto;height:149px;">
+                                        <img class="profile-pic" ng-if="generalData.profile_image == '' || !generalData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
+                                        <img class="profile-pic" ng-if="generalData.profile_image && generalData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{generalData.profile_image}}" style="margin:0 auto;height:149px;">
                                       </div>
 
                                       <div class="p-image">
                                          <i class="ri-pencil-line upload-button"></i>
                                          <input class="file-upload" name="upload_image" id="upload_image" type="file" accept="image/*"/>
-                                         <input type="text" ng-model="memberData.hidden_image_encode" class="hiddenimportant" />
-                                         <input type="text" ng-model="memberData.profile_image" class="hiddenimportant" />
+                                         <input type="text" ng-model="generalData.hidden_image_encode" class="hiddenimportant" />
+                                         <input type="text" ng-model="generalData.profile_image" class="hiddenimportant" />
                                       </div>
                                      </div>
                                   </div>
@@ -931,25 +933,25 @@
 </div>
 
 
-  <!-- Start Image Croping Modal -->
-  <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-            <div class="modal-body">
-              <div class="row">
-              <div class="col-md-12 text-center">
-                <div id="image_demo" style="width:100%; margin-top:30px"></div>
-            </div>              
-          </div>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
-              <button type="button" class="btn btn-default" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
-            </div>
+<!-- Start Image Croping Modal -->
+<div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+          <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12 text-center">
+              <div id="image_demo" style="width:100%; margin-top:30px"></div>
+          </div>              
         </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
+            <button type="button" class="btn btn-default" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+          </div>
       </div>
-  </div>
-  <!-- End Image Croping Modal -->
+    </div>
+</div>
+<!-- End Image Croping Modal -->
 
 
   

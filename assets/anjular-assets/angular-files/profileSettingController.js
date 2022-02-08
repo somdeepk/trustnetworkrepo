@@ -524,9 +524,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	};
 
 
-
-
-$image_crop = $('#image_demo').croppie({
+	$image_crop = $('#image_demo').croppie({
 		enableExif: true,
 		viewport: {
 		  width:200,
@@ -570,7 +568,7 @@ $image_crop = $('#image_demo').croppie({
 			data='<img class="profile-pic" src="'+response+'" style="margin:0 auto; height:149px;">';
 			response=response.replace(";", "colone");
 			response=response.replace(",", "comma");
-			$scope.memberData.hidden_image_encode=response;
+			$scope.generalData.hidden_image_encode=response;
 			$('#uploadimageModal').modal('hide');
 			$('#uploaded_image').html(data);
 		})
@@ -578,9 +576,9 @@ $image_crop = $('#image_demo').croppie({
 
 	$scope.clearProfileImage = function()
 	{
-		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.profile_image))
+		if(!$scope.isNullOrEmptyOrUndefined($scope.generalData.profile_image))
     	{
-			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.memberData.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.generalData.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
 		}
 		else
 		{

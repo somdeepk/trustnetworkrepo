@@ -34,7 +34,9 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog-theme-default.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/anjular-assets/angular-files/ngDialog/css/ngDialog-theme-plain.css" />
-    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery.min.js"></script> -->
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery3.5.1.min.js"></script>
+    <script src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/bootstrap4.5.2.min.js"></script>
     
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/js/jquery.dataTables.min.js"></script>
     
@@ -64,10 +66,6 @@
 
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-pages/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
-
-        <script src="<?php echo base_url();?>assets/js_2/popper.min.js"></script>
-    <script src="<?php echo base_url();?>assets/js_2/bootstrap.min.js"></script>
-
     <script>
         varGlobalAdminBaseUrl='<?php echo base_url();?>user/'
         varBaseUrl='<?php echo base_url();?>'
