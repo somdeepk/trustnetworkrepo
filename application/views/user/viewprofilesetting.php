@@ -1,3 +1,6 @@
+    <script src="<?php echo base_url();?>assets/crop-image/croppie.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/crop-image/croppie.css">
+
 <!-- Main Contents -->
 <div class="main_content" ng-controller="profileSettingController" ng-init="baseencoded_profileSettingData='<?php echo base64_encode(json_encode($profileSettingData)) ;?>'; initProfileSetting();">
     <div class="mcontainer">
@@ -128,7 +131,8 @@
                      <h3 class="font-bold mb-2 text-xl">Profile Picture and Cover Image</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                      <form>
-                        <div class="lg:px-10 flex-1 space-y-4 ">
+
+                        <!-- <div class="lg:px-10 flex-1 space-y-4 ">
                            <div uk-form-custom="" class="w-full py-3 uk-form-custom">
                               <label for="">Upload Profile Picture </label>
                               <div class="bg-gray-100 border-2 border-dashed flex flex-col h-32 items-center justify-center relative w-full rounded-lg dark:bg-gray-800 dark:border-gray-600">
@@ -139,7 +143,28 @@
                               </div>
                               <input type="file">
                            </div>
-                        </div>
+                        </div> -->
+
+
+                        <div class="form-group row align-items-center">
+                                  <div class="col-md-12">
+                                     <div class="profile-img-edit">
+                                      <div id="uploaded_image">
+                                        <img class="profile-pic" ng-if="memberData.profile_image == '' || !memberData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
+                                        <img class="profile-pic" ng-if="memberData.profile_image && memberData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{memberData.profile_image}}" style="margin:0 auto;height:149px;">
+                                      </div>
+
+                                      <div class="p-image">
+                                         <i class="ri-pencil-line upload-button"></i>
+                                         <input class="file-upload" name="upload_image" id="upload_image" type="file" accept="image/*"/>
+                                         <input type="text" ng-model="memberData.hidden_image_encode" class="hiddenimportant" />
+                                         <input type="text" ng-model="memberData.profile_image" class="hiddenimportant" />
+                                      </div>
+                                     </div>
+                                  </div>
+                               </div>
+
+
                         <div class="lg:px-10 flex-1 space-y-4 ">
                            <div uk-form-custom="" class="w-full py-3 uk-form-custom">
                               <label for="">Upload Cover Picture </label>
@@ -904,6 +929,30 @@
 
     </div>
 </div>
+
+
+  <!-- Start Image Croping Modal -->
+  <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+            <div class="modal-body">
+              <div class="row">
+              <div class="col-md-12 text-center">
+                <div id="image_demo" style="width:100%; margin-top:30px"></div>
+            </div>              
+          </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
+              <button type="button" class="btn btn-default" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+      </div>
+  </div>
+  <!-- End Image Croping Modal -->
+
+
+  
 
 <script type="text/javascript">
 $(document).ready(function()

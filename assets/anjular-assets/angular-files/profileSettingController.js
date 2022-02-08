@@ -525,4 +525,70 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 
 
+
+$image_crop = $('#image_demo').croppie({
+		enableExif: true,
+		viewport: {
+		  width:200,
+		  height:200,
+		  type:'square' //circle
+		},
+		boundary:{
+		  width:300,
+		  height:300
+		}
+	});
+
+	$('#upload_image').click(function(){
+	    $(this).val('');
+	})  
+
+	$('#upload_image').on('change', function()
+	{
+		// alert('zzzz');
+		var reader = new FileReader();
+		reader.onload = function (event)
+		{
+			$image_crop.croppie('bind', {
+			url: event.target.result
+			}).then(function()
+			{
+				console.log('jQuery bind complete');
+			});
+		}
+		reader.readAsDataURL(this.files[0]);
+		$('#uploadimageModal').modal('show');
+	});
+
+	$('.zCropImagez').click(function(event)
+	{
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			data='<img class="profile-pic" src="'+response+'" style="margin:0 auto; height:149px;">';
+			response=response.replace(";", "colone");
+			response=response.replace(",", "comma");
+			$scope.memberData.hidden_image_encode=response;
+			$('#uploadimageModal').modal('hide');
+			$('#uploaded_image').html(data);
+		})
+	});
+
+	$scope.clearProfileImage = function()
+	{
+		if(!$scope.isNullOrEmptyOrUndefined($scope.memberData.profile_image))
+    	{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.memberData.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
+		else
+		{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
+	};
+
+
+
+
 });

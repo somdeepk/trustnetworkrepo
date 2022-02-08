@@ -65,6 +65,9 @@
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-pages/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
 
+        <script src="<?php echo base_url();?>assets/js_2/popper.min.js"></script>
+    <script src="<?php echo base_url();?>assets/js_2/bootstrap.min.js"></script>
+
     <script>
         varGlobalAdminBaseUrl='<?php echo base_url();?>user/'
         varBaseUrl='<?php echo base_url();?>'
