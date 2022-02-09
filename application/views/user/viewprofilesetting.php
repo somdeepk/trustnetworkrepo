@@ -133,59 +133,69 @@
                      <h3 class="font-bold mb-2 text-xl">Profile Picture and Cover Image</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                      <form>
-
-                        <!-- <div class="lg:px-10 flex-1 space-y-4 ">
-                           <div uk-form-custom="" class="w-full py-3 uk-form-custom">
-                              <label for="">Upload Profile Picture </label>
-                              <div class="bg-gray-100 border-2 border-dashed flex flex-col h-32 items-center justify-center relative w-full rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
-                                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
-                                    <path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path>
-                                 </svg>
-                              </div>
-                              <input type="file">
-                           </div>
-                        </div> -->
-
+                        
 
                         <div class="form-group row align-items-center">
-                                  <div class="col-md-12">
-                                     <div class="profile-img-edit">
-                                      <div id="uploaded_image">
-                                        <img class="profile-pic" ng-if="generalData.profile_image == '' || !generalData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
-                                        <img class="profile-pic" ng-if="generalData.profile_image && generalData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{generalData.profile_image}}" style="margin:0 auto;height:149px;">
-                                      </div>
+                            <div class="col-md-12">
+                               <div class="profile-img-edit">
+                                <div id="uploaded_image">
+                                  <img class="profile-pic" ng-if="generalData.profile_image == '' || !generalData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
+                                  <img class="profile-pic" ng-if="generalData.profile_image && generalData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{generalData.profile_image}}" style="margin:0 auto;height:149px;">
+                                </div>
 
-                                      <div class="p-image">
-                                         <i class="ri-pencil-line upload-button"></i>
-                                         <input class="file-upload" name="upload_image" id="upload_image" type="file" accept="image/*"/>
-                                         <input type="text" ng-model="generalData.hidden_image_encode" class="hiddenimportant" />
-                                         <input type="text" ng-model="generalData.profile_image" class="hiddenimportant" />
-                                      </div>
-                                     </div>
-                                  </div>
+                                <div class="p-image">
+                                   <i class="ri-pencil-line upload-button"></i>
+                                   <input class="file-upload" name="upload_image" id="upload_image" type="file" accept="image/*"/>
+                                   <input type="text" ng-model="generalData.hidden_image_encode" class="hiddenimportant" />
+                                   <input type="text" ng-model="generalData.profile_image" class="hiddenimportant" />
+                                </div>
                                </div>
-
-
-                        <div class="lg:px-10 flex-1 space-y-4 ">
-                           <div uk-form-custom="" class="w-full py-3 uk-form-custom">
-                              <label for="">Upload Cover Picture </label>
-                              <div class="bg-gray-100 border-2 border-dashed flex flex-col h-32 items-center justify-center relative w-full rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
-                                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
-                                    <path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path>
-                                 </svg>
-                              </div>
-                              <input type="file">
-                           </div>
+                            </div>
                         </div>
+
+
+                        <!-- <div class="cover-container">
+                             
+                             <input type="hidden" ng-model="coverImageData.encode_cover_image" />
+                             <input type="hidden" ng-model="coverImageData.exist_cover_image" />
+                             
+                             <div class="zCoverImgContainerz">
+                               <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
+                               <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
+                             </div>
+                             <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%;"></div>
+                            
+                             <ul class="header-nav d-flex flex-wrap p-0 m-0 crop-list">
+                               <li style="z-index: 99">
+                                 <a class="file-upload-icon zeditCoverz mt-3" style="position: relative;" href="javascript:void('');"><i class="ri-pencil-line">
+
+                                 <input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                                 </a>
+
+                                 <div class="mt-3">
+                                   
+                                    <button class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
+                                    <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button>
+
+                                  </div>
+
+                               </li>
+                             </ul>
+                        </div> -->
+                 
+
                      </form>
                   </div>
+
                   <!-- form body -->
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                     
                      <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+
+                     <button type="button" class="button bg-blue-700 zsubmitImage" ng-click="submitImage();"> Save </button>
+
                   </div>
+
                </div>
             </div>                    
                                 
@@ -936,7 +946,7 @@
 <!-- Start Image Croping Modal -->
 <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
   <div class="modal-dialog modal-sm">
-    <div class="modal-content">
+    <div class="modal-content" style="width: 115% !important;">
           <div class="modal-body">
             <div class="row">
             <div class="col-md-12 text-center">
@@ -945,8 +955,8 @@
         </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
-            <button type="button" class="btn btn-default" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+            <button class="button bg-blue-700 zCropImagez">Crop & Upload Image</button>
+            <button type="button" class="button bg-blue-700" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
           </div>
       </div>
     </div>

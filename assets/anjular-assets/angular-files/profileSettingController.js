@@ -569,6 +569,9 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			response=response.replace(";", "colone");
 			response=response.replace(",", "comma");
 			$scope.generalData.hidden_image_encode=response;
+
+			// alert($scope.generalData.hidden_image_encode);
+
 			$('#uploadimageModal').modal('hide');
 			$('#uploaded_image').html(data);
 		})
@@ -587,6 +590,182 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	};
 
 
+	$scope.submitImage = function()
+    {
+		$scope.generalDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.generalDataCheck=false ;
+		},2000);
+
+		var validator=0;
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zsubmitImage','Saving..','loader');
+		
+			$timeout(function()
+			{	
+				var formData = new FormData();
+
+				// console.log($scope.generalData); return false;
+
+				$scope.generalData.loggedUserId = $rootScope.loggedUserId;
+				formData.append('generalData',angular.toJson($scope.generalData));
+				
+				angular.forEach($scope.files,function(file){           
+					formData.append('file[]',file);
+				}); 
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditimage",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+
+	            	// console.log(returnData); return false;
+
+					$scope.generalDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitImage','Saved!','onlytext');
+	            		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zsubmitImage','Submit','onlytext');
+						},1200);
+						if(!$scope.isNullOrEmptyOrUndefined(aryreturnData.data.imagename))
+				    	{
+				    		$scope.generalData.profile_image=aryreturnData.data.imagename;
+				    		$scope.generalData.hidden_image_encode='';
+							$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
+						}
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmitImage','Submit','onlytext');	            		
+			        	console.log("Image Upload Failed!");
+	            	}
+				});
+			},1200);
+		}
+	};
+
+
+
+
+
+	// $scope.initiateUpload=0;
+ //    $image_crop = $('.zCropCoverImagez').croppie({
+	// 	enableExif: false,
+	// 	viewport: {
+	// 	  width:500,
+	// 	  height:175,
+	// 	  type:'square' //circle
+	// 	},
+	// 	boundary:{
+	// 	  width:500,
+	// 	  height:175
+	// 	}
+	// });
+
+	// $('#btnUploadCoverImage').click(function(){
+	//     $(this).val('');
+	// });  
+
+	// $('#btnUploadCoverImage').on('change', function()
+	// {
+	// 	$scope.initiateUpload=1;
+	// 	var reader = new FileReader();
+	// 	reader.onload = function (event)
+	// 	{
+	// 		$image_crop.croppie('bind', {
+	// 		url: event.target.result
+	// 		}).then(function()
+	// 		{
+	// 			console.log('jQuery bind complete');
+	// 		});
+	// 	}
+	// 	reader.readAsDataURL(this.files[0]);
+	// 	$('.zCropCoverImagez').removeClass('hiddenimportant');
+	// 	$('.zCoverImgContainerz').addClass('hiddenimportant');
+	// 	// $('.zProfileImgContainerz').addClass('hiddenimportant');
+	// 	// $('.zeditCoverz').addClass('hiddenimportant');
+	// 	$('.zCropCancelz').removeClass('hiddenimportant');
+	// });
+
+	// $scope.clearCoverImage = function()
+	// {		
+	// 	if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
+ //    	{
+	// 		$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/'+$scope.coverImageData.exist_cover_image+'" alt="Cover Image" class="rounded img-fluid">');
+	// 	}
+	// 	else
+	// 	{
+	// 		$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/cover-no-image.jpg" alt="Cover Image" class="rounded img-fluid">');
+	// 	}
+	// 	$('.zCropCoverImagez').addClass('hiddenimportant');
+	// 	$('.zCoverImgContainerz').removeClass('hiddenimportant');
+	// 	$('.zProfileImgContainerz').removeClass('hiddenimportant');
+
+	// 	$('.zCropCancelz').addClass('hiddenimportant');
+	// 	$('.zeditCoverz').removeClass('hiddenimportant');
+	// };
+
+	// $scope.cropCoverImage = function()
+ //    {
+	// 	$image_crop.croppie('result', {
+	// 		type: 'canvas',
+	// 		size: 'viewport'
+	// 	}).then(function(response)
+	// 	{
+	// 		newImage=response;
+	// 		postresponse=response.replace(";", "colone");
+	// 		postresponse=postresponse.replace(",", "comma");
+	// 		$scope.coverImageData.encode_cover_image=postresponse;
+	// 		$scope.coverImageData.id=$scope.friendData.user_auto_id
+
+	// 		if($scope.coverImageData.id>0)
+	// 		{
+	// 			var formData = new FormData();
+	// 			formData.append('coverImageData',angular.toJson($scope.coverImageData)); 
+
+	// 			$http({
+	//                 method  : 'POST',
+	//                 url     : varGlobalAdminBaseUrl+"ajaxupdateeditcoverimage",
+	//                 transformRequest: angular.identity,
+	//                 headers: {'Content-Type': undefined},                     
+	//                 data:formData, 
+	//             }).success(function(returnData) {
+	// 				aryreturnData=angular.fromJson(returnData);
+	//             	if(aryreturnData.status=='1')
+	//             	{
+	//             		$scope.coverImageData.exist_cover_image=aryreturnData.data.imagename;
+	//             		//alert($scope.coverImageData.exist_cover_image)
+	//             		data='<img alt="Cover Image" class="rounded img-fluid" src="'+newImage+'">';
+	// 					$('.zCoverImgContainerz').html(data);
+	// 					$('.zCropCoverImagez').addClass('hiddenimportant');
+	// 					$('.zCoverImgContainerz').removeClass('hiddenimportant');
+	// 					$('.zProfileImgContainerz').removeClass('hiddenimportant');
+	// 					$('.zCropCancelz').addClass('hiddenimportant');
+	// 					$('.zeditCoverz').removeClass('hiddenimportant');
+	//             	}
+	//             	else
+	//             	{
+	//             		$scope.clearCoverImage();
+	//             		swal("Error!",
+	// 		        		"Cover Image Upload Failed!",
+	// 		        		"error"
+	// 		        	);
+	//             	}
+
+	// 			});
+	//         }
+	// 	})
+	// };
 
 
 });

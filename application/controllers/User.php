@@ -2853,6 +2853,73 @@ class User extends CI_Controller
     }
 
 
+    public function ajaxupdateeditimage() 
+    {
+        $generalData = trim($this->input->post('generalData'));
+        $aryMemberData=json_decode($generalData, true);
+
+        // echo "<pre />"; print_r($aryMemberData); die;
+
+        $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0;
+        
+        $hidden_image_encode=(isset($aryMemberData['hidden_image_encode']) && !empty($aryMemberData['hidden_image_encode']))? addslashes(trim($aryMemberData['hidden_image_encode'])):'';
+        $profile_image=(isset($aryMemberData['profile_image']) && !empty($aryMemberData['profile_image']))? addslashes(trim($aryMemberData['profile_image'])):'';
+ 	       	
+        $current_date=date('Y-m-d H:i:s');  
+        
+ 	    // echo 'profile_image -- '.$profile_image; die;
+
+        $imagename='';
+        if(!empty($hidden_image_encode))
+        {
+        	$hidden_image_encode=str_replace('colone', ';', $hidden_image_encode);
+        	$hidden_image_encode=str_replace('comma', ',', $hidden_image_encode);        	
+	        $image_array_1 = explode(";", $hidden_image_encode);
+	        $image_array_2 = explode(",", $image_array_1[1]);
+
+	        $imagebase64Data = base64_decode($image_array_2[1]);
+	        $imagename = time().'.png';
+
+			$image_name_with_path = IMAGE_PATH.'images/members/'.$imagename;
+
+			// echo $image_name_with_path.' --- '.$imagebase64Data; die;
+
+			file_put_contents($image_name_with_path, $imagebase64Data);
+
+			$menu_arr['profile_image']=$imagename;
+			$this->session->set_userdata('profile_image',$imagename);
+
+			$menu_arr_post_file = array(
+	            'module_id'=>$id,
+	            'module_type'=>'members',
+	            'member_id'   =>$id,
+	            'file_original_name'=>$imagename,
+	            'file_name'   =>$imagename,
+	            'file_size'   =>'0',        
+	            'file_type'   =>'image/png',       
+	            'create_date'   =>$current_date       
+	        );
+
+	        // echo "<pre />"; print_r($menu_arr_post_file); die;
+
+			$this->User_Model->addUpdatPostFile(0,$menu_arr_post_file);
+		}
+
+        $strstatus="Updated";
+
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Member '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+
 
 }
 	
