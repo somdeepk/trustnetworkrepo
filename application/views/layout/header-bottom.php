@@ -425,7 +425,7 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);" ng-click="viewPostPages()">General Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Prayer Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Praise Report Wall</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Testimony Wall 2</a></li>
+	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Testimonial Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">My Followers Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Fans Wall</a></li>
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Favourite Wall</a></li>
@@ -451,31 +451,31 @@ if ($this->session -> userdata('email') == "" && $this->session -> userdata('log
 	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" ng-show="loggedUserDataObj.membership_type=='PM'" href="javascript:void(0);" ng-click="viewFriends('memberSgtn')">Members List</a></li>
 	                </ul>
 	            </li> 
-	            <li id="more-veiw" ><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
+	            <li id="more-veiw" ><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);"> 
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
 	                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
 	                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
 	                </svg>
 	               <span> Mailbox</span> </a> 
 	                <ul>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Inbox</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Compose</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Sent</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Trash</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Inbox</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Compose</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Sent</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Trash</a></li>
 	                </ul>
 	            </li>
 	            
-	            <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">
+	            <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">
 	                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-red-500">
 	                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clip-rule="evenodd" />
 	                </svg>
 	                <span> Featured Apps</span></a> 
 	                 <ul>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Video Tube</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Live Events</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Audio Tube</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Rhemes</a></li>
-	                    <li><a ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Donation</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Video Tube</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Live Events</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Audio Tube</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Rhemes</a></li>
+	                    <li><a class="blurMenu" ng-class="(flagBlurMenu==1)? 'blurMenu':''" href="javascript:void(0);">Donation</a></li>
 	                </ul>  
 	            </li> 
 	            

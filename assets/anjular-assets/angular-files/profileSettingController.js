@@ -4,7 +4,11 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
    	$scope.memberDataOldNotMtchCheck=false;
    	$scope.groupData={};
    	$scope.srchChurchData={};
+
    	$scope.pageData={};
+   	$scope.pageData.page_category='';
+
+   	$scope.coverImageData={};
 
 	$scope.initProfileSetting = function()
 	{
@@ -13,6 +17,10 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	    var profileSettingDataObj=jQuery.parseJSON(profileSettingDataStr);
 		$scope.profileSettingData=profileSettingDataObj;
 		$scope.generalData=profileSettingDataObj.memberData;
+
+		$scope.srchChurchData.searchChurch=$scope.generalData.churchName;
+		$scope.generalData.assignParentId=$scope.generalData.parent_id;
+		$scope.coverImageData.exist_cover_image=$scope.generalData.cover_image;
 
 		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
 		$scope.securityData=jQuery.parseJSON(profileSettingDataObj.memberData.security_data);
@@ -48,13 +56,13 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			validator++ ;
 		}
 
-		if (($scope.generalData.membership_type=='RM') && (($scope.isNullOrEmptyOrUndefined($scope.generalData.last_name)==true) || ($scope.generalData.last_name=='¿')))
+		if (($scope.generalData.membership_type=='RM') && ($scope.isNullOrEmptyOrUndefined($scope.generalData.assignParentId)==true || $scope.generalData.assignParentId==0 ))
 		{
 			validator++ ;
 		}
 
 		if (Number(validator)==0)
-		{	
+		{
 			$scope.buttonSavingAnimation('zsubmitGeneralDataz','Saving..','loader');
 		
 			$timeout(function()
@@ -73,6 +81,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 					aryreturnData=angular.fromJson(returnData);
 	            	if(aryreturnData.status=='1')
 	            	{
+	            		if ($scope.generalData.membership_type=='RM' && $scope.isNullOrEmptyOrUndefined($scope.generalData.assignParentId)==false)
+						{
+							$scope.generalData.parent_id=$scope.generalData.assignParentId
+						}
+	            		
+
 	            		$scope.buttonSavingAnimation('zsubmitGeneralDataz','Saved!','onlytext');
 	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
@@ -135,7 +149,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			$timeout(function()
 			{	
 
-				$scope.questionData.id=$scope.profileSettingData.memberData.id
+				$scope.questionData.id=$scope.profileSettingData.memberData.id;
 
 				var formData = new FormData();
 				formData.append('questionData',angular.toJson($scope.questionData));
@@ -230,7 +244,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 							$scope.memberDataOldNotMtchCheck=false ;
 						},2000);
 
-						$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');	            		
+						$scope.buttonSavingAnimation('zsubmitMemberz','Save','onlytext');	            		
 	            	}
 	            	else if(aryreturnData.status=='1' && aryreturnData.msg=='success')
 	            	{
@@ -239,12 +253,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            		$rootScope.getLoggedUserData($scope.profileSettingData.memberData.id);
 	            		$timeout(function()
 						{
-							$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+							$scope.buttonSavingAnimation('zsubmitMemberz','Save','onlytext');
 						},1200);
 	            	}
 	            	else
 	            	{
-	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
+	            		$scope.buttonSavingAnimation('zsubmitMemberz','Save','onlytext');
 	            		swal("Error!",
 			        		"Password Changed Failed!",
 			        		"error"
@@ -278,6 +292,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			aryreturnData=angular.fromJson(returnData);
         	$rootScope.allChurchMemberObj=aryreturnData.data.churchData;
 		});
+	};
+
+	$scope.setRegularMemebrUnderChurch = function (objVal)
+	{
+		$scope.generalData.assignParentId=objVal.id;
+		$scope.srchChurchData.searchChurch=objVal.first_name;
 	};
 
 	$scope.getStateData = function(countryId)
@@ -386,12 +406,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
 	        		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zsubmitSecurity','Submit','onlytext');
+						$scope.buttonSavingAnimation('zsubmitSecurity','Save','onlytext');
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitSecurity','Submit','onlytext');
+	        		$scope.buttonSavingAnimation('zsubmitSecurity','Save','onlytext');
 	        		console.log("Security Updation Failed!");	        		
 	        	}
 			});
@@ -423,12 +443,12 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
 	        		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zsubmitNotification','Submit','onlytext');
+						$scope.buttonSavingAnimation('zsubmitNotification','Save','onlytext');
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitNotification','Submit','onlytext');
+	        		$scope.buttonSavingAnimation('zsubmitNotification','Save','onlytext');
 	        		console.log("Notification Updation Failed!");	        		
 	        	}
 			});
@@ -475,7 +495,6 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			validator++ ;
 		}
 
-
 		if (Number(validator)==0)
 		{	
 			$scope.buttonSavingAnimation('zcreatePage','Saving..','loader');		
@@ -514,7 +533,6 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 				});
 			},1200);
 		}	
-
 	};
 
 
@@ -524,6 +542,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	};
 
 
+	/************Start Profile Image Secton***********/
 	$image_crop = $('#image_demo').croppie({
 		enableExif: true,
 		viewport: {
@@ -569,15 +588,11 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			response=response.replace(";", "colone");
 			response=response.replace(",", "comma");
 			$scope.generalData.hidden_image_encode=response;
-
-			// alert($scope.generalData.hidden_image_encode);
-
-			$('#uploadimageModal').modal('hide');
-			$('#uploaded_image').html(data);
+			$scope.submitImage();
 		})
 	});
 
-	$scope.clearProfileImage = function()
+	/*$scope.clearProfileImage = function()
 	{
 		if(!$scope.isNullOrEmptyOrUndefined($scope.generalData.profile_image))
     	{
@@ -588,7 +603,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
 		}
 	};
-
+*/
 
 	$scope.submitImage = function()
     {
@@ -602,14 +617,11 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 		if (Number(validator)==0)
 		{	
-			$scope.buttonSavingAnimation('zsubmitImage','Saving..','loader');
+			$scope.buttonSavingAnimation('zCropImagez','Saving..','loader');
 		
 			$timeout(function()
 			{	
 				var formData = new FormData();
-
-				// console.log($scope.generalData); return false;
-
 				$scope.generalData.loggedUserId = $rootScope.loggedUserId;
 				formData.append('generalData',angular.toJson($scope.generalData));
 				
@@ -631,22 +643,24 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 					aryreturnData=angular.fromJson(returnData);
 	            	if(aryreturnData.status=='1')
 	            	{
-	            		$scope.buttonSavingAnimation('zsubmitImage','Saved!','onlytext');
+	            		$scope.buttonSavingAnimation('zCropImagez','Saved!','onlytext');
 	            		$rootScope.getLoggedUserData($rootScope.loggedUserId);
 	            		$timeout(function()
 						{
-							$scope.buttonSavingAnimation('zsubmitImage','Submit','onlytext');
+							$('#uploadimageModal').modal('hide');
+							$('#uploaded_image').html(data);
+							$scope.buttonSavingAnimation('zCropImagez','Crop & Upload Image','onlytext');
 						},1200);
+
 						if(!$scope.isNullOrEmptyOrUndefined(aryreturnData.data.imagename))
 				    	{
 				    		$scope.generalData.profile_image=aryreturnData.data.imagename;
 				    		$scope.generalData.hidden_image_encode='';
-							$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
 						}
 	            	}
 	            	else
 	            	{
-	            		$scope.buttonSavingAnimation('zsubmitImage','Submit','onlytext');	            		
+	            		$scope.buttonSavingAnimation('zCropImagez','Crop & Upload Image','onlytext');	            		
 			        	console.log("Image Upload Failed!");
 	            	}
 				});
@@ -654,118 +668,119 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		}
 	};
 
+	/************End Profile Image Secton***********/
 
 
 
+	/************Start Cover Image Secton***********/
 
-	// $scope.initiateUpload=0;
- //    $image_crop = $('.zCropCoverImagez').croppie({
-	// 	enableExif: false,
-	// 	viewport: {
-	// 	  width:500,
-	// 	  height:175,
-	// 	  type:'square' //circle
-	// 	},
-	// 	boundary:{
-	// 	  width:500,
-	// 	  height:175
-	// 	}
-	// });
+	$scope.initiateUpload=0;
+    $cover_image_crop = $('.zCropCoverImagez').croppie({
+		enableExif: false,
+		viewport: {
+		  width:500,
+		  height:175,
+		  type:'square' //circle
+		},
+		boundary:{
+		  width:500,
+		  height:175
+		}
+	});
 
-	// $('#btnUploadCoverImage').click(function(){
-	//     $(this).val('');
-	// });  
+	$('#btnUploadCoverImage').click(function(){
+	    $(this).val('');
+	});  
 
-	// $('#btnUploadCoverImage').on('change', function()
-	// {
-	// 	$scope.initiateUpload=1;
-	// 	var reader = new FileReader();
-	// 	reader.onload = function (event)
-	// 	{
-	// 		$image_crop.croppie('bind', {
-	// 		url: event.target.result
-	// 		}).then(function()
-	// 		{
-	// 			console.log('jQuery bind complete');
-	// 		});
-	// 	}
-	// 	reader.readAsDataURL(this.files[0]);
-	// 	$('.zCropCoverImagez').removeClass('hiddenimportant');
-	// 	$('.zCoverImgContainerz').addClass('hiddenimportant');
-	// 	// $('.zProfileImgContainerz').addClass('hiddenimportant');
-	// 	// $('.zeditCoverz').addClass('hiddenimportant');
-	// 	$('.zCropCancelz').removeClass('hiddenimportant');
-	// });
+	$('#btnUploadCoverImage').on('change', function()
+	{
+		$scope.initiateUpload=1;
+		var reader = new FileReader();
+		reader.onload = function (event)
+		{
+			$cover_image_crop.croppie('bind', {
+			url: event.target.result
+			}).then(function()
+			{
+				console.log('jQuery bind complete');
+			});
+		}
+		reader.readAsDataURL(this.files[0]);
+		$('.zCropCoverImagez').removeClass('hiddenimportant');
+		$('.zCoverImgContainerz').addClass('hiddenimportant');
+		$('.zProfileImgContainerz').addClass('hiddenimportant');
+		$('.zeditCoverz').addClass('hiddenimportant');
+		$('.zCropCancelz').removeClass('hiddenimportant');
+	});
 
-	// $scope.clearCoverImage = function()
-	// {		
-	// 	if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
- //    	{
-	// 		$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/'+$scope.coverImageData.exist_cover_image+'" alt="Cover Image" class="rounded img-fluid">');
-	// 	}
-	// 	else
-	// 	{
-	// 		$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/cover-no-image.jpg" alt="Cover Image" class="rounded img-fluid">');
-	// 	}
-	// 	$('.zCropCoverImagez').addClass('hiddenimportant');
-	// 	$('.zCoverImgContainerz').removeClass('hiddenimportant');
-	// 	$('.zProfileImgContainerz').removeClass('hiddenimportant');
+	$scope.clearCoverImage = function()
+	{		
+		$('.zCropCoverImagez').addClass('hiddenimportant');
+		$('.zCoverImgContainerz').removeClass('hiddenimportant');
+		$('.zProfileImgContainerz').removeClass('hiddenimportant');
 
-	// 	$('.zCropCancelz').addClass('hiddenimportant');
-	// 	$('.zeditCoverz').removeClass('hiddenimportant');
-	// };
+		$('.zCropCancelz').addClass('hiddenimportant');
+		$('.zeditCoverz').removeClass('hiddenimportant');
+	};
 
-	// $scope.cropCoverImage = function()
- //    {
-	// 	$image_crop.croppie('result', {
-	// 		type: 'canvas',
-	// 		size: 'viewport'
-	// 	}).then(function(response)
-	// 	{
-	// 		newImage=response;
-	// 		postresponse=response.replace(";", "colone");
-	// 		postresponse=postresponse.replace(",", "comma");
-	// 		$scope.coverImageData.encode_cover_image=postresponse;
-	// 		$scope.coverImageData.id=$scope.friendData.user_auto_id
+	$scope.cropCoverImage = function()
+    {
+		$cover_image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			newImage=response;
+			postresponse=response.replace(";", "colone");
+			postresponse=postresponse.replace(",", "comma");
+			$scope.coverImageData.encode_cover_image=postresponse;
+			$scope.coverImageData.id=$scope.profileSettingData.memberData.id;
 
-	// 		if($scope.coverImageData.id>0)
-	// 		{
-	// 			var formData = new FormData();
-	// 			formData.append('coverImageData',angular.toJson($scope.coverImageData)); 
+			if($scope.coverImageData.id>0)
+			{
+				var formData = new FormData();
+				formData.append('coverImageData',angular.toJson($scope.coverImageData)); 
+				$scope.buttonSavingAnimation('zCropCoverBtnImagez','Saving..','loader');
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditcoverimage",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zCropCoverBtnImagez','Saved!','onlytext');
+	            		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zCropCoverBtnImagez','Crop & Upload Image','onlytext');
+							$rootScope.getLoggedUserData($rootScope.loggedUserId);
+		            		$scope.coverImageData.exist_cover_image=aryreturnData.data.imagename;
+		            		data='<img alt="Cover Image" class="rounded img-fluid" src="'+newImage+'">';
+							$('.zCoverImgContainerz').html(data);
+							$('.zCropCoverImagez').addClass('hiddenimportant');
+							$('.zCoverImgContainerz').removeClass('hiddenimportant');
+							$('.zProfileImgContainerz').removeClass('hiddenimportant');
+							$('.zCropCancelz').addClass('hiddenimportant');
+							$('.zeditCoverz').removeClass('hiddenimportant');
+						},1200);
+	            		
+	            	}
+	            	else
+	            	{
+	            		$scope.clearCoverImage();
+	            		$scope.buttonSavingAnimation('zCropCoverBtnImagez','Crop & Upload Image','onlytext');
+	            		console.log("Cover Image Upload Failed!");
+	            	}
 
-	// 			$http({
-	//                 method  : 'POST',
-	//                 url     : varGlobalAdminBaseUrl+"ajaxupdateeditcoverimage",
-	//                 transformRequest: angular.identity,
-	//                 headers: {'Content-Type': undefined},                     
-	//                 data:formData, 
-	//             }).success(function(returnData) {
-	// 				aryreturnData=angular.fromJson(returnData);
-	//             	if(aryreturnData.status=='1')
-	//             	{
-	//             		$scope.coverImageData.exist_cover_image=aryreturnData.data.imagename;
-	//             		//alert($scope.coverImageData.exist_cover_image)
-	//             		data='<img alt="Cover Image" class="rounded img-fluid" src="'+newImage+'">';
-	// 					$('.zCoverImgContainerz').html(data);
-	// 					$('.zCropCoverImagez').addClass('hiddenimportant');
-	// 					$('.zCoverImgContainerz').removeClass('hiddenimportant');
-	// 					$('.zProfileImgContainerz').removeClass('hiddenimportant');
-	// 					$('.zCropCancelz').addClass('hiddenimportant');
-	// 					$('.zeditCoverz').removeClass('hiddenimportant');
-	//             	}
-	//             	else
-	//             	{
-	//             		$scope.clearCoverImage();
-	//             		swal("Error!",
-	// 		        		"Cover Image Upload Failed!",
-	// 		        		"error"
-	// 		        	);
-	//             	}
+				});
+	        }
+		})
+	};
 
-	// 			});
-	//         }
-	// 	})
-	// };
+	/************End Profile Image Secton***********/
 
 
 });

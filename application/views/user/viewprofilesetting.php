@@ -41,7 +41,7 @@
                      </div>
                      <div class="line" ng-if="generalData.membership_type=='RM'">
                         <input class="line__input" type="text" id="last_name" autocomplete="off" ng-model="generalData.last_name" maxlength="25" ng-class="(generalDataCheck==true && isNullOrEmptyOrUndefined(generalData.last_name)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
-                        <span for="username" class="line__placeholder">Last Name</span>
+                        <span for="username" class="line__placeholder">Last Name {{generalData.parent_id}}</span>
                      </div>
                      <div class="line" ng-if="generalData.membership_type=='PM'">
                         <input class="line__input" type="text" id="first_name" autocomplete="off" ng-model="generalData.first_name" maxlength="25" onKeyUp="this.setAttribute('value', this.value);">
@@ -49,14 +49,14 @@
                      </div>
 
                      <!-- search icon for mobile -->
-                     <div ng-if="generalData.membership_type=='RM'" class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"></div>
-                     <div ng-if="generalData.membership_type=='RM'" class="header_search"><i class="uil-search-alt"></i>
-                        <input type="text" ng-model="srchChurchData.searchChurch" ng-keyup="searchChurchToTag()" class="form-control" placeholder="Search Church.." autocomplete="off">
+                     <div ng-if="generalData.membership_type=='RM'"  class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"></div>
+                     <div ng-if="generalData.membership_type=='RM'" ng-class="(generalData.parent_id>0)?'cssBtnDisabled':''" class="header_search"><i class="uil-search-alt"></i>
+                        <input type="text" ng-class="(generalDataCheck==true && (isNullOrEmptyOrUndefined(generalData.assignParentId)==true) || generalData.assignParentId==0)? 'redBorder' : ''" ng-model="srchChurchData.searchChurch" ng-keyup="searchChurchToTag()" class="form-control" placeholder="Search Church.." autocomplete="off">
                         <div uk-drop="mode: click" class="header_search_dropdown">
                            <h4 class="search_title"> Recently </h4>
                            <ul>
                               <li ng-repeat="(key, value) in allChurchMemberObj">
-                                 <a href="javascript:void(0);">
+                                 <a href="javascript:void(0);" ng-click="setRegularMemebrUnderChurch(value)">
                                     <img ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" alt="{{value.first_name}}" class="list-avatar">
                                     <div class="list-name">{{value.first_name}}</div>
                                  </a>
@@ -128,13 +128,10 @@
 
             <div id="tab-2" class="tab-content lg:w-2/3">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
-                  <!-- form header -->
                   <div class="lg:px-10 lg:py-8 p-6">
                      <h3 class="font-bold mb-2 text-xl">Profile Picture and Cover Image</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                      <form>
-                        
-
                         <div class="form-group row align-items-center">
                             <div class="col-md-12">
                                <div class="profile-img-edit">
@@ -151,51 +148,35 @@
                                 </div>
                                </div>
                             </div>
+
                         </div>
 
-
-                        <!-- <div class="cover-container">
-                             
-                             <input type="hidden" ng-model="coverImageData.encode_cover_image" />
-                             <input type="hidden" ng-model="coverImageData.exist_cover_image" />
-                             
-                             <div class="zCoverImgContainerz">
+                        <div class="cover-container">
+                            <input type="hidden" ng-model="coverImageData.encode_cover_image" />
+                            <input type="hidden" ng-model="coverImageData.exist_cover_image" />                             
+                            <div class="zCoverImgContainerz">
                                <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
                                <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
-                             </div>
-                             <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%;"></div>
+                            </div>
+                            <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%;"></div>
                             
-                             <ul class="header-nav d-flex flex-wrap p-0 m-0 crop-list">
-                               <li style="z-index: 99">
-                                 <a class="file-upload-icon zeditCoverz mt-3" style="position: relative;" href="javascript:void('');"><i class="ri-pencil-line">
+                            <ul class="header-nav d-flex flex-wrap p-0 m-0 crop-list">
+                              <li style="z-index: 99">
+                                <a class="file-upload-icon zeditCoverz mt-3" style="position: relative;" href="javascript:void('');"><i class="ri-pencil-line">
+                                <input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                                </a>
 
-                                 <input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
-                                 </a>
-
-                                 <div class="mt-3">
-                                   
-                                    <button class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
-                                    <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button>
-
-                                  </div>
-
-                               </li>
-                             </ul>
-                        </div> -->
-                 
-
+                                <div class="mt-3">                                   
+                                <button class="button bg-blue-700 zCropCoverBtnImagez zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
+                                <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button>
+                                </div>
+                              </li>
+                            </ul>
+                        </div>
                      </form>
                   </div>
 
-                  <!-- form body -->
-                  <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-
-                     <button type="button" class="button bg-blue-700 zsubmitImage" ng-click="submitImage();"> Save </button>
-
-                  </div>
-
+                 
                </div>
             </div>                    
                                 
@@ -375,6 +356,7 @@
                            <div>          
                               <label for="page_category"> Page Category </label>                    
                               <select id="page_category" class="shadow-none with-border" ng-model="pageData.page_category" ng-class="(pageDataCheck==true && isNullOrEmptyOrUndefined(pageData.page_category)==true)? 'redBorder' : ''">
+                                 <option value=""> Select </option>
                                  <option value="Church Information"> Church Information </option>
                                  <option value="Statement of faith"> Statement of faith </option>
                                  <option value="Church Members"> Church Members </option>
@@ -956,7 +938,7 @@
           </div>
           <div class="modal-footer">
             <button class="button bg-blue-700 zCropImagez">Crop & Upload Image</button>
-            <button type="button" class="button bg-blue-700" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+            <button type="button" class="button bg-blue-700" data-dismiss="modal">Cancel</button>
           </div>
       </div>
     </div>
