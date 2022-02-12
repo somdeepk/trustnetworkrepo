@@ -13,6 +13,7 @@ div.postWhenScrollContainer{
 <div ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');">
 
    <div id="content-page" when-scrolled="getMorePostOnScroll()" class="content-page postWhenScrollContainer">
+      
       <div class="modal fade" id="tagPostToFriendModal" tabindex="-1" role="dialog" aria-labelledby="postTag-modalLabel" aria-hidden="true" style="display: none;">
          <div class="modal-dialog" role="document">
             <div class="modal-content">

@@ -2550,9 +2550,6 @@ class User extends CI_Controller
 
         $returnData=array();
 
-        /*echo "encode_cover_image".$encode_cover_image;
-        exit;*/
-
         if(!empty($encode_cover_image) && $encode_cover_image!='data:comma' && !empty($id)) //data:comma blank Image
         {
         	$menu_arr=array();
