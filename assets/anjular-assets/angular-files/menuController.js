@@ -9,6 +9,8 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 	{
 		$rootScope.loggedUserId=loggedUserId;
 		$rootScope.getLoggedUserData(loggedUserId);
+
+		$scope.viewPostPages();
 	};
 
 	$rootScope.getLoggedUserData = function (loggedUserId)
@@ -118,7 +120,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$('.loaderOverlay').fadeOut(200);
 			var element = angular.element('#angularMainContent').html(data);
 			$compile(element.contents())($scope);
-			$rootScope.viewFriends();
+			//$rootScope.viewFriends();
 
 		});
 		response.error(function(data, status, headers, config) {
@@ -139,7 +141,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$('.loaderOverlay').fadeOut(200);
 			var element = angular.element('#angularMainContent').html(data);
 			$compile(element.contents())($scope);
-			$rootScope.viewFriends();
+			//$rootScope.viewFriends();
 
 		});
 		response.error(function(data, status, headers, config) {

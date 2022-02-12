@@ -187,7 +187,11 @@ class User_Model extends CI_Model
 		}
 
 		$sql="SELECT 
-				tm.*,
+				tm.id,
+				tm.profile_image,
+				tm.membership_type,
+				tm.first_name,
+				tm.last_name,
 				tm2.first_name as church_first_name,
 				tm2.last_name as church_last_name
 

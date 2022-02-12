@@ -228,7 +228,7 @@ class User extends CI_Controller
 		$flagBlurMenu=0;
 		if(trim($memberData['first_name'])=="" || (trim($memberData['last_name'])=="" && $memberData['membership_type']=='RM') || trim($memberData['user_email'])==""  || empty($memberData['profile_question']) || $memberData['is_pass_changed']=='N' || ($memberData['membership_type']=='RM' && $memberData['parent_id']==0) || trim($memberData['profile_image'])=="" || trim($memberData['cover_image'])=="") //
 		{
-			$flagBlurMenu=1;
+			//$flagBlurMenu=1;
 		}
 
 		$returnData=array();

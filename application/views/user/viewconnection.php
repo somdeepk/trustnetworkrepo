@@ -60,7 +60,7 @@
 
                          <div class="d-flex align-items-center mt-2 mt-md-0">                          
                             <div class="confirm-click-btn">
-                               <a href="javascript:void();" ng-class="(value.request_status=='1')? 'cssBtnDisabled':''" ng-click="sendFriendRequest(value.id);" class="bg-blue-600 flex flex-1 h-8 px-3 mr-3 items-center justify-center rounded-md text-white capitalize zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'" class="fa fa-user-plus"></i>&nbsp;{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}} {{value.request_status}}</a>
+                               <a href="javascript:void();" ng-class="(value.request_status=='1')? 'cssBtnDisabled':''" ng-click="sendFriendRequest(value.id);" class="bg-blue-600 flex flex-1 h-8 px-3 mr-3 items-center justify-center rounded-md text-white capitalize zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'" class="fa fa-user-plus"></i>&nbsp;{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
                             </div>
                             <a href="javascript:void();" ng-click="removeFromSuggestion(value.id);" class="btn btn-secondary rounded zRemoveFromSuggestionz_{{value.id}}" >Remove</a>
                          </div>
