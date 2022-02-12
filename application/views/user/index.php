@@ -192,7 +192,7 @@ div.postWhenScrollContainer{
                            <div class="user-post-data">
                               <div class="d-flex flex-wrap">
                                  <div class="media-support-user-img mr-3">
-                                    <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
+                                    <img class="rounded-circle img-fluid" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
                                  </div>
                                  <div class="media-support-info mt-2">
                                     <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
@@ -255,19 +255,19 @@ div.postWhenScrollContainer{
 
                                     <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                                        <a href="javascript:void();">
-                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
+                                          <img ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" class="post-ptoto" >
                                        </a>
                                     </div>
 
                                     <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
                                        <a href="javascript:void();">
-                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto" >
+                                          <img ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" class="post-ptoto" >
                                        </a>
                                     </div>
                                     
                                     <div class="col-md-6 mb-3" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)">
                                        <a href="javascript:void();">
-                                          <img src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto" >
+                                          <img ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" class="post-ptoto" >
                                        </a>
                                     </div>
 

@@ -123,10 +123,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong. Please try again later!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong. Please try again later!")
         	}
 		});	
 
@@ -158,10 +155,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -201,10 +195,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirm','onlytext');
-	        		swal("Error!",
-		        		"Confirmation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Confirmation Failed!")
 	        	}
 			});
 		},2000);
@@ -239,10 +230,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
+	        		console.log("Deletion Failed!")
 	        	}
 			});
 		},2000);

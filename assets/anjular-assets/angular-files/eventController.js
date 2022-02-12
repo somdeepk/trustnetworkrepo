@@ -315,10 +315,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	            	else
 	            	{
 	            		$scope.buttonSavingAnimation('zeventSubmitButtonz','Submit','onlytext');
-	            		swal("Error!",
-			        		"Event Creation Failed!",
-			        		"error"
-			        	)
+	            		console.log("Event Creation Failed!")
 	            	}
 				});
 			},1200);

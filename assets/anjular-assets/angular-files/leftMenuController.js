@@ -40,10 +40,7 @@ mainApp.controller('leftMenuController', function ($rootScope, $timeout, $interv
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong. Please try again later!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong. Please try again later!")
         	}
 		});	
 	};
@@ -66,10 +63,7 @@ mainApp.controller('leftMenuController', function ($rootScope, $timeout, $interv
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong. Please try again later!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong. Please try again later!")
         	}
 		});	
 	};

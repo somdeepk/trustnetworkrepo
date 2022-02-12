@@ -27,7 +27,7 @@ class Post extends CI_Controller
 
 		$current_date=date('Y-m-d H:i:s');
 
-		if($member_id>0)
+		if($member_id>0 && (!empty($post) || !empty($postfile)))
 		{
 			$menu_arr = array(
 	            'member_id' => $member_id,
