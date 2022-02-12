@@ -39,10 +39,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -115,10 +112,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Remove','onlytext');
-	        		swal("Error!",
-		        		"Removal Failed!",
-		        		"error"
-		        	)
+	        		console.log("Removal Failed!")
 	        	}
 			});
 		},600);
@@ -148,10 +142,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -186,10 +177,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirm','onlytext');
-	        		swal("Error!",
-		        		"Confirmation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Confirmation Failed!")
 	        	}
 			});
 		},600);
@@ -219,10 +207,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
+	        		console.log("Deletion Failed!")
 	        	}
 			});
 		},600);
@@ -253,10 +238,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
@@ -286,10 +268,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteMyFriendz_'+myFriendId,'Remove Friend','onlytext');
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
+	        		console.log("Deletion Failed!")
 	        	}
 			});
 		},600);

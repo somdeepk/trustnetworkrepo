@@ -26,7 +26,7 @@ class Post extends CI_Controller
 
 		$current_date=date('Y-m-d H:i:s');
 
-		if($member_id>0)
+		if($member_id>0 && (!empty($post) || !empty($postfile)))
 		{
 			$menu_arr = array(
 	            'member_id' => $member_id,
@@ -186,16 +186,26 @@ class Post extends CI_Controller
 					$finalPost[$key]['to_member_id']=$value['to_member_id'];
 					$finalPost[$key]['member_comment']='';
 
+					//$finalPost[$key]['mydempurl']=IMAGE_URL.'images/postfiles/16446624683774.mp4';
+
 
 					//Start Get Post File Images/Video Data
-					$sqlPostFile="SELECT file_name FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='postfiles' AND deleted='0'";
+					$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='postfiles' AND deleted='0'";
 					$queryPostFile=$this->db->query($sqlPostFile);
 					$resultPostFile=$queryPostFile->result_array();
 
 					$finalPost[$key]['post_file_data']=array();
 					if(count($resultPostFile)>0)
 					{
-						$finalPost[$key]['post_file_data']=$resultPostFile;
+						$tempResultPostFile=array();
+						foreach($resultPostFile as $kPF=>$vPF)
+						{
+							$tempResultPostFile[$kPF]=$vPF;
+							$tempResultPostFile[$kPF]['file_type_url']=IMAGE_URL.'images/postfiles/'.$vPF['file_name'];
+						}
+						$finalPost[$key]['post_file_data']=$tempResultPostFile;
+						//$finalPost[$key]['post_file_data']=$resultPostFile;
+						
 					}
 					//End Get Post File Images/Video Data
 

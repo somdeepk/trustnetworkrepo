@@ -259,10 +259,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	            	else
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Save','onlytext');
-	            		swal("Error!",
-			        		"Password Changed Failed!",
-			        		"error"
-			        	)
+	            		console.log("Password Changed Failed!")
 	            	}
 				});
 			},1200);

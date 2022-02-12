@@ -130,6 +130,11 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$scope.viewPostPages = function()
 	{
+		if($('#create-post-modal').length>0)
+		{
+			$('#create-post-modal').remove();
+		}
+
 		$('.loaderOverlay').fadeIn(200);
 		var response = $http({
 		    method: 'POST',
@@ -159,5 +164,18 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$scope.isNullOrEmptyOrUndefined = function(value) {
 		return !value
+	};
+
+	$rootScope.CheckImageOrVideo = function(filetype)
+	{
+		if(filetype=='video/mp4' || filetype=='video/wmv' || filetype=='video/avi' || filetype=='video/3gp' || filetype=='video/mov' || filetype=='video/mpeg')
+		{
+			return "video";
+		}
+		else
+		{
+			//alert(filetype)
+			return "image";
+		}
 	};
 });

@@ -37,10 +37,7 @@ mainApp.run(function ($rootScope)
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
+	        		console.log("No Data Found")
 	        	}
 			});
     };
@@ -65,10 +62,7 @@ mainApp.run(function ($rootScope)
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
+	        		console.log("No Data Found")
 	        	}
 			});
     };
@@ -92,10 +86,7 @@ mainApp.run(function ($rootScope)
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"No Data Found",
-		        		"error"
-		        	)
+	        		console.log("No Data Found")
 	        	}
 			});
     };
@@ -595,6 +586,14 @@ mainApp.directive("whenScrolled", function(){
     }
   }
 });
+
+
+mainApp.filter("trustUrl", ['$sce', function ($sce) {
+    return function (recordingUrl) {
+        return $sce.trustAsResourceUrl(recordingUrl);
+    };
+}])
+    
 
 mainApp.directive('endDateTime', function() {
 	return {

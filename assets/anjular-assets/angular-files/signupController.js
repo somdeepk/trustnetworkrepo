@@ -153,10 +153,7 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
             	}
             	else
             	{
-            		swal("Error!",
-		        		"Registration Failed!",
-		        		"error"
-		        	)
+            		console.log("Registration Failed!")
             	}
 			});
 		}

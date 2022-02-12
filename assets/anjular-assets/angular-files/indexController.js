@@ -4,7 +4,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	// $scope.memberData={};
 	$scope.friendData={};
 	$scope.tagPostData={};
-	// $scope.aryPostScroll=[];
+	$scope.aryPostScroll=[];
 	/*$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
 	{
 		$scope.memberData.user_auto_id=user_auto_id;
@@ -188,7 +188,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         		$timeout(function()
 				{
 					$scope.buttonSavingAnimation('zbtnSinglePostz','Post','onlytext');
-					UIkit.modal("#create-post-modal").hide();
+					//UIkit.modal("#create-post-modal").hide();
 					$scope.singlePostData={};
 					$scope.tagPostData={};
 					$scope.aryPostTagFriend = [];
@@ -200,6 +200,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 					$scope.singlePostPreviewImages=[];
 					postImgPreHTML="";
 					potImagePreviewIncree=0;
+					$scope.viewPostPages();
 
 				},1200);
           	}
@@ -265,14 +266,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 			});
 	    }		
 	};
-
-
-	
-
-
-
-
-	
+	*/
 
 
 	$scope.loadingPost = true;
@@ -328,8 +322,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        			$scope.postExist = false;
 	        		}
 
-	        		// console.log("KANU")
-	        		// console.log($scope.aryPostScroll)
+	        		/*console.log("KANU")
+	        		console.log($scope.aryPostScroll)*/
 	        	}
 	        	else
 	        	{
@@ -344,6 +338,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	// we call the function twice to populate the list
 	$scope.getMorePostOnScroll();
 
+	/*
 	$scope.hideTimelinePost = function(timelineId)
     {	
     	//console.log($scope.aryPostScroll)
@@ -466,10 +461,11 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 			});
 	    }
 	};
-*/
+
 	$scope.OpenPostPopUp = function (id) {
 		$('#exampleModal_'+id).modal('show');
 	};
+	*/
 
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
