@@ -113,17 +113,17 @@ div.postWhenScrollContainer{
 
                           <a href="javascript:void();" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[1].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[0].file_type}}">
+                              <source src="{{ valuePS.post_file_data[1].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[1].file_type}}">
                             </video>
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" alt="" class="rounded-md w-full h-full">
                           </a>
 
                           <a href="javascript:void();" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)" class="relative">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[2].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[0].file_type}}">
+                              <source src="{{ valuePS.post_file_data[2].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[2].file_type}}">
                             </video>
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" alt="" class="rounded-md w-full h-full">
-                            <div ng-if="valuePS.post_file_data.length>3" class="absolute bg-gray-900 bg-opacity-30 flex justify-center items-center text-white rounded-md inset-0 text-2xl"> + {{valuePS.post_file_data.length-4}} more </div>
+                            <div ng-if="valuePS.post_file_data.length>3" class="absolute bg-gray-900 bg-opacity-30 flex justify-center items-center text-white rounded-md inset-0 text-2xl"> + {{valuePS.post_file_data.length-3}} more </div>
                           </a>
                         </div>
                       </div>
