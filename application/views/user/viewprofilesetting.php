@@ -891,6 +891,7 @@
                </div>
             </div>         
 
+
             <div id="tab-10" class="tab-content lg:w-2/3">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
@@ -900,42 +901,64 @@
                   </div>
                   <!-- form body -->
                   <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
-                     <div class="relative cursor-pointer" uk-toggle="target: #acc; animation: uk-animation-fade">
+                     
+                     <!-- <div class="relative cursor-pointer" uk-toggle="target: #acc; animation: uk-animation-fade">
                         <div class="bg-gray-50 rounded-lg px-5 py-4 font-semibold text-base"> Events<br>
                            <label class="">Push, emails, SMS</label>
                         </div>
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-up right-4 text-xl top-1/2 transform text-gray-400   " id="acc" aria-hidden="true" style="" hidden=""></i>
                         <i class="-translate-y-1/2 absolute icon-feather-chevron-down right-4 text-xl top-1/2 transform text-gray-400  " id="acc" aria-hidden="false" style=""></i>
-                     </div>
-                     <div class=" m-0 sm:space-y-8 space-y-4 p-5" id="acc" aria-hidden="false" style="" hidden="">
+                     </div> -->
+
+                     <div class=" m-0 sm:space-y-8 space-y-4 p-5" id="acc" aria-hidden="" style="" >
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>In Active Account</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
+
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+
+                                 <label class="switch">
+
+                                    <input type="checkbox" ng-model="generalData.inactive_account" id="inactive_account" ng-checked="generalData.inactive_account == 1" ng-value="0">
+
+                                    <span class="switch-button"></span> 
+
+                                 </label>
+
                               </div>
                            </div>
                         </div>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4>Delete Account</h4>
                            </div>
                            <div class="switches-list -mt-8 is-large">
                               <div class="switch-container">
-                                 <label class="switch"><input type="checkbox" checked><span class="switch-button"></span> </label>
+                                 <label class="switch">
+
+                                    <input type="checkbox" class="" ng-model="generalData.delete_account" id="delete_account" ng-checked="generalData.delete_account == 1" ng-value="0">
+
+                                    <span class="switch-button"></span> 
+                                 </label>
                               </div>
                            </div>
                         </div>
+
                      </div>
                   </div>
+                  
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                     <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
-                     <button type="button" class="button bg-blue-700"> Save </button>
+                     <!-- <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
+                     <button type="button" class="button bg-blue-700 zsubmitDelete" ng-click="submitDelete()"> Save </button>
                   </div>
+
                </div>
-            </div>        
+            </div> 
+
             
         </div>
 

@@ -524,6 +524,52 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 	};
 
 
+	$scope.submitDelete = function()
+    {	
+		
+		$scope.buttonSavingAnimation('zsubmitDelete','Saving..','loader');
+		$timeout(function()
+		{
+			var formData = new FormData();
+			$scope.generalData.loggedUserId = $rootScope.loggedUserId;
+			formData.append('generalData',angular.toJson($scope.generalData));
+
+			// console.log($scope.generalData.inactive_account+' --- '+$scope.generalData.delete_account); return false;
+
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxupdatedeletedata",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+
+	        	// console.log(returnData); return false;
+
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitDelete','Saved!','onlytext');
+	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
+	        		$timeout(function()
+					{
+						$scope.buttonSavingAnimation('zsubmitDelete','Submit','onlytext');
+					},1200);
+	        	}
+	        	else
+	        	{
+	        		$scope.buttonSavingAnimation('zsubmitDelete','Submit','onlytext');
+	        		console.log("Deletion Updation Failed!");	        		
+	        	}
+			});
+		},1200);
+	};
+
+
+
+
+
+
 	$image_crop = $('#image_demo').croppie({
 		enableExif: true,
 		viewport: {
@@ -653,6 +699,18 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			},1200);
 		}
 	};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
