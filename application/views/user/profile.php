@@ -200,7 +200,7 @@ div.postWhenScrollContainer{
                                 <!-- <p class="mb-0">4 friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
-                                <a href="javascript:void();" ng-disabled="value.request_status=='1'" ng-click="sendFriendRequest(value.id);" class="mr-3 btn btn-primary rounded zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'"class="ri-user-add-line"></i>{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
+                                <a href="javascript:void();" ng-disabled="value.request_status=='1'" ng-click="sendFriendRequest(value.id);" class="mr-3 btn btn-primary rounded zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'" class="ri-user-add-line"></i>{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
                                 <a href="javascript:void();"  ng-click="removeFromSuggestion(value.id);" class="mr-3 btn btn-secondary rounded zRemoveFromSuggestionz_{{value.id}}" >Remove</a>
                              </div>
                           </li>
@@ -369,14 +369,14 @@ div.postWhenScrollContainer{
            <div class="iq-card">
               <div class="iq-card-body">
                  <div class="row">
-                   <!--  <div class="col-md-3">
+                    <div class="col-md-3">
                        <ul class="nav nav-pills basic-info-items list-inline d-block p-0 m-0">
                           <li>
                              <a class="nav-link active" data-toggle="pill" href="#basicinfo">Contact and Basic Info</a>
                           </li>
-                          <li>
+                          <!-- <li>
                              <a class="nav-link" data-toggle="pill" href="#family">Family and Relationship</a>
-                          </li>
+                          </li> -->
                           <li>
                              <a class="nav-link" data-toggle="pill" href="#work">Work and Education</a>
                           </li>
@@ -387,8 +387,8 @@ div.postWhenScrollContainer{
                              <a class="nav-link" data-toggle="pill" href="#details">Details About You</a>
                           </li>
                        </ul>
-                    </div> -->
-                    <div class="col-md-12 pl-4">
+                    </div>
+                    <div class="col-md-9 pl-4">
                        <div class="tab-content">
                           <div class="tab-pane fade active show" id="basicinfo" role="tabpanel">
                              <h4>Contact Information</h4>
@@ -411,12 +411,12 @@ div.postWhenScrollContainer{
                                     ?>                                     
                                    </p>
                                 </div>
-                                <!-- <div class="col-3">
-                                   <h6>Address</h6>
+                                <div class="col-3">
+                                   <h6>AddressXXX</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">United States of America</p>
-                                </div> -->
+                                   <p class="mb-0">United States of AmericaXXX</p>
+                                </div>
                              </div>
                              <h4 class="mt-3">Websites and Social Links</h4>
                              <hr>
@@ -494,18 +494,18 @@ div.postWhenScrollContainer{
                                 <?php
                                 }
                                 ?>
-                               <!--  <div class="col-3">
-                                   <h6>interested in</h6>
+                                <div class="col-3">
+                                   <h6>interested inXXX</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">Designing</p>
+                                   <p class="mb-0">DesigningXXX</p>
                                 </div>
                                 <div class="col-3">
-                                   <h6>language</h6>
+                                   <h6>languageXXX</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">English, French</p>
-                                </div> -->
+                                   <p class="mb-0">English, FrenchXX</p>
+                                </div>
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">

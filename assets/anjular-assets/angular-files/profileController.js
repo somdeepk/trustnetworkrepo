@@ -33,10 +33,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -77,10 +74,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zsendFriendRequestz_'+friend_id,'Add Friend','onlytext');
-	        		swal("Error!",
-		        		"Request Send Failed!",
-		        		"error"
-		        	)
+	        		console.log("Request Send Failed!")
 	        	}
 			});
 		},1200);
@@ -115,10 +109,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zRemoveFromSuggestionz_'+friend_id,'Remove','onlytext');
-	        		swal("Error!",
-		        		"Removal Failed!",
-		        		"error"
-		        	)
+	        		console.log("Removal Failed!")
 	        	}
 			});
 		},600);
@@ -194,10 +185,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zmakeChurchAdminz_'+adminid,'Create Leader','onlytext');
-	        		swal("Error!",
-		        		"Leader Creation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Leader Creation Failed!")
 	        	}
 			});
 		},1200);
@@ -260,10 +248,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 			    		$(".ztoggleSetMemberLevelz_"+member_id).html('<i class="ri-stack-line"></i>Unset Level')
 			    	}
 
-	        		swal("Error!",
-		        		"Set To Level Failed!",
-		        		"error"
-		        	)
+	        		console.log("Set To Level Failed!")
 	        	}
 			});
 		},1200);
@@ -291,10 +276,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -329,10 +311,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirm','onlytext');
-	        		swal("Error!",
-		        		"Confirmation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Confirmation Failed!")
 	        	}
 			});
 		},600);
@@ -363,10 +342,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
+	        		console.log("Deletion Failed!")
 	        	}
 			});
 		},600);
@@ -431,10 +407,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
@@ -462,10 +435,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
@@ -570,10 +540,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	            	else
 	            	{
 	            		$scope.clearCoverImage();
-	            		swal("Error!",
-			        		"Cover Image Upload Failed!",
-			        		"error"
-			        	)
+	            		console.log("Cover Image Upload Failed!")
 	            	}
 
 				});

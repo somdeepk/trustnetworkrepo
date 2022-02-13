@@ -207,10 +207,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             		$scope.files = [];
             		$('#input_file_upload_'+video_number).val("");
             		$scope.buttonSavingAnimation('zuploadtaskvideonz_'+video_number,'Upload','onlytext');
-            		swal("Error!",
-		        		"Video Set Failed!",
-		        		"error"
-		        	)
+            		console.log("Video Set Failed!")
             	}
 			});
 		}
@@ -336,10 +333,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
             		$('#file_ls_video_upload').val("");
             		$scope.buttonSavingAnimation('zuploadlivestreamvideoz','Submit Schedule','onlytext');
             		$('#uploadliveStreamVideoModal').modal('hide');
-            		swal("Error!",
-		        		"Live Stream Video Set Failed!",
-		        		"error"
-		        	)		        	
+            		console.log("Live Stream Video Set Failed!")		        	
             	}
 			});
 		}
@@ -424,10 +418,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			    	}else{
 			    		$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
 			    	}
-	        		swal("Error!",
-		        		"Status Changed Failed!",
-		        		"error"
-		        	)
+	        		console.log("Status Changed Failed!")
 	        	}
 			});
 		},1200);
@@ -478,10 +469,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			        	else
 			        	{
 			        		$(".zdeleteStreamVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
-			        		swal("Error!",
-				        		"Deletion Failed!",
-				        		"error"
-				        	)
+			        		console.log("Deletion Failed!")
 			        	}
 					});
 				},1200);
@@ -523,10 +511,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong on fetching leader task!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong on fetching leader task!")
         	}
 		});
 	};
@@ -561,10 +546,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"Something went wrong on fetching leader task!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong on fetching leader task!")
 	        	}
 			});
 	    }
@@ -598,10 +580,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong on fetching leader task!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong on fetching leader task!")
         	}
 		});
 	};
@@ -646,10 +625,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong on tracking member watch video!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong on tracking member watch video!")
         	}
 		});
 	};
@@ -739,10 +715,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Streaming Joining is Failed!",
-	        		"error"
-	        	)
+        		console.log("Streaming Joining is Failed!")
         	}
 		});
 
@@ -799,10 +772,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Streaming Starting is Failed!",
-	        		"error"
-	        	)
+        		console.log("Streaming Starting is Failed!")
         	}
 		});
 	};
@@ -832,10 +802,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Badge Give to Member Failed!",
-	        		"error"
-	        	)
+        		console.log("Badge Give to Member Failed!")
         	}
 		});
 	};
@@ -1014,10 +981,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        		$scope.examData={}
 	        		$scope.buttonSavingAnimation('zsubmitquestionnairez','Submit Questionnaire','onlytext');
 	        		$('#createQuestionnaireModal').modal('hide');
-	        		swal("Error!",
-		        		"Exam Set Failed!",
-		        		"error"
-		        	)		        	
+	        		console.log("Exam Set Failed!")		        	
 	        	}
 			});
 	    }
@@ -1078,10 +1042,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			    	}else{
 			    		$(".zactiveInactiveExamz_"+id).html('<i class="ri-lock-2-fill"></i>')
 			    	}
-	        		swal("Error!",
-		        		"Status Changed Failed!",
-		        		"error"
-		        	)
+	        		console.log("Status Changed Failed!")
 	        	}
 			});
 		},1200);
@@ -1129,10 +1090,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 			        	else
 			        	{
 			        		$(".zdeleteExamz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
-			        		swal("Error!",
-				        		"Deletion Failed!",
-				        		"error"
-				        	)
+			        		console.log("Deletion Failed!")
 			        	}
 					});
 				},1200);
@@ -1169,10 +1127,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
@@ -1216,10 +1171,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
@@ -1273,10 +1225,7 @@ mainApp.controller('taskController', function ($rootScope, $timeout, $interval, 
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
 	    }
