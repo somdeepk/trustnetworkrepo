@@ -961,6 +961,57 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;    	
     }
+
+
+    public function ajaxupdatedeletedata() 
+    {
+        $generalData = trim($this->input->post('generalData'));
+        $aryMemberData=json_decode($generalData, true);
+
+        // echo "<pre />"; print_r($aryMemberData['delete_account_date']); die;
+
+        $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0;  
+
+        $inactive_account=(isset($aryMemberData['inactive_account']) && !empty($aryMemberData['inactive_account']))? $aryMemberData['inactive_account']:0;
+
+        $delete_account=(isset($aryMemberData['delete_account']) && !empty($aryMemberData['delete_account']))? $aryMemberData['delete_account']:0;
+
+        // echo $inactive_account.' --- '.$delete_account; die;
+
+        $current_date=date('Y-m-d H:i:s');
+
+        $delete_account_date = NULL;
+        if($delete_account == 1)
+        {
+        	if(!$aryMemberData['delete_account_date'])
+        	{
+        		$delete_account_date = $current_date;
+        	}
+        	else
+        	{
+        		$delete_account_date = $aryMemberData['delete_account_date'];
+        	}        	
+        }
+
+       	$menu_arr = array(
+            'inactive_account' => (string) $inactive_account,
+            'delete_account' => (string) $delete_account,
+            'delete_account_date' => $delete_account_date,
+            'update_date'   =>$current_date
+        );
+        
+        $strstatus="Updated";
+        $lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Delete Info '.$strstatus.' Successfully.');
+        $returnData['data']=array('id'=>$lastId);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
 }
 	
 
