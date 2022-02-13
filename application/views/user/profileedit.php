@@ -66,6 +66,7 @@
                                <h4 class="card-title">Personal Information</h4>
                             </div>
                          </div>
+                         
                          <div class="iq-card-body">
                             <form autocomplete="off">
                                <input ng-model="memberData.id" id="id" type="hidden">
