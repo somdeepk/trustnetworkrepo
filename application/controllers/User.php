@@ -968,7 +968,9 @@ class User extends CI_Controller
         $generalData = trim($this->input->post('generalData'));
         $aryMemberData=json_decode($generalData, true);
 
-        // echo "<pre />"; print_r($aryMemberData['delete_account_date']); die;
+        /*echo "<pre />";
+        print_r($aryMemberData);
+        die;*/
 
         $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0;  
 

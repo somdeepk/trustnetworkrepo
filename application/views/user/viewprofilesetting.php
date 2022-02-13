@@ -904,7 +904,7 @@
 
                                  <label class="switch">
 
-                                    <input type="checkbox" ng-model="generalData.inactive_account" id="inactive_account" ng-checked="generalData.inactive_account == 1" ng-value="0">
+                                    <input type="checkbox" ng-model="generalData.inactive_account" ng-checked="generalData.inactive_account == true" ng-value="false">
 
                                     <span class="switch-button"></span> 
 
@@ -922,7 +922,7 @@
                               <div class="switch-container">
                                  <label class="switch">
 
-                                    <input type="checkbox" class="" ng-model="generalData.delete_account" id="delete_account" ng-checked="generalData.delete_account == 1" ng-value="0">
+                                    <input type="checkbox" class="" ng-model="generalData.delete_account" ng-checked="generalData.delete_account == true" ng-value="false">
 
                                     <span class="switch-button"></span> 
                                  </label>
@@ -935,7 +935,7 @@
                   
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
                      <!-- <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> -->
-                     <button type="button" class="button bg-blue-700 zsubmitDelete" ng-click="submitDelete()"> Save </button>
+                     <button type="button" class="button bg-blue-700 zsubmitAccountActiveDeletez" ng-click="submitAccountActiveDelete()"> Save </button>
                   </div>
 
                </div>

@@ -22,6 +22,24 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 		$scope.generalData.assignParentId=$scope.generalData.parent_id;
 		$scope.coverImageData.exist_cover_image=$scope.generalData.cover_image;
 
+		if($scope.generalData.inactive_account=="1")
+		{
+			$scope.generalData.inactive_account=true;
+		}
+		else
+		{
+			$scope.generalData.inactive_account=false;
+		}
+
+		if($scope.generalData.delete_account=="1")
+		{
+			$scope.generalData.delete_account=true;
+		}
+		else
+		{
+			$scope.generalData.delete_account=false;
+		}
+
 		$scope.questionData=jQuery.parseJSON(profileSettingDataObj.memberData.profile_question);
 		$scope.securityData=jQuery.parseJSON(profileSettingDataObj.memberData.security_data);
 		$scope.notificationData=jQuery.parseJSON(profileSettingDataObj.memberData.notification_data);
@@ -540,10 +558,10 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 
 	/************Start Profile Image Secton***********/
-	$scope.submitDelete = function()
+	$scope.submitAccountActiveDelete = function()
     {	
 		
-		$scope.buttonSavingAnimation('zsubmitDelete','Saving..','loader');
+		$scope.buttonSavingAnimation('zsubmitAccountActiveDeletez','Saving..','loader');
 		$timeout(function()
 		{
 			var formData = new FormData();
@@ -565,16 +583,16 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 				aryreturnData=angular.fromJson(returnData);
 	        	if(aryreturnData.status=='1')
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitDelete','Saved!','onlytext');
+	        		$scope.buttonSavingAnimation('zsubmitAccountActiveDeletez','Saved!','onlytext');
 	        		$rootScope.getLoggedUserData($rootScope.loggedUserId);
 	        		$timeout(function()
 					{
-						$scope.buttonSavingAnimation('zsubmitDelete','Submit','onlytext');
+						$scope.buttonSavingAnimation('zsubmitAccountActiveDeletez','Submit','onlytext');
 					},1200);
 	        	}
 	        	else
 	        	{
-	        		$scope.buttonSavingAnimation('zsubmitDelete','Submit','onlytext');
+	        		$scope.buttonSavingAnimation('zsubmitAccountActiveDeletez','Submit','onlytext');
 	        		console.log("Deletion Updation Failed!");	        		
 	        	}
 			});

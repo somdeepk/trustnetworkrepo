@@ -108,6 +108,7 @@ div.postWhenScrollContainer{
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
                               <source src="{{ valuePS.post_file_data[0].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[0].file_type}}">
                             </video>
+                            
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" alt="" class="rounded-md w-full lg:h-76 object-cover">
                           </a>
 
