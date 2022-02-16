@@ -338,6 +338,45 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	// we call the function twice to populate the list
 	$scope.getMorePostOnScroll();
 
+	$scope.likeTimelinePost = function(timelineId,post_id)
+    {	
+		$scope.postStatusData={}
+		$scope.postStatusData.post_id=post_id;
+		var formData = new FormData();
+		formData.append('postStatusData',angular.toJson($scope.postStatusData));
+		$http({
+            method  : 'POST',
+            url     : varBaseUrl+"post/likeTimelinePost",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData){
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+        		$scope.postStatusData={}
+        		var strDeleted=aryreturnData.data.strDeleted;
+        		var postLikeData=aryreturnData.data.postLikeData;
+
+        		var result = $scope.aryPostScroll.filter(function(v,i)
+				{  
+				    if (v.id === timelineId)
+				    {
+						$scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
+						$scope.aryPostScroll[i].post_like_data=postLikeData ;
+				 	} 
+				}); 
+
+        		//console.log($scope.aryPostScroll)
+        	}
+        	else
+        	{
+        		console.log("Like Unlike Failed!")
+        	}
+		});
+	};
+
+
 	/*
 	$scope.hideTimelinePost = function(timelineId)
     {	
@@ -373,42 +412,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		});
 	};
 
-	$scope.likeTimelinePost = function(timelineId,post_id)
-    {	
-		$scope.postStatusData={}
-		$scope.postStatusData.post_id=post_id;
-		var formData = new FormData();
-		formData.append('postStatusData',angular.toJson($scope.postStatusData));
-		$http({
-            method  : 'POST',
-            url     : varBaseUrl+"post/likeTimelinePost",
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},                     
-            data:formData, 
-        }).success(function(returnData){
-			aryreturnData=angular.fromJson(returnData);
-        	if(aryreturnData.status=='1')
-        	{
-        		$scope.postStatusData={}
-        		var strDeleted=aryreturnData.data.strDeleted;
-        		var postLikeData=aryreturnData.data.postLikeData;
-
-        		var result = $scope.aryPostScroll.filter(function(v,i)
-				{  
-				    if (v.id === timelineId){
-				     $scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
-				     $scope.aryPostScroll[i].post_like_data=postLikeData ;
-				 	} 
-				}); 
-
-        		//console.log($scope.aryPostScroll)
-        	}
-        	else
-        	{
-        		console.log("Like Unlike Failed!")
-        	}
-		});
-	};
+	
 
 	$scope.commentTimelinePost = function(valuePS)
     {	

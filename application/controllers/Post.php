@@ -326,45 +326,6 @@ class Post extends CI_Controller
 
     }
 
-    public function hideTimelinePost() 
-    {
-
-    	$returnData=array();
-    	$postStatusData=$this->input->get_post('postStatusData');
-    	$aryPostStatusData=json_decode($postStatusData, true);
-  
-  		$id=(isset($aryPostStatusData['timelineId']) && !empty($aryPostStatusData['timelineId']))? addslashes(trim($aryPostStatusData['timelineId'])):0;
-		$status=(isset($aryPostStatusData['status']) && !empty($aryPostStatusData['status']))? addslashes(trim($aryPostStatusData['status'])):'S';
-		
-		$menu_arr = array(
-            'status'  =>$status
-        );
-
-
-		$lastId=0;
- 		if($id>0)
-		{
-			$lastId = $this->Post_Model->addupdatemembertimeline($id,$menu_arr);
-		}
-
-		if($id>0 && $lastId>0)
-		{
-			$returnData['status']='1';
-	        $returnData['msg']='success';
-	        $returnData['msgstring']='Status Changed Successfully';
-	        $returnData['data']=array('lastId'=>$lastId);
-		}
-		else
-		{
-			$returnData['status']='0';
-	        $returnData['msg']='error';
-	        $returnData['msgstring']='Status Changed Failed';
-	        $returnData['data']=array();
-		}       
-        echo json_encode($returnData);
-        exit;
-    }
-
     public function likeTimelinePost() 
     {
 
@@ -410,6 +371,47 @@ class Post extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+    public function hideTimelinePost() 
+    {
+
+    	$returnData=array();
+    	$postStatusData=$this->input->get_post('postStatusData');
+    	$aryPostStatusData=json_decode($postStatusData, true);
+  
+  		$id=(isset($aryPostStatusData['timelineId']) && !empty($aryPostStatusData['timelineId']))? addslashes(trim($aryPostStatusData['timelineId'])):0;
+		$status=(isset($aryPostStatusData['status']) && !empty($aryPostStatusData['status']))? addslashes(trim($aryPostStatusData['status'])):'S';
+		
+		$menu_arr = array(
+            'status'  =>$status
+        );
+
+
+		$lastId=0;
+ 		if($id>0)
+		{
+			$lastId = $this->Post_Model->addupdatemembertimeline($id,$menu_arr);
+		}
+
+		if($id>0 && $lastId>0)
+		{
+			$returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Status Changed Successfully';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Status Changed Failed';
+	        $returnData['data']=array();
+		}       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    
 
     public function commentTimelinePost() 
     {
