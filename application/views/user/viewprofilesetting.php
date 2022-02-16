@@ -127,49 +127,51 @@
             </div>
 
             <div id="tab-2" class="tab-content lg:w-2/3">
-               <div class="lg:flex lg:flex-col justify-between lg:h-full">
+               <div class="lg:flex lg:flex-col justify-between lg:h-full tab-2 w-100">
                   <div class="lg:px-10 lg:py-8 p-6">
                      <h3 class="font-bold mb-2 text-xl">Profile Picture and Cover Image</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                      <form>
-                        <div class="form-group row align-items-center">
-                            <div class="col-md-12">
-                               <div class="profile-img-edit">
+                        
+
+                        <div class="cover-container">
+                          <div class="profile-img-edit">
                                 <div id="uploaded_image">
                                   <img class="profile-pic" ng-if="generalData.profile_image == '' || !generalData.profile_image" ng-src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" style="margin:0 auto;height:149px;">
-                                  <img class="profile-pic" ng-if="generalData.profile_image && generalData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{generalData.profile_image}}" style="margin:0 auto;height:149px;">
+                                  <img class="profile-pic" ng-if="generalData.profile_image && generalData.profile_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/{{generalData.profile_image}}" style="margin:0 auto;">
                                 </div>
 
                                 <div class="p-image">
-                                   <i class="ri-pencil-line upload-button"></i>
+                                   <i class="uil-pen upload-button"></i>
                                    <input class="file-upload" name="upload_image" id="upload_image" type="file" accept="image/*"/>
                                    <input type="text" ng-model="generalData.hidden_image_encode" class="hiddenimportant" />
                                    <input type="text" ng-model="generalData.profile_image" class="hiddenimportant" />
                                 </div>
                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="cover-container">
                             <input type="hidden" ng-model="coverImageData.encode_cover_image" />
                             <input type="hidden" ng-model="coverImageData.exist_cover_image" />                             
                             <div class="zCoverImgContainerz">
-                               <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
-                               <img alt="Cover Image" class="rounded img-fluid" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
+                               <img alt="Cover Image" class="rounded img-fluid w-100" ng-if="coverImageData.exist_cover_image == '' || !coverImageData.exist_cover_image" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/cover-no-image.jpg">
+                               <img alt="Cover Image" class="rounded img-fluid w-100" ng-if="coverImageData.exist_cover_image && coverImageData.exist_cover_image != ''" ng-src="<?php echo IMAGE_URL;?>images/members/coverimages/{{coverImageData.exist_cover_image}}">
                             </div>
                             <div class="zCropCoverImagez hiddenimportant" class="" style="width:100%;"></div>
                             
                             <ul class="header-nav d-flex flex-wrap p-0 m-0 crop-list">
-                              <li style="z-index: 99">
-                                <a class="file-upload-icon zeditCoverz mt-3" style="position: relative;" href="javascript:void('');"><i class="ri-pencil-line">
-                                <input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                              <li style="z-index: 99; width: 100%" >
+                                <div class="cover-upload-button-wrap">
+                                   <i class="uil-pen cover-upload-button"><input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                                <a class="file-upload-icon zeditCoverz mt-3" href="javascript:void('');"><i class="ri-pencil-line">
+                                
                                 </a>
 
-                                <div class="mt-3">                                   
-                                <button class="button bg-blue-700 zCropCoverBtnImagez zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
-                                <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button>
+                                <div class="mt-3"> 
+                                <i class="icon-feather-upload pic-upload-icon zCropCoverBtnImagez zCropCancelz hiddenimportant mr-2" ng-click="cropCoverImage();"></i> 
+                                <i class="fa-solid fa-xmark pic-cancle-icon zCropCancelz hiddenimportant" ng-click="clearCoverImage();"></i>   
+                                                              
+                               <!--  <button class="button bg-blue-700 zCropCoverBtnImagez zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
+                                <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button> -->
                                 </div>
+                              </div>
                               </li>
                             </ul>
                         </div>
@@ -180,7 +182,7 @@
                </div>
             </div>                    
                                 
-            <div id="tab-3" class="tab-content lg:w-2/3">
+            <div id="tab-3" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -233,7 +235,7 @@
                </div>
             </div>                                 
                                      
-            <div id="tab-4" class="tab-content lg:w-2/3">
+            <div id="tab-4" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -267,7 +269,7 @@
                </div>
             </div>                    
 
-            <div id="tab-5" class="tab-content lg:w-2/3">
+            <div id="tab-5" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -322,7 +324,7 @@
             </div>                           
 
 
-            <div id="tab-6" class="tab-content lg:w-2/3">
+            <div id="tab-6" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <form>
@@ -420,7 +422,7 @@
             </div>    
                 
 
-            <div id="tab-7" class="tab-content lg:w-2/3">
+            <div id="tab-7" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -498,7 +500,7 @@
                </div>
             </div>                        
                                 
-            <div id="tab-8" class="tab-content lg:w-2/3">
+            <div id="tab-8" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -620,7 +622,7 @@
                </div>
             </div>
 
-            <div id="tab-9" class="tab-content lg:w-2/3">
+            <div id="tab-9" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
@@ -874,7 +876,7 @@
             </div>         
 
 
-            <div id="tab-10" class="tab-content lg:w-2/3">
+            <div id="tab-10" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
