@@ -412,10 +412,28 @@ div.postWhenScrollContainer{
                                    </p>
                                 </div>
                                 <div class="col-3">
-                                   <h6>AddressXXX</h6>
+                                   <h6>Address</h6>
                                 </div>
+
                                 <div class="col-9">
-                                   <p class="mb-0">United States of AmericaXXX</p>
+
+                                   <!-- <p class="mb-0">United States of AmericaXXX</p> -->
+                                   
+                                   <p class="mb-0">
+                                    
+                                    <?php 
+
+                                       echo $this->session->userdata('address');
+
+                                       if(!empty($this->session->userdata('city'))) { echo ', '.$this->session->userdata('city'); }
+
+                                       if(!empty($this->session->userdata('state'))) { echo ', '.$this->session->userdata('state'); }
+
+                                       if(!empty($this->session->userdata('country'))) { echo ', '.$this->session->userdata('country'); } 
+
+                                    ?>
+
+                                   </p>
                                 </div>
                              </div>
                              <h4 class="mt-3">Websites and Social Links</h4>
@@ -494,18 +512,25 @@ div.postWhenScrollContainer{
                                 <?php
                                 }
                                 ?>
+                                
                                 <div class="col-3">
-                                   <h6>interested inXXX</h6>
+                                   <h6>Interested In</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">DesigningXXX</p>
+                                   <p class="mb-0">
+                                      <?php echo $this->session->userdata('interested_in'); ?>
+                                   </p>
                                 </div>
+
                                 <div class="col-3">
-                                   <h6>languageXXX</h6>
+                                   <h6>Language</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">English, FrenchXX</p>
+                                   <p class="mb-0">
+                                    <?php echo $this->session->userdata('language'); ?>
+                                   </p>
                                 </div>
+
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">
@@ -644,12 +669,23 @@ div.postWhenScrollContainer{
                              </ul>
                           </div>
                           <div class="tab-pane fade" id="details" role="tabpanel">
+
                              <h4 class="mb-3">About You</h4>
-                             <p>Hi, I’m Bni, I’m 26 and I work as a Web Designer for the iqonicdesign.</p>
+                             <p>
+                                <?php echo $this->session->userdata('about_you'); ?>
+                             </p>
+
                              <h4 class="mt-3 mb-3">Other Name</h4>
-                             <p>Bini Rock</p>
+                             <p>
+                                <?php echo $this->session->userdata('other_name'); ?>
+                             </p>
+
                              <h4 class="mt-3 mb-3">Favorite Quotes</h4>
-                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+
+                             <p>
+                                 <?php echo $this->session->userdata('favorite_quote'); ?>
+                             </p>
+
                           </div>
                        </div>
                     </div>

@@ -570,6 +570,11 @@ class User extends CI_Controller
         $hidden_image_encode=(isset($aryMemberData['hidden_image_encode']) && !empty($aryMemberData['hidden_image_encode']))? addslashes(trim($aryMemberData['hidden_image_encode'])):'';
         $profile_image=(isset($aryMemberData['profile_image']) && !empty($aryMemberData['profile_image']))? addslashes(trim($aryMemberData['profile_image'])):'';
 
+        $other_name=(isset($aryMemberData['other_name']) && !empty($aryMemberData['other_name']))? addslashes(trim($aryMemberData['other_name'])):'';
+        $interested_in=(isset($aryMemberData['interested_in']) && !empty($aryMemberData['interested_in']))? addslashes(trim($aryMemberData['interested_in'])):'';
+        $language=(isset($aryMemberData['language']) && !empty($aryMemberData['language']))? addslashes(trim($aryMemberData['language'])):'';
+        $about_you=(isset($aryMemberData['about_you']) && !empty($aryMemberData['about_you']))? addslashes(trim($aryMemberData['about_you'])):'';
+        $favorite_quote=(isset($aryMemberData['favorite_quote']) && !empty($aryMemberData['favorite_quote']))? addslashes(trim($aryMemberData['favorite_quote'])):'';
   
 		
 		$current_date=date('Y-m-d H:i:s');   
@@ -592,6 +597,11 @@ class User extends CI_Controller
             'country'  =>$country,
             'state'  =>$state,
             'postal_code'  =>$postal_code,
+            'other_name'  =>$other_name,
+            'interested_in'  =>$interested_in,
+            'language'  =>$language,
+            'about_you'  =>$about_you,
+            'favorite_quote'  =>$favorite_quote,
             'update_date'  =>$current_date,
         );
 
