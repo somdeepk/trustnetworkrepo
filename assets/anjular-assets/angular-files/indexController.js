@@ -211,62 +211,6 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         	}
 		});
 	};
-	/*$scope.GetLimitFriendForTimeline = function ()
-	{
-		if($scope.memberData.user_auto_id>0)
-		{
-			$scope.friendData.user_auto_id=$scope.memberData.user_auto_id;
-			$scope.friendData.limit=9;
-
-			var formData = new FormData();
-			formData.append('friendData',angular.toJson($scope.friendData));
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData) {
-				aryreturnData=angular.fromJson(returnData);
-	        	$scope.limitTimelineFriendListObj=aryreturnData.data.friendListData;
-			});			
-	    }		
-	};	
-
-	$scope.GetLimitPhotoForTimeline = function ()
-	{
-		if($scope.memberData.user_auto_id>0)
-		{
-			$scope.photoScrollData={};
-			$scope.photoScrollData.row=0;
-			$scope.photoScrollData.rowperpage=9;
-
-			var formData = new FormData();
-			formData.append('photoScrollData',angular.toJson($scope.photoScrollData));
-	        $http({
-	            method: 'POST',
-	            url     : varBaseUrl+"post/ajaxGetPhotoList",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-		        data:formData,
-	        }).success(function(returnData)
-	        {
-				aryreturnData=angular.fromJson(returnData);
-	        	if(aryreturnData.status=='1')
-	        	{
-	        		$scope.limitTimelinePhotoListObj=aryreturnData.data.photoScrollData;
-	        	}
-	        	else
-	        	{
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
-	        	}
-			});
-	    }		
-	};
-	*/
 
 
 	$scope.loadingPost = true;
@@ -376,21 +320,42 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		});
 	};
 
-
-	/*
-	$scope.hideTimelinePost = function(timelineId)
+	
+	$scope.changeCommonPostStatus = function(valuePS,idfire)
     {	
-    	//console.log($scope.aryPostScroll)
+
+    	var timelineId=valuePS.id;
 		$scope.postStatusData={}
 		$scope.postStatusData.timelineId=timelineId;
-		$scope.postStatusData.status="H";
+		$scope.postStatusData.post_id=valuePS.post_id;
+		$scope.postStatusData.idfire=idfire;
+
+		var tempDisableComment=0;
+		var tempAddFavoritest=0;
+		if(idfire=='disabled_comments')
+		{			
+			if(valuePS.disabled_comments==0)
+			{
+				tempDisableComment=1;
+			}
+	    }
+	    else if(idfire=='add_favorites')
+		{			
+			if(valuePS.add_favorites==0)
+			{
+				tempAddFavoritest=1;
+			}
+	    }
+	    $scope.postStatusData.tempDisableComment=tempDisableComment;
+	    $scope.postStatusData.tempAddFavoritest=tempAddFavoritest;
+
 
 		var formData = new FormData();
 		formData.append('postStatusData',angular.toJson($scope.postStatusData));
 		//alert("fd")
 		$http({
             method  : 'POST',
-            url     : varBaseUrl+"post/hideTimelinePost",
+            url     : varBaseUrl+"post/changeCommonPostStatus",
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},                     
             data:formData, 
@@ -401,22 +366,91 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         		$scope.postStatusData={}
 				var result = $scope.aryPostScroll.filter(function(v,i)
 				{  
-				    if (v.id === timelineId){ $scope.aryPostScroll.splice(i,1) } 
+				    if (v.id === timelineId)
+				    { 
+				    	if(idfire=='hide_post' || idfire=='deleted')
+    					{
+					    	$scope.aryPostScroll.splice(i,1);
+					    }
+					    else if(idfire=='disabled_comments')
+    					{
+					    	$scope.aryPostScroll[i].disabled_comments=tempDisableComment ;
+					    }
+					    else if(idfire=='add_favorites')
+    					{
+					    	$scope.aryPostScroll[i].add_favorites=tempAddFavoritest ;
+					    }
+				    } 
 				}); 
-        		//console.log($scope.aryPostScroll)
+
         	}
         	else
         	{
-        		console.log("Hiding from timeline Failed!")
+        		console.log("Post Status Changed Failed!")
         	}
 		});
 	};
 
-	
+	/*$scope.GetLimitFriendForTimeline = function ()
+	{
+		if($scope.memberData.user_auto_id>0)
+		{
+			$scope.friendData.user_auto_id=$scope.memberData.user_auto_id;
+			$scope.friendData.limit=9;
 
+			var formData = new FormData();
+			formData.append('friendData',angular.toJson($scope.friendData));
+			$http({
+	            method  : 'POST',
+	            url     : varGlobalAdminBaseUrl+"ajaxGetAllFriendList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+	        	$scope.limitTimelineFriendListObj=aryreturnData.data.friendListData;
+			});			
+	    }		
+	};	
+
+	$scope.GetLimitPhotoForTimeline = function ()
+	{
+		if($scope.memberData.user_auto_id>0)
+		{
+			$scope.photoScrollData={};
+			$scope.photoScrollData.row=0;
+			$scope.photoScrollData.rowperpage=9;
+
+			var formData = new FormData();
+			formData.append('photoScrollData',angular.toJson($scope.photoScrollData));
+	        $http({
+	            method: 'POST',
+	            url     : varBaseUrl+"post/ajaxGetPhotoList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+		        data:formData,
+	        }).success(function(returnData)
+	        {
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.limitTimelinePhotoListObj=aryreturnData.data.photoScrollData;
+	        	}
+	        	else
+	        	{
+	        		swal("Error!",
+		        		"Something went wrong. Please try again later!",
+		        		"error"
+		        	)
+	        	}
+			});
+	    }		
+	};
+	*/
+
+	/*
 	$scope.commentTimelinePost = function(valuePS)
     {	
-    	
     	timelineId=valuePS.id;
     	post_id=valuePS.post_id;
     	member_comment=$.trim(valuePS.member_comment);

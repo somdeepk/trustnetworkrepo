@@ -66,27 +66,33 @@ div.postWhenScrollContainer{
                                     <i class="uil-share-alt mr-1"></i> Share
                                     </a> 
                                  </li>
-                                 <li> 
+                                 <!-- <li> 
                                     <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
                                     <i class="uil-edit-alt mr-1"></i>  Edit Post 
                                     </a> 
-                                 </li>
+                                 </li> -->
                                  <li> 
-                                    <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                    <i class="uil-comment-slash mr-1"></i>   Disable comments
+                                    <a href="javascript:void();" ng-click="changeCommonPostStatus(valuePS,'hide_post')" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <i class="uil-postcard mr-1"></i> Hide Post
                                     </a> 
                                  </li>
                                  <li> 
-                                    <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                    <i class="uil-favorite mr-1"></i>  Add favorites 
+                                    <a href="javascript:void();" ng-click="changeCommonPostStatus(valuePS,'disabled_comments')" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <i ng-class="(valuePS.disabled_comments==0)?'uil-comment-alt-message':'uil-comment-slash'" class=" mr-1"></i> {{(valuePS.disabled_comments==0)?'Disable comments':'Enable comments'}}
                                     </a> 
                                  </li>
-                                 <li>
+                                 <li> 
+                                    <a href="javascript:void();" ng-click="changeCommonPostStatus(valuePS,'add_favorites')" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <i ng-class="(valuePS.add_favorites==0)?'uil-heart':'uil-heart-medical'" class=" mr-1"></i> {{(valuePS.add_favorites==0)?'Add favorites':'Make Unafvorite '}}
+                                    </a> 
+                                 </li> 
+
+                                 <li ng-if="valuePS.from_member_id==loggedUserDataObj.id">
                                     <hr class="-mx-2 my-2 dark:border-gray-800">
                                  </li>
-                                 <li> 
-                                    <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
-                                    <i class="uil-trash-alt mr-1"></i>  Delete
+                                 <li ng-if="valuePS.from_member_id==loggedUserDataObj.id"> 
+                                    <a href="javascript:void();" ng-click="changeCommonPostStatus(valuePS,'deleted')" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                    <i class="uil-trash-alt mr-1"></i> Delete
                                     </a> 
                                  </li>
                               </ul>
@@ -252,7 +258,7 @@ div.postWhenScrollContainer{
                             <a href="#" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <a href="#">  
+                            <!-- <a href="#">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
@@ -287,7 +293,7 @@ div.postWhenScrollContainer{
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
-                            </a>
+                            </a> -->
                         </div>
                       <a href="#" class="button gray mt-3 w-full">  See all </a>
                     </div>
@@ -302,7 +308,7 @@ div.postWhenScrollContainer{
                             <a href="#" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <a href="#">  
+                            <!-- <a href="#">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
@@ -337,7 +343,7 @@ div.postWhenScrollContainer{
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
-                            </a>
+                            </a> -->
                         </div>
                       <a href="#" class="button gray mt-3 w-full">  See all </a>
                     </div>
@@ -352,7 +358,7 @@ div.postWhenScrollContainer{
                             <a href="#" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <a href="#">  
+                            <!-- <a href="#">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
@@ -387,7 +393,7 @@ div.postWhenScrollContainer{
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
-                            </a>
+                            </a> -->
                         </div>
                       <a href="#" class="button gray mt-3 w-full">  See all </a>
                     </div>
@@ -402,7 +408,7 @@ div.postWhenScrollContainer{
                             <a href="#" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <a href="#">  
+                            <!-- <a href="#">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
@@ -437,7 +443,7 @@ div.postWhenScrollContainer{
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
-                            </a>
+                            </a> -->
                         </div>
                       <a href="#" class="button gray mt-3 w-full">  See all </a>
                     </div>
@@ -451,7 +457,7 @@ div.postWhenScrollContainer{
                             <a href="#" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <a href="#">  
+                            <!-- <a href="#">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
@@ -486,7 +492,7 @@ div.postWhenScrollContainer{
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
-                            </a>
+                            </a> -->
                         </div>
                       <a href="#" class="button gray mt-3 w-full">  See all </a>
                     </div>

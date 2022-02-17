@@ -181,6 +181,8 @@ class Post extends CI_Controller
 				foreach ($result as $key => $value)
 				{
 					$finalPost[$key]['id']=$value['id'];
+					$finalPost[$key]['disabled_comments']=$value['disabled_comments'];
+					$finalPost[$key]['add_favorites']=$value['add_favorites'];
 					$finalPost[$key]['post_id']=$value['post_id'];
 					$finalPost[$key]['from_member_id']=$value['from_member_id'];
 					$finalPost[$key]['to_member_id']=$value['to_member_id'];
@@ -372,7 +374,7 @@ class Post extends CI_Controller
         exit;
     }
 
-    public function hideTimelinePost() 
+    public function changeCommonPostStatus() 
     {
 
     	$returnData=array();
@@ -380,18 +382,31 @@ class Post extends CI_Controller
     	$aryPostStatusData=json_decode($postStatusData, true);
   
   		$id=(isset($aryPostStatusData['timelineId']) && !empty($aryPostStatusData['timelineId']))? addslashes(trim($aryPostStatusData['timelineId'])):0;
-		$status=(isset($aryPostStatusData['status']) && !empty($aryPostStatusData['status']))? addslashes(trim($aryPostStatusData['status'])):'S';
-		
-		$menu_arr = array(
-            'status'  =>$status
-        );
+  		$post_id=(isset($aryPostStatusData['post_id']) && !empty($aryPostStatusData['post_id']))? addslashes(trim($aryPostStatusData['post_id'])):0;
+		$idfire=(isset($aryPostStatusData['idfire']) && !empty($aryPostStatusData['idfire']))? addslashes(trim($aryPostStatusData['idfire'])):'';
+		$tempDisableComment=(isset($aryPostStatusData['tempDisableComment']) && !empty($aryPostStatusData['tempDisableComment']))? addslashes(trim($aryPostStatusData['tempDisableComment'])):0;
+		$tempAddFavoritest=(isset($aryPostStatusData['tempAddFavoritest']) && !empty($aryPostStatusData['tempAddFavoritest']))? addslashes(trim($aryPostStatusData['tempAddFavoritest'])):0;
 
+		if($idfire=='hide_post'){
+			$menu_arr['status']='H';
+		}elseif($idfire=='disabled_comments'){
+			$menu_arr['disabled_comments']=$tempDisableComment;
+		}elseif($idfire=='add_favorites'){
+			$menu_arr['add_favorites']=$tempAddFavoritest;
+		}elseif($idfire=='deleted'){
+			$menu_arr['deleted']='1';
+		}else{
+			$menu_arr['status']='S';
+		}
 
 		$lastId=0;
- 		if($id>0)
+		if($post_id>0 && $idfire=='deleted')
 		{
+			$lastId = $this->Post_Model->addupdatepost($post_id,$menu_arr);
+		}elseif($id>0 && $idfire!='deleted'){
 			$lastId = $this->Post_Model->addupdatemembertimeline($id,$menu_arr);
 		}
+ 		
 
 		if($id>0 && $lastId>0)
 		{
