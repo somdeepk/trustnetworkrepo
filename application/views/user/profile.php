@@ -416,34 +416,24 @@ div.postWhenScrollContainer{
                                 </div>
 
                                 <div class="col-9">
-
-                                   <!-- <p class="mb-0">United States of AmericaXXX</p> -->
-                                   
-                                   <p class="mb-0">
-                                    
+                                   <p class="mb-0">                                    
                                     <?php 
-
                                        echo $this->session->userdata('address');
-
                                        if(!empty($this->session->userdata('city'))) { echo ', '.$this->session->userdata('city'); }
-
                                        if(!empty($this->session->userdata('state'))) { echo ', '.$this->session->userdata('state'); }
-
                                        if(!empty($this->session->userdata('country'))) { echo ', '.$this->session->userdata('country'); } 
-
                                     ?>
-
                                    </p>
                                 </div>
                              </div>
+
+                             <?php 
+                              $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
+                              ?>
+                              <?php if(!empty($str_website)){ ?>
                              <h4 class="mt-3">Websites and Social Links</h4>
                              <hr>
-                             <div class="row">
-                                <?php 
-                                $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
-                                ?>
-
-                                <?php if(!empty($str_website)){ ?>
+                             <div class="row">                                
                                 <div class="col-3">
                                    <h6>Website</h6>
                                 </div>
@@ -453,15 +443,9 @@ div.postWhenScrollContainer{
                                     echo $str_website;
                                     ?>  
                                    </p>
-                                </div>
-                                <?php } ?>
-       <!--                          <div class="col-3">
-                                   <h6>Social Link</h6>
-                                </div>
-                                <div class="col-9">
-                                   <p class="mb-0">www.bootstrap.com</p>
-                                </div> -->
+                                </div>                                
                              </div>
+                             <?php } ?>
                              <h4 class="mt-3">Basic Information</h4>
                              <hr>
                              <div class="row">
@@ -513,6 +497,10 @@ div.postWhenScrollContainer{
                                 }
                                 ?>
                                 
+                                <?php 
+                                if(!empty($this->session->userdata('interested_in')))
+                                {
+                                ?>
                                 <div class="col-3">
                                    <h6>Interested In</h6>
                                 </div>
@@ -521,7 +509,14 @@ div.postWhenScrollContainer{
                                       <?php echo $this->session->userdata('interested_in'); ?>
                                    </p>
                                 </div>
+                                <?php
+                                }
+                                ?>
 
+                                <?php 
+                                if(!empty($this->session->userdata('language')))
+                                {
+                                ?>
                                 <div class="col-3">
                                    <h6>Language</h6>
                                 </div>
@@ -530,7 +525,9 @@ div.postWhenScrollContainer{
                                     <?php echo $this->session->userdata('language'); ?>
                                    </p>
                                 </div>
-
+                                <?php
+                                }
+                                ?>
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">
@@ -672,18 +669,40 @@ div.postWhenScrollContainer{
 
                              <h4 class="mb-3">About You</h4>
                              <p>
-                                <?php echo $this->session->userdata('about_you'); ?>
+                                <?php 
+                                if(!empty($this->session->userdata('about_you')))
+                                {
+                                  echo $this->session->userdata('about_you');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
                              </p>
 
                              <h4 class="mt-3 mb-3">Other Name</h4>
                              <p>
-                                <?php echo $this->session->userdata('other_name'); ?>
+                                <?php 
+                                if(!empty($this->session->userdata('other_name')))
+                                {
+                                  echo $this->session->userdata('other_name');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
                              </p>
-
                              <h4 class="mt-3 mb-3">Favorite Quotes</h4>
-
                              <p>
-                                 <?php echo $this->session->userdata('favorite_quote'); ?>
+                                <?php 
+                                if(!empty($this->session->userdata('favorite_quote')))
+                                {
+                                  echo $this->session->userdata('favorite_quote');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
                              </p>
 
                           </div>
