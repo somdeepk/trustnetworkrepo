@@ -159,18 +159,20 @@
                             <ul class="header-nav d-flex flex-wrap p-0 m-0 crop-list">
                               <li style="z-index: 99; width: 100%" >
                                 <div class="cover-upload-button-wrap">
-                                   <i class="uil-pen cover-upload-button"><input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
-                                <a class="file-upload-icon zeditCoverz mt-3" href="javascript:void('');"><i class="ri-pencil-line">
-                                
-                                </a>
-
-                                <div class="mt-3"> 
+                                  <div class="mt-3"> 
                                 <i class="icon-feather-upload pic-upload-icon zCropCoverBtnImagez zCropCancelz hiddenimportant mr-2" ng-click="cropCoverImage();"></i> 
                                 <i class="fa-solid fa-xmark pic-cancle-icon zCropCancelz hiddenimportant" ng-click="clearCoverImage();"></i>   
                                                               
                                <!--  <button class="button bg-blue-700 zCropCoverBtnImagez zCropCancelz hiddenimportant" ng-click="cropCoverImage();">Crop & Upload Image</button>
                                 <button type="button" class="button bg-blue-700 zCropCancelz hiddenimportant" ng-click="clearCoverImage();" >Cancel</button> -->
                                 </div>
+                                   <i class="uil-pen cover-upload-button"><input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
+                                <a class="file-upload-icon zeditCoverz mt-3" href="javascript:void('');">
+                                  <i class="ri-pencil-line">
+                                
+                                </a>
+
+                                
                               </div>
                               </li>
                             </ul>
