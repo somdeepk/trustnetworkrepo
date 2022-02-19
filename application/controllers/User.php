@@ -3307,6 +3307,11 @@ class User extends CI_Controller
         $placeLiveData=json_decode($placeLiveData, true);
 
         $selectPlaceLive=(isset($placeLiveData['selectPlaceLive']) && !empty($placeLiveData['selectPlaceLive']))? addslashes(trim($placeLiveData['selectPlaceLive'])):0;
+        $othercityIndx=$placeLiveData['othercityIndx'];
+
+        // echo "othercityIndx".$othercityIndx;
+        // exit;
+
 
         $user_auto_id=$this->session->userdata('user_auto_id');
 		$memberData = $this->User_Model->get_member_data($user_auto_id);
@@ -3317,16 +3322,24 @@ class User extends CI_Controller
 		{
 			$jsonPlaceLiveData[$selectPlaceLive]=$placeLiveData[$selectPlaceLive];
 		}
-		else
+		else // other city
 		{
-			if(count($jsonPlaceLiveData)>0 && isset($jsonPlaceLiveData[$selectPlaceLive]))
+			if($othercityIndx!=-1) //Edit Existing Other City
 			{
-				$jsonPlaceLiveData[$selectPlaceLive][count($jsonPlaceLiveData[$selectPlaceLive])]=$placeLiveData[$selectPlaceLive];
+				$jsonPlaceLiveData[$selectPlaceLive][$othercityIndx]=$placeLiveData[$selectPlaceLive];
 			}
-			else
+			else //Add New Other City
 			{
-				$jsonPlaceLiveData[$selectPlaceLive][0]=$placeLiveData[$selectPlaceLive];
+				if(count($jsonPlaceLiveData)>0 && isset($jsonPlaceLiveData[$selectPlaceLive]))
+				{
+					$jsonPlaceLiveData[$selectPlaceLive][count($jsonPlaceLiveData[$selectPlaceLive])]=$placeLiveData[$selectPlaceLive];
+				}
+				else
+				{
+					$jsonPlaceLiveData[$selectPlaceLive][0]=$placeLiveData[$selectPlaceLive];
+				}
 			}
+			
 		}
 
        	$menu_arr = array(

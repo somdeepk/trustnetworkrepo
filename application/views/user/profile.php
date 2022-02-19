@@ -377,9 +377,9 @@ div.postWhenScrollContainer{
                           <!-- <li>
                              <a class="nav-link" data-toggle="pill" href="#family">Family and Relationship</a>
                           </li> -->
-                          <li>
+                          <!-- <li>
                              <a class="nav-link" data-toggle="pill" href="#work">Work and Education</a>
-                          </li>
+                          </li> -->
                           <li>
                              <a class="nav-link" data-toggle="pill" href="#lived">Places You've Lived</a>
                           </li>
@@ -645,12 +645,12 @@ div.postWhenScrollContainer{
                                    </div>
                                 </li>
                                 <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==false)" class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/currentcity.png" alt="story-img" class="rounded-circle avatar-40"></div>
                                    <div class="media-support-info ml-3">
                                       <h6>{{placeLiveDataObj.current_city.name}}</h6>
                                       <p class="mb-0">Current City</p>
                                    </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='current_city'">
                                   <div class="row">
@@ -673,12 +673,12 @@ div.postWhenScrollContainer{
                                    </div>
                                 </li>
                                 <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==false)" class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/hometown.png" alt="story-img" class="rounded-circle avatar-40"></div>
                                    <div class="media-support-info ml-3">
                                       <h6>{{placeLiveDataObj.home_town.name}}</h6>
                                       <p class="mb-0">Hometown</p>
                                    </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='home_town'">
                                   <div class="row">
@@ -715,13 +715,17 @@ div.postWhenScrollContainer{
                              <h4 ng-show="placeLiveDataObj.other_city.length>0" class="mb-3">Other City</h4>
                              <ul ng-show="placeLiveDataObj.other_city.length>0" class="suggestions-lists m-0 p-0">                                
                                 <li ng-repeat="(keyOC, valueOC) in placeLiveDataObj.other_city" class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/othercity.png" alt="story-img" class="rounded-circle avatar-40"></div>
                                    <div class="media-support-info ml-3">
                                       <h6>{{valueOC.name}}</h6>
                                       <!-- <p class="mb-0">Atlanta City</p> -->
                                    </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                  
                                 </li>
+
+
                              </ul>                             
                           </div>
 

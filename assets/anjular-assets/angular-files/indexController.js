@@ -277,6 +277,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
     		$scope.postScrollData.row=$scope.row;
     	}
     	$scope.postScrollData.rowperpage=$scope.rowperpage;
+    	$scope.postScrollData.clickProfileTab=$rootScope.clickProfileTab;
 
     	//if($scope.postExist==true)
     	//{

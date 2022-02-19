@@ -365,7 +365,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		//alert(hidden_profile_tab)	
 		//$rootScope.clickProfileTab=hidden_profile_tab;
 		$rootScope.tabPointer(hidden_profile_tab)
-		$scope.getMemberData();
+		$rootScope.getMemberData();
 
 		if(hidden_profile_tab=='friendlistTab' || hidden_profile_tab=='churchlistTab' || hidden_profile_tab=='memberlistTab')
 		{
@@ -546,16 +546,27 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	};
 
 
-
-	$scope.placeLiveData={};
-	$scope.selectPlaceLive='';
-	$scope.current_city={};
-	$scope.home_town={};
 	$scope.placeLiveDataObj={};
 	$scope.placeLiveDataObj.current_city={}
 	$scope.placeLiveDataObj.current_city.name="";
 	$scope.placeLiveDataObj.home_town={}
 	$scope.placeLiveDataObj.home_town.name="";
+
+	$scope.preparePlaceObject = function()
+    {
+    	$scope.selectPlaceLive='';
+		$scope.othercityIndx=-1;
+
+		$scope.placeLiveData={};
+		$scope.placeLiveData.current_city={};
+		$scope.placeLiveData.current_city.name='';
+
+		$scope.placeLiveData.home_town={};
+		$scope.placeLiveData.home_town.name='';
+
+		$scope.placeLiveData.other_city={};
+		$scope.placeLiveData.other_city.name='';
+	};
 
 	$scope.submitPlaceLiveData = function()
     {
@@ -588,6 +599,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 			$timeout(function()
 			{	
 				$scope.placeLiveData.selectPlaceLive=$scope.selectPlaceLive;
+				$scope.placeLiveData.othercityIndx=$scope.othercityIndx;
 				var formData = new FormData();
 				formData.append('placeLiveData',angular.toJson($scope.placeLiveData));
 
@@ -607,11 +619,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 						{
 							$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
 
-							$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Save','onlytext');
-							$scope.placeLiveData={};
-							$scope.selectPlaceLive='';
-							$scope.current_city={};
-							$scope.home_town={};
+							$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Save','onlytext');							
 						},1200);
 	            	}
 	            	else
@@ -619,14 +627,22 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	            		$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Save','onlytext');
 	            		console.log("place Live addition Failed!")
 	            	}
+
+	            	$timeout(function()
+					{
+						$scope.preparePlaceObject();					
+					},1400);         	
+	            	
 				});
 			},1200);
 		}
 	};
 
 
-	$scope.getMemberData = function()
+	$rootScope.getMemberData = function()
     {
+    	$scope.preparePlaceObject();
+
 		var formData = new FormData();
 		$http({
             method  : 'POST',
@@ -645,6 +661,13 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
         		console.log("getting member data is failed!")
         	}
 		});
+	};
+
+	$scope.editOtherCity = function(name,indx)
+    {
+		$scope.selectPlaceLive='other_city';
+		$scope.placeLiveData.other_city.name=name;
+		$scope.othercityIndx=indx;
 	};
 
 });

@@ -41,28 +41,32 @@ class Post extends CI_Controller
 	            'post_id'  =>$lastPostId,
 	            'from_member_id' => $member_id,
 	            'to_member_id' => $member_id,
+	            'post_type'  =>'newsfeed',
 	            'create_date'  =>$current_date,
 	            'status'  =>'S',
 	        );
 			$this->Post_Model->addupdatemembertimeline(0,$menu_arr_member_timeline);
 			//End Self Log in time line
 
-			if(count($aryPostTagFriend)>0)
+
+			//Start Log Data In Timeline
+			$friendListData = $this->User_Model->ajaxGetAllFriendList($member_id,'',array());
+			if(count($friendListData)>0)
 			{
-				foreach ($aryPostTagFriend as $ktag => $vtag) {
-					$menu_arr_tag = array(
-			            'post_id'  =>$lastPostId,
-			            'member_id' => $member_id,
-			            'tagged_member_id'  =>$vtag,
-			            'create_date'  =>$current_date,
-			        );
-					$lastTagId = $this->Post_Model->addupdatetagfriend(0,$menu_arr_tag);
+				foreach ($friendListData as $kFrnd => $vFrnd)
+				{
+					$strPostType='newsfeed';
+					if(count($aryPostTagFriend)>0 && in_array($vFrnd['id'], $aryPostTagFriend))
+					{
+						$strPostType='tagged';
+					}
 
 					//Start Log in time line
 					$menu_arr_member_timeline = array(
 			            'post_id'  =>$lastPostId,
 			            'from_member_id' => $member_id,
-			            'to_member_id' => $vtag,
+			            'to_member_id' => $vFrnd['id'],
+			            'post_type'  =>$strPostType,
 			            'create_date'  =>$current_date,
 			            'status'  =>'S',
 			        );
@@ -70,6 +74,23 @@ class Post extends CI_Controller
 					//End Log in time line
 				}
 			}
+			//End Log Data In Timeline
+
+			//Start Later We ommit This table
+			// if(count($aryPostTagFriend)>0)
+			// {
+			// 	foreach ($aryPostTagFriend as $ktag => $vtag)
+			// 	{
+			// 		$menu_arr_tag = array(
+			//             'post_id'  =>$lastPostId,
+			//             'member_id' => $member_id,
+			//             'tagged_member_id'  =>$vtag,
+			//             'create_date'  =>$current_date,
+			//         );
+			// 		$lastTagId = $this->Post_Model->addupdatetagfriend(0,$menu_arr_tag);				
+			// 	}
+			// }
+			//End Later We ommit This table
 
 			if(!empty($postfile))
 	        {
@@ -151,9 +172,15 @@ class Post extends CI_Controller
         $user_auto_id=$this->session->userdata('user_auto_id');
         $row=(isset($aryPostScrollData['row']) && !empty($aryPostScrollData['row']))? $aryPostScrollData['row']:'0';
         $rowperpage=(isset($aryPostScrollData['rowperpage']) && !empty($aryPostScrollData['rowperpage']))? $aryPostScrollData['rowperpage']:'0';
+        $clickProfileTab=(isset($aryPostScrollData['clickProfileTab']) && !empty($aryPostScrollData['clickProfileTab']))? $aryPostScrollData['clickProfileTab']:'newsfeedTab';
 
-        $sqlFindMemberPost="SELECT DISTINCT (id) as timelineid from tn_member_timeline WHERE ((from_member_id='".$user_auto_id."' AND to_member_id= '".$user_auto_id."') OR (to_member_id='".$user_auto_id."' AND from_member_id!= '".$user_auto_id."')) AND status='S' AND deleted='0' ORDER BY id DESC limit ".$row.",".$rowperpage;
-  
+        $strOrWhereParam='';
+        if($clickProfileTab=='timelineTab')
+        {
+        	$strOrWhereParam=" AND post_type='tagged'";
+	    }
+        
+        $sqlFindMemberPost="SELECT DISTINCT (id) as timelineid from tn_member_timeline WHERE ((from_member_id='".$user_auto_id."' AND to_member_id= '".$user_auto_id."') OR (to_member_id='".$user_auto_id."' AND from_member_id!= '".$user_auto_id."' ".$strOrWhereParam.")) AND status='S'  AND deleted='0' ORDER BY id DESC limit ".$row.",".$rowperpage;
         $queryFindMemberPost=$this->db->query($sqlFindMemberPost);
 		$resultFindMemberPost=$queryFindMemberPost->result_array();
 
@@ -201,13 +228,29 @@ class Post extends CI_Controller
 					//End Get Post File Images/Video Data
 
 					//Start Get tag to Friend Data
-					$sqlPostTagFriend="SELECT 
+					/*$sqlPostTagFriend="SELECT 
 					tptf.tagged_member_id,
 					tm.first_name,
 					tm.last_name
 					FROM tn_post_tag_friend as tptf 
 					LEFT JOIN tn_members as tm on tm.id=tptf.tagged_member_id
 					WHERE tptf.post_id='".$value['post_id']."' AND tm.status='1' and tm.deleted='0'";
+					$queryPostTagFriend=$this->db->query($sqlPostTagFriend);
+					$resultPostTagFriend=$queryPostTagFriend->result_array();
+
+					$finalPost[$key]['post_tag_friend_data']=array();
+					if(count($resultPostTagFriend)>0)
+					{
+						$finalPost[$key]['post_tag_friend_data']=$resultPostTagFriend;
+					}*/
+
+					$sqlPostTagFriend="SELECT 
+					tmt.to_member_id,
+					tm.first_name,
+					tm.last_name
+					FROM tn_member_timeline as tmt 
+					LEFT JOIN tn_members as tm on tm.id=tmt.to_member_id
+					WHERE tmt.post_id='".$value['post_id']."' AND tm.status='1' AND tm.deleted='0' AND tmt.post_type='tagged'";
 					$queryPostTagFriend=$this->db->query($sqlPostTagFriend);
 					$resultPostTagFriend=$queryPostTagFriend->result_array();
 

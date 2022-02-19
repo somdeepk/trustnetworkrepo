@@ -570,7 +570,9 @@ div.postWhenScrollContainer{
                               <hr>
                            </div>
                         </li>
-                        
+                        <ul ng-if="loadAcceptedInvitedToMeEventsObj.length<=0" class="media-story m-0 p-0">
+                           <li class="d-flex mb-4 align-items-center">No upcoming invitation found!</li>
+                        </ul>                        
                      </ul>
                   </div>
                </div>

@@ -6,7 +6,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	$scope.friendData={};
 	$scope.allFriendRequestObj={};
 
-	$rootScope.clickProfileTab='timelineTab';
+	$rootScope.clickProfileTab='newsfeedTab';
 
 	$rootScope.tabPointer = function(typ)
 	{
