@@ -5,7 +5,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	$scope.allFriendListObj={};
 	$scope.allChurchMemberListObj={};
 	$scope.allAgeGroupObj={};
-
 	$scope.coverImageData={};
 
 	$scope.peopleYouMayNowData = function()
@@ -357,7 +356,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	{
 		$scope.coverImageData.exist_cover_image=cover_image;
 
-
 		$scope.friendData.user_auto_id=user_auto_id;
 		$scope.friendData.membership_type=membership_type;
 		$scope.friendData.is_admin=is_admin;
@@ -367,6 +365,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		//alert(hidden_profile_tab)	
 		//$rootScope.clickProfileTab=hidden_profile_tab;
 		$rootScope.tabPointer(hidden_profile_tab)
+		$scope.getMemberData();
 
 		if(hidden_profile_tab=='friendlistTab' || hidden_profile_tab=='churchlistTab' || hidden_profile_tab=='memberlistTab')
 		{
@@ -381,6 +380,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		{
 			$scope.getAllChurchMember()
 		}
+
+
 	};
 
 	$scope.getAllFriendList = function()
@@ -401,12 +402,9 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	if(aryreturnData.status=='1')
 	        	{
 	        		$scope.allFriendListObj=aryreturnData.data.friendListData;
-	        		/*console.log('FLIST')
-	        		console.log($scope.allFriendListObj)*/
 	        	}
 	        	else
 	        	{
-	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
 	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
@@ -434,7 +432,6 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	        	}
 	        	else
 	        	{
-	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
 	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});			
@@ -546,6 +543,108 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 				});
 	        }
 		})
+	};
+
+
+
+	$scope.placeLiveData={};
+	$scope.selectPlaceLive='';
+	$scope.current_city={};
+	$scope.home_town={};
+	$scope.placeLiveDataObj={};
+	$scope.placeLiveDataObj.current_city={}
+	$scope.placeLiveDataObj.current_city.name="";
+	$scope.placeLiveDataObj.home_town={}
+	$scope.placeLiveDataObj.home_town.name="";
+
+	$scope.submitPlaceLiveData = function()
+    {
+		$scope.placeLiveDataCheck=true ;
+		$timeout(function()
+		{
+			$scope.placeLiveDataCheck=false ;
+		},2000);
+
+		var validator=0;
+		if (($scope.selectPlaceLive=='current_city') && ($scope.isNullOrEmptyOrUndefined($scope.placeLiveData.current_city.name)==true || $scope.placeLiveData.current_city.name=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.selectPlaceLive=='home_town') && ($scope.isNullOrEmptyOrUndefined($scope.placeLiveData.home_town.name)==true || $scope.placeLiveData.home_town.name=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (($scope.selectPlaceLive=='other_city') && ($scope.isNullOrEmptyOrUndefined($scope.placeLiveData.other_city.name)==true || $scope.placeLiveData.other_city.name=='¿'))
+		{
+			validator++ ;
+		}
+
+		if (Number(validator)==0)
+		{	
+			$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Saving..','loader');
+		
+			$timeout(function()
+			{	
+				$scope.placeLiveData.selectPlaceLive=$scope.selectPlaceLive;
+				var formData = new FormData();
+				formData.append('placeLiveData',angular.toJson($scope.placeLiveData));
+
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateplacelivedata",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					$scope.placeLiveDataCheck=false ;
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
+
+							$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Save','onlytext');
+							$scope.placeLiveData={};
+							$scope.selectPlaceLive='';
+							$scope.current_city={};
+							$scope.home_town={};
+						},1200);
+	            	}
+	            	else
+	            	{
+	            		$scope.buttonSavingAnimation('zsubmit_'+$scope.selectPlaceLive,'Save','onlytext');
+	            		console.log("place Live addition Failed!")
+	            	}
+				});
+			},1200);
+		}
+	};
+
+
+	$scope.getMemberData = function()
+    {
+		var formData = new FormData();
+		$http({
+            method  : 'POST',
+            url     : varGlobalAdminBaseUrl+"ajaxgetmemberdata",
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},                     
+            data:formData, 
+        }).success(function(returnData) {
+			aryreturnData=angular.fromJson(returnData);
+        	if(aryreturnData.status=='1')
+        	{
+				$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
+        	}
+        	else
+        	{
+        		console.log("getting member data is failed!")
+        	}
+		});
 	};
 
 });

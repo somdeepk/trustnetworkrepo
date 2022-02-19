@@ -72,7 +72,7 @@ exit;*/
                      <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
                   <!-- <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li> -->
-                  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
+                 <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
                   <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
                 </ul>
@@ -209,7 +209,7 @@ exit;*/
                           </div>
                        </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                        <a href="javascript:void();" class="search-toggle iq-waves-effect">
                           <div id="lottie-mail"></div>
                           <span class="bg-primary count-mail"></span>
@@ -278,7 +278,7 @@ exit;*/
                              </div>
                           </div>
                        </div>
-                    </li>
+                    </li> -->
                  </ul>
                  <?php } ?>
                  <ul class="navbar-list">

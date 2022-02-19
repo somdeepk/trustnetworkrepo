@@ -4035,7 +4035,7 @@ Add User Page
 .zsearch_inputz{width:90%;}
 
 .redBorder{
-	border: 1px solid #ff0000;
+	border: 1px solid #ff0000!important;
 }
 .greenBorder{
 	border: 1px solid #1abc9c;

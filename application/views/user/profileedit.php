@@ -199,7 +199,7 @@
 
                                   <div class="form-group col-sm-6" ng-if="memberData.membership_type=='RM'">
                                      <label for="other_name">Other Name:</label>
-                                     <input type="text" ng-model="memberData.other_name" id="other_name" class="form-control">
+                                     <input type="text" ng-model="memberData.other_name" maxlength="50" class="form-control">
                                   </div>
 
                                   <div class="form-group col-sm-12" ng-if="memberData.membership_type=='RM'">

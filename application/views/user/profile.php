@@ -636,37 +636,96 @@ div.postWhenScrollContainer{
                              </ul>
                           </div>
                           <div class="tab-pane fade" id="lived" role="tabpanel">
-                             <h4 class="mb-3">Current City and Hometown</h4>
+                            <h4 class="mt-3 mb-3">Places lived</h4>
                              <ul class="suggestions-lists m-0 p-0">
-                                <li class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
-                                   <div class="media-support-info ml-3">
-                                      <h6>Georgia</h6>
-                                      <p class="mb-0">Georgia State</p>
-                                   </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
-                                </li>
-                                <li class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
-                                   <div class="media-support-info ml-3">
-                                      <h6>Atlanta</h6>
-                                      <p class="mb-0">Atlanta City</p>
-                                   </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
-                                </li>
-                             </ul>
-                             <h4 class="mt-3 mb-3">Other Places Lived</h4>
-                             <ul class="suggestions-lists m-0 p-0">
-                                <li class="d-flex mb-4 align-items-center">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='current_city'" class="d-flex mb-4 align-items-center">
                                    <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
                                    <div class="media-support-info ml-3">
-                                      <h6>Add Place</h6>
+                                      <h6>Add Current City</h6>
                                    </div>
                                 </li>
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==false)" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{placeLiveDataObj.current_city.name}}</h6>
+                                      <p class="mb-0">Current City</p>
+                                   </div>
+                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='current_city'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.current_city.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.current_city.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_current_city" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div> 
                              </ul>
-                          </div>
-                          <div class="tab-pane fade" id="details" role="tabpanel">
 
+                             <ul class="suggestions-lists m-0 p-0">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='home_town'" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>Add Hometown</h6>
+                                   </div>
+                                </li>
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==false)" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{placeLiveDataObj.home_town.name}}</h6>
+                                      <p class="mb-0">Hometown</p>
+                                   </div>
+                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='home_town'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.home_town.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.home_town.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_home_town" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                             </ul>
+
+                             <ul class="suggestions-lists m-0 p-0">
+                                <li style="cursor: pointer;" ng-click="selectPlaceLive='other_city'" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>Add Other City</h6>
+                                   </div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='other_city'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.other_city.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.other_city.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_other_city" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                             </ul>
+                             <h4 ng-show="placeLiveDataObj.other_city.length>0" class="mb-3">Other City</h4>
+                             <ul ng-show="placeLiveDataObj.other_city.length>0" class="suggestions-lists m-0 p-0">                                
+                                <li ng-repeat="(keyOC, valueOC) in placeLiveDataObj.other_city" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{valueOC.name}}</h6>
+                                      <!-- <p class="mb-0">Atlanta City</p> -->
+                                   </div>
+                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                </li>
+                             </ul>                             
+                          </div>
+
+                          <div class="tab-pane fade" id="details" role="tabpanel">
                              <h4 class="mb-3">About You</h4>
                              <p>
                                 <?php 
