@@ -239,7 +239,9 @@ class User_Model extends CI_Model
 
 				$sqlMembersFrnds="SELECT 
 				tm.id,
-				tm.profile_image
+				tm.profile_image,
+				tm.first_name,
+				tm.last_name
 
 				FROM tn_members as tm
 				WHERE 

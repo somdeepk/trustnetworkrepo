@@ -163,14 +163,14 @@ div.postWhenScrollContainer{
                         </div>
                         <div ng-if="valuePS.post_like_data.length>0" class="flex items-center space-x-3 pt-2">
                            <div class="flex items-center">
-                              <img ng-if="valuePS.post_like_data.length>0" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[0].profile_image  == '' || !valuePS.post_like_data[0].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[0].profile_image }}" title="{{valuePS.post_like_data[0].first_name+''+valuePS.post_like_data[0].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+                              <img ng-if="valuePS.post_like_data.length>0" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[0].profile_image  == '' || !valuePS.post_like_data[0].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[0].profile_image }}" title="{{valuePS.post_like_data[0].first_name+' '+valuePS.post_like_data[0].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
 
-                              <img ng-if="valuePS.post_like_data.length>1" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[1].profile_image  == '' || !valuePS.post_like_data[1].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[1].profile_image }}" title="{{valuePS.post_like_data[1].first_name+''+valuePS.post_like_data[1].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900 -ml-2">
+                              <img ng-if="valuePS.post_like_data.length>1" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[1].profile_image  == '' || !valuePS.post_like_data[1].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[1].profile_image }}" title="{{valuePS.post_like_data[1].first_name+' '+valuePS.post_like_data[1].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900 -ml-2">
 
-                              <img ng-if="valuePS.post_like_data.length>2" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[2].profile_image  == '' || !valuePS.post_like_data[2].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[2].profile_image }}" title="{{valuePS.post_like_data[2].first_name+''+valuePS.post_like_data[2].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900 -ml-2">
+                              <img ng-if="valuePS.post_like_data.length>2" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_like_data[2].profile_image  == '' || !valuePS.post_like_data[2].profile_image )? 'member-no-imgage.jpg':'members/'+valuePS.post_like_data[2].profile_image }}" title="{{valuePS.post_like_data[2].first_name+' '+valuePS.post_like_data[2].last_name}}" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900 -ml-2">
                            </div>
                            <div class="dark:text-gray-100">
-                              Blessed<strong> {{valuePS.post_like_data[0].first_name+''+valuePS.post_like_data[0].last_name}}</strong>
+                              Blessed<strong> {{valuePS.post_like_data[0].first_name+' '+valuePS.post_like_data[0].last_name}}</strong>
                               {{(valuePS.post_like_data.length>1)? 'and '+(valuePS.post_like_data.length-1)+' others' :''}}
 
                                

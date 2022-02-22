@@ -24,15 +24,16 @@
                                     <h4 class="text-base font-semibold mb-1"> {{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h4>    
                                     <p class="mb-0">{{(value.membership_type=='RM')? value.church_first_name:''}}</p>                                               
                                 </div>
-                               <!--  <div class="flex mt-3.5 space-x-2">
+                               <div ng-if="value.members_frnds_data.length>0" class="flex mt-3.5 space-x-2">
                                     <div class="flex items-center -space-x-2 -mt-1">
-                                        <img alt="Image placeholder" src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" class="border-2 border-white rounded-full w-7">
-                                        <img alt="Image placeholder" src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" class="border-2 border-white rounded-full w-7">
+                                        <img ng-if="value.members_frnds_data.length>0" ng-src="<?php echo IMAGE_URL;?>images/{{(value.members_frnds_data[0].profile_image  == '' || !value.members_frnds_data[0].profile_image )? 'member-no-imgage.jpg':'members/'+value.members_frnds_data[0].profile_image }}"  title="{{value.members_frnds_data[0].first_name+' '+value.members_frnds_data[0].last_name}}" class="border-2 border-white rounded-full w-7">
+
+                                        <img ng-if="value.members_frnds_data.length>1" ng-src="<?php echo IMAGE_URL;?>images/{{(value.members_frnds_data[1].profile_image  == '' || !value.members_frnds_data[1].profile_image )? 'member-no-imgage.jpg':'members/'+value.members_frnds_data[1].profile_image }}"  title="{{value.members_frnds_data[1].first_name+' '+value.members_frnds_data[1].last_name}}" class="border-2 border-white rounded-full w-7">
                                     </div>
                                     <div class="flex-1 leading-5 text-sm">
-                                        <div> <strong>Johnson</strong> and 5 freind are members </div>
+                                        <div> <strong>{{value.members_frnds_data[0].first_name+' '+value.members_frnds_data[0].last_name}}</strong> {{(value.members_frnds_data.length>1)? 'and '+(value.members_frnds_data.length-1)+' freind are members' :(value.members_frnds_data.length<=1)? 'is member' :''}} </div>
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="flex mt-3.5 space-x-2 text-sm font-medium mb-4">
                                   <!-- <a href="#" class="bg-blue-600 flex flex-1 h-8 items-center justify-center rounded-md text-white capitalize">Add Friend</a> -->
                                   <a href="javascript:void();" ng-click="deleteMyFriend(value.id);" class="bg-gray-200 flex flex-1 h-8 items-center justify-center rounded-md capitalize zdeleteMyFriendz_{{value.id}}">
