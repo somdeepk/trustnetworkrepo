@@ -8,7 +8,7 @@ mainApp.controller('connectionController', function ($rootScope, $timeout, $inte
 		$scope.peopleYouMayNowData();
 		$scope.getAllFriendRequest();
 	};
-	$rootScope.viewFriends = function()
+	$rootScope.viewFriendsList = function()
 	{
 		$scope.getAllFriendList();
 	};

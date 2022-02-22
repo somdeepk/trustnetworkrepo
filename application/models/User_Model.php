@@ -73,9 +73,13 @@ class User_Model extends CI_Model
 			{
 				$strWhereParam=" AND tm.membership_type='PM'";
 			}
-			elseif($sgtnType=="memberSgtn")
+			elseif($sgtnType=="virtualMemberSgtn")
 			{
-				$strWhereParam=" AND tm.membership_type='RM'";
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id!='".$loggedUserId."')";
+			}
+			elseif($sgtnType=="chrchMemberSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id='".$loggedUserId."')";
 			}
 			elseif ($sgtnType=="frndSgtn")
 			{
@@ -85,10 +89,15 @@ class User_Model extends CI_Model
 
 		$sql="SELECT 
 				tm.*,
+				tm2.first_name as church_first_name,
+				tm2.last_name as church_last_name,
+
 				tmf.id as member_friends_aid, 
 				tmf.request_status ,
 				tmf.member_id 
 				FROM tn_members as tm
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id AND tm2.status='1' AND tm2.deleted='0'
+
 				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.friend_id AND tmf.member_id ='".$loggedUserId."'
 				WHERE 
 				tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."' AND tmf.request_status!='1')
@@ -97,7 +106,7 @@ class User_Model extends CI_Model
 
     			AND tm.id NOT IN (SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."'  AND tmf.request_status!='1')
 
-    			AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0'".$strWhereParam." order by first_name ASC";
+    			AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0'".$strWhereParam." order by tm.first_name ASC";
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
 		return $resultData;
@@ -112,9 +121,13 @@ class User_Model extends CI_Model
 			{
 				$strWhereParam=" AND tm.membership_type='PM'";
 			}
-			elseif($sgtnType=="memberSgtn")
+			elseif($sgtnType=="virtualMemberSgtn")
 			{
-				$strWhereParam=" AND tm.membership_type='RM'";
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id!='".$loggedUserId."')";
+			}
+			elseif($sgtnType=="chrchMemberSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id='".$loggedUserId."')";
 			}
 			elseif ($sgtnType=="frndSgtn")
 			{
@@ -124,12 +137,16 @@ class User_Model extends CI_Model
 
 		$sql="SELECT 
 				tm.*,
+				tm2.first_name as church_first_name,
+				tm2.last_name as church_last_name,
+
 				tmf.id as member_friends_aid, 
 				tmf.request_status 
 				FROM tn_members as tm
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id AND tm2.status='1' AND tm2.deleted='0'
 				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
 				WHERE tm.id IN 
-    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND tmf.request_status='1' ) AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' and  tmf.friend_id='".$loggedUserId."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by first_name ASC";
+    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND tmf.request_status='1' ) AND tm.id!='".$loggedUserId."' AND tm.is_approved='Y' and  tmf.friend_id='".$loggedUserId."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by tm.first_name ASC";
 
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
@@ -171,9 +188,13 @@ class User_Model extends CI_Model
 			{
 				$strWhereParam=" AND tm.membership_type='PM'";
 			}
-			elseif($sgtnType=="memberSgtn")
+			elseif($sgtnType=="virtualMemberSgtn")
 			{
-				$strWhereParam=" AND tm.membership_type='RM'";
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id!='".$loggedUserId."')";
+			}
+			elseif($sgtnType=="chrchMemberSgtn")
+			{
+				$strWhereParam=" AND (tm.membership_type='RM' AND  tm.parent_id='".$loggedUserId."')";
 			}
 			elseif ($sgtnType=="frndSgtn")
 			{
@@ -188,6 +209,7 @@ class User_Model extends CI_Model
 
 		$sql="SELECT 
 				tm.id,
+				tm.parent_id,
 				tm.profile_image,
 				tm.membership_type,
 				tm.first_name,
@@ -196,17 +218,55 @@ class User_Model extends CI_Model
 				tm2.last_name as church_last_name
 
 				FROM tn_members as tm
-				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id  AND tm2.status='1' AND tm2.deleted='0'
 				WHERE 
 				(
 					tm.id IN
     				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$loggedUserId."' AND tmf.request_status='2') OR tm.id IN 
     				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$loggedUserId."' AND tmf.request_status='2')
     			)
-    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by first_name ASC";
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." order by tm.first_name ASC";
 
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
+		
+
+		if(count($resultData)>0)
+		{
+			foreach ($resultData as $key => $value)
+			{
+				$strMembersFrndsWhereParam=" AND (tm.membership_type='RM' AND tm.parent_id='".$value['parent_id']."')";
+
+				$sqlMembersFrnds="SELECT 
+				tm.id,
+				tm.profile_image
+
+				FROM tn_members as tm
+				WHERE 
+				(
+					tm.id IN
+    				(SELECT friend_id FROM tn_member_friends as tmf WHERE tmf.member_id='".$value['id']."' AND tmf.request_status='2') OR tm.id IN 
+    				(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$value['id']."' AND tmf.request_status='2')
+    			)
+    			AND tm.is_approved='Y' AND tm.status='1' AND tm.deleted='0' ".$strMembersFrndsWhereParam." order by tm.first_name ASC";
+    			$queryMembersFrnds=$this->db->query($sqlMembersFrnds);
+				$resultDataMembersFrnds=$queryMembersFrnds->result_array();
+
+				if(count($resultDataMembersFrnds)>0)
+				{
+					$resultData[$key]['members_frnds_data']=$resultDataMembersFrnds;
+				}
+				else
+				{
+					$resultData[$key]['members_frnds_data']=array();
+				}
+
+			}
+		}
+
+		/*echo "RD<pre>";
+		print_r($resultData);
+		exit;*/
 		return $resultData;
 	}
 

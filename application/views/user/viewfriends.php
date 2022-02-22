@@ -21,7 +21,8 @@
                             <div class="card">
                                 <img ng-src="<?php echo IMAGE_URL;?>images/{{(value.profile_image  == '' || !value.profile_image )? 'member-no-imgage.jpg':'members/'+value.profile_image }}" class="h-44 object-cover rounded-t-md shadow-sm w-full">
                                 <div class="p-4">
-                                    <h4 class="text-base font-semibold mb-1"> {{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h4>                                                   
+                                    <h4 class="text-base font-semibold mb-1"> {{(value.membership_type=='PM')? value.first_name : value.first_name+' '+value.last_name}}</h4>    
+                                    <p class="mb-0">{{(value.membership_type=='RM')? value.church_first_name:''}}</p>                                               
                                 </div>
                                <!--  <div class="flex mt-3.5 space-x-2">
                                     <div class="flex items-center -space-x-2 -mt-1">

@@ -120,7 +120,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$('.loaderOverlay').fadeOut(200);
 			var element = angular.element('#angularMainContent').html(data);
 			$compile(element.contents())($scope);
-			//$rootScope.viewFriends();
+			$rootScope.viewFriendsList();
 
 		});
 		response.error(function(data, status, headers, config) {
@@ -146,7 +146,6 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 			$('.loaderOverlay').fadeOut(200);
 			var element = angular.element('#angularMainContent').html(data);
 			$compile(element.contents())($scope);
-			//$rootScope.viewFriends();
 
 		});
 		response.error(function(data, status, headers, config) {
