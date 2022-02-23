@@ -26,7 +26,7 @@ div.postWhenScrollContainer{
      <div class="row">
         <div ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
           <div class="col-sm-12">
-             <div class="iq-card">
+             <div class="iq-card <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                 <div class="iq-card-body profile-page p-0 pb-3 pb-md-5">
                    <div class="profile-header">
                       <div class="cover-container">
@@ -35,6 +35,7 @@ div.postWhenScrollContainer{
                           <input ng-model="friendData.is_admin" id="is_admin" type="hidden">
                           <input ng-model="friendData.parent_id" id="parent_id" type="hidden">
                           <input id="hidden_profile_tab" type="hidden" value="<?php echo $profileTab; ?>">
+                          <input id="hiddenViewedMemberId" type="hidden" value="<?php echo $viewedMemberId; ?>">
 
 
                           <!-- Start Cover Image Section -->
@@ -126,19 +127,19 @@ div.postWhenScrollContainer{
                 <div class="iq-card-body p-0">
                    <div class="user-tabing py-2">
                       <ul class="nav nav-pills d-flex align-items-center justify-content-around profile-feed-items p-0 m-0">
-                         <li class="p-0">
+                         <li class="p-0 <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                             <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='timelineTab') ? 'active' : ''"  href="javascript:void(0)" ng-click="tabPointer('timelineTab')">Timeline</a>
                          </li>
                          <li class="p-0">
                             <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='aboutTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('aboutTab')">About</a>
                          </li>
-                         <li class="p-0">
+                         <li class="p-0 <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                             <a class="nav-link" data-toggle="pill" href="javascript:void(0)" ng-click="tabPointer('friendlistTab'); friendData.activeSubFrndTab='all'; getAllFriendList()" ng-class="(clickProfileTab=='churchlistTab' || clickProfileTab=='memberlistTab' || clickProfileTab=='friendlistTab' || friendData.activeSubFrndTab=='all') ? 'active' : ''" >Friends</a>
                          </li>
-                         <li class="p-0">
+                         <li class="p-0 <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                             <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='photoTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('photoTab')">Photos</a>
                          </li>
-                         <li class="p-0">
+                         <li class="p-0 <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                             <a class="nav-link" data-toggle="pill" ng-class="(clickProfileTab=='eventsTab') ? 'active' : ''" href="javascript:void(0)" ng-click="tabPointer('eventsTab')">Events</a>
                          </li>
                       </ul>
@@ -165,7 +166,7 @@ div.postWhenScrollContainer{
                               <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                              </div>
                              <div class="media-support-info ml-3">
-                                <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
+                                <h6><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h6>
                                <!--  <p class="mb-0">40  friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
@@ -196,7 +197,7 @@ div.postWhenScrollContainer{
                               <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                               </div>
                              <div class="media-support-info ml-3">
-                                <h6><a title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h6>
+                                <h6><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h6>
                                 <!-- <p class="mb-0">4 friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
@@ -271,7 +272,7 @@ div.postWhenScrollContainer{
                                             <img style="" class="avatar-90 img-fluid" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                                         </div>
                                         <div class="user-data-block text-left pl-3">
-                                           <h5 class="">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
+                                           <h5 class=""><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h5>
                                            <h6>{{value.user_email}}</h6>
                                            <p>{{(isNullOrEmptyOrUndefined(value.church_first_name)==false)? value.church_first_name : '&nbsp;'}}</p>
                                         </div>
@@ -325,7 +326,7 @@ div.postWhenScrollContainer{
                               <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{value.first_name+' '+value.last_name}}">
                               </div>
                              <div class="media-support-info ml-3">
-                                <h6>{{value.first_name+' '+value.last_name}}</h6>
+                                <h6><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{value.first_name+' '+value.last_name}}</a></h6>
                                 <p class="mb-0">{{value.user_email}}</p>
                              </div>
                              
@@ -381,10 +382,10 @@ div.postWhenScrollContainer{
                              <a class="nav-link" data-toggle="pill" href="#work">Work and Education</a>
                           </li> -->
                           <li>
-                             <a class="nav-link" data-toggle="pill" href="#lived">Places You've Lived</a>
+                             <a class="nav-link " data-toggle="pill" href="#lived">Places <?php if($viewedMemberId){ ?> Member <?php }else{ ?> You've <?php } ?> Lived</a>
                           </li>
                           <li>
-                             <a class="nav-link" data-toggle="pill" href="#details">Details About You</a>
+                             <a class="nav-link" data-toggle="pill" href="#details">Details About <?php if($viewedMemberId){ ?> Member <?php }else{ ?> You <?php } ?></a>
                           </li>
                        </ul>
                     </div>
@@ -398,136 +399,66 @@ div.postWhenScrollContainer{
                                    <h6>Email</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0"><?php echo $this->session->userdata('user_email'); ?></p>
+                                   <p class="mb-0">{{aboutMemberDataObj.user_email}}</p>
                                 </div>
-                                <div class="col-3">
+
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_mobile)==false || isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_alt_mobile)==false)" class="col-3">
                                    <h6>Mobile</h6>
                                 </div>
-                                <div class="col-9">
-                                   <p class="mb-0">
-                                    <?php 
-                                    $str_contact_mobile=(!empty(trim($this->session->userdata('contact_mobile'))))? trim($this->session->userdata('contact_mobile')):$this->session->userdata('contact_alt_mobile');
-                                    echo $str_contact_mobile;
-                                    ?>                                     
-                                   </p>
-                                </div>
-                                <div class="col-3">
-                                   <h6>Address</h6>
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_mobile)==false || isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_alt_mobile)==false)" class="col-9">
+                                   <p class="mb-0">{{(isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_mobile)==false)? aboutMemberDataObj.contact_mobile : aboutMemberDataObj.contact_alt_mobile}}</p>
                                 </div>
 
-                                <div class="col-9">
-                                   <p class="mb-0">                                    
-                                    <?php 
-                                       echo $this->session->userdata('address');
-                                       if(!empty($this->session->userdata('city'))) { echo ', '.$this->session->userdata('city'); }
-                                       if(!empty($this->session->userdata('state'))) { echo ', '.$this->session->userdata('state'); }
-                                       if(!empty($this->session->userdata('country'))) { echo ', '.$this->session->userdata('country'); } 
-                                    ?>
-                                   </p>
-                                </div>
                              </div>
 
-                             <?php 
-                              $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
-                              ?>
-                              <?php if(!empty($str_website)){ ?>
-                             <h4 class="mt-3">Websites and Social Links</h4>
-                             <hr>
-                             <div class="row">                                
+                             <h4 class="mt-3" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.website)==false || isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_alt_mobile)==false)">Websites and Social Links</h4>
+                             <hr ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.website)==false || isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_alt_mobile)==false)">
+                             <div class="row" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.website)==false || isNullOrEmptyOrUndefined(aboutMemberDataObj.contact_alt_mobile)==false)">                                
                                 <div class="col-3">
                                    <h6>Website</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">
-                                    <?php
-                                    echo $str_website;
-                                    ?>  
-                                   </p>
+                                   <p class="mb-0">{{aboutMemberDataObj.website}}</p>
                                 </div>                                
-                             </div>
-                             <?php } ?>
+                             </div> 
                              <h4 class="mt-3">Basic Information</h4>
                              <hr>
                              <div class="row">
                                 <div class="col-3">
-                                  <?php if($this->session->userdata('membership_type')=='RM'){ ?>
-                                   <h6>Birth Date</h6>
-                                  <?php }else{ ?>
-                                    <h6>Foundation Date</h6>
-                                  <?php } ?>
+                                   <h6>{{(aboutMemberDataObj.membership_type=='RM')? 'Birth Date' :'Foundation Date'}}</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">
-                                    <?php echo date('d M',strtotime($this->session->userdata('dob'))); ?>
-                                   </p>
+                                   <p class="mb-0">{{aboutMemberDataObj.dispDate}} {{aboutMemberDataObj.dispMoth}}</p>
                                 </div>
                                 <div class="col-3">
-                                  <?php if($this->session->userdata('membership_type')=='RM'){ ?>
-                                   <h6>Birth Year</h6>
-                                  <?php }else{ ?>
-                                    <h6>Foundation Year</h6>
-                                  <?php } ?>
+                                  <h6>{{(aboutMemberDataObj.membership_type=='RM')? 'Birth Year' :'Foundation Year'}}</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0"><?php echo date('Y',strtotime($this->session->userdata('dob'))); ?></p>
+                                   <p class="mb-0">{{aboutMemberDataObj.dispYear}}</p>
                                 </div>
 
-                                <?php 
-                                if(!empty($this->session->userdata('gender')))
-                                {
-                                ?>
-                                <div class="col-3">
+
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.gender)==false)" class="col-3">
                                    <h6>Gender</h6>
                                 </div>
-                                <div class="col-9">
-                                   <p class="mb-0">
-                                    <?php 
-                                      if(!empty($this->session->userdata('gender')) && $this->session->userdata('gender')=='M')
-                                      {
-                                        echo "Male";
-                                      }
-                                      elseif(!empty($this->session->userdata('gender')) && $this->session->userdata('gender')=='F')
-                                      {
-                                        echo "Female";
-                                      }
-                                    ?>
-                                    </p>
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.gender)==false)" class="col-9">
+                                   <p class="mb-0">{{(aboutMemberDataObj.gender=='M')? 'Male' : 'Female'}}</p>
                                 </div>
-                                <?php
-                                }
-                                ?>
-                                
-                                <?php 
-                                if(!empty($this->session->userdata('interested_in')))
-                                {
-                                ?>
-                                <div class="col-3">
+
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.interested_in)==false)" class="col-3">
                                    <h6>Interested In</h6>
                                 </div>
-                                <div class="col-9">
-                                   <p class="mb-0">
-                                      <?php echo $this->session->userdata('interested_in'); ?>
-                                   </p>
+                                <div ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.interested_in)==false)" class="col-9">
+                                   <p class="mb-0">{{aboutMemberDataObj.interested_in}}</p>
                                 </div>
-                                <?php
-                                }
-                                ?>
 
-                                <?php 
-                                if(!empty($this->session->userdata('language')))
-                                {
-                                ?>
-                                <div class="col-3">
+    
+                                <div class="col-3" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.language)==false)">
                                    <h6>Language</h6>
                                 </div>
-                                <div class="col-9">
-                                   <p class="mb-0">
-                                    <?php echo $this->session->userdata('language'); ?>
-                                   </p>
+                                <div class="col-9" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.language)==false)">
+                                   <p class="mb-0">{{aboutMemberDataObj.language}}</p>
                                 </div>
-                                <?php
-                                }
-                                ?>
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">
@@ -554,7 +485,7 @@ div.postWhenScrollContainer{
                                       <h6>Paul Molive</h6>
                                       <p class="mb-0">Brothe</p>
                                    </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation "><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                 </li>
                                 <li class="d-flex mb-4 align-items-center">
                                    <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
@@ -638,7 +569,7 @@ div.postWhenScrollContainer{
                           <div class="tab-pane fade" id="lived" role="tabpanel">
                             <h4 class="mt-3 mb-3">Places lived</h4>
                              <ul class="suggestions-lists m-0 p-0">
-                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='current_city'" class="d-flex mb-4 align-items-center">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='current_city'" class="d-flex mb-4 align-items-center <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                                    <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
                                    <div class="media-support-info ml-3">
                                       <h6>Add Current City</h6>
@@ -650,7 +581,7 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.current_city.name}}</h6>
                                       <p class="mb-0">Current City</p>
                                    </div>
-                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='current_city'">
                                   <div class="row">
@@ -666,7 +597,7 @@ div.postWhenScrollContainer{
                              </ul>
 
                              <ul class="suggestions-lists m-0 p-0">
-                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='home_town'" class="d-flex mb-4 align-items-center">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='home_town'" class="d-flex mb-4 align-items-center <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                                    <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
                                    <div class="media-support-info ml-3">
                                       <h6>Add Hometown</h6>
@@ -678,7 +609,7 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.home_town.name}}</h6>
                                       <p class="mb-0">Hometown</p>
                                    </div>
-                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='home_town'">
                                   <div class="row">
@@ -694,7 +625,7 @@ div.postWhenScrollContainer{
                              </ul>
 
                              <ul class="suggestions-lists m-0 p-0">
-                                <li style="cursor: pointer;" ng-click="selectPlaceLive='other_city'" class="d-flex mb-4 align-items-center">
+                                <li style="cursor: pointer;" ng-click="selectPlaceLive='other_city'" class="d-flex mb-4 align-items-center <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                                    <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
                                    <div class="media-support-info ml-3">
                                       <h6>Add Other City</h6>
@@ -721,7 +652,7 @@ div.postWhenScrollContainer{
                                       <!-- <p class="mb-0">Atlanta City</p> -->
                                    </div>
 
-                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
                                   
                                 </li>
 
@@ -730,43 +661,14 @@ div.postWhenScrollContainer{
                           </div>
 
                           <div class="tab-pane fade" id="details" role="tabpanel">
-                             <h4 class="mb-3">About You</h4>
-                             <p>
-                                <?php 
-                                if(!empty($this->session->userdata('about_you')))
-                                {
-                                  echo $this->session->userdata('about_you');
-                                }else
-                                {
-                                  echo "-";
-                                }
-                                ?>
-                             </p>
+                             <h4 class="mb-3" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.about_you)==false)">About You</h4>
+                             <p ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.about_you)==false)">{{aboutMemberDataObj.about_you}}</p>
 
-                             <h4 class="mt-3 mb-3">Other Name</h4>
-                             <p>
-                                <?php 
-                                if(!empty($this->session->userdata('other_name')))
-                                {
-                                  echo $this->session->userdata('other_name');
-                                }else
-                                {
-                                  echo "-";
-                                }
-                                ?>
-                             </p>
-                             <h4 class="mt-3 mb-3">Favorite Quotes</h4>
-                             <p>
-                                <?php 
-                                if(!empty($this->session->userdata('favorite_quote')))
-                                {
-                                  echo $this->session->userdata('favorite_quote');
-                                }else
-                                {
-                                  echo "-";
-                                }
-                                ?>
-                             </p>
+                             <h4 ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.other_name)==false)" class="mt-3 mb-3">Other Name</h4>
+                             <p ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.other_name)==false)">{{aboutMemberDataObj.other_name}}</p>
+
+                             <h4 class="mt-3 mb-3" ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.favorite_quote)==false)">Favorite Quotes</h4>
+                             <p ng-show="(isNullOrEmptyOrUndefined(aboutMemberDataObj.favorite_quote)==false)">{{aboutMemberDataObj.favorite_quote}}</p>
 
                           </div>
                        </div>
@@ -1047,7 +949,7 @@ div.postWhenScrollContainer{
                                             <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
                                          </div>
                                          <div class="media-support-info mt-2">
-                                            <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
+                                            <h5 class="mb-0 d-inline-block"><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{valuePS.post_data.postMemberId}}">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
                                             <!-- <p class="mb-0 d-inline-block">Add New Post</p> -->
                                             <p class="mb-0 text-primary">{{valuePS.post_data.display_create_date}}<!--  ----{{valuePS.id}} --></p>
                                          </div>
@@ -1146,7 +1048,7 @@ div.postWhenScrollContainer{
                                                   <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
                                                </div>
                                                <div class="media-support-info mt-2">
-                                                  <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
+                                                  <h5 class="mb-0 d-inline-block"><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{valuePS.post_data.postMemberId}}">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
                                                   <!-- <p class="mb-0 d-inline-block">Add New Post</p> -->
                                                   <p class="mb-0 text-primary">{{valuePS.post_data.display_create_date}}<!--  ----{{valuePS.id}} --></p>
                                                </div>                                       

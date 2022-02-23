@@ -125,6 +125,12 @@ class User_Model extends CI_Model
 		$sql='SELECT * from tn_members WHERE id="'.$id.'"';
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
+		if(count($resultData)>0)
+		{
+			$resultData[0]['dispDate']=date('d',strtotime($resultData[0]['dob']));
+			$resultData[0]['dispMoth']=date('M',strtotime($resultData[0]['dob']));
+			$resultData[0]['dispYear']=date('Y',strtotime($resultData[0]['dob']));
+		}
 		return $resultData[0];
 	}
 	public function assign_under_group_admin($member_id)

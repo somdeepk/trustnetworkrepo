@@ -268,6 +268,7 @@ class Post extends CI_Controller
 					tp.post,
 					tp.create_date,
 
+					tm.id postMemberId,
 					tm.first_name,
 					tm.last_name,
 					tm.profile_image

@@ -195,7 +195,7 @@ div.postWhenScrollContainer{
                                     <img class="rounded-circle img-fluid" ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
                                  </div>
                                  <div class="media-support-info mt-2">
-                                    <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
+                                    <h5 class="mb-0 d-inline-block"><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{valuePS.post_data.postMemberId}}">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
                                     <!-- <p class="mb-0 d-inline-block">Add New Post</p> -->
                                     <p class="mb-0 text-primary">{{valuePS.post_data.display_create_date}}<!--  ----{{valuePS.id}} --></p>
                                  </div>
@@ -295,7 +295,7 @@ div.postWhenScrollContainer{
                                           <img class="rounded-circle img-fluid" src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}">
                                        </div>
                                        <div class="media-support-info mt-2">
-                                          <h5 class="mb-0 d-inline-block"><a href="javascript:void();" class="">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
+                                          <h5 class="mb-0 d-inline-block"><a style="color:#76ab9f;text-decoration: underline;" title="View Profile" href="<?php echo base_url();?>user/profile/{{valuePS.post_data.postMemberId}}">{{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} </a> <font style="color:#FFF">{{valuePS.post_data.tag_string_dispaly}} </font></h5>
                                           <!-- <p class="mb-0 d-inline-block">Add New Post</p> -->
                                           <p class="mb-0 text-primary">{{valuePS.post_data.display_create_date}}<!--  ----{{valuePS.id}} --></p>
                                        </div>                                       

@@ -6,6 +6,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	$scope.allChurchMemberListObj={};
 	$scope.allAgeGroupObj={};
 	$scope.coverImageData={};
+	$scope.aboutMemberDataObj={};
 
 	$scope.peopleYouMayNowData = function()
 	{
@@ -362,6 +363,10 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		$scope.friendData.parent_id=parent_id;
 
 		hidden_profile_tab=$('#hidden_profile_tab').val();	
+
+		hiddenViewedMemberId=$('#hiddenViewedMemberId').val();
+		$rootScope.viewedMemberId=hiddenViewedMemberId;
+
 		//alert(hidden_profile_tab)	
 		//$rootScope.clickProfileTab=hidden_profile_tab;
 		$rootScope.tabPointer(hidden_profile_tab)
@@ -644,6 +649,10 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
     	$scope.preparePlaceObject();
 
 		var formData = new FormData();
+		$scope.viewedMemberData={};
+		$scope.viewedMemberData.viewedMemberId=$rootScope.viewedMemberId;
+		formData.append('viewedMemberData',angular.toJson($scope.viewedMemberData));
+		
 		$http({
             method  : 'POST',
             url     : varGlobalAdminBaseUrl+"ajaxgetmemberdata",
@@ -655,6 +664,10 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
         	if(aryreturnData.status=='1')
         	{
 				$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
+				$scope.aboutMemberDataObj=aryreturnData.data.memberData;
+
+				console.log("MD")
+				console.log($scope.aboutMemberDataObj)
         	}
         	else
         	{

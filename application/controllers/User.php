@@ -2623,6 +2623,7 @@ class User extends CI_Controller
 		{
 			$data['profileTab']='timelineTab';
 		}
+		$data['viewedMemberId']=$id;
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');
 		$this->load->view('user/profile', $data);
@@ -3369,8 +3370,11 @@ class User extends CI_Controller
 
     public function ajaxgetmemberdata() 
     {
-    	$user_auto_id=$this->session->userdata('user_auto_id');
-		$memberData = $this->User_Model->get_member_data($user_auto_id);
+    	$viewedMemberData = trim($this->input->post('viewedMemberData'));
+        $viewedMemberData=json_decode($viewedMemberData, true);
+
+        $viewedMemberId=(isset($viewedMemberData['viewedMemberId']) && !empty($viewedMemberData['viewedMemberId']))? addslashes(trim($viewedMemberData['viewedMemberId'])):$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($viewedMemberId);
 
 		$returnData=array();
         $returnData['status']='1';
