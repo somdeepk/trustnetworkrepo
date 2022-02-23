@@ -277,7 +277,7 @@ class User_Model extends CI_Model
 				tm2.last_name as church_last_name
 
 				FROM tn_members as tm
-				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id AND tm2.status='1' AND tm2.deleted='0'
 				WHERE 
 				(
 					tm.id IN

@@ -196,7 +196,7 @@ div.postWhenScrollContainer{
                               <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                               </div>
                              <div class="media-support-info ml-3">
-                                <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
+                                <h6><a title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h6>
                                 <!-- <p class="mb-0">4 friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">

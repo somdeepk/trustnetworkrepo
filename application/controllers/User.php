@@ -2611,11 +2611,18 @@ class User extends CI_Controller
         exit;    	
     }
 
-    public function profile()
+    public function profile($id=0)
 	{
 		authenticate_user();
 		$data=array();
-		$data['profileTab']='timelineTab';//$this->input->post_get('tab');
+		if($id>0)
+		{
+			$data['profileTab']='aboutTab';//$this->input->post_get('tab');
+		}
+		else
+		{
+			$data['profileTab']='timelineTab';
+		}
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');
 		$this->load->view('user/profile', $data);

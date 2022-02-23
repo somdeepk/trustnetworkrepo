@@ -296,8 +296,8 @@ mainApp.directive('dobdatesignup', function() {
 				dateFormat:'yy-mm-dd',
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "-100:-7",
-				maxDate: -0,
+				yearRange: "-99:-7",
+				//maxDate: 0,
 				onSelect: function (date) {
 					ngModelCtrl.$setViewValue(date);
 					ngModelCtrl.$render();
