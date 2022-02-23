@@ -665,9 +665,8 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
         	{
 				$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
 				$scope.aboutMemberDataObj=aryreturnData.data.memberData;
-
-				console.log("MD")
-				console.log($scope.aboutMemberDataObj)
+				// console.log("MD")
+				// console.log($scope.aboutMemberDataObj)
         	}
         	else
         	{
