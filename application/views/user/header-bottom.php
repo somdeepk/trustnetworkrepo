@@ -28,8 +28,8 @@ exit;*/
                   <li <?php echo ($actionName=='events')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/events" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
 
                   <?php if($membershipType=="RM"){ ?>
-                  <li <?php echo ($actionName=='friendrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend Request</span></a></li>
-                  <li <?php echo ($actionName=='friendlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Friend List</span></a></li>
+                  <li <?php echo ($actionName=='friendrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-user-plus"></i><span>Friend Request</span></a></li>
+                  <li <?php echo ($actionName=='friendlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Friend List</span></a></li>
                   <?php }else{ ?>
                       <li <?php echo ($actionName=='churchrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
                       <li <?php echo ($actionName=='churchlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
