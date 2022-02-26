@@ -302,7 +302,7 @@ div.postWhenScrollContainer{
                           <h4 class="card-title">Church Member</h4>
                        </div>
                     </div>
-                    <div class="iq-card-body">
+                    <div class="iq-card-body table-list">
                        <ul class="request-list m-0 p-0">
                           <li class="d-flex align-items-center">
                              <div class="media-support-info ml-4">
