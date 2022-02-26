@@ -3385,6 +3385,51 @@ class User extends CI_Controller
         exit;
     }
 
+    public function ajaxdeletePlaceLeaved() 
+    {
+        $placeLiveData = trim($this->input->post('placeLiveData'));
+        $placeLiveData=json_decode($placeLiveData, true);
+
+        $indexkey=(isset($placeLiveData['indexkey']) && !empty($placeLiveData['indexkey']))? addslashes(trim($placeLiveData['indexkey'])):'';
+        $assocKey=(isset($placeLiveData['assocKey']) && !empty($placeLiveData['assocKey']))? addslashes(trim($placeLiveData['assocKey'])):0;
+
+
+        $user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+
+		$jsonPlaceLiveData=(isset($memberData['place_live_data']) && !empty($memberData['place_live_data']))? json_decode($memberData['place_live_data'],true):array();
+
+		
+
+		if($indexkey=="current_city" || $indexkey=="home_town")
+		{
+			 unset($jsonPlaceLiveData[$indexkey]);		
+		}
+		elseif($indexkey=="other_city") // other city
+		{
+			$tempJsonPlaceLiveData=$jsonPlaceLiveData[$indexkey];
+			unset($tempJsonPlaceLiveData[$assocKey]);
+			$tempJsonPlaceLiveData=array_values($tempJsonPlaceLiveData);
+			$jsonPlaceLiveData[$indexkey]=$tempJsonPlaceLiveData;	
+		}
+
+       	$menu_arr = array(
+            'place_live_data' => json_encode($jsonPlaceLiveData),
+        );
+        $lastId = $this->User_Model->addupdatemember($user_auto_id,$menu_arr);
+
+
+        $memberData = $this->User_Model->get_member_data($user_auto_id);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Deleted Successfully.');
+        $returnData['data']=array('id'=>$lastId,'memberData'=>$memberData);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
 }
 	
 

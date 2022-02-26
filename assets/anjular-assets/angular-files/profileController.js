@@ -675,6 +675,46 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		});
 	};
 
+	$scope.deletePlaceLeaved = function(indexkey,assocKey='')
+    {	
+    	swal({
+	      title: "Attention",
+	      text: "Are you sure to delete",
+	      icon: "warning",
+	      buttons: true,
+	      dangerMode: true,
+	    })
+	    .then((willDelete) =>
+	    {
+	    	if (willDelete)
+	    	{
+				$scope.placeLiveData.indexkey=indexkey;
+				$scope.placeLiveData.assocKey=assocKey;
+
+				var formData = new FormData();
+				formData.append('placeLiveData',angular.toJson($scope.placeLiveData));
+				//alert("fd")
+				$http({
+		            method  : 'POST',
+		            url     : varGlobalAdminBaseUrl+"ajaxdeletePlaceLeaved",
+		            transformRequest: angular.identity,
+		            headers: {'Content-Type': undefined},                     
+		            data:formData, 
+		        }).success(function(returnData){
+					aryreturnData=angular.fromJson(returnData);
+		        	if(aryreturnData.status=='1')
+		        	{
+		        		$scope.placeLiveDataObj=jQuery.parseJSON(aryreturnData.data.memberData.place_live_data);
+		        	}
+		        	else
+		        	{
+		        		console.log("Deletion Failed!")
+		        	}
+				});
+			}
+		});
+	};
+
 	$scope.editOtherCity = function(name,indx)
     {
 		$scope.selectPlaceLive='other_city';

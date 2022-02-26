@@ -24,7 +24,7 @@ div.postWhenScrollContainer{
   
   <div class="container">
      <div class="row">
-        <div ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
+        <div class="w-100" ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
           <div class="col-sm-12">
              <div class="iq-card <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                 <div class="iq-card-body profile-page p-0 pb-3 pb-md-5">
@@ -581,7 +581,10 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.current_city.name}}</h6>
                                       <p class="mb-0">Current City</p>
                                    </div>
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="deletePlaceLeaved('current_city')"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                  </div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='current_city'">
                                   <div class="row">
@@ -609,7 +612,10 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.home_town.name}}</h6>
                                       <p class="mb-0">Hometown</p>
                                    </div>
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="deletePlaceLeaved('home_town')"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                  </div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='home_town'">
                                   <div class="row">
@@ -652,7 +658,10 @@ div.postWhenScrollContainer{
                                       <!-- <p class="mb-0">Atlanta City</p> -->
                                    </div>
 
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="deletePlaceLeaved('other_city',keyOC)"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                   </div>
                                   
                                 </li>
 
