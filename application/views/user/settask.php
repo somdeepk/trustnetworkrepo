@@ -91,26 +91,34 @@
                 </div>
 
                 <div class="row video-group">
-                  <div class="col-sm-6">
-                    <i class="ri-broadcast-fill zpalyericonz hiddenimportant" style="font-size: 86px;margin-left:155px;color:#50b5ff"></i>
+                  <div class="col-sm-5 text-center">
+                    <i class="ri-broadcast-fill zpalyericonz hiddenimportant" style="font-size: 86px; color:#50b5ff"></i>
                     <div id="local-player" class="player zhostpalyerz hiddenimportant"></div>
                     <div id="remote-playerlist" class="zaudiancepalyerz hiddenimportant"></div>
                   </div> 
 
-                  <div class="col-sm-6">
+                  <div class="col-sm-7">
                     <div class="iq-card-body">
-                       <ul class="request-list m-0 p-0">
-                          <li ng-repeat="(keyLM, valueLM) in liveStreamingMemberListObj" class="d-flex align-items-center">
-                            <div class="user-img img-fluid">
+                      <table class="table">
+                        <thead>
+                        
+                        <tbody>
+                          <tr ng-repeat="(keyLM, valueLM) in liveStreamingMemberListObj">                           
+                            <td style="border-top: 0;">
+                              <div class="user-img img-fluid">
                               <img class="rounded-circle avatar-40" ng-if="valueLM.profile_image == '' || !valueLM.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
                               <img class="rounded-circle avatar-40" ng-if="valueLM.profile_image && valueLM.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{valueLM.profile_image}}" alt="{{valueLM.first_name+' '+valueLM.last_name}}">
                             </div>
-                            <div class="media-support-info ml-3">
+                            </td>
+                            <td style="border-top: 0;" width="50%">
+                              <div class="media-support-info ml-3">
                                 <h6>{{valueLM.first_name+' '+valueLM.last_name}}</h6>
-                                <p class="mb-0" style="font-size: 14px;">{{valueLM.coursename+': '+valueLM.maxmemberlevel }}</p>
+                                <p class="mb-0" style="font-size: 14px; color: #fff;">{{valueLM.coursename+': '+valueLM.maxmemberlevel }}</p>
                                 <p class="mb-0" style="font-size: 12px;color:#ffa100" ng-if="valueLM.totbadge>0"><i class="ri-award-fill"></i> {{valueLM.totbadge}} </p>
                             </div>
-                            <div class="d-flex align-items-center">
+                            </td>
+                            <td style="border-top: 0;">
+                              <div class="d-flex align-items-center">
                               <div class="iq-card-header-toolbar d-flex align-items-center">
                                 <div class="dropdown">
                                   <a href="javascript:void();" class="dropdown-toggle mr-3 btn btn-primary rounded" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" role="button"><i class="ri-award-fill"></i>Set Badge</a>
@@ -124,11 +132,18 @@
                                 </div>
                               </div>
                             </div>
-                          </li>
-                          <li ng-if="peopleYouMayNowObj.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                            No suggestion found!
-                          </li>                        
-                       </ul>
+                            </td>
+                          </tr>
+
+                          <tr> 
+                            <td colspan="3"  ng-if="peopleYouMayNowObj.length<=0">
+                              No suggestion found!
+                            </td>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+                       
                     </div>
                   </div>
                 </div>
@@ -208,35 +223,21 @@
                </div>
             </div>
             <div class="iq-card-body">
-               <ul class="request-list list-inline m-0 p-0">
-
-                  <li class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6>Title</h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6>Star Time</h6>
-                     </div>
-                    <!--  <div class="media-support-info ml-3">
-                        <h6>End Time</h6>
-                     </div> -->
-                     <div class="d-flex align-items-center">
-                        Action
-                     </div>
-                  </li>
-
-
-                  <li ng-repeat="(key, value) in allLiveStreamVideoData" class="d-flex align-items-center">
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.video_title}}</h6>
-                     </div>
-                     <div class="media-support-info ml-4">
-                        <h6>{{value.display_start_time}}</h6>
-                     </div>
-                    <!-- <div class="media-support-info ml-3">
-                        <h6>{{value.display_end_time}}</h6>
-                     </div> -->
-                     <div class="d-flex align-items-center">
+              <div class="table-respnsive">
+                <table class="table table-striped">
+                <thead>
+                  <tr >
+                    <th>Title</th>
+                    <th>Star Time</th>
+                    <th>Action</th>                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  ng-repeat="(key, value) in allLiveStreamVideoData">                    
+                    <td><h6>{{value.video_title}}</h6></td>
+                    <td><h6>{{value.display_start_time}}</h6></td>
+                    <td>
+                      <div class="d-flex align-items-center">
                         
                         <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="value.membership_type=='RM'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
 
@@ -250,11 +251,19 @@
 
                         <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteStreamVideoz zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
-                  </li>
-                  <li ng-if="allLiveStreamVideoData.length<=0" class="d-flex align-items-center" style="text-align: center ">
-                    <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>                    
-                  </li>
-               </ul>
+                    </td>
+                  </tr>
+                  <tr  ng-if="allLiveStreamVideoData.length<=0" >                    
+                    <td colspan="3">
+                      <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>
+                    </td>
+                    
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              
+               
             </div>
          </div>
       </div>

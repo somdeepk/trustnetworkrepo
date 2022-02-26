@@ -6,9 +6,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	$scope.friendData={};
 	$scope.allFriendRequestObj={};
 
-	$rootScope.clickProfileTab='timelineTab';
-
-	
+	$rootScope.clickProfileTab='newsfeedTab';
 
 	$rootScope.tabPointer = function(typ)
 	{
@@ -41,7 +39,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
         	}
         	else
         	{
-        		console.log("'DateRange Schedule Failed")
+        		console.log("DateRange Schedule Failed.");
         	}
 		});
 	};
@@ -69,19 +67,15 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
         	}
         	else
         	{
-        		console.log("'DateRange Schedule Failed")
+        		console.log("DateRange Schedule Failed.");
         	}
 		});
 	};
-
-	
-
 
 	$rootScope.getUserOtherData = function()
 	{
 		if($scope.friendData.user_auto_id>0)
 		{
-			//alert("OD")
 			var formData = new FormData();
 			formData.append('friendData',angular.toJson($scope.friendData));
 			$http({
@@ -98,10 +92,9 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	}
 	        	else
 	        	{
-	        		console.log("Something went wrong. Please try again later!",)
+	        		console.log("Something went wrong. Please try again later!");
 	        	}
-			});
-			
+			});			
 	    }
     };
 
@@ -130,10 +123,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
         	}
         	else
         	{
-        		swal("Error!",
-	        		"Something went wrong. Please try again later!",
-	        		"error"
-	        	)
+        		console.log("Something went wrong. Please try again later!")
         	}
 		});	
 
@@ -165,10 +155,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		//$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 			
@@ -208,10 +195,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zconfirmFriendRequestz_'+member_friends_aid,'Confirm','onlytext');
-	        		swal("Error!",
-		        		"Confirmation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Confirmation Failed!")
 	        	}
 			});
 		},2000);
@@ -246,10 +230,7 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zdeleteFromFriendRequestz_'+member_friends_aid,'Delete Request','onlytext');
-	        		swal("Error!",
-		        		"Deletion Failed!",
-		        		"error"
-		        	)
+	        		console.log("Deletion Failed!")
 	        	}
 			});
 		},2000);

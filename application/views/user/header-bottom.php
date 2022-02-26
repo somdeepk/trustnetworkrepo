@@ -25,7 +25,7 @@ exit;*/
                 <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li <?php echo ($actionName=='index')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/index" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Newsfeed</span></a></li>
                   <li <?php echo ($actionName=='profile')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/profile" class="iq-waves-effect"><i class="las la-user"></i><span>Profile</span></a></li>
-                  <li <?php echo ($actionName=='events')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/events" class="iq-waves-effect"><i class="las la-film"></i><span>Events</span></a></li>
+                  <li <?php echo ($actionName=='events')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/events" class="iq-waves-effect"><i class="ri-calendar-2-fill"></i><span>Events</span></a></li>
 
                   <?php if($membershipType=="RM"){ ?>
                   <li <?php echo ($actionName=='friendrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-user-plus"></i><span>Friend Request</span></a></li>
@@ -56,14 +56,14 @@ exit;*/
                     
                     <?php if($membershipType=="CM" || $membershipType=="CC" || $isAdmin=="Y"){ ?>
                     <div ng-repeat="(key, value) in allTaskLevelObj">
-                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-book-2-fill"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                       <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                           <li ng-repeat="(key1, value1) in value.levelData"><a href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
                       </ul>
                     </div>
                     <?php }elseif($membershipType=="RM" && $isAdmin=="N"){ ?>
                     <div ng-repeat="(key, value) in allTaskLevelObj">
-                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-focus-2-line"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                      <a href="#Task" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-book-2-fill"></i><span>{{value.course_name}}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                       <ul id="Task" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li ng-repeat="(key1, value1) in  value.levelData" ><a ng-class="(value1.is_disabled == 'Y') ? 'cssdisabled' : ''" href="javascript:void(0);" ng-click="set_task(value.id,key1)"><i class="ri-tablet-line"></i>{{value1.labelname}}</a></li>
                       </ul>
@@ -72,7 +72,7 @@ exit;*/
                      <!-- ng-disabled="value.is_disabled=='Y'"  -->
                   </li>    
                   <!-- <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li> -->
-                  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li>
+                 <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
                   <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
                 </ul>
@@ -209,7 +209,7 @@ exit;*/
                           </div>
                        </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                        <a href="javascript:void();" class="search-toggle iq-waves-effect">
                           <div id="lottie-mail"></div>
                           <span class="bg-primary count-mail"></span>
@@ -278,7 +278,7 @@ exit;*/
                              </div>
                           </div>
                        </div>
-                    </li>
+                    </li> -->
                  </ul>
                  <?php } ?>
                  <ul class="navbar-list">

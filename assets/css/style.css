@@ -726,7 +726,8 @@ opacity: 0;
 	-ms-flex-align: center;
 	align-items: center;
 	overflow: hidden;
-	border-radius: 5px;
+	border-radius: 0px;
+	border-bottom: 1px solid rgba(255,255,255,.1);
 }
 .iq-sidebar-menu .iq-menu li li a {
 	font-size: 14px;
@@ -773,14 +774,14 @@ opacity: 0;
 	transition: all 0.9s ease-out 0s;
 }
 .iq-sidebar-menu .iq-menu li a:hover {
-	color: var(--iq-primary);
+	background: #1065a3; color: #fff;
 }
 .iq-sidebar-menu .iq-menu li.active {
 	background: var(--iq-dark-primary);
 }
 .iq-sidebar-menu .iq-menu li.active>a {
-	color: var(--iq-primary);
-	text-decoration: none
+	background: #1065a3; color: #fff;
+	
 }
 .iq-search-bar .searchbox .search-link {
 	position: absolute;
@@ -4035,7 +4036,7 @@ Add User Page
 .zsearch_inputz{width:90%;}
 
 .redBorder{
-	border: 1px solid #ff0000;
+	border: 1px solid #ff0000!important;
 }
 .greenBorder{
 	border: 1px solid #1abc9c;

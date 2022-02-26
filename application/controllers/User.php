@@ -570,6 +570,11 @@ class User extends CI_Controller
         $hidden_image_encode=(isset($aryMemberData['hidden_image_encode']) && !empty($aryMemberData['hidden_image_encode']))? addslashes(trim($aryMemberData['hidden_image_encode'])):'';
         $profile_image=(isset($aryMemberData['profile_image']) && !empty($aryMemberData['profile_image']))? addslashes(trim($aryMemberData['profile_image'])):'';
 
+        $other_name=(isset($aryMemberData['other_name']) && !empty($aryMemberData['other_name']))? addslashes(trim($aryMemberData['other_name'])):'';
+        $interested_in=(isset($aryMemberData['interested_in']) && !empty($aryMemberData['interested_in']))? addslashes(trim($aryMemberData['interested_in'])):'';
+        $language=(isset($aryMemberData['language']) && !empty($aryMemberData['language']))? addslashes(trim($aryMemberData['language'])):'';
+        $about_you=(isset($aryMemberData['about_you']) && !empty($aryMemberData['about_you']))? addslashes(trim($aryMemberData['about_you'])):'';
+        $favorite_quote=(isset($aryMemberData['favorite_quote']) && !empty($aryMemberData['favorite_quote']))? addslashes(trim($aryMemberData['favorite_quote'])):'';
   
 		
 		$current_date=date('Y-m-d H:i:s');   
@@ -592,6 +597,11 @@ class User extends CI_Controller
             'country'  =>$country,
             'state'  =>$state,
             'postal_code'  =>$postal_code,
+            'other_name'  =>$other_name,
+            'interested_in'  =>$interested_in,
+            'language'  =>$language,
+            'about_you'  =>$about_you,
+            'favorite_quote'  =>$favorite_quote,
             'update_date'  =>$current_date,
         );
 
@@ -2550,9 +2560,6 @@ class User extends CI_Controller
 
         $returnData=array();
 
-        /*echo "encode_cover_image".$encode_cover_image;
-        exit;*/
-
         if(!empty($encode_cover_image) && $encode_cover_image!='data:comma' && !empty($id)) //data:comma blank Image
         {
         	$menu_arr=array();
@@ -2604,11 +2611,18 @@ class User extends CI_Controller
         exit;    	
     }
 
-    public function profile()
+    public function profile($id=0)
 	{
 		authenticate_user();
 		$data=array();
-		$data['profileTab']='timelineTab';//$this->input->post_get('tab');
+		if($id>0)
+		{
+			$data['profileTab']='aboutTab';//$this->input->post_get('tab');
+		}
+		else
+		{
+			$data['profileTab']='timelineTab';
+		}
 		$this->load->view('user/header-script');
 		$this->load->view('user/header-bottom');
 		$this->load->view('user/profile', $data);
@@ -3288,6 +3302,80 @@ class User extends CI_Controller
 	        $returnData['msgstring']='Acccepted Or Rejected Failed';
 	        $returnData['data']=array();
 		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+
+    public function ajaxupdateplacelivedata() 
+    {
+        $placeLiveData = trim($this->input->post('placeLiveData'));
+        $placeLiveData=json_decode($placeLiveData, true);
+
+        $selectPlaceLive=(isset($placeLiveData['selectPlaceLive']) && !empty($placeLiveData['selectPlaceLive']))? addslashes(trim($placeLiveData['selectPlaceLive'])):0;
+        $othercityIndx=$placeLiveData['othercityIndx'];
+
+        // echo "othercityIndx".$othercityIndx;
+        // exit;
+
+
+        $user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+
+		$jsonPlaceLiveData=(isset($memberData['place_live_data']) && !empty($memberData['place_live_data']))? json_decode($memberData['place_live_data'],true):array();
+
+		if($selectPlaceLive=="current_city" || $selectPlaceLive=="home_town")
+		{
+			$jsonPlaceLiveData[$selectPlaceLive]=$placeLiveData[$selectPlaceLive];
+		}
+		else // other city
+		{
+			if($othercityIndx!=-1) //Edit Existing Other City
+			{
+				$jsonPlaceLiveData[$selectPlaceLive][$othercityIndx]=$placeLiveData[$selectPlaceLive];
+			}
+			else //Add New Other City
+			{
+				if(count($jsonPlaceLiveData)>0 && isset($jsonPlaceLiveData[$selectPlaceLive]))
+				{
+					$jsonPlaceLiveData[$selectPlaceLive][count($jsonPlaceLiveData[$selectPlaceLive])]=$placeLiveData[$selectPlaceLive];
+				}
+				else
+				{
+					$jsonPlaceLiveData[$selectPlaceLive][0]=$placeLiveData[$selectPlaceLive];
+				}
+			}
+			
+		}
+
+       	$menu_arr = array(
+            'place_live_data' => json_encode($jsonPlaceLiveData),
+        );
+        $lastId = $this->User_Model->addupdatemember($user_auto_id,$menu_arr);
+
+
+        $memberData = $this->User_Model->get_member_data($user_auto_id);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Place Added Successfully.');
+        $returnData['data']=array('id'=>$lastId,'memberData'=>$memberData);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+    public function ajaxgetmemberdata() 
+    {
+    	$user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+
+		$returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']='';
+        $returnData['data']=array('memberData'=>$memberData);
        
         echo json_encode($returnData);
         exit;

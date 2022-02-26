@@ -196,11 +196,11 @@ div.postWhenScrollContainer{
                               <img class="rounded-circle avatar-40" ng-if="value.profile_image && value.profile_image != ''" src="<?php echo IMAGE_URL;?>images/members/{{value.profile_image}}" alt="{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}">
                               </div>
                              <div class="media-support-info ml-3">
-                                <h6>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h6>
+                                <h6><a title="View Profile" href="<?php echo base_url();?>user/profile/{{value.id}}">{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</a></h6>
                                 <!-- <p class="mb-0">4 friends</p> -->
                              </div>
                              <div class="d-flex align-items-center">
-                                <a href="javascript:void();" ng-disabled="value.request_status=='1'" ng-click="sendFriendRequest(value.id);" class="mr-3 btn btn-primary rounded zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'"class="ri-user-add-line"></i>{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
+                                <a href="javascript:void();" ng-disabled="value.request_status=='1'" ng-click="sendFriendRequest(value.id);" class="mr-3 btn btn-primary rounded zsendFriendRequestz_{{value.id}}"><i ng-if="value.request_status != '1'" class="ri-user-add-line"></i>{{(value.request_status=='1')? 'Request Send!' : 'Add Friend'}}</a>
                                 <a href="javascript:void();"  ng-click="removeFromSuggestion(value.id);" class="mr-3 btn btn-secondary rounded zRemoveFromSuggestionz_{{value.id}}" >Remove</a>
                              </div>
                           </li>
@@ -301,7 +301,7 @@ div.postWhenScrollContainer{
                           <h4 class="card-title">Church Member</h4>
                        </div>
                     </div>
-                    <div class="iq-card-body">
+                    <div class="iq-card-body table-list">
                        <ul class="request-list m-0 p-0">
                           <li class="d-flex align-items-center">
                              <div class="media-support-info ml-4">
@@ -369,17 +369,17 @@ div.postWhenScrollContainer{
            <div class="iq-card">
               <div class="iq-card-body">
                  <div class="row">
-                   <!--  <div class="col-md-3">
+                    <div class="col-md-3">
                        <ul class="nav nav-pills basic-info-items list-inline d-block p-0 m-0">
                           <li>
                              <a class="nav-link active" data-toggle="pill" href="#basicinfo">Contact and Basic Info</a>
                           </li>
-                          <li>
+                          <!-- <li>
                              <a class="nav-link" data-toggle="pill" href="#family">Family and Relationship</a>
-                          </li>
-                          <li>
+                          </li> -->
+                          <!-- <li>
                              <a class="nav-link" data-toggle="pill" href="#work">Work and Education</a>
-                          </li>
+                          </li> -->
                           <li>
                              <a class="nav-link" data-toggle="pill" href="#lived">Places You've Lived</a>
                           </li>
@@ -387,8 +387,8 @@ div.postWhenScrollContainer{
                              <a class="nav-link" data-toggle="pill" href="#details">Details About You</a>
                           </li>
                        </ul>
-                    </div> -->
-                    <div class="col-md-12 pl-4">
+                    </div>
+                    <div class="col-md-9 pl-4">
                        <div class="tab-content">
                           <div class="tab-pane fade active show" id="basicinfo" role="tabpanel">
                              <h4>Contact Information</h4>
@@ -411,21 +411,29 @@ div.postWhenScrollContainer{
                                     ?>                                     
                                    </p>
                                 </div>
-                                <!-- <div class="col-3">
+                                <div class="col-3">
                                    <h6>Address</h6>
                                 </div>
+
                                 <div class="col-9">
-                                   <p class="mb-0">United States of America</p>
-                                </div> -->
+                                   <p class="mb-0">                                    
+                                    <?php 
+                                       echo $this->session->userdata('address');
+                                       if(!empty($this->session->userdata('city'))) { echo ', '.$this->session->userdata('city'); }
+                                       if(!empty($this->session->userdata('state'))) { echo ', '.$this->session->userdata('state'); }
+                                       if(!empty($this->session->userdata('country'))) { echo ', '.$this->session->userdata('country'); } 
+                                    ?>
+                                   </p>
+                                </div>
                              </div>
+
+                             <?php 
+                              $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
+                              ?>
+                              <?php if(!empty($str_website)){ ?>
                              <h4 class="mt-3">Websites and Social Links</h4>
                              <hr>
-                             <div class="row">
-                                <?php 
-                                $str_website=(!empty(trim($this->session->userdata('website'))))? trim($this->session->userdata('website')):'';
-                                ?>
-
-                                <?php if(!empty($str_website)){ ?>
+                             <div class="row">                                
                                 <div class="col-3">
                                    <h6>Website</h6>
                                 </div>
@@ -435,15 +443,9 @@ div.postWhenScrollContainer{
                                     echo $str_website;
                                     ?>  
                                    </p>
-                                </div>
-                                <?php } ?>
-       <!--                          <div class="col-3">
-                                   <h6>Social Link</h6>
-                                </div>
-                                <div class="col-9">
-                                   <p class="mb-0">www.bootstrap.com</p>
-                                </div> -->
+                                </div>                                
                              </div>
+                             <?php } ?>
                              <h4 class="mt-3">Basic Information</h4>
                              <hr>
                              <div class="row">
@@ -494,18 +496,38 @@ div.postWhenScrollContainer{
                                 <?php
                                 }
                                 ?>
-                               <!--  <div class="col-3">
-                                   <h6>interested in</h6>
-                                </div>
-                                <div class="col-9">
-                                   <p class="mb-0">Designing</p>
-                                </div>
+                                
+                                <?php 
+                                if(!empty($this->session->userdata('interested_in')))
+                                {
+                                ?>
                                 <div class="col-3">
-                                   <h6>language</h6>
+                                   <h6>Interested In</h6>
                                 </div>
                                 <div class="col-9">
-                                   <p class="mb-0">English, French</p>
-                                </div> -->
+                                   <p class="mb-0">
+                                      <?php echo $this->session->userdata('interested_in'); ?>
+                                   </p>
+                                </div>
+                                <?php
+                                }
+                                ?>
+
+                                <?php 
+                                if(!empty($this->session->userdata('language')))
+                                {
+                                ?>
+                                <div class="col-3">
+                                   <h6>Language</h6>
+                                </div>
+                                <div class="col-9">
+                                   <p class="mb-0">
+                                    <?php echo $this->session->userdata('language'); ?>
+                                   </p>
+                                </div>
+                                <?php
+                                }
+                                ?>
                              </div>
                           </div>
                           <div class="tab-pane fade" id="family" role="tabpanel">
@@ -614,42 +636,138 @@ div.postWhenScrollContainer{
                              </ul>
                           </div>
                           <div class="tab-pane fade" id="lived" role="tabpanel">
-                             <h4 class="mb-3">Current City and Hometown</h4>
+                            <h4 class="mt-3 mb-3">Places lived</h4>
                              <ul class="suggestions-lists m-0 p-0">
-                                <li class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/01.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
-                                   <div class="media-support-info ml-3">
-                                      <h6>Georgia</h6>
-                                      <p class="mb-0">Georgia State</p>
-                                   </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
-                                </li>
-                                <li class="d-flex mb-4 align-items-center">
-                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/user/02.jpg" alt="story-img" class="rounded-circle avatar-40"></div>
-                                   <div class="media-support-info ml-3">
-                                      <h6>Atlanta</h6>
-                                      <p class="mb-0">Atlanta City</p>
-                                   </div>
-                                   <div class="edit-relation"><a href="javascript:void();"><i class="ri-edit-line mr-2"></i>Edit</a></div>
-                                </li>
-                             </ul>
-                             <h4 class="mt-3 mb-3">Other Places Lived</h4>
-                             <ul class="suggestions-lists m-0 p-0">
-                                <li class="d-flex mb-4 align-items-center">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='current_city'" class="d-flex mb-4 align-items-center">
                                    <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
                                    <div class="media-support-info ml-3">
-                                      <h6>Add Place</h6>
+                                      <h6>Add Current City</h6>
                                    </div>
                                 </li>
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.current_city.name)==false)" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/currentcity.png" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{placeLiveDataObj.current_city.name}}</h6>
+                                      <p class="mb-0">Current City</p>
+                                   </div>
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='current_city'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.current_city.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.current_city.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_current_city" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div> 
                              </ul>
+
+                             <ul class="suggestions-lists m-0 p-0">
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==true)" style="cursor: pointer;" ng-click="selectPlaceLive='home_town'" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>Add Hometown</h6>
+                                   </div>
+                                </li>
+                                <li ng-show="(isNullOrEmptyOrUndefined(placeLiveDataObj.home_town.name)==false)" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/hometown.png" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{placeLiveDataObj.home_town.name}}</h6>
+                                      <p class="mb-0">Hometown</p>
+                                   </div>
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='home_town'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.home_town.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.home_town.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_home_town" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                             </ul>
+
+                             <ul class="suggestions-lists m-0 p-0">
+                                <li style="cursor: pointer;" ng-click="selectPlaceLive='other_city'" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><i class="ri-add-fill"></i></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>Add Other City</h6>
+                                   </div>
+                                </li>
+                                <div ng-show="selectPlaceLive=='other_city'">
+                                  <div class="row">
+                                    <div class="col-md-8">
+                                      <input type="text" ng-model="placeLiveData.other_city.name" ng-class="(placeLiveDataCheck==true && isNullOrEmptyOrUndefined(placeLiveData.other_city.name)==true)? 'redBorder' : ''" maxlength="50" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <button type="button" style="float: left" class="btn btn-primary mr-2 zsubmit_other_city" ng-click="submitPlaceLiveData();">Save</button>
+                                      <button type="button" style="float: left" ng-click="selectPlaceLive=''" class="btn iq-bg-danger">Cancel</button>
+                                    </div>
+                                  </div>
+                                </div>
+                             </ul>
+                             <h4 ng-show="placeLiveDataObj.other_city.length>0" class="mb-3">Other City</h4>
+                             <ul ng-show="placeLiveDataObj.other_city.length>0" class="suggestions-lists m-0 p-0">                                
+                                <li ng-repeat="(keyOC, valueOC) in placeLiveDataObj.other_city" class="d-flex mb-4 align-items-center">
+                                   <div class="user-img img-fluid"><img src="<?php echo base_url();?>assets/images/page-img/othercity.png" alt="story-img" class="rounded-circle avatar-40"></div>
+                                   <div class="media-support-info ml-3">
+                                      <h6>{{valueOC.name}}</h6>
+                                      <!-- <p class="mb-0">Atlanta City</p> -->
+                                   </div>
+
+                                   <div class="edit-relation"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                  
+                                </li>
+
+
+                             </ul>                             
                           </div>
+
                           <div class="tab-pane fade" id="details" role="tabpanel">
                              <h4 class="mb-3">About You</h4>
-                             <p>Hi, I’m Bni, I’m 26 and I work as a Web Designer for the iqonicdesign.</p>
+                             <p>
+                                <?php 
+                                if(!empty($this->session->userdata('about_you')))
+                                {
+                                  echo $this->session->userdata('about_you');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
+                             </p>
+
                              <h4 class="mt-3 mb-3">Other Name</h4>
-                             <p>Bini Rock</p>
+                             <p>
+                                <?php 
+                                if(!empty($this->session->userdata('other_name')))
+                                {
+                                  echo $this->session->userdata('other_name');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
+                             </p>
                              <h4 class="mt-3 mb-3">Favorite Quotes</h4>
-                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                             <p>
+                                <?php 
+                                if(!empty($this->session->userdata('favorite_quote')))
+                                {
+                                  echo $this->session->userdata('favorite_quote');
+                                }else
+                                {
+                                  echo "-";
+                                }
+                                ?>
+                             </p>
+
                           </div>
                        </div>
                     </div>

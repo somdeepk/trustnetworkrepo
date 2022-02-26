@@ -107,10 +107,7 @@ mainApp.controller('editProfileController', function ($rootScope, $timeout, $int
 	            	else
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	            		swal("Error!",
-			        		"Member addition Failed!",
-			        		"error"
-			        	)
+	            		console.log("Member addition Failed!")
 	            	}
 				});
 			},1200);
@@ -147,10 +144,7 @@ mainApp.controller('editProfileController', function ($rootScope, $timeout, $int
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Member addition Failed!",
-		        		"error"
-		        	)
+	        		console.log("Member addition Failed!")
 	        	}
 			});
 		},1200);
@@ -185,10 +179,7 @@ mainApp.controller('editProfileController', function ($rootScope, $timeout, $int
 	        	else
 	        	{
 	        		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
-	        		swal("Error!",
-		        		"Notification Updation Failed!",
-		        		"error"
-		        	)
+	        		console.log("Notification Updation Failed!")
 	        	}
 			});
 		},1200);
@@ -270,10 +261,7 @@ mainApp.controller('editProfileController', function ($rootScope, $timeout, $int
 	            	{
 	            		$scope.buttonSavingAnimation('zsubmitMemberz','Submit','onlytext');
 
-	            		swal("Error!",
-			        		"Password Changed Failed!",
-			        		"error"
-			        	)
+	            		console.log("Password Changed Failed!")
 	            	}
 				});
 			},1200);

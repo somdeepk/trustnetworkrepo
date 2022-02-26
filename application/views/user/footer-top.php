@@ -19,8 +19,8 @@
 
     <div class="app-footer border-0 shadow-lg  d-md-none">
       <a href="javascript:void(0)" onclick="history.back()" class="nav-content-bttn nav-center"><i class="fa fa-chevron-left"></i></a>
-      <a href="https://yogispeaks.co.in/" class="nav-content-bttn"><i class="fa fa-home"></i></a>
-      <a href="https://yogispeaks.co.in/profile" class="nav-content-bttn"><i class="fa fa-user"></i></a>      
+      <a href="<?php echo base_url();?>user/index/" class="nav-content-bttn"><i class="fa fa-home"></i></a>
+      <a href="<?php echo base_url();?>user/myprofile" class="nav-content-bttn"><i class="fa fa-user"></i></a>      
       <a href="javascript:void(0)" onclick="history.forward()" class="nav-content-bttn"><i class="fa fa-chevron-right"></i></a>
     </div>
 

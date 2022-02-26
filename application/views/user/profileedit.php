@@ -66,6 +66,7 @@
                                <h4 class="card-title">Personal Information</h4>
                             </div>
                          </div>
+                         
                          <div class="iq-card-body">
                             <form autocomplete="off">
                                <input ng-model="memberData.id" id="id" type="hidden">
@@ -91,11 +92,13 @@
 
 
                                <div class="row align-items-center">
+
                                   <div class="form-group col-sm-6" ng-if="memberData.membership_type=='RM'">
                                      <label for="first_name">First Name:</label>
                                      <input type="text" ng-model="memberData.first_name" id="first_name" class="form-control">
                                      <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.first_name)==true)? 'First Name Required' : ''}}</div>
                                   </div>
+
                                   <div class="form-group col-sm-6" ng-if="memberData.membership_type=='RM'">
                                      <label for="last_name">Last Name:</label>
                                      <input type="text" ng-model="memberData.last_name" id="last_name" class="form-control">
@@ -133,6 +136,7 @@
                                       </select>
                                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.gender)==true)? 'gender Required' : ''}}</div>
                                   </div>
+
                                   <div class="form-group col-sm-6">
                                     <label for="dob">{{(memberData.membership_type=='RM')? 'Date Of Birth' : 'Foundation Date'}}:</label>
                                     <input class="form-control" readonly="true" style="background: transparent;" ng-model="memberData.dob" id="dob" type="text" autocomplete="off"  dobdate>
@@ -170,6 +174,7 @@
                                         <option ng-repeat="option in countryData" value="{{option.id}}">{{option.name}}
                                     </select>
                                   </div>
+
                                   <div class="form-group col-sm-6">
                                      <label>State:</label>
                                       <select ng-disabled="!memberData.country"  ng-model="memberData.state" id="state"  ng-change="getCityData(memberData.state)" style="background: transparent;" class="form-control form-control-primary">
@@ -177,6 +182,7 @@
                                         <option ng-repeat="option in stateData" value="{{option.id}}">{{option.name}}
                                       </select>
                                   </div>
+
                                   <div class="form-group col-sm-6">
                                      <label for="cname">City:</label>
                                       <select ng-disabled="!memberData.state" ng-model="memberData.city" id="city" style="background: transparent;" class="form-control form-control-primary">
@@ -189,9 +195,38 @@
                                     <label for="dob">Postal Code:</label>
                                     <input class="form-control" ng-model="memberData.postal_code" id="postal_code"  autocomplete="off" type="text">
                                   </div>
+
+
+                                  <div class="form-group col-sm-6" ng-if="memberData.membership_type=='RM'">
+                                     <label for="other_name">Other Name:</label>
+                                     <input type="text" ng-model="memberData.other_name" maxlength="50" class="form-control">
+                                  </div>
+
+                                  <div class="form-group col-sm-12" ng-if="memberData.membership_type=='RM'">
+                                     <label for="interested_in">Interested In (comma separated values):</label>
+                                     <input type="text" ng-model="memberData.interested_in" id="interested_in" class="form-control">
+                                  </div>
+
+                                  <div class="form-group col-sm-12" ng-if="memberData.membership_type=='RM'">
+                                     <label for="language">Language (comma separated values):</label>
+                                     <input type="text" ng-model="memberData.language" id="language" class="form-control">
+                                  </div>
+
+                                  <div class="form-group col-sm-12">
+                                     <label for="about_you">About You:</label>
+                                     <textarea class="form-control" ng-model="memberData.about_you" id="about_you" autocomplete="off" rows="2" style="line-height: 22px;"></textarea>
+                                  </div>
+
+                                  <div class="form-group col-sm-12">
+                                     <label for="favorite_quote">Favorite Quotes:</label>
+                                     <textarea class="form-control" ng-model="memberData.favorite_quote" id="favorite_quote" autocomplete="off" rows="3" style="line-height: 22px;"></textarea>
+                                  </div>
+
                                   
                                </div>
+
                                <button type="button" class="btn btn-primary mr-2 zsubmitMemberz" style="width:80px" ng-click="submitMember();">Submit</button>
+
                                <button type="button" ng-click="resetForm();" class="btn iq-bg-danger">Reset</button>
 
                             </form>

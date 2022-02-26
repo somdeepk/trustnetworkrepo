@@ -583,7 +583,7 @@ font-size: 0;
  .profile-header .user-detail {
 position: relative;
 bottom: 0;
-margin-top: -10px;
+margin-top: -30px;
 }
  .profile-info.p-4.d-flex {
 display: block !important;
@@ -595,7 +595,7 @@ margin-top: 20px;
 flex-wrap: wrap;
 }
  ul.request-list > li .d-flex {
-margin-left: 50px;
+margin-left: 0px;
 margin-top: 10px;
 }
  .iq-error h1.text-in-box {
@@ -627,6 +627,14 @@ width: 300px;
 .share-block{font-size: 13px;}
 .correct-answer{margin-left: 0px;}
 .user-profile-img img{width: 80px; height: 80px;}
+.profile-detail h3{font-size: 16px;}
+ul.header-nav{left: auto; right: 0;}
+.table-list{width: 100%; max-width: 300px; overflow-x: scroll;}
+ul.request-list > li{flex-wrap:wrap;}
+.request-list{flex-wrap:nowrap;}
+
+.profile-feed-items li a.nav-link {padding: 5px 2px;}
+
 }
  @media(max-width:479px) {
  .display-1 {
@@ -684,7 +692,7 @@ width: 300px;
 /*display: block !important;*/
 }
 
-.profile-feed-items li a.nav-link{padding: 5px 7px}
+/*.profile-feed-items li a.nav-link{padding: 5px 7px}*/
 
  .profile-feed-items li {
 margin: 0 0 0px 0;

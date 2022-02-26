@@ -64,10 +64,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         	else
         	{
         		$scope.buttonSavingAnimation('zbtnSinglePostz','Post','onlytext');
-        		swal("Error!",
-	        		"Something went wrong. Please try again later!",
-	        		"error"
-	        	)      		
+        		console.log("Something went wrong. Please try again later!");  		
         	}
 		});
 	};
@@ -145,10 +142,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        	}
 	        	else
 	        	{
-	        		swal("Error!",
-		        		"Something went wrong. Please try again later!",
-		        		"error"
-		        	)
+	        		console.log("Something went wrong. Please try again later!")
 	        	}
 			});
 	    }		
@@ -283,6 +277,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
     		$scope.postScrollData.row=$scope.row;
     	}
     	$scope.postScrollData.rowperpage=$scope.rowperpage;
+    	$scope.postScrollData.clickProfileTab=$rootScope.clickProfileTab;
 
     	//if($scope.postExist==true)
     	//{

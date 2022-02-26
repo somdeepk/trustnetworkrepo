@@ -235,7 +235,7 @@ class User_Model extends CI_Model
 				FROM tn_members as tm
 				LEFT JOIN tn_member_friends as tmf ON tm.id=tmf.member_id
 				WHERE tm.id IN 
-    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y'and  tmf.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by tm.id DESC"; // first_name ASC
+    			(SELECT member_id FROM tn_member_friends as tmf WHERE tmf.friend_id='".$user_auto_id."' AND tmf.request_status='1' ) AND tm.id!='".$user_auto_id."' AND tm.is_approved='Y' and  tmf.friend_id='".$user_auto_id."' AND tm.status='1' AND tm.deleted='0' ".$strWhereParam." group by tm.id order by tm.id DESC"; // first_name ASC
 
 		$query=$this->db->query($sql);
 		$resultData=$query->result_array();
@@ -277,7 +277,7 @@ class User_Model extends CI_Model
 				tm2.last_name as church_last_name
 
 				FROM tn_members as tm
-				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id
+				LEFT JOIN tn_members as tm2 on tm2.id=tm.parent_id AND tm2.status='1' AND tm2.deleted='0'
 				WHERE 
 				(
 					tm.id IN
