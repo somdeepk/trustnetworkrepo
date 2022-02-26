@@ -4449,7 +4449,7 @@ header.myCalendar h5
 
 
 .modal {z-index: 99999;}
-
+.videostream-wrap{height: 300px;overflow-y:scroll;}
 
 /* HEAD*/
 
