@@ -65,9 +65,9 @@
                        <span class="float-left task-icon"><i class="fa fa-tasks"></i></span>
                        <div class="timeline-text">
                           <?php if($ev['is_editable']=='N'){ ?>
-                            <p class="text-upper mb-0" style="font-size: 12px;color:#FFF;padding-left: 8px"><?php echo $ev['event_title']; ?></p>
+                            <p class="text-upper mb-0" style="font-size: 12px;color:#000;padding-left: 8px"><?php echo $ev['event_title']; ?></p>
                           <?php }else{ ?>
-                            <p class="text-upper mb-0" style="font-size: 12px;color:#FFF;padding-left: 8px"><a href="javascript:void(0);" style="color: #FFF;text-decoration: none;" ng-click="editFromThisWeekEvent(<?php echo $ev['id']; ?>)" style=""><?php echo $ev['event_title']; ?> &nbsp;&nbsp;<i style="font-size: 12px" class="fa fa-edit fa-lg"></i></a></p>
+                            <p class="text-upper mb-0" style="font-size: 12px;color:#000;padding-left: 8px"><a href="javascript:void(0);" style="color: #000;text-decoration: none;" ng-click="editFromThisWeekEvent(<?php echo $ev['id']; ?>)" style=""><?php echo $ev['event_title']; ?> &nbsp;&nbsp;<i style="font-size: 12px" class="fa fa-edit fa-lg"></i></a></p>
                           <?php } ?>
                           <p class="mb-0"> 
                             <?php echo $ev['event_desc']; ?> 

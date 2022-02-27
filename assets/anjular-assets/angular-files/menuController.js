@@ -153,6 +153,28 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 		});
 	};
 
+	$scope.viewEvents = function(filetype)
+	{
+		$('.loaderOverlay').fadeIn(200);
+		var response = $http({
+		    method: 'POST',
+		    url: varGlobalAdminBaseUrl+"viewEvents",
+		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+		    async:true,
+		});
+		response.success(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+			var element = angular.element('#angularMainContent').html(data);
+			$compile(element.contents())($scope);
+			
+			$rootScope.loadEventCalender();
+			$rootScope.loadDateRangeSchedule();
+		});		
+		response.error(function(data, status, headers, config) {
+			$('.loaderOverlay').fadeOut(200);
+		});
+	};
+
 	$rootScope.ucwords=function(str)
 	{
 		return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1)
@@ -179,30 +201,6 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 	};
 
 
-	$scope.viewEvents = function(filetype)
-	{
-		// $rootScope.sgtnType=sgtnType;
-
-		$('.loaderOverlay').fadeIn(200);
-		var response = $http({
-		    method: 'POST',
-		    url: varGlobalAdminBaseUrl+"viewEvents",
-		    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-		    async:true,
-		});
-
-		response.success(function(data, status, headers, config) {
-			$('.loaderOverlay').fadeOut(200);
-			var element = angular.element('#angularMainContent').html(data);
-			$compile(element.contents())($scope);
-			// $rootScope.viewFriendsList();
-
-		});
-		
-		response.error(function(data, status, headers, config) {
-			$('.loaderOverlay').fadeOut(200);
-		});
-	};
-
+	
 
 });

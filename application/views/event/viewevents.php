@@ -1,12 +1,9 @@
 <!-- Main Contents -->
-<div class="main_content" ng-controller="eventController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');">
+<div class="main_content" ng-controller="eventController">
         <div class="mcontainer">
         <div class="uk-switcher lg:mt-0 mt-0" id="timeline-tab" style="touch-action: pan-y pinch-zoom;">
-
-
             <!-- Timeline -->
             <div class="md:flex md:space-x-1 lg:mx-2 uk-active">
-            
                             
                 <div class="space-y-5 flex-shrink-0 lg:w-4/6 lg:px-5 space-y-7">                  
                   <!-- create post  -->       

@@ -5,38 +5,16 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	$scope.eventCalender.calenderData={};	
 	$scope.eventData={};
 	$scope.loadDateRangeScheduleObj={};
-	$scope.initiateData = function (user_auto_id,membership_type,is_admin,parent_id)
-	{
-		//alert("initiateData")
-		$scope.memberData={};
-		$scope.memberData.user_auto_id=user_auto_id;
-		$scope.memberData.membership_type=membership_type;
-		$scope.memberData.is_admin=is_admin;
-		$scope.memberData.parent_id=parent_id;
 
-		//$timeout(function()
-		//{
-			$scope.loadEventCalender();
-			$scope.loadDateRangeSchedule();
-			// $rootScope.loadAcceptedInvitedToMeEvents();
-		//},3000);
-	};
-
-	$rootScope.loadCalenderTab = function()
-	{
-		$scope.loadEventCalender();
-		$scope.loadDateRangeSchedule();
-		// $rootScope.loadAcceptedInvitedToMeEvents();
-	};
-
-	$scope.loadDateRangeSchedule = function ()
+	$rootScope.loadDateRangeSchedule = function ()
 	{		
 	    $scope.loadScheduleData={};
+	    $scope.loadScheduleData.loggedUserId=$rootScope.loggedUserId;
 		var formData = new FormData();
 		formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
 		$http({
             method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"loadDateRangeSchedule",
+            url     : varBaseUrl+"event/loadDateRangeSchedule",
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},                     
             data:formData, 
@@ -54,12 +32,12 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 
 	};
 
-	$scope.loadEventCalender = function ()
+	$rootScope.loadEventCalender = function ()
 	{		
 	    var response = $http({
 	      method: 'POST',
-	      url     : varGlobalAdminBaseUrl+"loadEventCalender",
-	      data: $.param({'currentMonthNumber' : $scope.eventCalender.calenderData.selectedMonth,'currentYearNumber' : $scope.eventCalender.calenderData.selectedYear}),
+	      url     : varBaseUrl+"event/loadEventCalender",
+	      data: $.param({'currentMonthNumber' : $scope.eventCalender.calenderData.selectedMonth,'currentYearNumber' : $scope.eventCalender.calenderData.selectedYear,'loggedUserId' : $rootScope.loggedUserId}),
 	      headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, 
 	      async:true,
 	    });
@@ -114,7 +92,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	        }
 	      }
 	    }
-	    $scope.loadEventCalender();
+	    $rootScope.loadEventCalender();
 	};
 
 	$scope.editFromThisWeekEvent= function (eventId)
@@ -145,12 +123,13 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	    $scope.eventFormData={};
 	    $scope.eventFormData.eventId=eventId;
 	    $scope.eventFormData.selectedymdDate=dtVal.ymdDate;
+	    $scope.eventFormData.loggedUserId=$rootScope.loggedUserId;
    		
    		var formData = new FormData();
 		formData.append('eventFormData',angular.toJson($scope.eventFormData));
 		$http({
             method  : 'POST',
-            url     : varGlobalAdminBaseUrl+"addCalendarEvent",
+            url     : varBaseUrl+"event/addCalendarEvent",
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},                     
             data:formData, 
@@ -197,8 +176,6 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
   	$scope.inviteFriendToEvent = function ()
 	{
 		
-		// alert($scope.memberData.user_auto_id);
-
 		if($rootScope.loggedUserId>0)
 		{
 			$scope.friendData={};
@@ -299,7 +276,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 
 				$http({
 	                method  : 'POST',
-	                url     : varGlobalAdminBaseUrl+"submitCalendarEvent",
+	                url     : varBaseUrl+"event/submitCalendarEvent",
 	                transformRequest: angular.identity,
 	                headers: {'Content-Type': undefined},                     
 	                data:formData, 
@@ -319,8 +296,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 							$scope.eventData={};
 							$scope.totalInvitedFriend = 0;
 							$scope.aryInviteEventFriend = [];
-							$scope.loadEventCalender();	
-							$scope.loadDateRangeSchedule();						
+							$rootScope.loadEventCalender();	
+							$rootScope.loadDateRangeSchedule();						
 						},1200);
 	            	}
 	            	else
@@ -332,44 +309,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 			},1200);
 	     
 	    }
-  	};
-
-  	
-
-
-	$scope.acceptRejectEvent = function(value,status)
-    {
-    	if(status=="A")
-    	{
-    		$scope.buttonSavingAnimation('zBtnAcceptEventz_'+value.tefAutoId,'Accepting..','loader');
-    	}
-    	else
-    	{
-    		$scope.buttonSavingAnimation('zBtnRejectEventz_'+value.tefAutoId,'Accepting..','loader');
-    	}
-
-		$timeout(function()
-		{
-			$scope.loadScheduleData={};
-	    	$scope.loadScheduleData.user_auto_id=$scope.memberData.user_auto_id;
-	    	$scope.loadScheduleData.status=status;
-	    	$scope.loadScheduleData.tefAutoId=value.tefAutoId;
-
-			var formData = new FormData();
-			formData.append('loadScheduleData',angular.toJson($scope.loadScheduleData));
-
-			$http({
-	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxAcceptRejectEvent",
-	            transformRequest: angular.identity,
-	            headers: {'Content-Type': undefined},                     
-	            data:formData, 
-	        }).success(function(returnData) {
-				aryreturnData=angular.fromJson(returnData);
-	        	$rootScope.loadInvitedToMeEvents();
-			});
-		},600);
-	};
+  	};  	
 
 	$scope.pad = function (str, max)
 	{
