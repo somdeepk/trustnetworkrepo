@@ -3430,6 +3430,167 @@ class User extends CI_Controller
         exit;    	
     }
 
+
+    public function forgotpassword()
+	{
+		$data['title'] = ucfirst($page);
+		$this->load->view('user/header-script');
+		$this->load->view('user/forgotpassword', $data);
+		$this->load->view('user/footer');
+	}
+
+
+	public function ajaxresetpassword()
+	{
+		$returnData=array();
+
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+		$email = $aryLoginData['email'];
+
+		if(!empty(trim($email)))
+		{			
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			if(count($userData))
+			{
+				$reset_otp = time();
+				$securityStr = $userData['user_email'].'_|_'.$reset_otp;
+				$securityStrEncoded = urldecode(base64_encode($securityStr));
+				$reset_password_link = base_url().'user/setpassword/'.$securityStrEncoded;
+
+				// save reset otp
+				$current_date=date('Y-m-d H:i:s');
+				$menu_arr = array(
+		            'reset_password'  =>$reset_otp,
+		            'update_date'  =>$current_date,
+		        );
+				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+
+				// send set password link
+				$email_from = "admin@followmenow.com";
+				$email_to = $userData['user_email'];
+				$email_subject = "Reset Password";
+				$email_body = "Hi ".$userData['first_name'].",<br />";
+				$email_body = $email_body."Please find the below link to reset your password.<br />";
+				$email_body = $email_body.$reset_password_link."<br /><br /><br />";
+				$email_body = $email_body."This is an auto generated mail, please do not reply.<br />";
+
+				$sendMail = senFollowMeNowEmail($email_to,$email_from,$email_subject,$email_body);
+
+				// echo 'Success - '.$reset_password_link; die;
+
+				$returnData['status']='1';
+				$returnData['msg']='success';
+				$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
+				$returnData['link']=$reset_password_link;
+				$returnData['data']=array('userLoginData'=>$userLoginData);
+
+			}
+			else
+			{
+				$returnData['status']='0';
+				$returnData['msg']='This email is not registered!';
+				$returnData['data']=array();
+			}
+
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please enter your registered email!';
+			$returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;	
+
+	}
+
+
+	public function setpassword($securityStrEncoded = NULL)
+	{
+		$errorFlag = 1;
+		$securityStr = base64_decode(urldecode($securityStrEncoded));
+		$securityStrArr = explode("_|_", $securityStr);
+
+		if( !empty( trim($securityStrArr[0]) ) && !empty( trim($securityStrArr[1]) ) )
+		{
+			$email = $securityStrArr[0];
+			$reset_password = $securityStrArr[1];
+
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			if(count($userData))
+			{
+				if($userData['reset_password'] == $reset_password)
+				{
+					$errorFlag = 0;					
+					$data['email'] = $email;
+					$data['title'] = ucfirst($page);
+					$this->load->view('user/header-script');
+					$this->load->view('user/setpassword', $data);
+					$this->load->view('user/footer');
+				}
+			}
+		}		
+
+		if($errorFlag == 1)
+		{
+			echo "Link Expired!";
+			die;
+		}
+
+	}
+
+
+	public function ajaxsetnewpassword()
+	{
+		$returnData=array();
+
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+        $email = $aryLoginData['email'];
+		$new_password = $aryLoginData['new_password'];
+		$confirm_new_password = $aryLoginData['confirm_new_password'];
+
+		if( !empty(trim($new_password)) && !empty(trim($confirm_new_password)) && $new_password == $confirm_new_password )
+		{
+			$userData = $this->User_Model->getuserbyemail($email);
+			if(count($userData))
+			{
+				// save new password
+				$current_date=date('Y-m-d H:i:s');
+				$menu_arr = array(
+					'password'  	=> $new_password,
+		            'reset_password'  	=> NULL,
+		            'update_date'  		=>$current_date,
+		        );
+				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+
+				// echo "Success"; die;
+
+				$returnData['status']='1';
+				$returnData['msg']='success';
+				$returnData['msgUser']='Password successfully reset. Please login with the new password!';
+				$returnData['data']=array('userLoginData'=>$userLoginData);
+			}
+
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please try again!';
+			$returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;	
+
+	}
+
+
+
 }
 	
 

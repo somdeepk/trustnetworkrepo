@@ -1,4 +1,5 @@
 <?php
+
 function authenticate_user()
 {	
     $ci=& get_instance();
@@ -26,4 +27,34 @@ function authenticate_user()
 	}
     
 }
+
+function senFollowMeNowEmail($email_to,$email_from,$email_subject="",$email_body="",$email_cc="")
+{
+   
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
+    $headers .= "From: FollowMeNow <".$email_from."> \r\n";
+    $headers .= "Reply-To: ".$email_from."\r\n";
+    $headers .= "Return-Path: ".$email_from."\r\n";
+
+    
+    if($email_cc!="")
+    {
+        $headers .= "CC: ".$email_cc. "\r\n";
+    }
+    
+    $headers .= "Reply-To: ".$email_from . "\r\n" .
+    "X-Mailer: PHP/" . phpversion();
+
+    
+    if(mail($email_to,$email_subject,$email_body,$headers, "-fme@mydomain.com"))
+    {
+        return true;
+    }
+    else
+    {
+        return;
+    }
+}
+
 ?>
