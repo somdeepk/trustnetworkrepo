@@ -9936,3 +9936,121 @@ ul.mail-wrap li a{text-decoration: none;}
     text-align: center;
     line-height: 24px !important;
     color: #fff}
+
+.error-red-bd{border:1px solid #ce4654 !important;}
+
+
+.calDayTr td > .hover-content{
+  opacity:0;
+  transition:all 0.5s;
+  position:absolute;
+  bottom:30px;
+  left:0;
+  width:230px;
+  border:1px solid #555;
+  padding:5px 10px;
+  background:#FFF;
+  color:#000;
+  z-index:999999;
+  left:50%;
+  margin-left:-115px;
+  font-size:12px;
+  display:none;
+  text-align:left;
+  max-height: 300px;
+  overflow: scroll;
+}
+
+.calDayTr td:hover > .hover-content{
+  opacity:1;
+  display:block
+}
+.calDayTr td > .hover-content img{
+  float:left;
+  margin-right:10px;
+  width:50px; height:50px
+}
+.calDayTr td > .hover-content p{
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom: 3px;
+  border-bottom: 1px dotted #573232;
+}
+.calDayHgt{
+  height:6vh; 
+  border:1px solid #ccc!important;
+}
+.weekendBG {
+    background-color: #ffada6;
+    color: #c21c19;
+}
+.greyBG {
+    background-color: #fcfcfc;
+    color: #6;
+}
+.eventFlag{
+  position: relative;
+}
+
+.eventHoverPop
+{
+  z-index: 9999;
+  position: relative;
+}
+
+.eventHoverPop:before{
+  content: url("");
+  opacity: 0.9;
+  transform: scale(.1);
+  position: absolute;
+  display: block;
+  width: 12px;
+  height: 12px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid #CCC !important;
+}
+.eventFlag:before{
+  content: url("../images/event.png");
+  opacity: 0.9;
+  transform: scale(.06);
+  position: absolute;
+  display: block;
+  width: 6px;
+  height:6px;
+  right: 25px;
+  bottom:20px;
+  border: 1px solid #CCC !important;
+}
+.calToday{
+  position: relative;
+  background: #baffb8;
+}
+.calToday:after
+{
+  content: "";
+  position: absolute;
+  display: block;
+  width: 15px;
+  height: 15px;
+  right: 1px;
+  bottom: 1px;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+
+.blurEvent {
+  content: "Past EVE";
+  pointer-events:none;
+  -webkit-filter: blur(1.5px);
+  -moz-filter: blur(1.5px);
+  -o-filter: blur(1.5px);
+  -ms-filter: blur(1.5px);
+  filter: blur(1.5px);
+}
+
+.modal {
+  z-index: 99999 !important;
+}
+
