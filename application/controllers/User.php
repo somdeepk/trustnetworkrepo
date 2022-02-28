@@ -3475,8 +3475,7 @@ class User extends CI_Controller
 				$email_body = $email_body."Please find the below link to reset your password.<br />";
 				$email_body = $email_body.$reset_password_link."<br /><br /><br />";
 				$email_body = $email_body."This is an auto generated mail, please do not reply.<br />";
-
-				$sendMail = senFollowMeNowEmail($email_to,$email_from,$email_subject,$email_body);
+				$sendMail = sendFollowMeNowEmail($email_to,$email_from,$email_subject,$email_body);
 
 				// echo 'Success - '.$reset_password_link; die;
 
@@ -3547,7 +3546,6 @@ class User extends CI_Controller
 	public function ajaxsetnewpassword()
 	{
 		$returnData=array();
-
 		$loginData = trim($this->input->post('loginData'));
         $aryLoginData=json_decode($loginData, true);
         $email = $aryLoginData['email'];
@@ -3567,15 +3565,11 @@ class User extends CI_Controller
 		            'update_date'  		=>$current_date,
 		        );
 				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
-
-				// echo "Success"; die;
-
 				$returnData['status']='1';
 				$returnData['msg']='success';
-				$returnData['msgUser']='Password successfully reset. Please login with the new password!';
+				$returnData['msgUser']='Congratulations! Your password has been changed successfully. Please login with the new password!';
 				$returnData['data']=array('userLoginData'=>$userLoginData);
 			}
-
 		}
 		else
 		{
@@ -3583,13 +3577,9 @@ class User extends CI_Controller
 			$returnData['msg']='Please try again!';
 			$returnData['data']=array();
 		}
-       
         echo json_encode($returnData);
-        exit;	
-
+        exit;
 	}
-
-
 
 }
 	

@@ -68,6 +68,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             		$timeout(function()
 					{
 						$scope.loginDataInvalidCheck=false ;
+						$scope.invalidLoginMsg='' ;
 					},2000);
             	}
 			});
@@ -78,8 +79,13 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 		return !value;
 	};		
 
-	
+	$scope.invalidLoginMsg='';
+	$scope.successResetMsg='';
+
 	$scope.resetPassword = function(){
+
+		$scope.invalidLoginMsg='' ;
+		$scope.successResetMsg='';
 
 		$scope.loginDataCheck=true ;
 		$timeout(function()
@@ -92,9 +98,6 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 		{
 			validator++ ;
 		}
-
-		// alert('xxxxxx'); return false;
-
 		if (Number(validator)==0)
 		{		
 			var formData = new FormData();
@@ -108,24 +111,21 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 data:formData, 
             }).success(function(returnData) {
 
-            	// alert(returnData); return false;
-
-				$scope.memberDataCheck=false ;
+				$scope.loginDataInvalidCheck=true ;
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-            	{            		
-					alert(aryreturnData.msgUser);
-					// window.location.href = varGlobalAdminBaseUrl;
+            	{
+            		$scope.successResetMsg=aryreturnData.msgUser;
               	}
             	else
             	{
-            		$scope.invalidLoginMsg=aryreturnData.msg ;
-            		$scope.loginDataInvalidCheck=true ;
-            		$timeout(function()
-					{
-						$scope.loginDataInvalidCheck=false ;
-					},2000);
+            		$scope.invalidLoginMsg=aryreturnData.msg ;            		
             	}
+
+        		$timeout(function()
+				{
+					$scope.loginDataInvalidCheck=false ;
+				},2000);
 			});
 		}
 	};
@@ -178,15 +178,14 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
-
-            	// alert(returnData); return false;
-
 				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-            	{            		
-					alert(aryreturnData.msgUser);
-					window.location.href = varGlobalAdminBaseUrl;
+            	{            
+            		swal(aryreturnData.msgUser)
+					.then((value) => {
+					  window.location.href = varGlobalAdminBaseUrl;
+					});
               	}
             	else
             	{
@@ -200,7 +199,5 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 			});
 		}
 	};
-
-
 
 });

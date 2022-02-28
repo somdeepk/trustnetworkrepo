@@ -14,10 +14,14 @@
                             <label for="exampleInputEmail1">Email address</label>
                             <input class="form-control  mb-0" ng-model="loginData.email" id="email" placeholder="Enter email" type="text" emailvalidate>
                             <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.email)==true)? 'Email Required' : ''}}</div>
+
+                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(invalidLoginMsg)==false)? 'This email is not registered!' : ''}}</div>
+                            
+                            <div class="col-md-12 padding-lr0" style="color:#20ab43;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(successResetMsg)==false)? successResetMsg : ''}}</div>
                         </div>
                        
                         <div class="d-inline-block w-100">
-                            <button type="button" class="btn btn-primary float-right" ng-click="resetPassword();">Reset Password1</button>
+                            <button type="button" class="btn btn-primary float-right" ng-click="resetPassword();">Reset Password</button>
                         </div>
 
                         <div class="sign-info">

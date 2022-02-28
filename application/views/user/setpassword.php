@@ -24,7 +24,7 @@
                             <input type="password" class="form-control mb-0" ng-model="loginData.confirm_new_password" id="confirm_new_password" placeholder="Confirm New Password">
                             <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >
                                 {{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.confirm_new_password)==true)? 'Confirm New Password Required' : ''}}
-                                {{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.confirm_new_password)!=true && loginData.new_password!=loginData.confirm_new_password)? 'New Password and Confirm New Password Mismatched' : ''}}
+                                {{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.confirm_new_password)!=true && loginData.new_password!=loginData.confirm_new_password)? 'New Password and Confirm Password Mismatched' : ''}}
                                 {{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.confirm_new_password)!=true && loginData.new_password==loginData.confirm_new_password && loginData.confirm_new_password.length<6)? 'Minimum Password length is 6 characters' : ''}}
                             </div>
                         </div>
