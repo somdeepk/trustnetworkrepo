@@ -47,7 +47,7 @@ class User extends CI_Controller
 		}
 		elseif($membership_type=="CC")
 		{
-			$str_is_approved='N';
+			//$str_is_approved='N';
 			$church_id=1;//City Church
 			$membership_type='RM';
 		}

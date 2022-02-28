@@ -94,7 +94,7 @@ exit;*/
                  <?php if ($memberIsApproved=="N"){ ?>
                  <a href="javascript:void(0);">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
-                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</span>
+                 <div class="disappovemsg">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</div>
                  </a>
                 <?php } ?>
 

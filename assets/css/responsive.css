@@ -464,6 +464,19 @@ height: 200px !important;
 }
 }
  @media(max-width:767px) {
+
+.disappovemsg{
+  font-size: 14px;
+  color: #50b5ff;
+  width: 100%;
+  line-height: 20px;
+  position: fixed;
+  background: #000;
+  padding: 10px;
+  transform: translate(50%,50%);
+  left: -50%;
+  z-index: 9;
+}
  .table {
 width: 100%;
 max-width: 100%;
