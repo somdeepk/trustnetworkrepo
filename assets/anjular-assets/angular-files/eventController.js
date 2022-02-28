@@ -169,16 +169,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 			  var baseEventDataStr=atob(baseEventData);
 			  var baseEventDataObj=jQuery.parseJSON(baseEventDataStr);
 			  $scope.aryInviteEventFriendData=baseEventDataObj.aryInviteEventFriendData;
-			  // console.log('sa');
-			  // console.log($scope.aryInviteEventFriendData);
-			  totalInvitedFriend=0;
-			  angular.forEach($scope.aryInviteEventFriendData,function(item)
-			  {
-				totalInvitedFriend++;
-			  });
-
-			  $scope.totalInvitedFriend=totalInvitedFriend;
-
+			  $scope.totalInvitedFriend=baseEventDataObj.aryInviteEventFriendData.length;
 			  $scope.eventData=baseEventDataObj;
 			}
 		});
@@ -225,8 +216,7 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	        	$scope.allFriendListObj=[];
 	        	angular.forEach(aryFriendListObj,function(item,index)
 				{
-					var temEventAcceptReject='';
-					
+					var temEventAcceptReject='';					
 					angular.forEach( $scope.aryInviteEventFriendData,function(itemInvited,indexInvited)
 					{
 						if(item.id==itemInvited.friend_id)
@@ -236,7 +226,6 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 						}
 					});
 					item.event_accept_reject= temEventAcceptReject
-
 					$scope.allFriendListObj.push(item);			
 				});
 
