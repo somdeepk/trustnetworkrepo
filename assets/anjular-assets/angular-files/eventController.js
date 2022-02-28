@@ -147,9 +147,8 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 			  var baseEventData=$scope.baseencoded_eventData;
 			  var baseEventDataStr=atob(baseEventData);
 			  var baseEventDataObj=jQuery.parseJSON(baseEventDataStr);
-			  $scope.aryInviteEventFriend=baseEventDataObj.aryInviteEventFriend;
-			  $scope.totalInvitedFriend=baseEventDataObj.aryInviteEventFriend.length;
-
+			  $scope.aryInviteEventFriendData=baseEventDataObj.aryInviteEventFriendData;
+			  $scope.totalInvitedFriend=baseEventDataObj.aryInviteEventFriendData.length;
 			  $scope.eventData=baseEventDataObj;
 			}
 		});
@@ -191,11 +190,27 @@ mainApp.controller('eventController', function ($rootScope, $timeout, $interval,
 	            headers: {'Content-Type': undefined},                     
 	            data:formData, 
 	        }).success(function(returnData) {
-
-	        	// console.log(returnData); return false;
 	        	
 				aryreturnData=angular.fromJson(returnData);
-	        	$scope.allFriendListObj=aryreturnData.data.friendListData;
+	        	var aryFriendListObj=aryreturnData.data.friendListData;
+
+	        	$scope.allFriendListObj=[];
+	        	angular.forEach(aryFriendListObj,function(item,index)
+				{
+					var temEventAcceptReject='';
+					
+					angular.forEach( $scope.aryInviteEventFriendData,function(itemInvited,indexInvited)
+					{
+						if(item.id==itemInvited.friend_id)
+						{
+							temEventAcceptReject=itemInvited.event_accept_reject;
+							$scope.aryInviteEventFriend.push(item.id);
+						}
+					});
+					item.event_accept_reject= temEventAcceptReject
+
+					$scope.allFriendListObj.push(item);			
+				});
 
 	        	$('#calnedarEventModal').modal('hide');
 	        	$('#inviteFriendToEventModal').modal('show');

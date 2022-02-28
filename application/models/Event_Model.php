@@ -78,17 +78,14 @@ class Event_Model extends CI_Model
 		$result=$query->result_array();
 		if(count($result)>0)
 		{
-			$sql_events_friend="SELECT * FROM tn_events_friend WHERE event_id='".$id."'";
+			$sql_events_friend="SELECT * FROM tn_events_friend WHERE event_id='".$id."' AND deleted='0'";
 			$query_events_friend=$this->db->query($sql_events_friend);
 			$result_events_friend=$query_events_friend->result_array();
 
-			$aryInviteEventFriend=array();
+			$aryInviteEventFriendData=array();
 			if(count($result_events_friend)>0)
 			{
-				foreach($result_events_friend as $k=>$v)
-				{
-					$aryInviteEventFriend[]=$v['friend_id'];
-				}
+				$aryInviteEventFriendData=$result_events_friend;
 			}
 
 			$result[0]['event_start_time']=date("H:i:s",strtotime($result[0]['event_start']));
@@ -113,7 +110,7 @@ class Event_Model extends CI_Model
 			$result[0]['display_event_start_time']=date("h:i A",strtotime($result[0]['event_start']));
 			$result[0]['display_event_end_time']=date("h:i A",strtotime($result[0]['event_end']));
 
-			$result[0]['aryInviteEventFriend']=$aryInviteEventFriend;
+			$result[0]['aryInviteEventFriendData']=$aryInviteEventFriendData;
 
 			// echo "<pre>";
 			// print_r($result[0]);
@@ -155,6 +152,13 @@ class Event_Model extends CI_Model
 			$this->db->insert('tn_events_friend',$menu_arr);
 			return $this->db->insert_id();
 		}
+	}
+
+	public function UpdatEventFriendsByEventId($menu_arr=NULL,$event_id=NULL)
+	{
+		
+		$this->db->where('event_id',$event_id)->update('tn_events_friend',$menu_arr);
+		return $id;
 	}
 
 	

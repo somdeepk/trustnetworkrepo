@@ -63,7 +63,9 @@
                                           <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                                        </div>
 
-                                       <!-- <i style="font-size: 22px;cursor: pointer;border: none;" class="ml-auto" ng-class="(aryInviteEventFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i> -->
+                                       <i ng-class="(value.event_accept_reject=='A') ? 'fa fa-thumbs-o-up' : (value.event_accept_reject=='R') ? 'fa fa-thumbs-o-down' : (value.event_accept_reject=='P') ? 'fa fa-link' : ''">                                         
+                                         {{(value.event_accept_reject=='A') ? 'Accepted' : (value.event_accept_reject=='R') ? 'Rejected' : (value.event_accept_reject=='P') ? 'Invited' : ''}}
+                                       </i>
 
                                        <i style="font-size: 22px;cursor: pointer;border: none;" class="ml-auto" ng-class="(aryInviteEventFriend.indexOf(value.id) !== -1) ? 'fa fa-check-square-o' : 'fa fa-square-o'"></i>
 
