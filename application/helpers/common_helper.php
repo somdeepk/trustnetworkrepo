@@ -28,7 +28,7 @@ function authenticate_user()
     
 }
 
-function senFollowMeNowEmail($email_to,$email_from,$email_subject="",$email_body="",$email_cc="")
+function sendFollowMeNowEmail($email_to,$email_from,$email_subject="",$email_body="",$email_cc="")
 {
    
     $headers = "MIME-Version: 1.0" . "\r\n";

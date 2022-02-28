@@ -3148,9 +3148,13 @@ class User extends CI_Controller
 			if(!empty($id))
 			{
 				//Start Delete Events Friend
-				$sql="DELETE FROM tn_events_friend WHERE event_id='".$id."'";
-		        $query=$this->db->query($sql);
-		        //End Delete Events Friend
+				$menu_arr_friend = array(
+		            'deleted'	=>'1'
+		        );
+		        $this->User_Model->UpdatEventFriendsByEventId($menu_arr_friend,$id);
+				// $sql="DELETE FROM tn_events_friend WHERE event_id='".$id."'";
+				// $query=$this->db->query($sql);
+				//End Delete Events Friend
 
 				$resultEventDetails=$this->User_Model->getEventData($id);
 				$ary_event_start=explode(" ",$resultEventDetails['event_start']);
@@ -3183,8 +3187,20 @@ class User extends CI_Controller
         			$menu_arr_friend = array(
 			            'event_id'	=>$lastId,
 			            'friend_id' =>$v,
+			            'deleted' =>'0',
 			        );
-			        $this->User_Model->addUpdatEventFriends($menu_arr_friend,0);
+
+			        $sql_events_friend="SELECT id FROM tn_events_friend WHERE event_id='".$lastId."' AND friend_id='".$v."'";
+					$query_events_friend=$this->db->query($sql_events_friend);
+					$row_events_friend=$query_events_friend->row();
+					if(!empty($row_events_friend) && $row_events_friend->id>0)
+					{
+						$this->User_Model->addUpdatEventFriends($menu_arr_friend,$row_events_friend->id);
+					}
+					else
+					{
+						$this->User_Model->addUpdatEventFriends($menu_arr_friend,0);
+					}
         		}
         	}
         	//End insert all friend of this events

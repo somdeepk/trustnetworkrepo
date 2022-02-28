@@ -116,16 +116,22 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{
             		$scope.successResetMsg=aryreturnData.msgUser;
+            		$timeout(function()
+					{
+						$scope.loginDataInvalidCheck=false ;
+					},10000);
               	}
             	else
             	{
-            		$scope.invalidLoginMsg=aryreturnData.msg ;            		
+            		$scope.invalidLoginMsg=aryreturnData.msg ;
+            		$timeout(function()
+					{
+						$scope.loginDataInvalidCheck=false ;
+					},2000);
+
             	}
 
-        		$timeout(function()
-				{
-					$scope.loginDataInvalidCheck=false ;
-				},2000);
+        		
 			});
 		}
 	};
