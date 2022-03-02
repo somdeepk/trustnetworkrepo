@@ -3495,7 +3495,7 @@ class User extends CI_Controller
 				$paramArray['email_cc']=array();
 				$paramArray['email_bcc']=array();
 
-				$paramArray['email_subject']="FollowMeNow: Reset Password";
+				$paramArray['email_subject']="FollowMeNow: Reset Password Link";
 				$paramArray['email_body']=$email_body;
 
 				/*$tempAttachment=array();
