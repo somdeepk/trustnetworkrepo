@@ -3463,7 +3463,7 @@ class User extends CI_Controller
 		$loginData = trim($this->input->post('loginData'));
         $aryLoginData=json_decode($loginData, true);
 		$email = $aryLoginData['email'];
-
+		$current_date=date('Y-m-d H:i:s');
 		if(!empty(trim($email)))
 		{			
 			$userData = $this->User_Model->getuserbyemail($email);
@@ -3474,33 +3474,72 @@ class User extends CI_Controller
 				$securityStr = $userData['user_email'].'_|_'.$reset_otp;
 				$securityStrEncoded = urldecode(base64_encode($securityStr));
 				$reset_password_link = base_url().'user/setpassword/'.$securityStrEncoded;
+				
+				// Start Send Mail to set password link
+				$email_to[] = $userData['user_email'];
 
-				// save reset otp
-				$current_date=date('Y-m-d H:i:s');
-				$menu_arr = array(
-		            'reset_password'  =>$reset_otp,
-		            'update_date'  =>$current_date,
-		        );
-				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				$email_body = "<p>Hi <b>".$userData['first_name']." ".$userData['last_name']."</b>,</p>";
+				$email_body .= "<p><a href='".$reset_password_link."' target='_blank'>Click Here</a> to reset your password. You can also use the below link to reset your password.</p>";
+				$email_body .= "<p>".$reset_password_link."</p>";
+				$email_body .= "<p>This is an auto generated mail, please do not reply.</p>";
+				$email_body .= "<p><b>Regards,</b></p>";
+				$email_body .= "<br>";
+				$email_body .= "<p>FollowMeNow Team.</p>";
+				$email_body .= "<p><a href='https://followmenow.org' target='_blank'>https://followmenow.org</a></p>";
 
-				// send set password link
-				$email_from = "admin@followmenow.com";
-				$email_to = $userData['user_email'];
-				$email_subject = "Reset Password";
-				$email_body = "Hi ".$userData['first_name'].",<br />";
-				$email_body = $email_body."Please find the below link to reset your password.<br />";
-				$email_body = $email_body.$reset_password_link."<br /><br /><br />";
-				$email_body = $email_body."This is an auto generated mail, please do not reply.<br />";
-				$sendMail = sendFollowMeNowEmail($email_to,$email_from,$email_subject,$email_body);
+				$paramArray=array();
+				$paramArray['email_from']= "somdeepkanu@gmail.com";
+				$paramArray['email_from_name']='FollowMeNow';
 
-				// echo 'Success - '.$reset_password_link; die;
+				$paramArray['email_to']=$email_to;
+				$paramArray['email_cc']=array();
+				$paramArray['email_bcc']=array();
 
-				$returnData['status']='1';
-				$returnData['msg']='success';
-				$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
-				$returnData['link']=$reset_password_link;
-				$returnData['data']=array('userLoginData'=>$userLoginData);
+				$paramArray['email_subject']="FollowMeNow: Reset Password";
+				$paramArray['email_body']=$email_body;
 
+				/*$tempAttachment=array();
+				if(count($aryUploadeFileData))
+				{
+					foreach ($aryUploadeFileData as $key => $value)
+					{
+						$fileNameWithPath=IMAGE_PATH.'images/uploadfile/'.$fileName;
+						$tempAttachment[$key]['filename']=$fileName;
+						$tempAttachment[$key]['filecontent']=file_get_contents($fileNameWithPath,true);
+					}
+				}
+				$paramArray['ary_email_attachment']=$tempAttachment;
+				*/
+				$sendMailResponce = sendGridFollowMeNowEmail($paramArray);
+				$arySendMailResponce=json_decode($sendMailResponce['responce'],true);
+				// Start send Mail to set password link
+
+				// Start save reset otp
+				$lastId=0;
+				if($arySendMailResponce['message']=='success')
+				{
+					$menu_arr = array(
+			            'reset_password'  =>$reset_otp,
+			            'update_date'  =>$current_date,
+			        );
+					$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				}
+				// End save reset otp
+
+				if($lastId>0)
+				{
+					$returnData['status']='1';
+					$returnData['msg']='success';
+					$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
+					$returnData['link']=$reset_password_link;
+					$returnData['data']=array('userLoginData'=>$userLoginData);
+				}
+				else
+				{
+					$returnData['status']='0';
+					$returnData['msg']='Something Went Wrong. Please try later';
+					$returnData['data']=array();
+				}
 			}
 			else
 			{
@@ -3508,7 +3547,6 @@ class User extends CI_Controller
 				$returnData['msg']='This email is not registered!';
 				$returnData['data']=array();
 			}
-
 		}
 		else
 		{

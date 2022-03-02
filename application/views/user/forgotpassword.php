@@ -15,7 +15,7 @@
                             <input class="form-control  mb-0" ng-model="loginData.email" id="email" placeholder="Enter email" type="text" emailvalidate>
                             <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.email)==true)? 'Email Required' : ''}}</div>
 
-                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(invalidLoginMsg)==false)? 'This email is not registered!' : ''}}</div>
+                            <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(invalidLoginMsg)==false)? invalidLoginMsg : ''}}</div>
                             
                             <div class="col-md-12 padding-lr0" style="color:#20ab43;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(successResetMsg)==false)? successResetMsg : ''}}</div>
                         </div>

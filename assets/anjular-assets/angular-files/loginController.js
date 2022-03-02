@@ -119,7 +119,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             		$timeout(function()
 					{
 						$scope.loginDataInvalidCheck=false ;
-					},10000);
+					},25000);
               	}
             	else
             	{
