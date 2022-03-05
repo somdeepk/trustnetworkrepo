@@ -66,7 +66,7 @@
                                         <option value="">Select Gender</option>
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
-                                        <option value="T">Transgender</option>
+                                        <!-- <option value="T">Transgender</option> -->
                                    </select>
 
                                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(signupDataCheck==true && (signupData.membership_type=='RM' || signupData.membership_type=='CC') && isNullOrEmptyOrUndefined(signupData.gender)==true)? 'Gender Required' : ''}}</div>

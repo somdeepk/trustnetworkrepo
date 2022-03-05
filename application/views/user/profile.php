@@ -56,7 +56,7 @@ div.postWhenScrollContainer{
                               <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
                               </a>
                               <div class="mt-3">
-                              <i class="ri-crop-line zCropCancelz hiddenimportant image-modify-icon mr-2" style="color: #50b5ff" ng-click="cropCoverImage();"></i>
+                              <i class="ri-save-2-line zCropCancelz hiddenimportant image-modify-icon mr-2" style="color: #50b5ff" ng-click="cropCoverImage();"></i>
                               <i class="ri-close-circle-line zCropCancelz hiddenimportant image-modify-icon mr-4 " style="color: #fb8a8a" ng-click="clearCoverImage();" ></i>
                             </div>
                             </li>
@@ -69,7 +69,12 @@ div.postWhenScrollContainer{
                          </div>
                          
                          <div class="profile-detail ml-2 pt-2 pt-md-5">
-                            <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span></h3>
+                            <h3 class=""><?php  echo $this->session->userdata('first_name'); ?>
+                            <?php if($this->session->userdata('is_admin')=='Y'){ ?>
+                              <span ng-show="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span>
+                            <?php  } ?>
+
+                           </h3>
                             <?php if($this->session->userdata('maxmemberlevel')){ ?>
                               <p class="mb-0" style="font-size: 14px;"><?php echo  $this->session->userdata('coursename').": ".$this->session->userdata('maxmemberlevel'); ?>
                                 <?php if($this->session->userdata('totbadge')>0){ ?>
@@ -778,7 +783,6 @@ div.postWhenScrollContainer{
                        </div>
 
                        <div class="col-lg-8">
-
                         <div class="modal fade" id="tagPostToFriendModal" tabindex="-1" role="dialog" aria-labelledby="postTag-modalLabel" aria-hidden="true" style="display: none;">
                          <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -796,7 +800,7 @@ div.postWhenScrollContainer{
                                      </form>
                                   </div>
 
-                                  <div class="iq-card-body">
+                                  <div class="iq-card-body"  style="max-height:400px;overflow-y: scroll; ">
                                      <ul class="media-story m-0 p-0">
                                         <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setTagFriendToPost(value.id)">
                                            <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
@@ -805,11 +809,10 @@ div.postWhenScrollContainer{
                                               <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                                            </div>
                                            <i style="font-size: 22px;cursor: pointer;" class="ml-auto" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
-
                                         </li>
                                      </ul>
                                   </div>
-
+                                  <button type="button" ng-click="closeTagPostModal()" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Ok</button>
                                </div>
                             </div>
                          </div>
@@ -1436,7 +1439,7 @@ div.postWhenScrollContainer{
                            </form>
                         </div>
 
-                        <div class="iq-card-body">
+                        <div class="iq-card-body" style="max-height:400px;overflow-y: scroll; ">
                            <ul class="media-story m-0 p-0">
                               <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setInviteFriendToEvent(value.id)">
                                  <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
@@ -1452,6 +1455,7 @@ div.postWhenScrollContainer{
                               </li>
                            </ul>
                         </div>
+                        <button type="button" ng-click="closeInviteFriendToEvent()" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Ok</button>
 
                      </div>
                   </div>
