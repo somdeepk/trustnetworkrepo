@@ -1069,7 +1069,7 @@ class User extends CI_Controller
 				$email_subject = "Set Google Authenticator";
 				$email_body = "Hi ".$userLoginData['first_name'].",<br />";
 				$email_body = $email_body."Please find the below link to Set Google Authenticator.<br />";
-				$email_body = $email_body.$reset_password_link."<br /><br /><br />";
+				$email_body = $email_body.$qrCodeUrl."<br /><br /><br />";
 				$email_body = $email_body."This is an auto generated mail, please do not reply.<br />";
 				$sendMail = sendChristtubeEmail($email_to,$email_from,$email_subject,$email_body);
 
