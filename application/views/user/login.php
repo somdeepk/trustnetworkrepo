@@ -1,4 +1,4 @@
-<section class="sign-in-page" ng-controller="loginController" ng-init="getLoginData();">
+<section ng-cloak class="sign-in-page" ng-controller="loginController" ng-init="getLoginData();">
     <div class="container">
         <div class="sign-up-inner">
         <div class="row no-gutters">

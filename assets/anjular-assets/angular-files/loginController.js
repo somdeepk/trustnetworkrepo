@@ -128,10 +128,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 					{
 						$scope.loginDataInvalidCheck=false ;
 					},2000);
-
             	}
-
-        		
 			});
 		}
 	};
@@ -166,13 +163,9 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 			validator++ ;
 		}
 
-		// alert('xxxxxx');
-		// return false;
-
 		if (Number(validator)==0)
 		{		
 			var formData = new FormData();
-
 			var email  = $("#email").val();
 			$scope.loginData.email = email;
 			formData.append('loginData',angular.toJson($scope.loginData));

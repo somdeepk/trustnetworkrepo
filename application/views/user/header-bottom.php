@@ -15,7 +15,7 @@ print_r($this->session -> userdata);
 exit;*/
 ?>
  <!-- Wrapper START -->
-<div class="wrapper">
+<div ng-cloak class="wrapper">
     <!-- Sidebar  -->
     
       <div class="iq-sidebar" ng-controller="leftMenuController" ng-init="init_left_menu(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>')">

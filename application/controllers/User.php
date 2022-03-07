@@ -3531,8 +3531,8 @@ class User extends CI_Controller
 					$returnData['status']='1';
 					$returnData['msg']='success';
 					$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
-					$returnData['link']=$reset_password_link;
-					$returnData['data']=array('userLoginData'=>$userLoginData);
+					//$returnData['link']=$reset_password_link;
+					$returnData['data']=array('userData'=>$userData);
 				}
 				else
 				{
