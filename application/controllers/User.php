@@ -1039,47 +1039,68 @@ class User extends CI_Controller
 		$email = $aryLoginData['email'];
 		$password = $aryLoginData['password'];
 		$encrypt_password = $password;
+		$current_date=date('Y-m-d H:i:s');
 
 		if(!empty(trim($email)) && !empty(trim($password)))
 		{
 			$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
 			if(count($userLoginData))
 			{
-				// echo "<pre />"; print_r($userLoginData); die;
-
 			 	require 'vendor/autoload.php';
 				$authenticator = new PHPGangsta_GoogleAuthenticator();
 				$secret = $authenticator->createSecret();		 
 				$website = base_url(); //Your Website
-				$title= 'Christtube';
+				$title= 'Christtube OTP';
 				$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($title, $secret,$website);
-			 	
-			 	// echo $secret.'---'.$qrCodeUrl; die;
-
-				// save the authenticator secret in db
-				$current_date=date('Y-m-d H:i:s');
-			 	$menu_arr['authenticator_secret']=$secret;
-			 	$menu_arr['update_date']=$current_date;
-			 	$lastId = $this->User_Model->addupdatemember($userLoginData['id'],$menu_arr);
-
 
 			 	// send qr code link in user registered email
-			 	$email_from = "admin@christtube.com";
-				$email_to = $userLoginData['user_email'];
-				$email_subject = "Set Google Authenticator";
-				$email_body = "Hi ".$userLoginData['first_name'].",<br />";
-				$email_body = $email_body."Please find the below link to Set Google Authenticator.<br />";
-				$email_body = $email_body.$qrCodeUrl."<br /><br /><br />";
-				$email_body = $email_body."This is an auto generated mail, please do not reply.<br />";
-				$sendMail = sendChristtubeEmail($email_to,$email_from,$email_subject,$email_body);
+				$email_body = "<p>Hi <b>".$userLoginData['first_name']." ".$userLoginData['last_name']."</b>,</p>";
+				$email_body .= "<p><a href='".$qrCodeUrl."' target='_blank'>Click Here</a> set Google authentication OTP. You can also use the below link to set Google authentication OTP.</p>";
+				$email_body .= "<p>".$qrCodeUrl."</p>";
+				$email_body .= "<p>This is an auto generated mail, please do not reply.</p>";
+				$email_body .= "<p><b>Regards,</b></p>";
+				$email_body .= "<br>";
+				$email_body .= "<p>Christtube Team.</p>";
+				//$email_body .= "<p><a href='https://followmenow.org' target='_blank'>https://followmenow.org</a></p>";
 
+				$paramArray=array();
+				$paramArray['email_from']= "somdeepkanu@gmail.com";
+				$paramArray['email_from_name']='Christtube';
 
-			 	$returnData['status']='1';
-				$returnData['msg']='success';
-				$returnData['msgUser']='Google Authenticator link successfully send to registered email. Please check email inbox/spam!';
+				$email_to[] = $userLoginData['user_email'];
+				$paramArray['email_to']=$email_to;
+				$paramArray['email_cc']=array();
+				$paramArray['email_bcc']=array();
 
-				$menu_arr['qrCodeUrl']=$qrCodeUrl;
-				$returnData['data']=array('menu_arr'=>$menu_arr);
+				$paramArray['email_subject']="Set Google Authenticator";
+				$paramArray['email_body']=$email_body;
+
+				$sendMailResponce = sendGridFollowMeNowEmail($paramArray);
+				$arySendMailResponce=json_decode($sendMailResponce['responce'],true);
+				// Start save reset otp
+				$lastId=0;
+				if($arySendMailResponce['message']=='success')
+				{
+				 	$menu_arr['authenticator_secret']=$secret;
+				 	$menu_arr['update_date']=$current_date;
+				 	$lastId = $this->User_Model->addupdatemember($userLoginData['id'],$menu_arr);
+				}
+				// End save reset otp
+				
+				if($lastId>0)
+				{
+				 	$returnData['status']='1';
+					$returnData['msg']='success';
+					$returnData['msgUser']='Google Authenticator link successfully send to registered email. Please check email inbox/spam!';
+					$menu_arr['qrCodeUrl']=$qrCodeUrl;
+					$returnData['data']=array('menu_arr'=>$menu_arr);
+				}
+				else
+				{
+					$returnData['status']='0';
+					$returnData['msg']='Something Went Wrong. Please try later';
+					$returnData['data']=array();
+				}
 			}
 			else
 			{
@@ -1097,7 +1118,6 @@ class User extends CI_Controller
        
         echo json_encode($returnData);
         exit;	
-
 	}
 
 
@@ -1118,8 +1138,6 @@ class User extends CI_Controller
 			$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
 			if(count($userLoginData))
 			{
-				// echo "<pre />"; print_r($userLoginData); die;
-
 				require 'vendor/autoload.php';
 				$authenticator = new PHPGangsta_GoogleAuthenticator();
 				 
@@ -1134,23 +1152,12 @@ class User extends CI_Controller
 
 				if ($checkResult) 
 				{
-
 					$userLoginData['login']=true;
 	                $userLoginData['user_auto_id']=$userLoginData['id'];
 	                $userLoginData['user_email']=$userLoginData['user_email'];
 	                $userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];               
 	                $userLoginData['email']=$userLoginData['user_email'];
 	                $this->session->set_userdata($userLoginData);
-
-	                // Start Remember Me block
-	                // if($remember_me){
-	                //     setcookie("christtube_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
-	                // }else{
-	                //     if(isset($_COOKIE["christtube_remember_me"])){
-	                //         setcookie ("christtube_remember_me","");
-	                //     }
-	                // }
-	                // END Remember Me block
                 
 					$returnData['status']='1';
 					$returnData['msg']='success';
@@ -1161,8 +1168,7 @@ class User extends CI_Controller
 					$returnData['status']='0';
 					$returnData['msg']='OTP is invalid/expired!';
 					$returnData['data']=array();
-				}
-		 	
+				}		 	
 			}
 			else
 			{
