@@ -6,7 +6,7 @@
             <p class="leading-6"> To communicate their messages and faith in a 100% Christ - centered environment while advancing the kingdom of God.</p>
             <p class="font-medium lg:mx-0 md:text-2xl mt-6 mx-auto sm:w-3/4 text-xl">Register and get one account across all services</p>
         </div>
-        <div class="lg:mt-0 lg:w-96 md:w-1/2 sm:w-2/3 mt-10 w-full bg-white shadow-lg rounded-lg">
+        <div ng-cloak class="lg:mt-0 lg:w-96 md:w-1/2 sm:w-2/3 mt-10 w-full bg-white shadow-lg rounded-lg">
             <form class="p-7 space-y-5">
             
                 <div class="gap-5">

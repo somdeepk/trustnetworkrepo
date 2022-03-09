@@ -3,6 +3,7 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 	$scope.loginData={};
 	$scope.loginDataCheck=false;
 	$scope.loginDataInvalidCheck=false;
+    $scope.loginOTPPage=false;
    
    	$scope.getLoginData = function()
 	{
@@ -20,8 +21,6 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
     };
 
 	$scope.submitLogin = function(){
-
-		// alert('zzzz');
 
 		$scope.loginDataCheck=true ;
 		$timeout(function()
@@ -51,16 +50,11 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
-				$scope.memberDataCheck=false ;
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
-            	{
-            		
-            		// window.location.href=varGlobalAdminBaseUrl+"index";
-
-            		$("#loginDiv").hide();
-					$("#otpDiv").show();
-
+            	{                    
+                    $scope.loginOTPPage=true;
+                    $scope.setAuthenticator();
               	}
             	else
             	{
@@ -74,14 +68,13 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 			});
 		}
 	};
-	
-	$scope.isNullOrEmptyOrUndefined = function (value) {
-		return !value;
-	};		 
+	 
 
-
+    $scope.invalidLoginMsg='' ;
+    $scope.successResetMsg='';
 	$scope.setAuthenticator = function(){
-
+        $scope.successResetMsg='';
+        $scope.invalidLoginMsg='' ;
 		var formData = new FormData();
         formData.append('loginData',angular.toJson($scope.loginData));
 
@@ -92,17 +85,16 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             headers: {'Content-Type': undefined},                     
             data:formData, 
         }).success(function(returnData) {
-
-            $scope.memberDataCheck=false ;
+            $scope.loginDataInvalidCheck=true ;
             aryreturnData=angular.fromJson(returnData);
             if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             {
-                console.log(aryreturnData);  
-
-                swal(aryreturnData.msgUser)
-				.then((value) => {
-				  // window.location.href = varGlobalAdminBaseUrl;
-				});       
+                //console.log(aryreturnData)
+                $scope.successResetMsg=aryreturnData.msgUser; 
+                $timeout(function()
+                {
+                    $scope.loginDataInvalidCheck=false ;
+                },6000);  
             }
             else
             {
@@ -118,14 +110,15 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
 	};
 
 
-	$scope.submitOtp = function(){
+	$scope.submitOtp = function()
+    {
+        $scope.invalidLoginMsg='' ;
+        $scope.successResetMsg='';
 
-		// alert('submitted'); return false;
-
-		$scope.loginDataCheck=true ;
+		$scope.loginOTPDataCheck=true ;
         $timeout(function()
         {
-            $scope.loginDataCheck=false ;
+            $scope.loginOTPDataCheck=false ;
         },2000);
 
         var validator=0;
@@ -134,19 +127,10 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
             validator++ ;
         }
 
-		// alert('submitted'); return false;
-
-
 		if (Number(validator)==0)
         {       
-
-        	// alert('submitted'); return false;
-
             var formData = new FormData();
             formData.append('loginData',angular.toJson($scope.loginData));
-
-            // console.log($scope.loginData); return false;
-
             $http({
                 method  : 'POST',
                 url     : varGlobalAdminBaseUrl+"ajaxsubmitotp",
@@ -154,7 +138,6 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
-                $scope.memberDataCheck=false ;
                 aryreturnData=angular.fromJson(returnData);
                 if(aryreturnData.status=='1' && aryreturnData.msg=='success')
                 {
@@ -171,10 +154,10 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 }
             });
         }
-
-
 	};
 
-
+    $scope.isNullOrEmptyOrUndefined = function (value) {
+        return !value;
+    };  
 
 });

@@ -7,25 +7,9 @@
                 <p class="font-medium lg:mx-0 md:text-2xl mt-6 mx-auto sm:w-3/4 text-xl"> Connect with friends and the world around you on <span class="redtext">Christ</span><span class="blacktext">tube</span>.</p>
                 <p class="leading-6"> To communicate their messages and faith in a 100% Christ - centered environment while advancing the kingdom of God.</p>
             </div>
-            <div class="lg:mt-0 lg:w-96 md:w-1/2 sm:w-2/3 mt-10 w-full">
+            <div ng-cloak class="lg:mt-0 lg:w-96 md:w-1/2 sm:w-2/3 mt-10 w-full">
                 <form class="p-6 space-y-4 relative bg-white shadow-lg rounded-lg"> 
-
-                    <!-- <input type="text" ng-class="(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.email)==true)? 'redBorder' : ''" placeholder="Email or Username" ng-model="loginData.email" id="email" emailvalidate class="with-border">
-
-                    <input type="password" ng-model="loginData.password" id="password" ng-class="(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.password)==true)? 'redBorder' : ''" placeholder="Password" class="with-border">
-
-                    <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true)? invalidLoginMsg : ''}}</div>
-
-                    <button type="button" ng-click="submitLogin();" class="bg-blue-600 font-semibold p-3 rounded-md text-center text-white w-full">
-                        Log In
-                    </button> -->
-
-                   <!--  <input type="checkbox" class="custom-control-label" ng-model="loginData.remember_me" id="remember_me" ng-checked="loginData.remember_me == true" ng-value="false">
-                    <label class="custom-control-label" for="remember_me">Remember Me</label> -->
-
-
-                    <div id="loginDiv">
-
+                    <div ng-hide="(loginOTPPage==true)">
                         <input type="text" ng-class="(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.email)==true)? 'redBorder' : ''" placeholder="Email or Username" ng-model="loginData.email" id="email" emailvalidate class="with-border" style="margin-bottom:15px;">
 
                         <input type="password" ng-model="loginData.password" id="password" ng-class="(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.password)==true)? 'redBorder' : ''" placeholder="Password" class="with-border" style="margin-bottom:15px;">
@@ -37,26 +21,18 @@
                         </button>
 
                         <a href="#" class="text-blue-500 text-center block" style="margin-top: 15px;"> Forgot Password? </a>
-
                     </div>
 
-                    <div id="otpDiv" style="display:none;">
-
-                        <input type="text" ng-class="(loginDataCheck==true && isNullOrEmptyOrUndefined(loginData.otp)==true)? 'redBorder' : ''" placeholder="Google Authenticator OTP" ng-model="loginData.otp" id="otp" class="with-border" style="margin-bottom:15px;">                        
-                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true)? invalidLoginMsg : ''}}</div>
+                    <div ng-show="(loginOTPPage==true)" >
+                        <input type="text" ng-class="(loginOTPDataCheck==true && isNullOrEmptyOrUndefined(loginData.otp)==true)? 'redBorder' : ''" placeholder="Google Authenticator OTP" ng-model="loginData.otp" id="otp" class="with-border" style="margin-bottom:15px;">                        
+                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(loginDataInvalidCheck==true  && isNullOrEmptyOrUndefined(invalidLoginMsg)==false )? invalidLoginMsg : ''}}</div>
+                        <div class="col-md-12 padding-lr0" style="color:#20ab43;" >{{(loginDataInvalidCheck==true && isNullOrEmptyOrUndefined(successResetMsg)==false)? successResetMsg : ''}}</div>
 
                         <button type="button" ng-click="submitOtp();" class="bg-blue-600 font-semibold p-3 rounded-md text-center text-white w-full" style="margin-top: 10px">
                             Log In
                         </button>
-
                         <a href="javascript:void(0);" ng-click="setAuthenticator();" class="text-blue-500 text-center block" style="margin-top: 15px;"> Set Google Authenticator! </a>
-
                     </div>
-
-
-
-                    
-
 
                     <hr class="pb-3.5">
                     <div class="flex">
