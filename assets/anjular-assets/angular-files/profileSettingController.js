@@ -1,5 +1,7 @@
 mainApp.controller('profileSettingController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
+	$scope.notComplexPassword=false;
+	$scope.complexPasswordMsg='';
    	$scope.memberDataPassNotMtchCheck=false;
    	$scope.memberDataOldNotMtchCheck=false;
    	$scope.groupData={};
@@ -203,6 +205,9 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 	$scope.submitChangePasswordInfo = function()
     {
+
+    	// console.log($scope.profileSettingData.memberData.user_email); return false;
+
 		$scope.memberDataCheck=true ;
 		$timeout(function()
 		{
@@ -231,6 +236,17 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 			$timeout(function()
 			{
 				$scope.memberDataPassNotMtchCheck=false ;
+			},2000);				
+			validator++;
+		}
+
+		$scope.complexPasswordMsg = $scope.isComplexPassword($scope.profileSettingData.memberData.user_email, $scope.memberData.new_password);
+		if ($scope.complexPasswordMsg != 1 && validator == 0)
+		{
+			$scope.notComplexPassword=true ;
+			$timeout(function()
+			{
+				$scope.notComplexPassword=false ;
 			},2000);				
 			validator++;
 		}

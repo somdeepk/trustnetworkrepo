@@ -248,20 +248,24 @@
                   <form>
                      <div class="lg:py-4 lg:px-10 flex-1 space-y-4 ">
                         <div class="line">
-                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.current_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.current_password" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.current_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
                            <span for="username" class="line__placeholder"> Current Password   </span>
-                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataOldNotMtchCheck==true)? 'Old Password doesnt match!' : ''}}</div>
                         </div>
                         <div class="line">
-                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.new_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.new_password" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.new_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
                            <span for="username" class="line__placeholder"> New Password </span>
                         </div>
                         <div class="line">
-                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.verify_password" maxlength="10" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
+                           <input class="line__input" type="password" autocomplete="off" ng-model="memberData.verify_password" maxlength="25" ng-class="(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.verify_password)==true)? 'redBorder' : ''" onKeyUp="this.setAttribute('value', this.value);">
                            <span for="username" class="line__placeholder">Confirm Password </span>
-
-                           <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}</div>
                         </div>
+
+                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >
+                           {{(memberDataPassNotMtchCheck==true)? 'Verify Password Not Matched' : ''}}
+                           {{(notComplexPassword==true)? complexPasswordMsg : ''}}
+                           {{(memberDataOldNotMtchCheck==true)? 'Old Password doesnt match!' : ''}}
+                        </div>
+
                      </div>
                   </form>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
