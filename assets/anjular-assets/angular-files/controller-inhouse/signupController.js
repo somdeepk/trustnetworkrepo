@@ -1,5 +1,7 @@
 mainApp.controller('signupController', function ($rootScope, $timeout, $interval, $scope, $http, $compile, $filter, spinnerService, ngDialog, $sce) {
 		
+	$scope.notComplexPassword=false;
+	$scope.complexPasswordMsg='';
 	$scope.signupData={};
 	$scope.signupDataCheck=false;
 	$scope.InvalidEmailCheck=false;
@@ -121,6 +123,16 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 			validator++ ;
 		}
 
+		$scope.complexPasswordMsg = $scope.isComplexPassword($scope.signupData.user_email, $scope.signupData.password);
+		if ($scope.complexPasswordMsg != 1 && validator == 0)
+		{
+			$scope.notComplexPassword=true ;
+			$timeout(function()
+			{
+				$scope.notComplexPassword=false ;
+			},2000);				
+			validator++;
+		}
 
 		if (Number(validator)==0)
 		{		
@@ -163,4 +175,19 @@ mainApp.controller('signupController', function ($rootScope, $timeout, $interval
 		return !value;
 	};
 	
+	$scope.isComplexPassword = function(user_email = '', password = '')
+	{
+	    if (password.length < 6 || !password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) || !password.match(/([0-9])/) || !password.match(/([!,%,&,@,#,$,^,*,?,_,~])/) ) 
+	    {
+	    	return "Minimum 6 characters including alphabet(uppercase and lowercaase), number and special character!";
+    	}
+
+    	if (password.indexOf(user_email) >= 0)
+    	{
+    		return "Password should not contain username/email!";
+    	}
+
+    	return 1;
+	};
+
 });

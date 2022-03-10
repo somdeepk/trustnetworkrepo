@@ -203,24 +203,9 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$rootScope.isComplexPassword = function(user_email = '', password = '')
 	{
-	    if (password.length < 6) 
+	    if (password.length < 6 || !password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) || !password.match(/([0-9])/) || !password.match(/([!,%,&,@,#,$,^,*,?,_,~])/) ) 
 	    {
-	    	return "Minimum 6 characters required!";
-    	}
-
-    	if (!password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/))
-    	{
-    		return "Minimum 1 uppercase and 1 lowercase letter required!";
-    	}
-
-    	if (!password.match(/([0-9])/))
-    	{
-    		return "Minimum 1 number required!";
-    	}
-
-    	if (!password.match(/([!,%,&,@,#,$,^,*,?,_,~])/))
-    	{
-    		return "Minimum 1 special character required!";
+	    	return "Minimum 6 characters including alphabet(uppercase and lowercaase), number and special character!";
     	}
 
     	if (password.indexOf(user_email) >= 0)

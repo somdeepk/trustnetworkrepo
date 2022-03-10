@@ -430,14 +430,76 @@
 
             <div id="tab-7" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
+                  
                   <!-- form header -->
                   <div class="lg:px-10 lg:py-4">
                      <h3 class="font-bold mb-2 text-xl"> Security</h3>
-                     <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
+                     <!-- <p class=""> This information will be dispalyed publicly so be carful what you share. </p> -->
                   </div>
                   <!-- form body -->
+
                   <div class="bg-white rounded-md lg:shadow-md shadow">
                      <div class="space-y-4 p-6">
+                        
+                        
+                        <div class="flex justify-between items-center">
+                           <div>
+                              <h4> <b>Two factor authentication ?</b></h4>
+                           </div>                           
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 <label class="switch">
+                                    <input type="checkbox" class="" ng-model="securityData.two_factor" id="two_factor" ng-checked="securityData.two_factor == true" ng-value="false">
+                                    <span class="switch-button"></span>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="flex justify-between items-center two_factor_child">
+                           <div>
+                              <h4> Google Authentication</h4>
+                           </div>                           
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 <label class="switch">
+                                    <input type="radio" ng-model="securityData.two_factor_val" value="google">
+                                    <span class="switch-button"></span>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+
+                        <!-- <div class="flex justify-between items-center two_factor_child">
+                           <div>
+                              <h4> SMS Authentication</h4>
+                           </div>                           
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 <label class="switch">
+                                    <input type="radio" ng-model="securityData.two_factor_val" value="sms">
+                                    <span class="switch-button"></span>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="flex justify-between items-center two_factor_child">
+                           <div>
+                              <h4> Email Authentication</h4>
+                           </div>                           
+                           <div class="switches-list -mt-8 is-large">
+                              <div class="switch-container">
+                                 <label class="switch">
+                                    <input type="radio" ng-model="securityData.two_factor_val" value="email">
+                                    <span class="switch-button"></span>
+                                 </label>
+                              </div>
+                           </div>
+                        </div> -->
+
+                        <hr>
+
                         <div class="flex justify-between items-center">
                            <div>
                               <h4> Who can follow me ?</h4>
@@ -452,7 +514,9 @@
                               </div>
                            </div>
                         </div>
+
                         <hr>
+                        
                         <div class="flex justify-between items-center">
                            <div>
                               <h4> Show my activities  </h4>
@@ -467,7 +531,9 @@
                               </div>
                            </div>
                         </div>
+
                         <hr>
+
                         <div class="flex justify-between items-center">
                            <div>
                               <h4> Encrypted notification emails </h4>
@@ -482,7 +548,9 @@
                               </div>
                            </div>
                         </div>
+
                         <hr>
+
                         <div class="flex justify-between items-center">
                            <div>
                               <h4> Allow Commenting </h4>
@@ -497,6 +565,7 @@
                               </div>
                            </div>
                         </div>
+
                      </div>
                   </div>
                   <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
@@ -980,6 +1049,7 @@
   
 
 <script type="text/javascript">
+
 $(document).ready(function()
 {
    $('ul.tabs li').click(function()
@@ -991,7 +1061,37 @@ $(document).ready(function()
 
       $(this).addClass('current');
       $("#"+tab_id).addClass('current');
-   })
-})
+   });
+
+   showHideTwoFactor();
+   $("#two_factor").click(function()
+   {
+      showHideTwoFactor();
+   });
+
+   // $(".two_factor_element").click(function()
+   // {
+   //    if($(this).prop('checked') == true)
+   //    {
+   //       $('.two_factor_element').prop('checked', false);
+   //       $(this).prop('checked', true);
+   //    }
+            
+   // });
+
+});
+
+function showHideTwoFactor()
+{
+   if($("#two_factor").prop('checked') == true)
+   {
+       $(".two_factor_child").show();
+   }
+   else
+   {
+      $(".two_factor_child").hide();
+   }
+}
+
 </script>
 

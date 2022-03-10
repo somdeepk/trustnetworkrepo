@@ -191,6 +191,8 @@ class User extends CI_Controller
     public function ajaxcheckuserlogin()
 	{
 		$returnData=array();
+		$returnData['two_factor']='0';
+		$returnData['two_factor_val']='0';
 
 		$loginData = trim($this->input->post('loginData'));
         $aryLoginData=json_decode($loginData, true);
@@ -205,23 +207,53 @@ class User extends CI_Controller
 			$userLoginData = $this->User_Model->ajaxcheckuserlogin($email, $encrypt_password);
 			if(count($userLoginData))
 			{
-			 	// $userLoginData['login']=true;
-			 	// $userLoginData['user_auto_id']=$userLoginData['id'];
-			 	// $userLoginData['user_email']=$userLoginData['user_email'];
-			 	// $userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];			 	
-			 	// $userLoginData['email']=$userLoginData['user_email'];
-			 	// $this->session->set_userdata($userLoginData);
+				$security_data = json_decode($userLoginData['security_data']);
 
-			 	// Start Remember Me block
-			 	if($remember_me){
-					setcookie("christtube_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
-				}else{
-					if(isset($_COOKIE["christtube_remember_me"])){
-						setcookie ("christtube_remember_me","");
-					}
+				// google authenticator
+				if(isset($security_data->two_factor) && $security_data->two_factor && isset($security_data->two_factor_val) && $security_data->two_factor_val == 'google')
+				{
+					// do something for google authenticator
+					$returnData['two_factor']='1';
+					$returnData['two_factor_val']='google';
 				}
-				// END Remember Me block
-			 	
+
+				// sms authenticator
+				else if(isset($security_data->two_factor) && $security_data->two_factor && isset($security_data->two_factor_val) && $security_data->two_factor_val == 'sms')
+				{
+					// do something for sms authenticator
+					$returnData['two_factor']='1';
+					$returnData['two_factor_val']='sms';
+				}
+
+				// email authenticator
+				else if(isset($security_data->two_factor) && $security_data->two_factor && isset($security_data->two_factor_val) && $security_data->two_factor_val == 'email')
+				{
+					// do something for email authenticator
+					$returnData['two_factor']='1';
+					$returnData['two_factor_val']='email';
+				}
+
+				// login if two factor authentication is off
+				else
+				{
+				 	$userLoginData['login']=true;
+				 	$userLoginData['user_auto_id']=$userLoginData['id'];
+				 	$userLoginData['user_email']=$userLoginData['user_email'];
+				 	$userLoginData['user_full_name']=$userLoginData['first_name']." ".$userLoginData['last_name'];			 	
+				 	$userLoginData['email']=$userLoginData['user_email'];
+				 	$this->session->set_userdata($userLoginData);
+
+				 	// Start Remember Me block
+				 	if($remember_me){
+						setcookie("christtube_remember_me",$userLoginData['email'],time()+ (10 * 365 * 24 * 60 * 60));
+					}else{
+						if(isset($_COOKIE["christtube_remember_me"])){
+							setcookie ("christtube_remember_me","");
+						}
+					}
+					// END Remember Me block
+				}
+	
 			 	$returnData['status']='1';
 				$returnData['msg']='success';
 				$returnData['data']=array('userLoginData'=>$userLoginData);
@@ -821,6 +853,10 @@ class User extends CI_Controller
         $aryMemberData=json_decode($securityData, true);
 
         $id=(isset($aryMemberData['loggedUserId']) && !empty($aryMemberData['loggedUserId']))? addslashes(trim($aryMemberData['loggedUserId'])):0;   
+
+        $ary_security['two_factor']=(isset($aryMemberData['two_factor']) && !empty($aryMemberData['two_factor']))? $aryMemberData['two_factor']:false;
+        $ary_security['two_factor_val']=(isset($aryMemberData['two_factor_val']) && !empty($aryMemberData['two_factor_val']))? $aryMemberData['two_factor_val']:false;
+
         $ary_security['who_can_follow_me']=(isset($aryMemberData['who_can_follow_me']) && !empty($aryMemberData['who_can_follow_me']))? $aryMemberData['who_can_follow_me']:false;
         $ary_security['show_my_activities']=(isset($aryMemberData['show_my_activities']) && !empty($aryMemberData['show_my_activities']))? $aryMemberData['show_my_activities']:false;
         $ary_security['encrypted_notification_emails']=(isset($aryMemberData['encrypted_notification_emails']) && !empty($aryMemberData['encrypted_notification_emails']))? $aryMemberData['encrypted_notification_emails']:false;

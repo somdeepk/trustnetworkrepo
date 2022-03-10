@@ -57,6 +57,10 @@
 
                         <input type="password" ng-model="signupData.password" id="password" ng-class="(signupDataCheck==true && isNullOrEmptyOrUndefined(signupData.password)==true)? 'redBorder' : ''" maxlength="10" class="with-border mt-2 mb-2 pl-1">
 
+                        <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >
+                            {{(notComplexPassword==true)? complexPasswordMsg : ''}}
+                        </div>
+
                     </div>
                 </div>
                 <p class="text-xs text-gray-400 pt-3">By clicking Sign Up, you agree to our

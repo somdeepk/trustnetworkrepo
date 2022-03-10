@@ -415,6 +415,7 @@ mainApp.controller('profileSettingController', function ($rootScope, $timeout, $
 
 	$scope.submitSecurity = function()
     {	
+		// console.log($scope.securityData); return false;
 		
 		$scope.buttonSavingAnimation('zsubmitSecurity','Saving..','loader');
 		$timeout(function()

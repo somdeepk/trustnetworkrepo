@@ -50,11 +50,36 @@ mainApp.controller('loginController', function ($rootScope, $timeout, $interval,
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
+
+                // console.log(returnData); return false;
+
 				aryreturnData=angular.fromJson(returnData);
             	if(aryreturnData.status=='1' && aryreturnData.msg=='success')
             	{                    
-                    $scope.loginOTPPage=true;
-                    $scope.setAuthenticator();
+                    // google authenticator
+                    if(aryreturnData.two_factor == '1' && aryreturnData.two_factor_val == 'google')
+                    {
+                        // do something for google authenticator
+                        $scope.loginOTPPage=true;
+                    }
+
+                    // sms authenticator
+                    else if(aryreturnData.two_factor == '1' && aryreturnData.two_factor_val == 'sms')
+                    {
+                        // do something for sms authenticator
+                    }
+
+                    // email authenticator
+                    else if(aryreturnData.two_factor == '1' && aryreturnData.two_factor_val == 'email')
+                    {
+                        // do something for email authenticator
+                    }
+
+                    // open dashboard if two factor authentication is off
+                    else
+                    {
+                        window.location.href=varGlobalAdminBaseUrl+"index";
+                    }
               	}
             	else
             	{
