@@ -9936,3 +9936,16 @@ ul.mail-wrap li a{text-decoration: none;}
     text-align: center;
     line-height: 24px !important;
     color: #fff}
+
+.slider-wrap{position: relative;}
+.left-arrow{position: absolute; left: 20px; top: 50%; margin-top: -25px; width: 50px; height: 50px; background: rgb(255, 0, 0, .5); border-radius: 50%; 
+  text-align: center; line-height: 50px; color: #fff; cursor: pointer;}
+.right-arrow{position: absolute; right: 20px; top: 50%; margin-top: -25px; width: 50px; height: 50px; background: rgb(255, 0, 0, .5); border-radius: 50%; 
+  text-align: center; line-height: 50px; color: #fff; cursor: pointer;}  
+
+@media (max-width: 768px) {
+
+.responsive-nav{height: auto;}
+ul.profile-tab li a{line-height: normal;}
+ul.tabs li.current{color: #222;  background-color: rgba(42, 65, 232, 0.07); border-left: 0; border-bottom: 3px solid #2a41e8;}
+}

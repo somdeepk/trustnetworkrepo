@@ -11,7 +11,7 @@
                <nav class="responsive-nav setting-nav setting-menu"
                   uk-sticky="top:30 ; offset:80 ; media:@m ;bottom:true; animation: uk-animation-slide-top">
                   <h4 class="mb-0 p-3 uk-visible@m "> Profile Setting </h4>
-                  <ul class="tabs">
+                  <ul class="tabs profile-tab">
                      <li class="tab-link current zTabGeneralZ" data-tab="tab-1"><a href="#"> <i class="uil-cog"></i> General </a></li>
                      <li class="tab-link zTabPPCZ" data-tab="tab-2"><a href="#"> <i class="uil-scenery"></i> Profile Picture & Cover</a></li>
                      <li class="tab-link zTabPQZ" data-tab="tab-3"><a href="#"> <i class="uil-user"></i> Profile Question  </a></li>
@@ -129,8 +129,12 @@
             <div id="tab-2" class="tab-content lg:w-2/3">
                <div class="lg:flex lg:flex-col justify-between lg:h-full tab-2 w-100">
                   <div class="lg:px-10 lg:py-8 p-6">
+                 
+                 
                      <h3 class="font-bold mb-2 text-xl">Profile Picture and Cover Image</h3>
-                     <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
+                     <p class="mb-3"> This information will be dispalyed publicly so be carful what you share. </p>
+                 
+
                      <form>
                         
 
@@ -168,7 +172,7 @@
                                 </div>
                                    <i class="uil-pen cover-upload-button"><input style="padding-top: 10px;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
                                 <a class="file-upload-icon zeditCoverz mt-3" href="javascript:void('');">
-                                  <i class="ri-pencil-line">
+                                  <i class="ri-pencil-line"></i>
                                 
                                 </a>
 
@@ -178,6 +182,7 @@
                             </ul>
                         </div>
                      </form>
+                
                   </div>
 
                  
@@ -332,7 +337,7 @@
                   <form>
                      <div class="max-w-2xl m-auto shadow-md rounded-md bg-white">
                         <!-- form header -->
-                        <div class="text-center border-b border-gray-100 py-6">
+                        <div class="text-left px-4 border-b border-gray-100 py-6">
                            <h3 class="font-bold text-xl"> Create New Page </h3>
                         </div>
 
@@ -427,7 +432,7 @@
             <div id="tab-7" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
-                  <div class="lg:px-10 lg:py-4">
+                  <div class="lg:px-4 lg:py-4">
                      <h3 class="font-bold mb-2 text-xl"> Security</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                   </div>
@@ -505,7 +510,7 @@
             <div id="tab-8" class="tab-content lg:w-2/3 w-100">
                <div class="lg:flex lg:flex-col justify-between lg:h-full">
                   <!-- form header -->
-                  <div class="lg:px-10 lg:py-4">
+                  <div class="lg:px-4 lg:py-4">
                      <h3 class="font-bold mb-2 text-xl">  Privacy Settings</h3>
                      <p class=""> This information will be dispalyed publicly so be carful what you share. </p>
                   </div>
