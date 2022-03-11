@@ -485,14 +485,14 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 
 	$scope.clearCoverImage = function()
 	{		
-		if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
-    	{
-			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/'+$scope.coverImageData.exist_cover_image+'" alt="Cover Image" class="rounded img-fluid">');
-		}
-		else
-		{
-			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/cover-no-image.jpg" alt="Cover Image" class="rounded img-fluid">');
-		}
+		// if(!$scope.isNullOrEmptyOrUndefined($scope.coverImageData.exist_cover_image))
+  //   	{
+		// 	$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/'+$scope.coverImageData.exist_cover_image+'" alt="Cover Image" class="rounded img-fluid">');
+		// }
+		// else
+		// {
+		// 	$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/coverimages/cover-no-image.jpg" alt="Cover Image" class="rounded img-fluid">');
+		// }
 		$('.zCropCoverImagez').addClass('hiddenimportant');
 		$('.zCoverImgContainerz').removeClass('hiddenimportant');
 		$('.zProfileImgContainerz').removeClass('hiddenimportant');
