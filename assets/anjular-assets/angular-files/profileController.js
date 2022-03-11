@@ -715,6 +715,107 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		});
 	};
 
+
+	$image_crop = $('#image_demo').croppie({
+		enableExif: true,
+		viewport: {
+		  width:200,
+		  height:200,
+		  type:'square' //circle
+		},
+		boundary:{
+		  width:300,
+		  height:300
+		}
+	});
+
+	$('#upload_image').click(function(){
+	    $(this).val('');
+	})  
+
+	$('#upload_image').on('change', function()
+	{
+		var reader = new FileReader();
+		reader.onload = function (event)
+		{
+			$image_crop.croppie('bind', {
+			url: event.target.result
+			}).then(function()
+			{
+				console.log('jQuery bind complete');
+			});
+		}
+		reader.readAsDataURL(this.files[0]);
+		$('#uploadimageModal').modal('show');
+	});
+
+	$('.zCropImagez').click(function(event)
+	{
+		$image_crop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function(response)
+		{
+			$scope.profileImageData={};
+			postresponse=response.replace(";", "colone");
+			postresponse=postresponse.replace(",", "comma");
+			$scope.profileImageData.encode_profile_image=postresponse;
+			$scope.profileImageData.id=$scope.friendData.user_auto_id;
+
+			if($scope.profileImageData.id>0)
+			{
+				$scope.buttonSavingAnimation('zCropImagez','Saving..','loader');
+
+				var formData = new FormData();
+				formData.append('profileImageData',angular.toJson($scope.profileImageData)); 
+				$http({
+	                method  : 'POST',
+	                url     : varGlobalAdminBaseUrl+"ajaxupdateeditprofileimage",
+	                transformRequest: angular.identity,
+	                headers: {'Content-Type': undefined},                     
+	                data:formData, 
+	            }).success(function(returnData) {
+					aryreturnData=angular.fromJson(returnData);
+	            	if(aryreturnData.status=='1')
+	            	{
+	            		$scope.buttonSavingAnimation('zCropImagez','Saved!','onlytext');
+	            		$timeout(function()
+						{
+							$scope.buttonSavingAnimation('zCropImagez','Crop & Upload Image','onlytext');
+							if(!$scope.isNullOrEmptyOrUndefined(aryreturnData.data.imagename))
+					    	{
+					    		$scope.aboutMemberDataObj.profile_image=aryreturnData.data.imagename;
+								$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
+							}
+		            		$('#uploadimageModal').modal('hide');
+		            		
+						},1200);
+
+	            		
+	            	}
+	            	else
+	            	{
+	            		$scope.clearProfileImage();
+	            		console.log("Profile Image Upload Failed!")
+	            	}
+				});
+	        }
+
+		})
+	});
+
+	$scope.clearProfileImage = function()
+	{
+		if(!$scope.isNullOrEmptyOrUndefined($scope.aboutMemberDataObj.profile_image))
+    	{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/members/'+$scope.aboutMemberDataObj.profile_image+'" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
+		else
+		{
+			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
+		}
+	};
+
 	$scope.editOtherCity = function(name,indx)
     {
 		$scope.selectPlaceLive='other_city';

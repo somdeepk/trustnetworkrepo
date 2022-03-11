@@ -2611,6 +2611,69 @@ class User extends CI_Controller
         exit;    	
     }
 
+     public function ajaxupdateeditprofileimage() 
+    {
+        $profileImageData = trim($this->input->post('profileImageData'));
+        $profileImageData=json_decode($profileImageData, true);
+
+        $id=(isset($profileImageData['id']) && !empty($profileImageData['id']))? addslashes(trim($profileImageData['id'])):0;
+        $encode_profile_image=(isset($profileImageData['encode_profile_image']) && !empty($profileImageData['encode_profile_image']))? addslashes(trim($profileImageData['encode_profile_image'])):'';
+
+		$current_date=date('Y-m-d H:i:s');   
+
+        $returnData=array();
+
+        if(!empty($encode_profile_image) && $encode_profile_image!='data:comma' && !empty($id)) //data:comma blank Image
+        {
+        	$menu_arr=array();
+
+        	$encode_profile_image=str_replace('colone', ';', $encode_profile_image);
+        	$encode_profile_image=str_replace('comma', ',', $encode_profile_image);        	
+	        $image_array_1 = explode(";", $encode_profile_image);
+	        $image_array_2 = explode(",", $image_array_1[1]);
+
+	        $imagebase64Data = base64_decode($image_array_2[1]);
+	        $imagename = time().'.png';
+
+			$image_name_with_path = IMAGE_PATH.'images/members/'.$imagename;
+			file_put_contents($image_name_with_path, $imagebase64Data);
+
+			$menu_arr['profile_image']=$imagename;
+			$this->session->set_userdata('profile_image',$imagename);
+
+			//Start tracking all Images uploaded by Member
+			$menu_arr_post_file = array(
+	            'module_id'=>$id,
+	            'module_type'=>'members',
+	            'member_id'   =>$id,
+	            'file_original_name'=>$imagename,
+	            'file_name'   =>$imagename,
+	            'file_size'   =>'0',        
+	            'file_type'   =>'image/png',       
+	            'create_date'   =>$current_date       
+	        );
+			$this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+			//End tracking all Images uploaded by Member
+
+			//unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
+
+			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+			$returnData['status']='1';
+	        $returnData['msg']=base64_encode('Profile Image Updated Successfully.');
+	        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Profile Image Upload Failed';
+	        $returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;    	
+    }
+
     public function profile($id=0)
 	{
 		authenticate_user();

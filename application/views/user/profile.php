@@ -56,16 +56,55 @@ div.postWhenScrollContainer{
                               <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
                               </a>
                               <div class="mt-3">
-                              <i class="ri-save-2-line zCropCancelz hiddenimportant image-modify-icon mr-2" style="color: #50b5ff" ng-click="cropCoverImage();"></i>
-                              <i class="ri-close-circle-line zCropCancelz hiddenimportant image-modify-icon mr-4 " style="color: #fb8a8a" ng-click="clearCoverImage();" ></i>
+                                <button type="button" class="btn btn-primary mr-2 zCropCancelz hiddenimportant" style="width:110px" ng-click="cropCoverImage();">Submit</button>
+                                <button type="button" class="btn btn-secondary mr-2 zCropCancelz hiddenimportant" style="width:110px;margin-right: 17px !important" ng-click="clearCoverImage();">Cancel</button>
                             </div>
                             </li>
                             <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
                           </ul>
                       </div>
+
+                      <!-- Start Image Croping Modal -->
+                      <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                                <!-- <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Upload & Crop Images</h4> 
+                                </div> -->
+                                <div class="modal-body">
+                                  <div class="row">
+                                  <div class="col-md-12 text-center">
+                                    <div id="image_demo" style="width:100%; margin-top:30px"></div>
+                                  </div>
+                                  
+                              </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
+                                  <button type="button" class="btn btn-secondary" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                      <!-- End Image Croping Modal -->
+
                       <div class="user-detail d-flex align-items-center text-center mb-3">
-                        <div class="profile-img user-profile-img zProfileImgContainerz">
-                            <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" alt="profile-img" class="img-fluid" />
+
+                         <div class="form-group row align-items-center zProfileImgContainerz">
+                            <div class="col-md-12">
+                               <div class="profile-img-edit">
+                                <div id="uploaded_image">
+                                  <img class="profile-pic" src="<?php echo IMAGE_URL;?>images/{{(aboutMemberDataObj.profile_image == '' || !aboutMemberDataObj.profile_image)? 'member-no-imgage.jpg':'members/'+aboutMemberDataObj.profile_image}}" style="margin:0 auto;height:149px;">
+                                </div>
+
+                                <div class="p-image">
+                                   <i class="ri-pencil-line upload-button"></i>
+                                   <input class="profile-image-from-cover" name="upload_image" id="upload_image" type="file" accept="image/*"/>
+                                   <input type="text" ng-model="aboutMemberDataObj.profile_image" class="hiddenimportant" />
+                                </div>
+                               </div>
+                            </div>
                          </div>
                          
                          <div class="profile-detail ml-2 pt-2 pt-md-5">

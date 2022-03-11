@@ -4450,6 +4450,12 @@ header.myCalendar h5
 
 .modal {z-index: 99999;}
 .videostream-wrap{height: 300px;overflow-y:scroll;}
+.profile-image-from-cover{
+	position: absolute;
+	left: -20px;
+	opacity: 0;
+	z-index: 9;
+}
 
 /* HEAD*/
 
