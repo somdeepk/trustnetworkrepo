@@ -82,7 +82,7 @@ div.postWhenScrollContainer{
                                 </div>
                                 <div class="modal-footer">
                                   <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
-                                  <button type="button" class="btn btn-secondary" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                           </div>

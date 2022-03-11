@@ -716,7 +716,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 	};
 
 
-	$image_crop = $('#image_demo').croppie({
+	$image_profile_crop = $('#image_demo').croppie({
 		enableExif: true,
 		viewport: {
 		  width:200,
@@ -738,7 +738,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		var reader = new FileReader();
 		reader.onload = function (event)
 		{
-			$image_crop.croppie('bind', {
+			$image_profile_crop.croppie('bind', {
 			url: event.target.result
 			}).then(function()
 			{
@@ -751,7 +751,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 
 	$('.zCropImagez').click(function(event)
 	{
-		$image_crop.croppie('result', {
+		$image_profile_crop.croppie('result', {
 			type: 'canvas',
 			size: 'viewport'
 		}).then(function(response)
@@ -788,14 +788,14 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 								$("#header_profile_images").attr("src",varImageUrl+"images/members/"+aryreturnData.data.imagename);
 							}
 		            		$('#uploadimageModal').modal('hide');
-		            		
+
 						},1200);
 
 	            		
 	            	}
 	            	else
 	            	{
-	            		$scope.clearProfileImage();
+	            		//$scope.clearProfileImage();
 	            		console.log("Profile Image Upload Failed!")
 	            	}
 				});
@@ -804,7 +804,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		})
 	});
 
-	$scope.clearProfileImage = function()
+	/*$scope.clearProfileImage = function()
 	{
 		if(!$scope.isNullOrEmptyOrUndefined($scope.aboutMemberDataObj.profile_image))
     	{
@@ -814,7 +814,7 @@ mainApp.controller('profileController', function ($rootScope, $timeout, $interva
 		{
 			$("#uploaded_image").html('<img src="'+varImageUrl+'images/member-no-imgage.jpg" class="profile-pic" style="margin:0 auto; height:149px;">');
 		}
-	};
+	};*/
 
 	$scope.editOtherCity = function(name,indx)
     {
