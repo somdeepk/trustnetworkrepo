@@ -15,7 +15,7 @@ print_r($this->session -> userdata);
 exit;*/
 ?>
  <!-- Wrapper START -->
-<div class="wrapper">
+<div ng-cloak class="wrapper">
     <!-- Sidebar  -->
     
       <div class="iq-sidebar" ng-controller="leftMenuController" ng-init="init_left_menu(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>')">
@@ -29,12 +29,12 @@ exit;*/
 
                   <?php if($membershipType=="RM"){ ?>
                   <li <?php echo ($actionName=='friendrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendrequest" class="iq-waves-effect"><i class="las la-user-plus"></i><span>Friend Request</span></a></li>
-                  <li <?php echo ($actionName=='friendlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Friend List</span></a></li>
+                  <li <?php echo ($actionName=='friendlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/friendlist" class="iq-waves-effect"><i class="las la-users"></i><span>Friend List</span></a></li>
                   <?php }else{ ?>
-                      <li <?php echo ($actionName=='churchrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church Request</span></a></li>
-                      <li <?php echo ($actionName=='churchlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Church List</span></a></li>
-                      <li <?php echo ($actionName=='memberrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member Request</span></a></li>
-                      <li <?php echo ($actionName=='memberlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-anchor"></i><span>Member List</span></a></li>
+                      <li <?php echo ($actionName=='churchrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchrequest" class="iq-waves-effect"><i class="las la-church"></i><span>Church Request</span></a></li>
+                      <li <?php echo ($actionName=='churchlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/churchlist" class="iq-waves-effect"><i class="las la-boxes"></i><span>Church List</span></a></li>
+                      <li <?php echo ($actionName=='memberrequest')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberrequest" class="iq-waves-effect"><i class="las la-user-plus"></i><span>Member Request</span></a></li>
+                      <li <?php echo ($actionName=='memberlist')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/memberlist" class="iq-waves-effect"><i class="las la-users"></i><span>Member List</span></a></li>
                   <?php } ?>
 
                   <li <?php echo ($actionName=='photos')? 'class="active"' : '' ;?>><a href="<?php echo base_url();?>user/photos" class="iq-waves-effect"><i class="las la-video"></i><span>Photo/Video</span></a></li>
@@ -94,7 +94,7 @@ exit;*/
                  <?php if ($memberIsApproved=="N"){ ?>
                  <a href="javascript:void(0);">
                  <img src="<?php echo base_url();?>assets/images/logo.png" class="img-fluid" alt="">
-                 <span style="font-size: 14px;color:#ff7575">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</span>
+                 <div class="disappovemsg">Thank you for registering with use. We are currently reviewing your registration details. Once approved you will be able to access full range of "Follow Me Now". Thank you for your cooperation.</div>
                  </a>
                 <?php } ?>
 

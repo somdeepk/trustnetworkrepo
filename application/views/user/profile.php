@@ -56,20 +56,64 @@ div.postWhenScrollContainer{
                               <input style="position: absolute;left: 0;opacity: 0;" name="upload_cover_image" id="btnUploadCoverImage" type="file" accept="image/*"/></i>
                               </a>
                               <div class="mt-3">
-                              <i class="ri-crop-line zCropCancelz hiddenimportant image-modify-icon mr-2" style="color: #50b5ff" ng-click="cropCoverImage();"></i>
-                              <i class="ri-close-circle-line zCropCancelz hiddenimportant image-modify-icon mr-4 " style="color: #fb8a8a" ng-click="clearCoverImage();" ></i>
+                                <button type="button" class="btn btn-primary mr-2 zCropCancelz hiddenimportant" style="width:110px" ng-click="cropCoverImage();">Submit</button>
+                                <button type="button" class="btn btn-secondary mr-2 zCropCancelz hiddenimportant" style="width:110px;margin-right: 17px !important" ng-click="clearCoverImage();">Cancel</button>
                             </div>
                             </li>
                             <!-- <li><a href="javascript:void();"><i class="ri-settings-4-line"></i></a></li> -->
                           </ul>
                       </div>
+
+                      <!-- Start Image Croping Modal -->
+                      <div id="uploadimageModal" class="modal" role="dialog" style="z-index:999999 ">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                                <!-- <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Upload & Crop Images</h4> 
+                                </div> -->
+                                <div class="modal-body">
+                                  <div class="row">
+                                  <div class="col-md-12 text-center">
+                                    <div id="image_demo" style="width:100%; margin-top:30px"></div>
+                                  </div>
+                                  
+                              </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
+                                  <button type="button" class="btn btn-secondary" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                      <!-- End Image Croping Modal -->
+
                       <div class="user-detail d-flex align-items-center text-center mb-3">
-                        <div class="profile-img user-profile-img zProfileImgContainerz">
-                            <img src="<?php if(!empty($this->session->userdata('profile_image'))){ echo IMAGE_URL.'images/members/'.$this->session->userdata('profile_image'); }else{ echo IMAGE_URL.'images/member-no-imgage.jpg'; } ?>" alt="profile-img" class="img-fluid" />
+
+                         <div class="form-group row align-items-center zProfileImgContainerz">
+                            <div class="col-md-12">
+                               <div class="profile-img-edit">
+                                <div id="uploaded_image">
+                                  <img class="profile-pic" src="<?php echo IMAGE_URL;?>images/{{(aboutMemberDataObj.profile_image == '' || !aboutMemberDataObj.profile_image)? 'member-no-imgage.jpg':'members/'+aboutMemberDataObj.profile_image}}" style="margin:0 auto;height:149px;">
+                                </div>
+
+                                <div class="p-image">
+                                   <i class="ri-pencil-line upload-button"></i>
+                                   <input class="profile-image-from-cover" name="upload_image" id="upload_image" type="file" accept="image/*"/>
+                                   <input type="text" ng-model="aboutMemberDataObj.profile_image" class="hiddenimportant" />
+                                </div>
+                               </div>
+                            </div>
                          </div>
                          
                          <div class="profile-detail ml-2 pt-2 pt-md-5">
-                            <h3 class=""><?php echo $this->session->userdata('first_name'); ?> <span ng-if="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span></h3>
+                            <h3 class=""><?php  echo $this->session->userdata('first_name'); ?>
+                            <?php if($this->session->userdata('is_admin')=='Y'){ ?>
+                              <span ng-show="friendData.is_admin == 'Y'" style="font-size: 13px;line-height: 10px;margin-top: 18px;position: relative;color: #b03ae8">(<i class="ri-admin-line"> Leader</i> ) </span>
+                            <?php  } ?>
+
+                           </h3>
                             <?php if($this->session->userdata('maxmemberlevel')){ ?>
                               <p class="mb-0" style="font-size: 14px;"><?php echo  $this->session->userdata('coursename').": ".$this->session->userdata('maxmemberlevel'); ?>
                                 <?php if($this->session->userdata('totbadge')>0){ ?>
@@ -581,7 +625,10 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.current_city.name}}</h6>
                                       <p class="mb-0">Current City</p>
                                    </div>
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="selectPlaceLive='current_city'; placeLiveData.current_city.name=placeLiveDataObj.current_city.name"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='current_city'" href="javascript:void();" ng-click="deletePlaceLeaved('current_city')"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                  </div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='current_city'">
                                   <div class="row">
@@ -609,7 +656,10 @@ div.postWhenScrollContainer{
                                       <h6>{{placeLiveDataObj.home_town.name}}</h6>
                                       <p class="mb-0">Hometown</p>
                                    </div>
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="selectPlaceLive='home_town'; placeLiveData.home_town.name=placeLiveDataObj.home_town.name"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='home_town'" href="javascript:void();" ng-click="deletePlaceLeaved('home_town')"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                  </div>
                                 </li>
                                 <div ng-show="selectPlaceLive=='home_town'">
                                   <div class="row">
@@ -652,7 +702,10 @@ div.postWhenScrollContainer{
                                       <!-- <p class="mb-0">Atlanta City</p> -->
                                    </div>
 
-                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>"><a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a></div>
+                                   <div class="edit-relation <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
+                                    <a ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="editOtherCity(valueOC.name,keyOC)"><i class="ri-edit-line mr-2"></i>Edit</a>&nbsp;
+                                    <a style="color:#FF0000" ng-hide="selectPlaceLive=='other_city'" href="javascript:void();" ng-click="deletePlaceLeaved('other_city',keyOC)"><i class="ri-delete-bin-fill " ></i>Delete</a>
+                                   </div>
                                   
                                 </li>
 
@@ -769,7 +822,6 @@ div.postWhenScrollContainer{
                        </div>
 
                        <div class="col-lg-8">
-
                         <div class="modal fade" id="tagPostToFriendModal" tabindex="-1" role="dialog" aria-labelledby="postTag-modalLabel" aria-hidden="true" style="display: none;">
                          <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -787,7 +839,7 @@ div.postWhenScrollContainer{
                                      </form>
                                   </div>
 
-                                  <div class="iq-card-body">
+                                  <div class="iq-card-body"  style="max-height:400px;overflow-y: scroll; ">
                                      <ul class="media-story m-0 p-0">
                                         <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setTagFriendToPost(value.id)">
                                            <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
@@ -796,11 +848,10 @@ div.postWhenScrollContainer{
                                               <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                                            </div>
                                            <i style="font-size: 22px;cursor: pointer;" class="ml-auto" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
-
                                         </li>
                                      </ul>
                                   </div>
-
+                                  <button type="button" ng-click="closeTagPostModal()" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Ok</button>
                                </div>
                             </div>
                          </div>
@@ -1331,7 +1382,11 @@ div.postWhenScrollContainer{
                                                 <div class="modal-body">
                                                    <div class="row">
                                                      <div class="col-md-12">
-                                                        <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                        <div class="slider-wrap">
+                                                          <span class="left-arrow"><i class="ri-arrow-left-s-line iq-arrow-left"></i></span>
+                                                          <span class="right-arrow"><i class="ri-arrow-right-s-line iq-arrow-right"></i></span> 
+                                                          <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                        </div>
                                                      </div>
                                                    </div>
                                                 </div>
@@ -1427,7 +1482,7 @@ div.postWhenScrollContainer{
                            </form>
                         </div>
 
-                        <div class="iq-card-body">
+                        <div class="iq-card-body" style="max-height:400px;overflow-y: scroll; ">
                            <ul class="media-story m-0 p-0">
                               <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setInviteFriendToEvent(value.id)">
                                  <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
@@ -1435,11 +1490,15 @@ div.postWhenScrollContainer{
                                  <div class="stories-data ml-3 mr-3">
                                     <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                                  </div>
+                                 <i style="font-size: 14px;cursor: pointer;border: none;width:110px;" class="ml-auto"  ng-class="(value.event_accept_reject=='A') ? 'fa fa-thumbs-o-up' : (value.event_accept_reject=='R') ? 'fa fa-thumbs-o-down' : (value.event_accept_reject=='P') ? 'fa fa-link' : ''">                                     
+                                   {{(value.event_accept_reject=='A') ? 'Accepted' : (value.event_accept_reject=='R') ? 'Rejected' : (value.event_accept_reject=='P') ? 'Invited' : ''}}
+                                 </i>
                                  <i style="font-size: 22px;cursor: pointer;border: none;" class="ml-auto" ng-class="(aryInviteEventFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
 
                               </li>
                            </ul>
                         </div>
+                        <button type="button" ng-click="closeInviteFriendToEvent()" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Ok</button>
 
                      </div>
                   </div>

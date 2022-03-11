@@ -1487,3 +1487,11 @@ Grid Boxes
 	-ms-flex-direction: column;
 	flex-direction: column;
 }
+
+
+.slider-wrap {position: relative; width:100%; text-align: center; margin: 0 auto;
+    padding: 0 0px;}
+.left-arrow{position: absolute; left: 20px; top: 50%; margin-top: -15px; width: 30px; height: 30px; background: rgb(80, 181, 255, .9); border-radius: 50%; 
+  text-align: center; line-height: 30px; color: #fff; cursor: pointer;}
+.right-arrow{position: absolute; right: 20px; top: 50%; margin-top: -15px; width: 30px; height: 30px; background: rgb(80, 181, 255, .9); border-radius: 50%; 
+  text-align: center; line-height: 30px; color: #fff; cursor: pointer;} 

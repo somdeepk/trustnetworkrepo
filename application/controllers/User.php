@@ -47,7 +47,7 @@ class User extends CI_Controller
 		}
 		elseif($membership_type=="CC")
 		{
-			$str_is_approved='N';
+			//$str_is_approved='N';
 			$church_id=1;//City Church
 			$membership_type='RM';
 		}
@@ -2611,6 +2611,69 @@ class User extends CI_Controller
         exit;    	
     }
 
+     public function ajaxupdateeditprofileimage() 
+    {
+        $profileImageData = trim($this->input->post('profileImageData'));
+        $profileImageData=json_decode($profileImageData, true);
+
+        $id=(isset($profileImageData['id']) && !empty($profileImageData['id']))? addslashes(trim($profileImageData['id'])):0;
+        $encode_profile_image=(isset($profileImageData['encode_profile_image']) && !empty($profileImageData['encode_profile_image']))? addslashes(trim($profileImageData['encode_profile_image'])):'';
+
+		$current_date=date('Y-m-d H:i:s');   
+
+        $returnData=array();
+
+        if(!empty($encode_profile_image) && $encode_profile_image!='data:comma' && !empty($id)) //data:comma blank Image
+        {
+        	$menu_arr=array();
+
+        	$encode_profile_image=str_replace('colone', ';', $encode_profile_image);
+        	$encode_profile_image=str_replace('comma', ',', $encode_profile_image);        	
+	        $image_array_1 = explode(";", $encode_profile_image);
+	        $image_array_2 = explode(",", $image_array_1[1]);
+
+	        $imagebase64Data = base64_decode($image_array_2[1]);
+	        $imagename = time().'.png';
+
+			$image_name_with_path = IMAGE_PATH.'images/members/'.$imagename;
+			file_put_contents($image_name_with_path, $imagebase64Data);
+
+			$menu_arr['profile_image']=$imagename;
+			$this->session->set_userdata('profile_image',$imagename);
+
+			//Start tracking all Images uploaded by Member
+			$menu_arr_post_file = array(
+	            'module_id'=>$id,
+	            'module_type'=>'members',
+	            'member_id'   =>$id,
+	            'file_original_name'=>$imagename,
+	            'file_name'   =>$imagename,
+	            'file_size'   =>'0',        
+	            'file_type'   =>'image/png',       
+	            'create_date'   =>$current_date       
+	        );
+			$this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+			//End tracking all Images uploaded by Member
+
+			//unlink( IMAGE_PATH.'images/members/coverimages/'.$exist_cover_image); // correct
+
+			$lastId = $this->User_Model->addupdatemember($id,$menu_arr);
+
+			$returnData['status']='1';
+	        $returnData['msg']=base64_encode('Profile Image Updated Successfully.');
+	        $returnData['data']=array('id'=>$lastId,'imagename'=>$imagename);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Profile Image Upload Failed';
+	        $returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;    	
+    }
+
     public function profile($id=0)
 	{
 		authenticate_user();
@@ -3148,9 +3211,13 @@ class User extends CI_Controller
 			if(!empty($id))
 			{
 				//Start Delete Events Friend
-				$sql="DELETE FROM tn_events_friend WHERE event_id='".$id."'";
-		        $query=$this->db->query($sql);
-		        //End Delete Events Friend
+				$menu_arr_friend = array(
+		            'deleted'	=>'1'
+		        );
+		        $this->User_Model->UpdatEventFriendsByEventId($menu_arr_friend,$id);
+				// $sql="DELETE FROM tn_events_friend WHERE event_id='".$id."'";
+				// $query=$this->db->query($sql);
+				//End Delete Events Friend
 
 				$resultEventDetails=$this->User_Model->getEventData($id);
 				$ary_event_start=explode(" ",$resultEventDetails['event_start']);
@@ -3183,8 +3250,20 @@ class User extends CI_Controller
         			$menu_arr_friend = array(
 			            'event_id'	=>$lastId,
 			            'friend_id' =>$v,
+			            'deleted' =>'0',
 			        );
-			        $this->User_Model->addUpdatEventFriends($menu_arr_friend,0);
+
+			        $sql_events_friend="SELECT id FROM tn_events_friend WHERE event_id='".$lastId."' AND friend_id='".$v."'";
+					$query_events_friend=$this->db->query($sql_events_friend);
+					$row_events_friend=$query_events_friend->row();
+					if(!empty($row_events_friend) && $row_events_friend->id>0)
+					{
+						$this->User_Model->addUpdatEventFriends($menu_arr_friend,$row_events_friend->id);
+					}
+					else
+					{
+						$this->User_Model->addUpdatEventFriends($menu_arr_friend,0);
+					}
         		}
         	}
         	//End insert all friend of this events
@@ -3384,6 +3463,240 @@ class User extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+    public function ajaxdeletePlaceLeaved() 
+    {
+        $placeLiveData = trim($this->input->post('placeLiveData'));
+        $placeLiveData=json_decode($placeLiveData, true);
+
+        $indexkey=(isset($placeLiveData['indexkey']) && !empty($placeLiveData['indexkey']))? addslashes(trim($placeLiveData['indexkey'])):'';
+        $assocKey=(isset($placeLiveData['assocKey']) && !empty($placeLiveData['assocKey']))? addslashes(trim($placeLiveData['assocKey'])):0;
+
+
+        $user_auto_id=$this->session->userdata('user_auto_id');
+		$memberData = $this->User_Model->get_member_data($user_auto_id);
+
+		$jsonPlaceLiveData=(isset($memberData['place_live_data']) && !empty($memberData['place_live_data']))? json_decode($memberData['place_live_data'],true):array();
+
+		
+
+		if($indexkey=="current_city" || $indexkey=="home_town")
+		{
+			 unset($jsonPlaceLiveData[$indexkey]);		
+		}
+		elseif($indexkey=="other_city") // other city
+		{
+			$tempJsonPlaceLiveData=$jsonPlaceLiveData[$indexkey];
+			unset($tempJsonPlaceLiveData[$assocKey]);
+			$tempJsonPlaceLiveData=array_values($tempJsonPlaceLiveData);
+			$jsonPlaceLiveData[$indexkey]=$tempJsonPlaceLiveData;	
+		}
+
+       	$menu_arr = array(
+            'place_live_data' => json_encode($jsonPlaceLiveData),
+        );
+        $lastId = $this->User_Model->addupdatemember($user_auto_id,$menu_arr);
+
+
+        $memberData = $this->User_Model->get_member_data($user_auto_id);
+
+        $returnData=array();
+        $returnData['status']='1';
+        $returnData['msg']=base64_encode('Deleted Successfully.');
+        $returnData['data']=array('id'=>$lastId,'memberData'=>$memberData);
+
+        echo json_encode($returnData);
+        exit;    	
+    }
+
+
+    public function forgotpassword()
+	{
+		$data['title'] = ucfirst($page);
+		$this->load->view('user/header-script');
+		$this->load->view('user/forgotpassword', $data);
+		$this->load->view('user/footer');
+	}
+
+
+	public function ajaxresetpassword()
+	{
+		$returnData=array();
+
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+		$email = $aryLoginData['email'];
+		$current_date=date('Y-m-d H:i:s');
+		if(!empty(trim($email)))
+		{			
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			if(count($userData))
+			{
+				$reset_otp = time();
+				$securityStr = $userData['user_email'].'_|_'.$reset_otp;
+				$securityStrEncoded = urldecode(base64_encode($securityStr));
+				$reset_password_link = base_url().'user/setpassword/'.$securityStrEncoded;
+				
+				// Start Send Mail to set password link
+				$email_to[] = $userData['user_email'];
+
+				$email_body = "<p>Hi <b>".$userData['first_name']." ".$userData['last_name']."</b>,</p>";
+				$email_body .= "<p><a href='".$reset_password_link."' target='_blank'>Click Here</a> to reset your password. You can also use the below link to reset your password.</p>";
+				$email_body .= "<p>".$reset_password_link."</p>";
+				$email_body .= "<p>This is an auto generated mail, please do not reply.</p>";
+				$email_body .= "<p><b>Regards,</b></p>";
+				$email_body .= "<br>";
+				$email_body .= "<p>FollowMeNow Team.</p>";
+				$email_body .= "<p><a href='https://followmenow.org' target='_blank'>https://followmenow.org</a></p>";
+
+				$paramArray=array();
+				$paramArray['email_from']= "somdeepkanu@gmail.com";
+				$paramArray['email_from_name']='FollowMeNow';
+
+				$paramArray['email_to']=$email_to;
+				$paramArray['email_cc']=array();
+				$paramArray['email_bcc']=array();
+
+				$paramArray['email_subject']="FollowMeNow: Reset Password Link";
+				$paramArray['email_body']=$email_body;
+
+				/*$tempAttachment=array();
+				if(count($aryUploadeFileData))
+				{
+					foreach ($aryUploadeFileData as $key => $value)
+					{
+						$fileNameWithPath=IMAGE_PATH.'images/uploadfile/'.$fileName;
+						$tempAttachment[$key]['filename']=$fileName;
+						$tempAttachment[$key]['filecontent']=file_get_contents($fileNameWithPath,true);
+					}
+				}
+				$paramArray['ary_email_attachment']=$tempAttachment;
+				*/
+				$sendMailResponce = sendGridFollowMeNowEmail($paramArray);
+				$arySendMailResponce=json_decode($sendMailResponce['responce'],true);
+				// Start send Mail to set password link
+
+				// Start save reset otp
+				$lastId=0;
+				if($arySendMailResponce['message']=='success')
+				{
+					$menu_arr = array(
+			            'reset_password'  =>$reset_otp,
+			            'update_date'  =>$current_date,
+			        );
+					$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				}
+				// End save reset otp
+
+				if($lastId>0)
+				{
+					$returnData['status']='1';
+					$returnData['msg']='success';
+					$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
+					//$returnData['link']=$reset_password_link;
+					$returnData['data']=array('userData'=>$userData);
+				}
+				else
+				{
+					$returnData['status']='0';
+					$returnData['msg']='Something Went Wrong. Please try later';
+					$returnData['data']=array();
+				}
+			}
+			else
+			{
+				$returnData['status']='0';
+				$returnData['msg']='This email is not registered!';
+				$returnData['data']=array();
+			}
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please enter your registered email!';
+			$returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;	
+
+	}
+
+
+	public function setpassword($securityStrEncoded = NULL)
+	{
+		$errorFlag = 1;
+		$securityStr = base64_decode(urldecode($securityStrEncoded));
+		$securityStrArr = explode("_|_", $securityStr);
+
+		if( !empty( trim($securityStrArr[0]) ) && !empty( trim($securityStrArr[1]) ) )
+		{
+			$email = $securityStrArr[0];
+			$reset_password = $securityStrArr[1];
+
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			if(count($userData))
+			{
+				if($userData['reset_password'] == $reset_password)
+				{
+					$errorFlag = 0;					
+					$data['email'] = $email;
+					$data['title'] = ucfirst($page);
+					$this->load->view('user/header-script');
+					$this->load->view('user/setpassword', $data);
+					$this->load->view('user/footer');
+				}
+			}
+		}		
+
+		if($errorFlag == 1)
+		{
+			echo "Link Expired!";
+			die;
+		}
+
+	}
+
+
+	public function ajaxsetnewpassword()
+	{
+		$returnData=array();
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+        $email = $aryLoginData['email'];
+		$new_password = $aryLoginData['new_password'];
+		$confirm_new_password = $aryLoginData['confirm_new_password'];
+
+		if( !empty(trim($new_password)) && !empty(trim($confirm_new_password)) && $new_password == $confirm_new_password )
+		{
+			$userData = $this->User_Model->getuserbyemail($email);
+			if(count($userData))
+			{
+				// save new password
+				$current_date=date('Y-m-d H:i:s');
+				$menu_arr = array(
+					'password'  	=> $new_password,
+		            'reset_password'  	=> NULL,
+		            'update_date'  		=>$current_date,
+		        );
+				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				$returnData['status']='1';
+				$returnData['msg']='success';
+				$returnData['msgUser']='Congratulations! Your password has been changed successfully. Please login with the new password!';
+				$returnData['data']=array('userLoginData'=>$userLoginData);
+			}
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please try again!';
+			$returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;
+	}
 
 }
 	

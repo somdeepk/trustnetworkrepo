@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-success zCropImagez">Crop & Upload Image</button>
-              <button type="button" class="btn btn-default" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-secondary" ng-click="clearProfileImage();" data-dismiss="modal">Cancel</button>
             </div>
         </div>
       </div>
@@ -132,7 +132,7 @@
                                           <option value="">Select Gender</option>
                                           <option value="M">Male</option>
                                           <option value="F">Female</option>
-                                          <option value="T">Transgender</option>
+                                          <!-- <option value="T">Transgender</option> -->
                                       </select>
                                       <div class="col-md-12 padding-lr0" style="color:#d43f3a;" >{{(memberDataCheck==true && isNullOrEmptyOrUndefined(memberData.gender)==true)? 'gender Required' : ''}}</div>
                                   </div>
@@ -310,7 +310,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <div class="form-group row align-items-center">
+                               <div ng-if="memberData.membership_type=='CM'" class="form-group row align-items-center">
                                   <label class="col-md-3" for="npass">When To Escalate Emails</label>
                                   <div class="col-md-9">
                                      <div class="custom-control custom-checkbox">

@@ -21,7 +21,7 @@ div.postWhenScrollContainer{
                   <h5 class="modal-title">Tag Friend</h5>
                   <button type="button" class="btn btn-secondary" ng-click="closeTagPostModal()"><i class="ri-close-fill"></i></button>
                </div>
-               <div class="modal-body">
+               <div class="modal-body" >
                   <div class="d-flex align-items-center">
                      <div class="user-img">
                         <i class="ri-search-line"></i>
@@ -31,7 +31,7 @@ div.postWhenScrollContainer{
                      </form>
                   </div>
 
-                  <div class="iq-card-body">
+                  <div class="iq-card-body" style="max-height:400px;overflow-y: scroll; ">
                      <ul class="media-story m-0 p-0">
                         <li class="d-flex mb-4 align-items-center" ng-repeat="(key, value) in allFriendListObj" style="cursor:pointer;" ng-click="setTagFriendToPost(value.id)">
                            <img class="rounded-circle img-fluid" ng-if="value.profile_image == '' || !value.profile_image" src="<?php echo IMAGE_URL;?>images/member-no-imgage.jpg" alt="no Images"  >
@@ -40,10 +40,11 @@ div.postWhenScrollContainer{
                               <h5>{{(value.membership_type=='CM')? value.first_name : value.first_name+' '+value.last_name}}</h5>
                            </div>
                            <i style="font-size: 22px;cursor: pointer;border: none;" class="ml-auto" ng-class="(aryPostTagFriend.indexOf(value.id) !== -1) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"></i>
-
                         </li>
                      </ul>
                   </div>
+
+                  <button type="button" ng-click="closeTagPostModal()" class="btn btn-primary d-block w-100 mt-3 zbtnSinglePostz">Ok</button>
 
                </div>
             </div>
