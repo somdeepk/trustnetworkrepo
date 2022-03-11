@@ -24,7 +24,7 @@ div.postWhenScrollContainer{
   
   <div class="container">
      <div class="row">
-        <div ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
+        <div class="w-100" ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
           <div class="col-sm-12">
              <div class="iq-card <?php if($viewedMemberId){ ?> hiddenimportant <?php } ?>">
                 <div class="iq-card-body profile-page p-0 pb-3 pb-md-5">
@@ -681,7 +681,7 @@ div.postWhenScrollContainer{
         </div>
 
         <!-- Start TimeLine Tab-->
-        <div ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'timelineTab') ? '' : 'hiddenimportant'">
+        <div class="w-100" ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'timelineTab') ? '' : 'hiddenimportant'">
           <div when-scrolled="getMorePostOnScroll()" class="postWhenScrollContainer">             
             <div class="container" >
               <div class="tab-pane fade active show" >
@@ -842,10 +842,10 @@ div.postWhenScrollContainer{
                                 </ul> -->
                              </div>
                              <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-lg" role="document">
                                    <div class="modal-content">
                                       <div class="modal-header">
-                                         <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                                         <h5 class="modal-title" id="post-modalLabel">Create Post sdsa</h5>
                                          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ri-close-fill"></i></button>
                                       </div>
                                       <div class="modal-body">
