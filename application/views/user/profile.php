@@ -734,7 +734,7 @@ div.postWhenScrollContainer{
         </div>
 
         <!-- Start TimeLine Tab-->
-        <div ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'timelineTab') ? '' : 'hiddenimportant'">
+        <div class="w-100" ng-controller="indexController" ng-init="initiateData(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>');" ng-class="(clickProfileTab == 'timelineTab') ? '' : 'hiddenimportant'">
           <div when-scrolled="getMorePostOnScroll()" class="postWhenScrollContainer">             
             <div class="container" >
               <div class="tab-pane fade active show" >
@@ -893,10 +893,10 @@ div.postWhenScrollContainer{
                                 </ul> -->
                              </div>
                              <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-lg" role="document">
                                    <div class="modal-content">
                                       <div class="modal-header">
-                                         <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                                         <h5 class="modal-title" id="post-modalLabel">Create Post sdsa</h5>
                                          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ri-close-fill"></i></button>
                                       </div>
                                       <div class="modal-body">
@@ -1382,7 +1382,11 @@ div.postWhenScrollContainer{
                                                 <div class="modal-body">
                                                    <div class="row">
                                                      <div class="col-md-12">
-                                                        <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                        <div class="slider-wrap">
+                                                          <span class="left-arrow"><i class="ri-arrow-left-s-line iq-arrow-left"></i></span>
+                                                          <span class="right-arrow"><i class="ri-arrow-right-s-line iq-arrow-right"></i></span> 
+                                                          <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                                        </div>
                                                      </div>
                                                    </div>
                                                 </div>
