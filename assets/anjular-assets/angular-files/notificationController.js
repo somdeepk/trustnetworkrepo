@@ -236,6 +236,48 @@ mainApp.controller('notificationController', function ($rootScope, $timeout, $in
 		},2000);
 	};
 
+	$rootScope.ShowPhotoSlider = function (id,nextPrevIdFire="")
+    {
+    	//alert("ds"+id)
+    	$scope.photoSlideData={};
+    	$scope.photoSlideData.id=id;
+    	//if($scope.photoExist==true)
+    	//{
+	    	var formData = new FormData();
+			formData.append('photoSlideData',angular.toJson($scope.photoSlideData));
+	        $http({
+	            method: 'POST',
+	            url     : varBaseUrl+"post/ajaxShowPhotoSlider",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+		        data:formData,
+	        }).then(function successCallback(returnData)
+	        {
+	            aryreturnData=angular.fromJson(returnData);
+	            aryreturnData=aryreturnData.data;
+	         	if(aryreturnData.status=='1')
+	        	{
+		            $rootScope.photoSlideDataObj=aryreturnData.data;	
+		            if(nextPrevIdFire=='direct')
+		            {
+		            	$('#examplePhotoModal').modal('show');
+		            }
+		            //$scope.photoSlideDataReturnObj.=aryreturnData.photoSlideDataReturnObj.resultPrev;	 
+		            //$scope.photoSlideDataReturnObj.=aryreturnData.photoSlideDataReturnObj.totPrev;	 
+		            console.log('l')       		
+		            console.log($scope.photoSlideDataObj)       		
+	        	}
+	        	else
+	        	{
+	        		// swal("Error!",
+		        	// 	"No Data Found!",
+		        	// 	"error"
+		        	// )
+	        	}
+	        });
+	    //}
+    }
+
 	// $rootScope.openPostModalPopup = function(valuePS)
  //    {
  //    	$('#exampleModal_'+valuePS.id).modal('show')

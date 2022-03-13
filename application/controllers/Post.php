@@ -566,4 +566,77 @@ class Post extends CI_Controller
         exit;
 
     }
+
+
+    public function ajaxShowPhotoSlider() 
+    {
+    	$finalPost=array();
+
+    	$photoSlideData = $this->input->post('photoSlideData');
+        $aryPhotoSlideData=json_decode($photoSlideData, true);
+
+        $user_auto_id=$this->session->userdata('user_auto_id');
+        $id=(isset($aryPhotoSlideData['id']) && !empty($aryPhotoSlideData['id']))? $aryPhotoSlideData['id']:'0';
+
+        $sqlPrev="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND  tpf.id < '".$id."' AND tpf.deleted='0' order by tpf.id DESC limit 1";
+		$queryPrev=$this->db->query($sqlPrev);
+		$resultPrev=$queryPrev->result_array();
+		$totPrev=count($resultPrev);
+
+		$sqlNext="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND  tpf.id > '".$id."' AND tpf.deleted='0' order by tpf.id limit 1";
+		$queryNext=$this->db->query($sqlNext);
+		$resultNext=$queryNext->result_array();
+		$totNext=count($resultNext);
+
+
+        $sql="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.id='".$id."' AND tpf.deleted='0' ";
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+
+		// echo "<pre>";
+		// print_r($result);
+		// exit;
+
+		$finalPhotoAry=array();
+		$incree=0;
+		if(count($result)>0)
+		{
+			foreach ($result as $k => $v)
+			{
+				$strPhotoPath='';
+				if($v['module_type']=='members')
+				{
+					$strPhotoPath="/images/members/";
+				}
+				elseif($v['module_type']=='coverimages')
+				{
+					$strPhotoPath="/images/members/coverimages/";
+				}
+				elseif($v['module_type']=='postfiles')
+				{
+					$strPhotoPath="/images/postfiles/";
+				}
+				if (file_exists(IMAGE_PATH.$strPhotoPath.$v['file_name']) && $v['file_name']!='')
+				{
+					$finalPhotoAry[$incree]['id']=$v['id'];
+					$finalPhotoAry[$incree]['module_type']=$v['module_type'];
+					$finalPhotoAry[$incree]['display_upload_date']=date('d M y h:i A',strtotime($v['create_date']));
+					$finalPhotoAry[$incree]['all_file_n_photo_path']=IMAGE_URL.$strPhotoPath.$v['file_name'];
+					$incree++;
+				}
+			}
+		}
+
+		/*echo "<pre>";
+      	print_r($finalPhotoAry);
+      	exit;*/
+
+		$returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='';
+        $returnData['data']=array('photoSlideData'=>$finalPhotoAry,'resultPrev'=>$resultPrev,'totPrev'=>$totPrev,'resultNext'=>$resultNext,'totNext'=>$totNext);
+        echo json_encode($returnData);
+        exit;
+
+    }
 }

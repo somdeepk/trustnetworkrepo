@@ -22,6 +22,34 @@ div.postWhenScrollContainer{
 </style>
 <div id="content-page" class="content-page">
   
+  <div class="modal" id="examplePhotoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content iq-dark-box">
+        <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <div class="row">
+             <div class="col-md-12">
+                <div class="slider-wrap">
+                  <span class="left-arrow" ng-if="photoSlideDataObj.totNext>0" ng-click="ShowPhotoSlider(photoSlideDataObj.resultNext[0].id,'next')" ><i class="ri-arrow-left-s-line iq-arrow-left"></i></span>
+                  <span class="right-arrow" ng-if="photoSlideDataObj.totPrev>0"  ng-click="ShowPhotoSlider(photoSlideDataObj.resultPrev[0].id,'prev')"><i class="ri-arrow-right-s-line iq-arrow-right"></i></span> 
+                  <img ng-src="{{photoSlideDataObj.photoSlideData[0].all_file_n_photo_path}}" class="img-fluid rounded" alt="Responsive image">
+
+                  <div style="clear: both"></div>
+                  <a style="font-size: 15px;" href="javascript:void();" class="pr-3 text-white">{{photoSlideDataObj.photoSlideData[0].display_upload_date}} <i class="ri-time-line"></i></a>
+
+
+                </div>
+             </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
      <div class="row">
         <div class="w-100" ng-controller="profileController" ng-init="selectprofileTab(<?php echo $this->session->userdata('user_auto_id'); ?>,'<?php echo $this->session->userdata('membership_type'); ?>','<?php echo $this->session->userdata('is_admin'); ?>','<?php echo $this->session->userdata('parent_id'); ?>','<?php echo $this->session->userdata('cover_image'); ?>');">
@@ -796,7 +824,7 @@ div.postWhenScrollContainer{
                              </div>
                              <div class="iq-card-body">
                                 <ul class="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3" ng-repeat="(keyPhto, valuePhto) in limitTimelinePhotoListObj"><a href="javascript:void();"><img ng-src="{{valuePhto.all_file_n_photo_path}}" alt="gallary-image" class="img-fluid" /></a></li>
+                                   <li class="col-md-4 col-6 pl-2 pr-0 pb-3" ng-repeat="(keyPhto, valuePhto) in limitTimelinePhotoListObj"><a href="javascript:void();" ng-click="ShowPhotoSlider(valuePhto.id,'direct')"><img ng-src="{{valuePhto.all_file_n_photo_path}}" alt="gallary-image" class="img-fluid" /></a></li>
                                 </ul>
                              </div> 
                           </div>
@@ -1371,32 +1399,10 @@ div.postWhenScrollContainer{
                                      <div class="row">
                                         <div class="col-md-6 col-lg-3 mb-3" ng-repeat="(keyPhto, valuePhto) in aryPhotoScroll">
                                            
-                                          <div class="modal" id="examplePhotoModal_{{valuePhto.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                              <div class="modal-content iq-dark-box">
-                                                <div class="modal-header">
-                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                   <span aria-hidden="true">&times;</span>
-                                                   </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                   <div class="row">
-                                                     <div class="col-md-12">
-                                                        <div class="slider-wrap">
-                                                          <span class="left-arrow"><i class="ri-arrow-left-s-line iq-arrow-left"></i></span>
-                                                          <span class="right-arrow"><i class="ri-arrow-right-s-line iq-arrow-right"></i></span> 
-                                                          <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
-                                                        </div>
-                                                     </div>
-                                                   </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-
+                                          
                                            <div class="user-images user-photo-list position-relative overflow-hidden">
-                                              <a href="javascript:void();">
-                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" data-toggle="modal" data-target="#examplePhotoModal_{{valuePhto.id}}" class="img-fluid rounded" alt="Responsive image">
+                                              <a href="javascript:void();" ng-click="ShowPhotoSlider(valuePhto.id,'direct')">
+                                              <img ng-src="{{valuePhto.all_file_n_photo_path}}" class="img-fluid rounded" alt="Responsive image">
                                               </a>
 
                                               <div class="image-hover-data">
