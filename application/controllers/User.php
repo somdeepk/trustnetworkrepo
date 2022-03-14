@@ -1226,6 +1226,207 @@ class User extends CI_Controller
 	}
 
 
+	public function forgotpassword()
+	{
+		$data['ignoreHeadFoot'] = true;
+		$data['content'] = 'user/forgotpassword';
+		$this->load->view('layout/template', $data);
+	}
+
+
+	public function ajaxresetpassword()
+	{
+		
+		// echo "<pre />"; print_r('zzzzzzzzzzzzz'); die;
+
+		$returnData=array();
+
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+		$email = $aryLoginData['email'];
+		$current_date=date('Y-m-d H:i:s');
+
+		if(!empty(trim($email)))
+		{			
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			// echo "<pre />"; print_r($userData); die;
+
+			if(count($userData))
+			{
+				$reset_otp = time();
+				$securityStr = $userData['user_email'].'_|_'.$reset_otp;
+				$securityStrEncoded = urldecode(base64_encode($securityStr));
+				$reset_password_link = base_url().'user/setpassword/'.$securityStrEncoded;
+				
+				// Start Send Mail to set password link
+				$email_to[] = $userData['user_email'];
+
+				$email_body = "<p>Hi <b>".$userData['first_name']." ".$userData['last_name']."</b>,</p>";
+				$email_body .= "<p><a href='".$reset_password_link."' target='_blank'>Click Here</a> to reset your password. You can also use the below link to reset your password.</p>";
+				$email_body .= "<p>".$reset_password_link."</p>";
+				$email_body .= "<p>This is an auto generated mail, please do not reply.</p>";
+				$email_body .= "<p><b>Regards,</b></p>";
+				$email_body .= "<br>";
+				$email_body .= "<p>FollowMeNow Team.</p>";
+				$email_body .= "<p><a href='https://followmenow.org' target='_blank'>https://followmenow.org</a></p>";
+
+				$paramArray=array();
+				$paramArray['email_from']= "somdeepkanu@gmail.com";
+				$paramArray['email_from_name']='FollowMeNow';
+
+				$paramArray['email_to']=$email_to;
+				$paramArray['email_cc']=array();
+				$paramArray['email_bcc']=array();
+
+				$paramArray['email_subject']="FollowMeNow: Reset Password Link";
+				$paramArray['email_body']=$email_body;
+
+				/*$tempAttachment=array();
+				if(count($aryUploadeFileData))
+				{
+					foreach ($aryUploadeFileData as $key => $value)
+					{
+						$fileNameWithPath=IMAGE_PATH.'images/uploadfile/'.$fileName;
+						$tempAttachment[$key]['filename']=$fileName;
+						$tempAttachment[$key]['filecontent']=file_get_contents($fileNameWithPath,true);
+					}
+				}
+				$paramArray['ary_email_attachment']=$tempAttachment;
+				*/
+				$sendMailResponce = sendGridFollowMeNowEmail($paramArray);
+				$arySendMailResponce=json_decode($sendMailResponce['responce'],true);
+				// Start send Mail to set password link
+
+				// Start save reset otp
+				$lastId=0;
+				if($arySendMailResponce['message']=='success')
+				{
+					$menu_arr = array(
+			            'reset_password'  =>$reset_otp,
+			            'update_date'  =>$current_date,
+			        );
+					$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				}
+				// End save reset otp
+
+				if($lastId>0)
+				{
+					$returnData['status']='1';
+					$returnData['msg']='success';
+					$returnData['msgUser']='Password reset link successfully send to registered email. Please check email inbox/spam!';
+					//$returnData['link']=$reset_password_link;
+					$returnData['data']=array('userData'=>$userData);
+
+					$returnData['extradata'] = $paramArray;
+				}
+				else
+				{
+					$returnData['status']='0';
+					$returnData['msg']='Something Went Wrong. Please try later';
+					$returnData['data']=array();
+				}
+			}
+			else
+			{
+				$returnData['status']='0';
+				$returnData['msg']='This email is not registered!';
+				$returnData['data']=array();
+			}
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please enter your registered email!';
+			$returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;	
+
+	}
+
+
+	public function setpassword($securityStrEncoded = NULL)
+	{
+		$errorFlag = 1;
+		$securityStr = base64_decode(urldecode($securityStrEncoded));
+		$securityStrArr = explode("_|_", $securityStr);
+
+		if( !empty( trim($securityStrArr[0]) ) && !empty( trim($securityStrArr[1]) ) )
+		{
+			$email = $securityStrArr[0];
+			$reset_password = $securityStrArr[1];
+
+			$userData = $this->User_Model->getuserbyemail($email);
+
+			if(count($userData))
+			{
+				if($userData['reset_password'] == $reset_password)
+				{
+					$errorFlag = 0;					
+					$data['email'] = $email;
+					$data['ignoreHeadFoot'] = true;
+					$data['content'] = 'user/setpassword';
+					$this->load->view('layout/template', $data);
+				}
+			}
+		}		
+
+		if($errorFlag == 1)
+		{
+			echo "Link Expired!";
+			die;
+		}
+
+	}
+
+
+	public function ajaxsetnewpassword()
+	{
+		$returnData=array();
+
+		$loginData = trim($this->input->post('loginData'));
+        $aryLoginData=json_decode($loginData, true);
+        $email = $aryLoginData['email'];
+		$new_password = $aryLoginData['new_password'];
+		$confirm_new_password = $aryLoginData['confirm_new_password'];
+
+		if( !empty(trim($new_password)) && !empty(trim($confirm_new_password)) && $new_password == $confirm_new_password )
+		{
+			$userData = $this->User_Model->getuserbyemail($email);
+			if(count($userData))
+			{
+				// save new password
+				$current_date=date('Y-m-d H:i:s');
+				$menu_arr = array(
+					'password'  	=> $new_password,
+		            'reset_password'  	=> NULL,
+		            'update_date'  		=>$current_date,
+		        );
+				$lastId = $this->User_Model->addupdatemember($userData['id'],$menu_arr);
+				$returnData['status']='1';
+				$returnData['msg']='success';
+				$returnData['msgUser']='Congratulations! Your password has been changed successfully. Please login with the new password!';
+				$returnData['data']=array('userLoginData'=>$userLoginData);
+			}
+			else
+			{
+				$returnData['status']='0';
+				$returnData['msg']='Please try again!';
+				$returnData['data']=array();
+			}
+		}
+		else
+		{
+			$returnData['status']='0';
+			$returnData['msg']='Please try again!';
+			$returnData['data']=array();
+		}
+        echo json_encode($returnData);
+        exit;
+	}
+
 
 }
 	
