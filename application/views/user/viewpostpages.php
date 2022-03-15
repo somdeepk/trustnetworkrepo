@@ -23,8 +23,7 @@ div.postWhenScrollContainer{
                      <div class="flex space-x-3">
                          <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" ng-src="<?php echo IMAGE_URL;?>images/{{(loggedUserDataObj.profile_image  == '' || !loggedUserDataObj.profile_image )? 'member-no-imgage.jpg':'members/'+loggedUserDataObj.profile_image }}" class="w-10 h-10 rounded-full">
                          <input placeholder="What's Your Mind ? {{loggedUserDataObj.first_name}}!" class="bg-gray-100 hover:bg-gray-200 flex-1 h-10 px-6 rounded-full"> 
-                     </div>                      
-
+                     </div>
                      <div class="grid grid-flow-col pt-3 -mx-1 -mb-1 font-semibold text-sm">
                           <div class="hover:bg-gray-100 flex items-center p-1.5 rounded-md cursor-pointer"> 
                               <svg class="bg-blue-100 h-9 mr-2 p-1.5 rounded-full text-blue-600 w-9 -my-0.5 hidden lg:block" data-tippy-placement="top" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-tippy="" data-original-title="Tooltip">  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
