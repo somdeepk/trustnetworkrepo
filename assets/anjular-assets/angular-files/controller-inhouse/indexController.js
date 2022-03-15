@@ -188,14 +188,11 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         		$timeout(function()
 				{
 					$scope.buttonSavingAnimation('zbtnSinglePostz','Post','onlytext');
-					//UIkit.modal("#create-post-modal").hide();
 					$scope.singlePostData={};
 					$scope.tagPostData={};
 					$scope.aryPostTagFriend = [];
 					$('.zPostFileUploadz').val("");
 					$("#post_image_preview_container").html('');
-					//$scope.getMorePostOnScroll();
-					//location.reload();
 					$scope.singlePostData.uploaddata=[];
 					$scope.singlePostPreviewImages=[];
 					postImgPreHTML="";

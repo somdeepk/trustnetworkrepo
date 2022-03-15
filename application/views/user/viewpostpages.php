@@ -574,6 +574,7 @@ div.postWhenScrollContainer{
                 </div>
             </div>
             <div class="flex items-center w-full justify-between border-t p-3" id="post_image_preview_container">
+              
             </div>
         </div>
     </div>

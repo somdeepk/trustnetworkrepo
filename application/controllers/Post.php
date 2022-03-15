@@ -469,8 +469,6 @@ class Post extends CI_Controller
         exit;
     }
 
-    
-
     public function commentTimelinePost() 
     {
     	$returnData=array();
@@ -529,7 +527,6 @@ class Post extends CI_Controller
         exit;
     }
 
-
     public function ajaxGetPhotoList() 
     {
     	$finalPost=array();
@@ -544,10 +541,6 @@ class Post extends CI_Controller
         $sql="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND tpf.deleted='0' order by tpf.id DESC limit ".$row.",".$rowperpage;
 		$query=$this->db->query($sql);
 		$result=$query->result_array();
-
-		// echo "<pre>";
-		// print_r($result);
-		// exit;
 
 		$finalPhotoAry=array();
 		$incree=0;

@@ -293,14 +293,18 @@ switch (ENVIRONMENT)
 	if(IS_LOCAL_HOST==1)
 	{
 		$IMAGE_PATH=str_replace("/","\\",FCPATH."assets/uploaddata/");
+		//$ASSET_PATH=str_replace("/","\\",FCPATH."assets/");
 	}else{
 
 		$IMAGE_PATH=FCPATH."assets/uploaddata/";
+		//$ASSET_PATH=FCPATH."assets/";
 	}
+
 
 	$IMAGE_URL=$protocol . "://" . $_SERVER['HTTP_HOST']."/christtube/assets/uploaddata/";
 	defined('IMAGE_URL') OR define('IMAGE_URL', $IMAGE_URL);
 	defined('IMAGE_PATH') OR define('IMAGE_PATH', $IMAGE_PATH);
+	//defined('ASSET_PATH') OR define('ASSET_PATH', $ASSET_PATH);
 
 	
 	// The path to the "views" directory
