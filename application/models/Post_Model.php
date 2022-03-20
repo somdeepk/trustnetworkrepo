@@ -146,7 +146,8 @@ class Post_Model extends CI_Model
 
 	public function getPostCommentData($aryArgu=array())
 	{
-		$post_id=$aryArgu['post_id'];
+		$module_id=$aryArgu['module_id'];
+		$module_type=$aryArgu['module_type'];
 		$start=$aryArgu['start'];
 		$limit=$aryArgu['limit'];
 
@@ -166,7 +167,7 @@ class Post_Model extends CI_Model
 
 		FROM tn_post_comments as tpl
 		LEFT JOIN tn_members as tm on tm.id=tpl.member_id
-		WHERE tpl.module_id='".$post_id."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
+		WHERE tpl.module_id='".$module_id."' AND tpl.module_type='".$module_type."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
 		$queryPostComments=$this->db->query($sqlPostComments);
 		$resultPostComments=$queryPostComments->result_array();
 		return $resultPostComments;

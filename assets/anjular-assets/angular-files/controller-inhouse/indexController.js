@@ -379,16 +379,18 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	};
 	*/
 
-	/*
-	$scope.commentTimelinePost = function(valuePS)
+	
+	$scope.commentTimelinePost = function(valuePS,module_type)
     {	
     	timelineId=valuePS.id;
     	post_id=valuePS.post_id;
     	member_comment=$.trim(valuePS.member_comment);
 
 		$scope.postCommentData={}
-		$scope.postCommentData.post_id=post_id;
+		$scope.postCommentData.module_id=post_id;
+		$scope.postCommentData.module_type=module_type;
 		$scope.postCommentData.timelineId=timelineId;
+
 		$scope.postCommentData.member_comment=member_comment;
 
 		if(member_comment!="")
@@ -407,7 +409,6 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        	{
 	        		$scope.postCommentData={};
 
-	        		var postCommentData=aryreturnData.data.postCommentData;
 	        		var postAllCommentData=aryreturnData.data.postAllCommentData;
 	        		var result = $scope.aryPostScroll.filter(function(v,i)
 					{  
@@ -415,13 +416,10 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 					    {
 					    	// alert(v.id+" -- "+timelineId)
 					    	// console.log($scope.aryPostScroll);
-					    	$scope.aryPostScroll[i].post_comment_data=postCommentData ;
 					    	$scope.aryPostScroll[i].all_post_comment_data=postAllCommentData ;
 					    	$scope.aryPostScroll[i].member_comment='' ;
 					 	} 
-					}); 
-
-
+					});
 	        	}
 	        	else
 	        	{
@@ -434,7 +432,7 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	$scope.OpenPostPopUp = function (id) {
 		$('#exampleModal_'+id).modal('show');
 	};
-	*/
+	
 
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {

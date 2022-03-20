@@ -299,21 +299,22 @@ class Post extends CI_Controller
 					//End Get Post Like data
 
 					//Start Get Post only 3 Comment data
-					$aryArgu=array();
-					$aryArgu['post_id']=$value['post_id'];
-					$aryArgu['start']=0;
-					$aryArgu['limit']=3;
-					$resultPostComments = $this->Post_Model->getPostCommentData($aryArgu);
-					$finalPost[$key]['post_comment_data']=array();
-					if(count($resultPostComments)>0)
-					{
-						$finalPost[$key]['post_comment_data']=$resultPostComments;
-					}
+					// $aryArgu=array();
+					// $aryArgu['post_id']=$value['post_id'];
+					// $aryArgu['start']=0;
+					// $aryArgu['limit']=3;
+					// $resultPostComments = $this->Post_Model->getPostCommentData($aryArgu);
+					// $finalPost[$key]['post_comment_data']=array();
+					// if(count($resultPostComments)>0)
+					// {
+					// 	$finalPost[$key]['post_comment_data']=$resultPostComments;
+					// }
 					//End Get Post only 3 Comment data
 
 					//Start Get Post All Comment data
 					$aryArgu=array();
-					$aryArgu['post_id']=$value['post_id'];
+					$aryArgu['module_id']=$value['post_id'];
+					$aryArgu['module_type']='post';
 					$aryArgu['start']='';
 					$aryArgu['limit']='';
 					$resultPostComments = $this->Post_Model->getPostCommentData($aryArgu);
@@ -447,34 +448,37 @@ class Post extends CI_Controller
     	$aryPostCommentData=json_decode($postCommentData, true);
   
   		$post_comments_id=(isset($aryPostCommentData['post_comments_id']) && !empty($aryPostCommentData['post_comments_id']))? addslashes(trim($aryPostCommentData['post_comments_id'])):0;
-  		$post_id=(isset($aryPostCommentData['post_id']) && !empty($aryPostCommentData['post_id']))? addslashes(trim($aryPostCommentData['post_id'])):0;
+  		$module_id=(isset($aryPostCommentData['module_id']) && !empty($aryPostCommentData['module_id']))? addslashes(trim($aryPostCommentData['module_id'])):0;
+  		$module_type=(isset($aryPostCommentData['module_type']) && !empty($aryPostCommentData['module_type']))? addslashes(trim($aryPostCommentData['module_type'])):'';
+
   		$member_comment=(isset($aryPostCommentData['member_comment']) && !empty($aryPostCommentData['member_comment']))? addslashes(trim($aryPostCommentData['member_comment'])):'';
 
   		$user_auto_id=$this->session->userdata('user_auto_id');
 		$current_date=date('Y-m-d H:i:s');
 		
 		$menu_arr = array(
-            'post_id'  =>$post_id,
+            'module_id'  =>$module_id,
+            'module_type'  =>$module_type,
             'member_id'  =>$user_auto_id,
             'member_comment'  =>$member_comment,
             'create_date'  =>$current_date,
         );
 
-
 		$last_post_comments_id = $this->Post_Model->addUpdatePostComment($menu_arr,$post_comments_id);
-		
-		
+				
 		//Start Get Post only 3 Comment data
-		$aryArgu=array();
-		$aryArgu['post_id']=$post_id;
-		$aryArgu['start']=0;
-		$aryArgu['limit']=3;
-		$postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+		// $aryArgu=array();
+		// $aryArgu['module_id']=$post_id;
+		// $aryArgu['module_type']=$module_type;
+		// $aryArgu['start']=0;
+		// $aryArgu['limit']=3;
+		// $postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
 		//End Get Post only 3 Comment data
 
 		//Start Get Post All Comment data
 		$aryArgu=array();
-		$aryArgu['post_id']=$post_id;
+		$aryArgu['module_id']=$module_id;
+		$aryArgu['module_type']=$module_type;
 		$aryArgu['start']='';
 		$aryArgu['limit']='';
 		$postAllCommentData = $this->Post_Model->getPostCommentData($aryArgu);
@@ -485,7 +489,7 @@ class Post extends CI_Controller
 			$returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Comment Successfully Done';
-	        $returnData['data']=array('last_post_comments_id'=>$last_post_comments_id,'postCommentData'=>$postCommentData,'postAllCommentData'=>$postAllCommentData);
+	        $returnData['data']=array('last_post_comments_id'=>$last_post_comments_id,'postAllCommentData'=>$postAllCommentData);
 		}
 		else
 		{
