@@ -1,6 +1,67 @@
 <?php 
 class Post extends CI_Controller
 {
+	public function verbose ($ok=1, $info="")
+	{
+	  if ($ok==0) { http_response_code(400); }
+	  exit(json_encode(["ok"=>$ok, "info"=>$info]));
+	}
+
+	public function ajaxsubmitpostfiles() 
+    {
+    	$lastPostId=$this->session->userdata('lastPostId');
+
+		if (!empty($_FILES) && !$_FILES["file"]["error"] && $lastPostId>0)
+		{
+			$file_original_name=isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
+			$file_size=$_FILES["file"]["size"];
+			$file_type=$_FILES["file"]["type"];
+			$current_date=date('Y-m-d H:i:s');  			
+
+		  	$fileBasePath = IMAGE_PATH.'images/postfiles';
+		  	$filePath = $fileBasePath . DIRECTORY_SEPARATOR . $file_original_name;
+
+			// (D) DEAL WITH CHUNKS
+			$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+			$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+			$out = @fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
+			if ($out) {
+			  $in = @fopen($_FILES["file"]["tmp_name"], "rb");
+			  if ($in) { while ($buff = fread($in, 4096)) { fwrite($out, $buff); } }
+			  else { $this->verbose(0, "Failed to open input stream"); }
+			  @fclose($in);
+			  @fclose($out);
+			  @unlink($_FILES["file"]["tmp_name"]);
+			} else { $this->verbose(0, "Failed to open output stream"); }
+
+			// (E) CHECK IF FILE HAS BEEN UPLOADED
+			if (!$chunks || $chunk == $chunks - 1){
+				$imarr=explode(".",$file_original_name);
+		    	$ext=end($imarr);
+				$file_name = time().'.'.$ext;
+
+				$filePathSysem = $fileBasePath . DIRECTORY_SEPARATOR . $file_name;
+				rename("{$filePath}.part", $filePathSysem);
+
+				$aryPostData=$this->Post_Model->getPostData($lastPostId);
+				$member_id=$aryPostData[0]['member_id'];
+				$menu_arr_post_file = array(
+		            'module_id'=>$lastPostId,
+		            'module_type'=>'post',
+		            'member_id'   => $member_id,
+		            'file_original_name'   =>$file_original_name,
+		            'file_name'   =>$file_name,
+		            'file_size'   =>$file_size,        
+		            'file_type'   =>$ext, 
+		            'create_date'   =>$current_date       
+		        );
+
+                $last_post_file_id = $this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+			}
+			$this->verbose(1, "Upload OK");
+		}		
+    }
+
     public function ajaxsubmitsinglepost() 
     {
     	$returnData=array();
@@ -10,23 +71,13 @@ class Post extends CI_Controller
         $aryPostTagFriend = trim($this->input->post('aryPostTagFriend'));
         $aryPostTagFriend=json_decode($aryPostTagFriend, true);
 
-        if (!empty($_FILES['file']['name']))
-        {
-            $postfile = json_encode($_FILES);
-        } else {
-            $postfile = "";
-        }
-
-        // echo "<pre>";
-        // print_r($postfile);
-        // exit;
-
         $member_id=(isset($arySinglePostData['loggedUserId']) && !empty($arySinglePostData['loggedUserId']))? addslashes(trim($arySinglePostData['loggedUserId'])):'0';
         $post=(isset($arySinglePostData['post']) && !empty($arySinglePostData['post']))? addslashes(trim($arySinglePostData['post'])):'';
+        $uploaddata=(isset($arySinglePostData['uploaddata']) && !empty($arySinglePostData['uploaddata']))? $arySinglePostData['uploaddata']:array();
 
 		$current_date=date('Y-m-d H:i:s');
 
-		if($member_id>0 && (!empty($post) || !empty($postfile)))
+		if($member_id>0 && (!empty($post) || count($uploaddata)))
 		{
 			$menu_arr = array(
 	            'member_id' => $member_id,
@@ -74,75 +125,10 @@ class Post extends CI_Controller
 			}
 			//End Log Data In Timeline
 
-			//Start Later We ommit This table
-			// if(count($aryPostTagFriend)>0)
-			// {
-			// 	foreach ($aryPostTagFriend as $ktag => $vtag)
-			// 	{
-			// 		$menu_arr_tag = array(
-			//             'post_id'  =>$lastPostId,
-			//             'member_id' => $member_id,
-			//             'tagged_member_id'  =>$vtag,
-			//             'create_date'  =>$current_date,
-			//         );
-			// 		$lastTagId = $this->Post_Model->addupdatetagfriend(0,$menu_arr_tag);				
-			// 	}
-			// }
-			//End Later We ommit This table
-
-			if(!empty($postfile))
-	        {
-	            $this->load->library('upload');
-	            $postfile=json_decode($postfile);
-	            foreach($postfile->file->name as $kFile=>$vFile)
-	            {
-	            	$imarr=explode(".",$vFile);
-		            $ext=end($imarr);
-		            if($ext=="jpg" or $ext=="jpeg" or $ext=="png" or $ext=="mp4" or $ext=="wmv" or $ext=="avi" or $ext=="3gp" or $ext=="mov" or $ext=="mpeg")
-		            {
-		                $_FILES['file']['name']=$file_original_name=$postfile->file->name[$kFile];
-		                $_FILES['file']['type']=$file_type=$postfile->file->type[$kFile];
-		                $_FILES['file']['tmp_name']=$postfile->file->tmp_name[$kFile];
-		                $_FILES['file']['error']=$postfile->file->error[$kFile];
-		                $_FILES['file']['size']=$file_size=$postfile->file->size[$kFile];
-
-		                $config = array(
-		                    'file_name' => str_replace(".","",microtime(true)).".".$ext,
-		                    'allowed_types' => '*',
-		                    'upload_path' => IMAGE_PATH.'images/postfiles/',
-		                    //'max_size' => 2000
-		                );
-
-		                $this->upload->initialize($config);
-		                
-		                if (!$this->upload->do_upload('file'))
-		                {
-		                    $errormsg=$this->upload->display_errors();
-		                    $arr=array('error'=>1,'success'=>'','errormsg'=>strip_tags($errormsg));
-		                }
-		                else
-		                {
-		                    $image_data = $this->upload->data();
-		                    $file_name=$image_data['file_name'];
-		                    $menu_arr_post_file = array(
-					            'module_id'=>$lastPostId,
-					            'module_type'=>'postfiles',
-					            'member_id'   =>$member_id,
-					            'file_original_name'   =>$file_original_name,
-					            'file_name'   =>$file_name,
-					            'file_size'   =>$file_size,        
-					            'file_type'   =>$file_type,       
-					            'create_date'   =>$current_date       
-					        );
-
-			                $last_post_file_id = $this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
-		                }                
-		            }
-	            }
-	        }
-
 			if($lastPostId>0)
 			{
+				$this->session->set_userdata('lastPostId',$lastPostId);
+
 		        $returnData['status']='1';
 		        $returnData['msg']='success';
 		        $returnData['msgstring']='Posted Successfully';
@@ -215,11 +201,8 @@ class Post extends CI_Controller
 					$finalPost[$key]['to_member_id']=$value['to_member_id'];
 					$finalPost[$key]['member_comment']='';
 
-					//$finalPost[$key]['mydempurl']=IMAGE_URL.'images/postfiles/16446624683774.mp4';
-
-
 					//Start Get Post File Images/Video Data
-					$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='postfiles' AND deleted='0'";
+					$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='post' AND deleted='0'";
 					$queryPostFile=$this->db->query($sqlPostFile);
 					$resultPostFile=$queryPostFile->result_array();
 
@@ -232,29 +215,11 @@ class Post extends CI_Controller
 							$tempResultPostFile[$kPF]=$vPF;
 							$tempResultPostFile[$kPF]['file_type_url']=IMAGE_URL.'images/postfiles/'.$vPF['file_name'];
 						}
-						$finalPost[$key]['post_file_data']=$tempResultPostFile;
-						//$finalPost[$key]['post_file_data']=$resultPostFile;
-						
+						$finalPost[$key]['post_file_data']=$tempResultPostFile;			
 					}
 					//End Get Post File Images/Video Data
 
 					//Start Get tag to Friend Data
-					// $sqlPostTagFriend="SELECT 
-					// tptf.tagged_member_id,
-					// tm.first_name,
-					// tm.last_name
-					// FROM tn_post_tag_friend as tptf 
-					// LEFT JOIN tn_members as tm on tm.id=tptf.tagged_member_id
-					// WHERE tptf.post_id='".$value['post_id']."' AND tm.status='1' and tm.deleted='0'";
-					// $queryPostTagFriend=$this->db->query($sqlPostTagFriend);
-					// $resultPostTagFriend=$queryPostTagFriend->result_array();
-
-					// $finalPost[$key]['post_tag_friend_data']=array();
-					// if(count($resultPostTagFriend)>0)
-					// {
-					// 	$finalPost[$key]['post_tag_friend_data']=$resultPostTagFriend;
-					// }
-
 					$sqlPostTagFriend="SELECT 
 					tmt.to_member_id,
 					tm.first_name,
@@ -309,7 +274,7 @@ class Post extends CI_Controller
 					//End Get Post Data
 
 					//Start Get Individual Post Like/Unlike Status
-					$sqlIndvPostLike="SELECT deleted FROM tn_post_like WHERE post_id='".$value['post_id']."' AND member_id='".$user_auto_id."'";
+					$sqlIndvPostLike="SELECT deleted FROM tn_post_like WHERE module_id='".$value['post_id']."' AND module_type='post' AND member_id='".$user_auto_id."'";
 					$queryIndvPostLike=$this->db->query($sqlIndvPostLike);
 					$rowIndvPostLike=$queryIndvPostLike->row();
 
@@ -321,7 +286,11 @@ class Post extends CI_Controller
 					//End Get Individual Post Like/Unlike Status
 
 					//Start Get Post Like data
-					$resultPostLikes = $this->Post_Model->getPostLikeData($value['post_id']);
+					$menu_argu_arr = array(
+			            'module_id'  =>$value['post_id'],
+			            'module_type'  =>'post',
+			        );
+					$resultPostLikes = $this->Post_Model->getPostLikeData($menu_argu_arr);
 					$finalPost[$key]['post_like_data']=array();
 					if(count($resultPostLikes)>0)
 					{
@@ -378,16 +347,18 @@ class Post extends CI_Controller
     	$postStatusData=$this->input->get_post('postStatusData');
     	$aryPostStatusData=json_decode($postStatusData, true);
   
-  		$post_id=(isset($aryPostStatusData['post_id']) && !empty($aryPostStatusData['post_id']))? addslashes(trim($aryPostStatusData['post_id'])):0;
+  		$module_id=(isset($aryPostStatusData['module_id']) && !empty($aryPostStatusData['module_id']))? addslashes(trim($aryPostStatusData['module_id'])):0;
+  		$module_type=(isset($aryPostStatusData['module_type']) && !empty($aryPostStatusData['module_type']))? addslashes(trim($aryPostStatusData['module_type'])):'';
+
   		$user_auto_id=$this->session->userdata('user_auto_id');
 		$current_date=date('Y-m-d H:i:s');
 		
 		$menu_arr = array(
-            'post_id'  =>$post_id,
+            'module_id'  =>$module_id,
+            'module_type'  =>$module_type,
             'member_id'  =>$user_auto_id,
             'create_date'  =>$current_date,
         );
-
 
 		$array_return = $this->Post_Model->addUpdatPostLikeUnlike($menu_arr);
 
@@ -396,7 +367,7 @@ class Post extends CI_Controller
 
 
 		//Start Get Post Like data
-		$postLikeData = $this->Post_Model->getPostLikeData($post_id);
+		$postLikeData = $this->Post_Model->getPostLikeData($menu_arr);
 		//End Get Post Like data	
 
 		if($post_like_id>0)
@@ -557,7 +528,7 @@ class Post extends CI_Controller
 				{
 					$strPhotoPath="/images/members/coverimages/";
 				}
-				elseif($v['module_type']=='postfiles')
+				elseif($v['module_type']=='post')
 				{
 					$strPhotoPath="/images/postfiles/";
 				}

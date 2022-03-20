@@ -189,7 +189,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$rootScope.CheckImageOrVideo = function(filetype)
 	{
-		if(filetype=='video/mp4' || filetype=='video/wmv' || filetype=='video/avi' || filetype=='video/3gp' || filetype=='video/mov' || filetype=='video/mpeg')
+		if(filetype=='mp4' || filetype=='wmv' || filetype=='avi' || filetype=='3gp' || filetype=='mov' || filetype=='mpeg')
 		{
 			return "video";
 		}

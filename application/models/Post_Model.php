@@ -60,8 +60,19 @@ class Post_Model extends CI_Model
 		}
 	}
 
-	public function getPostLikeData($post_id=0)
+	public function getPostData($post_id=0)
 	{
+		$sqlPost="SELECT member_id FROM tn_post WHERE id='".$post_id."'";
+		$queryPost=$this->db->query($sqlPost);
+		$resultPost=$queryPost->result_array();
+		return $resultPost;
+	}
+
+	public function getPostLikeData($menu_arr=0)
+	{
+		$module_id=$menu_arr['module_id'];
+		$module_type=$menu_arr['module_type'];
+
 		$sqlPostLikes="SELECT 
 		tpl.id,
 		tpl.member_id,
@@ -71,7 +82,7 @@ class Post_Model extends CI_Model
 
 		FROM tn_post_like as tpl
 		LEFT JOIN tn_members as tm on tm.id=tpl.member_id
-		WHERE tpl.post_id='".$post_id."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0'";
+		WHERE tpl.module_id='".$module_id."' AND tpl.module_type='".$module_type."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0'";
 		$queryPostLikes=$this->db->query($sqlPostLikes);
 		$resultPostLikes=$queryPostLikes->result_array();
 		return $resultPostLikes;
@@ -80,10 +91,11 @@ class Post_Model extends CI_Model
 	public function addUpdatPostLikeUnlike($menu_arr=NULL)
 	{
 		$array_return=array();
-		$post_id=$menu_arr['post_id'];
+		$module_id=$menu_arr['module_id'];
+		$module_type=$menu_arr['module_type'];
 		$member_id=$menu_arr['member_id'];
 
-		$sql='SELECT id,deleted from tn_post_like WHERE post_id="'.$post_id.'" AND member_id="'.$member_id.'"';
+		$sql='SELECT id,deleted from tn_post_like WHERE module_id="'.$module_id.'" AND module_type="'.$module_type.'" AND member_id="'.$member_id.'"';
 		$query=$this->db->query($sql);
 		$rowData=$query->row();
 		$post_like_id=0;
@@ -154,7 +166,7 @@ class Post_Model extends CI_Model
 
 		FROM tn_post_comments as tpl
 		LEFT JOIN tn_members as tm on tm.id=tpl.member_id
-		WHERE tpl.post_id='".$post_id."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
+		WHERE tpl.module_id='".$post_id."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
 		$queryPostComments=$this->db->query($sqlPostComments);
 		$resultPostComments=$queryPostComments->result_array();
 		return $resultPostComments;

@@ -792,7 +792,7 @@ class User extends CI_Controller
 	            'file_original_name'=>$imagename,
 	            'file_name'   =>$imagename,
 	            'file_size'   =>'0',        
-	            'file_type'   =>'image/png',       
+	            'file_type'   =>'png',       
 	            'create_date'   =>$current_date       
 	        );
 			$this->User_Model->addUpdatPostFile(0,$menu_arr_post_file);
@@ -993,7 +993,7 @@ class User extends CI_Controller
 	            'file_original_name'=>$imagename,
 	            'file_name'   =>$imagename,
 	            'file_size'   =>'0',        
-	            'file_type'   =>'image/png',       
+	            'file_type'   =>'png',       
 	            'create_date'   =>$current_date       
 	        );
 			$this->User_Model->addUpdatPostFile(0,$menu_arr_post_file);
