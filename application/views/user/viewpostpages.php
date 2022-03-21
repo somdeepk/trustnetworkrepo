@@ -143,13 +143,13 @@ div.postWhenScrollContainer{
                               </div>
                               <div> Bless</div>
                            </a>
-                           <a href="#" class="flex items-center space-x-2">
+                           <a ng-if="(isNullOrEmptyOrUndefined(valuePS.totComments)==false)" href="#" class="flex items-center space-x-2">
                               <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                     <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
                                  </svg>
                               </div>
-                              <div> Comment</div>
+                              <div>{{valuePS.totComments}} Comments </div>
                            </a>
                            <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
                               <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
@@ -175,8 +175,8 @@ div.postWhenScrollContainer{
                                
                            </div>
                         </div>
-                        <div class="border-t py-4 space-y-4 dark:border-gray-600" ng-if='valuePS.all_post_comment_data.length>0'>
-                           <div class="flex" ng-repeat="(keyComments, valueComments) in valuePS.all_post_comment_data">
+                        <div class="border-t py-4 space-y-4 dark:border-gray-600" ng-if='valuePS.limit_post_comment_data.length>0'>
+                           <div class="flex" ng-repeat="(keyComments, valueComments) in valuePS.limit_post_comment_data">
                               <div class="w-10 h-10 rounded-full relative flex-shrink-0">
                                  <img src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="{{valueComments.first_name+' '+valueComments.last_name}}" class="absolute h-full rounded-full w-full">
                               </div>
@@ -195,7 +195,7 @@ div.postWhenScrollContainer{
                               </div>
                            </div>                           
                         </div>
-                        <a href="javascript:void();" ng-if='valuePS.all_post_comment_data.length>0' class="hover:text-blue-600 hover:underline">  Veiw 8 more Comments </a>
+                        <a href="javascript:void();" ng-if="(valuePS.limit_post_comment_data.length<valuePS.totComments)"  ng-click="showMoreComments(valuePS,'post')" class="hover:text-blue-600 hover:underline">Veiw More Comments..</a>
 
                         <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
                            <input placeholder="Add your Comment.." ng-model="valuePS.member_comment" maxlength="300" class="bg-transparent max-h-10 shadow-none px-5">

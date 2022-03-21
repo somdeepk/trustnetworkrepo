@@ -298,31 +298,26 @@ class Post extends CI_Controller
 					}
 					//End Get Post Like data
 
-					//Start Get Post only 3 Comment data
-					// $aryArgu=array();
-					// $aryArgu['post_id']=$value['post_id'];
-					// $aryArgu['start']=0;
-					// $aryArgu['limit']=3;
-					// $resultPostComments = $this->Post_Model->getPostCommentData($aryArgu);
-					// $finalPost[$key]['post_comment_data']=array();
-					// if(count($resultPostComments)>0)
-					// {
-					// 	$finalPost[$key]['post_comment_data']=$resultPostComments;
-					// }
-					//End Get Post only 3 Comment data
-
 					//Start Get Post All Comment data
 					$aryArgu=array();
 					$aryArgu['module_id']=$value['post_id'];
 					$aryArgu['module_type']='post';
 					$aryArgu['start']='';
 					$aryArgu['limit']='';
-					$resultPostComments = $this->Post_Model->getPostCommentData($aryArgu);
-					$finalPost[$key]['all_post_comment_data']=array();
-					if(count($resultPostComments)>0)
-					{
-						$finalPost[$key]['all_post_comment_data']=$resultPostComments;
-					}
+					$postAllCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+					//End Get Post All Comment data	
+
+					//Start Get Post Limit Comment data
+					$aryArgu=array();
+					$aryArgu['module_id']=$value['post_id'];
+					$aryArgu['module_type']='post';
+					$aryArgu['start']=0;
+					$aryArgu['limit']=3;
+					$postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+					//End Get Post Limit Comment data	
+
+					$finalPost[$key]['limit_post_comment_data']=$postCommentData;
+					$finalPost[$key]['totComments']=count($postAllCommentData);
 					//End Get Post All Comment data
 				}
 			}
@@ -466,14 +461,6 @@ class Post extends CI_Controller
 
 		$last_post_comments_id = $this->Post_Model->addUpdatePostComment($menu_arr,$post_comments_id);
 				
-		//Start Get Post only 3 Comment data
-		// $aryArgu=array();
-		// $aryArgu['module_id']=$post_id;
-		// $aryArgu['module_type']=$module_type;
-		// $aryArgu['start']=0;
-		// $aryArgu['limit']=3;
-		// $postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
-		//End Get Post only 3 Comment data
 
 		//Start Get Post All Comment data
 		$aryArgu=array();
@@ -483,13 +470,23 @@ class Post extends CI_Controller
 		$aryArgu['limit']='';
 		$postAllCommentData = $this->Post_Model->getPostCommentData($aryArgu);
 		//End Get Post All Comment data	
+
+		//Start Get Post Limit Comment data
+		$aryArgu=array();
+		$aryArgu['module_id']=$module_id;
+		$aryArgu['module_type']=$module_type;
+		$aryArgu['start']=0;
+		$aryArgu['limit']=3;
+		$postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+		//End Get Post Limit Comment data	
+
 		
 		if($last_post_comments_id>0)
 		{
 			$returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Comment Successfully Done';
-	        $returnData['data']=array('last_post_comments_id'=>$last_post_comments_id,'postAllCommentData'=>$postAllCommentData);
+	        $returnData['data']=array('last_post_comments_id'=>$last_post_comments_id,'limit_post_comment_data'=>$postCommentData,'totComments'=>count($postAllCommentData));
 		}
 		else
 		{
@@ -502,61 +499,98 @@ class Post extends CI_Controller
         exit;
     }
 
-    public function ajaxGetPhotoList() 
+    public function showMoreCommentTimelinePost() 
     {
-    	$finalPost=array();
+    	$returnData=array();
+    	$postCommentData=$this->input->get_post('postCommentData');
+    	$aryPostCommentData=json_decode($postCommentData, true);
+  
+  		$module_id=(isset($aryPostCommentData['module_id']) && !empty($aryPostCommentData['module_id']))? $aryPostCommentData['module_id']:0;
+  		$module_type=(isset($aryPostCommentData['module_type']) && !empty($aryPostCommentData['module_type']))? addslashes(trim($aryPostCommentData['module_type'])):'';
+  		$totStartRowComment=(isset($aryPostCommentData['totStartRowComment']) && !empty($aryPostCommentData['totStartRowComment']))? $aryPostCommentData['totStartRowComment']:3;
+				
+		//Start Get Post All Comment data
+		$aryArgu=array();
+		$aryArgu['module_id']=$module_id;
+		$aryArgu['module_type']=$module_type;
+		$aryArgu['start']='';
+		$aryArgu['limit']='';
+		$postAllCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+		//End Get Post All Comment data	
 
-    	$photoScrollData = $this->input->post('photoScrollData');
-        $aryPhotoScrollDataa=json_decode($photoScrollData, true);
-
-        $user_auto_id=$this->session->userdata('user_auto_id');
-        $row=(isset($aryPhotoScrollDataa['row']) && !empty($aryPhotoScrollDataa['row']))? $aryPhotoScrollDataa['row']:'0';
-        $rowperpage=(isset($aryPhotoScrollDataa['rowperpage']) && !empty($aryPhotoScrollDataa['rowperpage']))? $aryPhotoScrollDataa['rowperpage']:'0';
-
-        $sql="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND tpf.deleted='0' order by tpf.id DESC limit ".$row.",".$rowperpage;
-		$query=$this->db->query($sql);
-		$result=$query->result_array();
-
-		$finalPhotoAry=array();
-		$incree=0;
-		if(count($result)>0)
-		{
-			foreach ($result as $k => $v)
-			{
-				$strPhotoPath='';
-				if($v['module_type']=='members')
-				{
-					$strPhotoPath="/images/members/";
-				}
-				elseif($v['module_type']=='coverimages')
-				{
-					$strPhotoPath="/images/members/coverimages/";
-				}
-				elseif($v['module_type']=='post')
-				{
-					$strPhotoPath="/images/postfiles/";
-				}
-				if (file_exists(IMAGE_PATH.$strPhotoPath.$v['file_name']) && $v['file_name']!='')
-				{
-					$finalPhotoAry[$incree]['id']=$v['id'];
-					$finalPhotoAry[$incree]['module_type']=$v['module_type'];
-					$finalPhotoAry[$incree]['display_upload_date']=date('d M y h:i A',strtotime($v['create_date']));
-					$finalPhotoAry[$incree]['all_file_n_photo_path']=IMAGE_URL.$strPhotoPath.$v['file_name'];
-					$incree++;
-				}
-			}
-		}
-
-		// echo "<pre>";
-  //       print_r($finalPhotoAry);
-  //       exit;
+		//Start Get Post All Comment data
+		$aryArgu=array();
+		$aryArgu['module_id']=$module_id;
+		$aryArgu['module_type']=$module_type;
+		$aryArgu['start']=$totStartRowComment;
+		$aryArgu['limit']=3;
+		$postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+		//End Get Post All Comment data	
 
 		$returnData['status']='1';
-        $returnData['msg']='success';
-        $returnData['msgstring']='';
-        $returnData['data']=array('photoScrollData'=>$finalPhotoAry,'photoExist'=>count($finalPhotoAry));
+		$returnData['msg']='success';
+		$returnData['msgstring']='Comment Successfully Done';
+		$returnData['data']=array('last_post_comments_id'=>$last_post_comments_id,'limit_post_comment_data'=>$postCommentData,'totComments'=>count($postAllCommentData));
+		    
         echo json_encode($returnData);
         exit;
-
     }
+
+  //   public function ajaxGetPhotoList() 
+  //   {
+  //   	$finalPost=array();
+
+  //   	$photoScrollData = $this->input->post('photoScrollData');
+  //       $aryPhotoScrollDataa=json_decode($photoScrollData, true);
+
+  //       $user_auto_id=$this->session->userdata('user_auto_id');
+  //       $row=(isset($aryPhotoScrollDataa['row']) && !empty($aryPhotoScrollDataa['row']))? $aryPhotoScrollDataa['row']:'0';
+  //       $rowperpage=(isset($aryPhotoScrollDataa['rowperpage']) && !empty($aryPhotoScrollDataa['rowperpage']))? $aryPhotoScrollDataa['rowperpage']:'0';
+
+  //       $sql="SELECT tpf.id, tpf.module_type,tpf.file_name,tpf.create_date FROM tn_post_file as tpf WHERE tpf.member_id='".$user_auto_id."' AND tpf.deleted='0' order by tpf.id DESC limit ".$row.",".$rowperpage;
+		// $query=$this->db->query($sql);
+		// $result=$query->result_array();
+
+		// $finalPhotoAry=array();
+		// $incree=0;
+		// if(count($result)>0)
+		// {
+		// 	foreach ($result as $k => $v)
+		// 	{
+		// 		$strPhotoPath='';
+		// 		if($v['module_type']=='members')
+		// 		{
+		// 			$strPhotoPath="/images/members/";
+		// 		}
+		// 		elseif($v['module_type']=='coverimages')
+		// 		{
+		// 			$strPhotoPath="/images/members/coverimages/";
+		// 		}
+		// 		elseif($v['module_type']=='post')
+		// 		{
+		// 			$strPhotoPath="/images/postfiles/";
+		// 		}
+		// 		if (file_exists(IMAGE_PATH.$strPhotoPath.$v['file_name']) && $v['file_name']!='')
+		// 		{
+		// 			$finalPhotoAry[$incree]['id']=$v['id'];
+		// 			$finalPhotoAry[$incree]['module_type']=$v['module_type'];
+		// 			$finalPhotoAry[$incree]['display_upload_date']=date('d M y h:i A',strtotime($v['create_date']));
+		// 			$finalPhotoAry[$incree]['all_file_n_photo_path']=IMAGE_URL.$strPhotoPath.$v['file_name'];
+		// 			$incree++;
+		// 		}
+		// 	}
+		// }
+
+		// // echo "<pre>";
+		// //       print_r($finalPhotoAry);
+		// //       exit;
+
+		// $returnData['status']='1';
+  //       $returnData['msg']='success';
+  //       $returnData['msgstring']='';
+  //       $returnData['data']=array('photoScrollData'=>$finalPhotoAry,'photoExist'=>count($finalPhotoAry));
+  //       echo json_encode($returnData);
+  //       exit;
+
+  //   }
 }

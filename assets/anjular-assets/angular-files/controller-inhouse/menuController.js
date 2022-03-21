@@ -38,8 +38,8 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 				$rootScope.loggedUserDataObj=loggedUserDataObj;
 				$rootScope.allChurchMemberObj=$rootScope.loggedUserDataObj.ChurchData;
 				
-				console.log('Gloab Member Data')
-				console.log($rootScope.loggedUserDataObj)
+				// console.log('Gloab Member Data')
+				// console.log($rootScope.loggedUserDataObj)
 
 	       		$scope.flagBlurMenu=aryreturnData.data.flagBlurMenu;
         	}
@@ -130,6 +130,7 @@ mainApp.controller('menuController', function($rootScope, $scope, $http, $compil
 
 	$scope.viewPostPages = function()
 	{
+		//$rootScope.totRowComment=0;
 		if($('#create-post-modal').length>0)
 		{
 			$('#create-post-modal').remove();

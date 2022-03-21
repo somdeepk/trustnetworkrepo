@@ -382,9 +382,9 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	
 	$scope.commentTimelinePost = function(valuePS,module_type)
     {	
-    	timelineId=valuePS.id;
-    	post_id=valuePS.post_id;
-    	member_comment=$.trim(valuePS.member_comment);
+    	var timelineId=valuePS.id;
+    	var post_id=valuePS.post_id;
+    	var member_comment=$.trim(valuePS.member_comment);
 
 		$scope.postCommentData={}
 		$scope.postCommentData.module_id=post_id;
@@ -409,14 +409,69 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        	{
 	        		$scope.postCommentData={};
 
-	        		var postAllCommentData=aryreturnData.data.postAllCommentData;
+	        		var limit_post_comment_data=aryreturnData.data.limit_post_comment_data;
+	        		var totComments=aryreturnData.data.totComments;
 	        		var result = $scope.aryPostScroll.filter(function(v,i)
 					{  
 					    if (v.id === timelineId)
 					    {
 					    	// alert(v.id+" -- "+timelineId)
-					    	// console.log($scope.aryPostScroll);
-					    	$scope.aryPostScroll[i].all_post_comment_data=postAllCommentData ;
+					    	// console.log("postCommentData");
+					    	// console.log(limit_post_comment_data);
+					    	$scope.aryPostScroll[i].limit_post_comment_data=limit_post_comment_data ;
+					    	$scope.aryPostScroll[i].totComments=totComments;
+					    	$scope.aryPostScroll[i].member_comment='' ;
+					 	} 
+					});
+	        	}
+	        	else
+	        	{
+	        		console.log("Commenting Failed!")
+	        	}
+			});
+	    }
+	};
+	
+	$scope.showMoreComments = function(valuePS,module_type)
+    {	
+    	var timelineId=valuePS.id;
+    	var post_id=valuePS.post_id;
+
+		$scope.postCommentData={}
+		$scope.postCommentData.module_id=post_id;
+		$scope.postCommentData.module_type=module_type;
+		$scope.postCommentData.timelineId=timelineId;
+		$scope.postCommentData.totStartRowComment=valuePS.limit_post_comment_data.length;
+
+
+		if(timelineId>0)
+		{
+			var formData = new FormData();
+			formData.append('postCommentData',angular.toJson($scope.postCommentData));
+			$http({
+	            method  : 'POST',
+	            url     : varBaseUrl+"post/showMoreCommentTimelinePost",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData){
+				aryreturnData=angular.fromJson(returnData);
+	        	if(aryreturnData.status=='1')
+	        	{
+	        		$scope.postCommentData={};
+
+	        		var limit_post_comment_data=aryreturnData.data.limit_post_comment_data;
+	        		var totComments=aryreturnData.data.totComments;
+	        		var result = $scope.aryPostScroll.filter(function(v,i)
+					{  
+					    if (v.id === timelineId)
+					    {
+					    	// alert(v.id+" -- "+timelineId)
+					    	// console.log("postCommentData");
+					    	$scope.aryPostScroll[i].limit_post_comment_data=$.merge( $scope.aryPostScroll[i].limit_post_comment_data, limit_post_comment_data );
+					    	//console.log('222');
+					    	//console.log($scope.aryPostScroll[i].limit_post_comment_data);
+					    	$scope.aryPostScroll[i].totComments=totComments;
 					    	$scope.aryPostScroll[i].member_comment='' ;
 					 	} 
 					});
@@ -429,11 +484,9 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	    }
 	};
 
-	$scope.OpenPostPopUp = function (id) {
-		$('#exampleModal_'+id).modal('show');
-	};
-	
-
+	// $scope.OpenPostPopUp = function (id) {
+	// 	$('#exampleModal_'+id).modal('show');
+	// };
 
 	$scope.isNullOrEmptyOrUndefined = function (value) {
 		return !value;
