@@ -248,113 +248,113 @@ div.postWhenScrollContainer{
                 </div>
 
                 <div class="modal fade pr-0" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="row">
-                        <div class="col-md-7">  
-                        <div class="slider-wrap">                       
-                          <span class="left-arrow"><i class="fa-solid fa-angle-left"></i></span>
-                          <span class="right-arrow"><i class="fa-solid fa-angle-right"></i></span>                         
-                         <img src="<?php echo base_url();?>assets/images/events/img-2.jpg" alt="loader" class="w-100">  
-                         </div>                 
-                        </div>
-                        <div class="col-md-5">
-                          <div class="p-4 space-y-3">
-                        <div class="flex space-x-4 lg:font-bold">
-                           <a href="javascript:void()" ng-click="likeTimelinePost(valuePS.id,valuePS.post_id)" class="flex items-center space-x-2">
-                              <div ng-class="(valuePS.indv_post_like_unlike==0)?'text-black':'text-gray-400'" class="p-2 rounded-full   lg:bg-gray-100 dark:bg-gray-600 text-gray-400">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
-                                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
-                                 </svg>
-                              </div>
-                              <div> Bless</div>
-                           </a>
-                           <a href="#" class="flex items-center space-x-2">
-                              <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
-                                    <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
-                                 </svg>
-                              </div>
-                              <div> Comment</div>
-                           </a>
-                           <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
-                              <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
-                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
-                                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
-                                 </svg>
-                              </div>
-                              
-                           </a>
-                        </div>
-                        <!-- ngIf: valuePS.post_like_data.length>0 -->
-                        <div class="border-t py-4 space-y-4 dark:border-gray-600">
-                           <div class="flex">
-                              <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                 <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
-                              </div>
-                              <div>
-                                 <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
-                                    <p class="leading-6">
-                                       In ut odio libero vulputate 
-                                       <urna class="i uil-heart"></urna>
-                                       <i class="uil-grin-tongue-wink"> </i> 
-                                    </p>
-                                    <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
-                                 </div>
-                                 <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                    <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                    <a href="#"> Replay </a>
-                                    <span> 3d </span>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="flex">
-                              <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                 <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
-                              </div>
-                              <div>
-                                 <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
-                                    <p class="leading-6"> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. David !<i class="uil-grin-tongue-wink-alt"></i> </p>
-                                    <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
-                                 </div>
-                                 <div class="text-xs flex items-center space-x-3 mt-2 ml-5">
-                                    <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                    <a href="#"> Replay </a>
-                                    <span> 3d </span>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <a href="#" class="hover:text-blue-600 hover:underline">  Veiw 8 more Comments </a>
-                        <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
-                           <input placeholder="Add your Comment.." class="bg-transparent max-h-10 shadow-none px-5">
-                           <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
-                              <a href="#">
-                                 <ion-icon name="happy-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="happy outline"></ion-icon>
-                              </a>
-                              <a href="#">
-                                 <ion-icon name="image-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="image outline"></ion-icon>
-                              </a>
-                              <a href="#">
-                                 <ion-icon name="link-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="link outline"></ion-icon>
-                              </a>
-                           </div>
-                        </div>
-                     </div>
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-7">  
+                          <div class="slider-wrap">                       
+                            <span class="left-arrow"><i class="fa-solid fa-angle-left"></i></span>
+                            <span class="right-arrow"><i class="fa-solid fa-angle-right"></i></span>                         
+                           <img src="<?php echo base_url();?>assets/images/events/img-2.jpg" alt="loader" class="w-100">  
+                           </div>                 
+                          </div>
+                          <div class="col-md-5">
+                            <div class="p-4 space-y-3">
+                          <div class="flex space-x-4 lg:font-bold">
+                             <a href="javascript:void()" ng-click="likeTimelinePost(valuePS.id,valuePS.post_id)" class="flex items-center space-x-2">
+                                <div ng-class="(valuePS.indv_post_like_unlike==0)?'text-black':'text-gray-400'" class="p-2 rounded-full   lg:bg-gray-100 dark:bg-gray-600 text-gray-400">
+                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
+                                      <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
+                                   </svg>
+                                </div>
+                                <div> Bless</div>
+                             </a>
+                             <a href="#" class="flex items-center space-x-2">
+                                <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
+                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
+                                      <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
+                                   </svg>
+                                </div>
+                                <div> Comment</div>
+                             </a>
+                             <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
+                                <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
+                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
+                                      <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
+                                   </svg>
+                                </div>
+                                
+                             </a>
+                          </div>
+                          <!-- ngIf: valuePS.post_like_data.length>0 -->
+                          <div class="border-t py-4 space-y-4 dark:border-gray-600">
+                             <div class="flex">
+                                <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                   <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
+                                </div>
+                                <div>
+                                   <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
+                                      <p class="leading-6">
+                                         In ut odio libero vulputate 
+                                         <urna class="i uil-heart"></urna>
+                                         <i class="uil-grin-tongue-wink"> </i> 
+                                      </p>
+                                      <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                   </div>
+                                   <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                                      <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
+                                      <a href="#"> Replay </a>
+                                      <span> 3d </span>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="flex">
+                                <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                   <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
+                                </div>
+                                <div>
+                                   <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
+                                      <p class="leading-6"> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. David !<i class="uil-grin-tongue-wink-alt"></i> </p>
+                                      <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                   </div>
+                                   <div class="text-xs flex items-center space-x-3 mt-2 ml-5">
+                                      <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
+                                      <a href="#"> Replay </a>
+                                      <span> 3d </span>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                          <a href="#" class="hover:text-blue-600 hover:underline">  Veiw 8 more Comments </a>
+                          <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
+                             <input placeholder="Add your Comment.." class="bg-transparent max-h-10 shadow-none px-5">
+                             <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
+                                <a href="#">
+                                   <ion-icon name="happy-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="happy outline"></ion-icon>
+                                </a>
+                                <a href="#">
+                                   <ion-icon name="image-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="image outline"></ion-icon>
+                                </a>
+                                <a href="#">
+                                   <ion-icon name="link-outline" class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img" aria-label="link outline"></ion-icon>
+                                </a>
+                             </div>
+                          </div>
+                       </div>
+                          </div>
                         </div>
                       </div>
+                      
                     </div>
-                    
                   </div>
                 </div>
-              </div>
 
                 <!-- Sidebar -->
                 <div class="w-full space-y-6">

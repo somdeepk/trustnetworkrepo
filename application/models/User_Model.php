@@ -421,5 +421,22 @@ class User_Model extends CI_Model
 		}
 	}
 
+
+	public function getuserbyemail($email)
+	{
+		$sql="SELECT * FROM tn_members WHERE user_email='".$email."' AND status='1' AND deleted='0'";
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+		if(count($result)>0)
+		{
+			return $result[0];
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	
 }
 ?>
