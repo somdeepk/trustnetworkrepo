@@ -103,39 +103,10 @@ div.postWhenScrollContainer{
                         <div class="flex space-x-4 lg:font-bold">
                           <p><a href="javascript:void();" ng-click="OpenPostPopUp(valuePS.id)">{{valuePS.post_data.post}}</a></p>
                         </div>
-                      </div>
+                      </div>                     
 
                       <div ng-if="valuePS.post_file_data.length" class="mb-5">
                         <div class="grid grid-cols-2 gap-2 px-5" data-toggle="modal" data-target="#exampleModalLong">
-
-                          <a href="javascript:void();" class="col-span-2">
-                            <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[0].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[0].file_type}}">
-                            </video>
-                            
-                            <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" alt="" class="rounded-md w-full lg:h-76 object-cover">
-                          </a>
-
-                          <a href="javascript:void();" >
-                            <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[1].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[1].file_type}}">
-                            </video>
-                            <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" alt="" class="rounded-md w-full h-full">
-                          </a>
-
-                          <a href="javascript:void();" class="relative">
-                            <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[2].file_type_url | trustUrl}}" type="{{valuePS.post_file_data[2].file_type}}">
-                            </video>
-                            <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" alt="" class="rounded-md w-full h-full">
-                            <div ng-if="valuePS.post_file_data.length>3" class="absolute bg-gray-900 bg-opacity-30 flex justify-center items-center text-white rounded-md inset-0 text-2xl"> + {{valuePS.post_file_data.length-3}} more </div>
-                          </a>
-                        </div>
-                      </div>
-                     
-
-                      <div ng-if="valuePS.post_file_data.length" uk-lightbox="">
-                        <div class="grid grid-cols-2 gap-2 px-5">
 
                           <a href="javascript:void();" class="col-span-2" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
@@ -216,7 +187,7 @@ div.postWhenScrollContainer{
                                     <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
                                  </div>
                                  <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                    <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid LikeColorBlue':'fa-regular'" ></i></a>  &nbsp;&nbsp;{{(valueComments.comment_like_data.length>0)? valueComments.comment_like_data.length :''}} 
+                                    <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid LikeColorBlue':'fa-regular'" ></i></a> <span class="LikeColorBlue" ng-if="valueComments.comment_like_data.length>0">{{valueComments.comment_like_data.length}}</span> 
                                     <!-- <a href="#"> Replay </a> -->
                                     <span> {{valueComments.comment_date}} </span>
                                  </div>
