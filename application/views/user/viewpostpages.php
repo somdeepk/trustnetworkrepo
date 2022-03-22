@@ -135,7 +135,7 @@ div.postWhenScrollContainer{
                       </div>
                       <div class="p-4 space-y-3">
                         <div class="flex space-x-4 lg:font-bold">
-                           <a href="javascript:void()" ng-click="likeTimelinePost(valuePS.id,valuePS.post_id,'post')" class="flex items-center space-x-2">
+                           <a href="javascript:void()" ng-click="likeTimelinePost(valuePS,'post')" class="flex items-center space-x-2">
                               <div ng-class="(valuePS.indv_post_like_unlike==0)?'text-black':'text-gray-400'" class="p-2 rounded-full   lg:bg-gray-100 dark:bg-gray-600">
                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                     <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
@@ -188,8 +188,8 @@ div.postWhenScrollContainer{
                                     <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
                                  </div>
                                  <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                    <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                    <a href="#"> Replay </a>
+                                    <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid':'fa-regular'" ></i></a>  &nbsp;&nbsp;{{(valueComments.comment_like_data.length>0)? valueComments.comment_like_data.length :''}} 
+                                    <!-- <a href="#"> Replay </a> -->
                                     <span> {{valueComments.comment_date}} </span>
                                  </div>
                               </div>

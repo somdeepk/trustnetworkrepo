@@ -158,16 +158,16 @@ class Post_Model extends CI_Model
 		}
 
 		$sqlPostComments="SELECT 
-		tpl.id,
-		tpl.member_comment,
-		DATE_FORMAT(tpl.create_date, '%d %b %Y %h:%i %p') as comment_date,
+		tpc.id,
+		tpc.member_comment,
+		DATE_FORMAT(tpc.create_date, '%d %b %Y %h:%i %p') as comment_date,
 		tm.first_name,
 		tm.last_name,
 		tm.profile_image
 
-		FROM tn_post_comments as tpl
-		LEFT JOIN tn_members as tm on tm.id=tpl.member_id
-		WHERE tpl.module_id='".$module_id."' AND tpl.module_type='".$module_type."' AND tpl.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
+		FROM tn_post_comments as tpc
+		LEFT JOIN tn_members as tm on tm.id=tpc.member_id
+		WHERE tpc.module_id='".$module_id."' AND tpc.module_type='".$module_type."' AND tpc.deleted='0' AND tm.status='1' and tm.deleted='0' ".$strLimit;
 		$queryPostComments=$this->db->query($sqlPostComments);
 		$resultPostComments=$queryPostComments->result_array();
 		return $resultPostComments;

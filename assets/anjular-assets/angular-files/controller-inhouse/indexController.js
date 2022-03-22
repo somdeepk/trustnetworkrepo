@@ -216,10 +216,20 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	// we call the function twice to populate the list
 	$scope.getMorePostOnScroll();
 
-	$scope.likeTimelinePost = function(timelineId,post_id,module_type)
+	$scope.likeTimelinePost = function(valuePS,module_type,valueModule)
     {
+    	var timelineId=valuePS.id;
+    	var post_id=valuePS.post_id;
+
 		$scope.postStatusData={}
-		$scope.postStatusData.module_id=post_id;
+		if(module_type=='post')
+		{
+			$scope.postStatusData.module_id=post_id;
+		}
+		else if(module_type=='comment')
+		{
+			$scope.postStatusData.module_id=valueModule.id; //Comment table Auto Id
+		}
 		$scope.postStatusData.module_type=module_type;
 		var formData = new FormData();
 		formData.append('postStatusData',angular.toJson($scope.postStatusData));
@@ -241,8 +251,24 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 				{  
 				    if (v.id === timelineId)
 				    {
-						$scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
-						$scope.aryPostScroll[i].post_like_data=postLikeData ;
+				    	if(module_type=='post')
+						{
+							$scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
+							$scope.aryPostScroll[i].post_like_data=postLikeData ;
+						}
+						else if(module_type=='comment')
+						{
+							var result = $scope.aryPostScroll[i].limit_post_comment_data.filter(function(vC,iC)
+							{  
+							    if (vC.id === valueModule.id)
+							    {
+							    	$scope.aryPostScroll[i].limit_post_comment_data[iC].indv_comment_like_unlike=strDeleted ;
+							    	$scope.aryPostScroll[i].limit_post_comment_data[iC].comment_like_data=postLikeData ;				
+							 	} 
+							});
+							
+						}
+						
 				 	} 
 				});
 
