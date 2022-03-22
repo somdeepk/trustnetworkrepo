@@ -188,7 +188,7 @@ div.postWhenScrollContainer{
                                     <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
                                  </div>
                                  <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                    <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid':'fa-regular'" ></i></a>  &nbsp;&nbsp;{{(valueComments.comment_like_data.length>0)? valueComments.comment_like_data.length :''}} 
+                                    <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid LikeColorBlue':'fa-regular'" ></i></a>  &nbsp;&nbsp;{{(valueComments.comment_like_data.length>0)? valueComments.comment_like_data.length :''}} 
                                     <!-- <a href="#"> Replay </a> -->
                                     <span> {{valueComments.comment_date}} </span>
                                  </div>
