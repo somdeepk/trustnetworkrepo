@@ -186,7 +186,7 @@ div.postWhenScrollContainer{
                   </div>
                </div>
 
-               <div> <!-- infinite-scroll="getMorePostOnScroll()" infinite-scroll-disabled="busy" infinite-scroll-distance="3" -->
+               <div class="w-100"> <!-- infinite-scroll="getMorePostOnScroll()" infinite-scroll-disabled="busy" infinite-scroll-distance="3" -->
                   <div ng-repeat="(keyPS, valuePS) in aryPostScroll" class="col-sm-12">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">

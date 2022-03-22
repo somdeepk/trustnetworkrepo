@@ -44,8 +44,8 @@ body {
 	line-height: 1.8;
 	padding: 0;
 	margin: 0;
-	color: var(--iq-body-text);
-	background: var(--iq-light);
+	color: var(--iq-dark-body-text);
+	background: var(--iq-dark-bg);
 }
 a, .btn {
 	-webkit-transition: all 0.5s ease-out 0s;
@@ -86,19 +86,19 @@ h1 {
 	font-size: 3.052em;
 }
 h2 {
-	font-size: 2.0em;
+	font-size: 2.300em;
 }
 h3 {
-	font-size: 1.4em;
+	font-size: 1.953em;
 }
 h4 {
-	font-size: 1.10em;
+	font-size: 1.400em;
 }
 h5 {
-	font-size: 1.00em;
+	font-size: 1.100em;
 }
 h6 {
-	font-size: .9em;
+	font-size: 1.0em;
 }
 .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
 	padding-right: 7.5px;
@@ -676,7 +676,7 @@ transform: translateX(calc(111% + -2em));
 	cursor: pointer;
 }
 .right-sidebar-panel {
-	background-color: var(--iq-white);
+	background-color: var(--iq-dark-box);
 	box-shadow: 0px 0px 25px 0px rgba(45, 69, 95, 0.1);
 	height: 100vh;
 	padding: 15px;
@@ -982,7 +982,7 @@ Margin Bottom
 Card
 ------------------------------------------------*/
 .iq-card {
-	background: var(--iq-light);
+	background: var(--iq-dark-box);
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -1016,14 +1016,14 @@ Card
 .iq-card-header-toolbar .dropdown-toggle i {
 	font-size: 22px;
 	line-height: normal;
-	color: var(--iq-body-text);
+	color: var(--iq-dark-body-text);
 }
 .iq-card-header-toolbar .dropdown-toggle::after {
 display: none;
 }
 /*--------------*/
 .nav-pills .nav-item a {
-	color: var(--iq-body-text);
+	color: var(--iq-dark-body-text);
 }
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
 	color: var(--iq-primary);
@@ -1034,14 +1034,14 @@ display: none;
 }
 /*--------------*/
 .nav-tabs {
-	border-bottom: 2px solid var(--iq-light-primary);
+	border-bottom: 2px solid var(--iq-dark-primary);
 	margin-bottom: 15px;
 }
 .nav-tabs .nav-item {
 	margin-bottom: -2px;
 }
 .nav-tabs .nav-item a {
-	color: var(--iq-body-text);
+	color: var(--iq-dark-body-text);
 	border: none;
 	border-bottom: 2px solid transparent;
 }
