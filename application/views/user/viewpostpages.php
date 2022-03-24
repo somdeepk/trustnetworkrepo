@@ -101,16 +101,16 @@ div.postWhenScrollContainer{
 
                       <div class="p-4 space-y-3">
                         <div class="flex space-x-4 lg:font-bold">
-                          <p><a href="javascript:void();" ng-click="OpenPostPopUp(valuePS.id)">{{valuePS.post_data.post}}</a></p>
+                          <p><a href="javascript:void();">{{valuePS.post_data.post}}</a></p>
                         </div>
                       </div>                     
 
                       <div ng-if="valuePS.post_file_data.length" class="mb-5">
-                        <div class="grid grid-cols-2 gap-2 px-5" data-toggle="modal" data-target="#exampleModalLong">
+                        <div class="grid grid-cols-2 gap-2 px-5" ng-click="getAllPostFileList(valuePS.post_id,valuePS.post_file_data[0].id ,'direct')">
 
                           <a href="javascript:void();" class="col-span-2" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[0].file_name)==false)">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[0].file_type_url | trustUrl}}" >
+                              <source ng-src="{{ valuePS.post_file_data[0].file_type_url | trustUrl}}" >
                             </video>
                             
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[0].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[0].file_name}}" alt="" class="rounded-md w-full lg:h-76 object-cover">
@@ -118,14 +118,14 @@ div.postWhenScrollContainer{
 
                           <a href="javascript:void();" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[1].file_name)==false)">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[1].file_type_url | trustUrl}}" >
+                              <source ng-src="{{ valuePS.post_file_data[1].file_type_url | trustUrl}}" >
                             </video>
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[1].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[1].file_name}}" alt="" class="rounded-md w-full h-full">
                           </a>
 
                           <a href="javascript:void();" ng-if="(isNullOrEmptyOrUndefined(valuePS.post_file_data[2].file_name)==false)" class="relative">
                             <video ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
-                              <source src="{{ valuePS.post_file_data[2].file_type_url | trustUrl}}" >
+                              <source ng-src="{{ valuePS.post_file_data[2].file_type_url | trustUrl}}" >
                             </video>
                             <img ng-if="(CheckImageOrVideo(valuePS.post_file_data[2].file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{valuePS.post_file_data[2].file_name}}" alt="" class="rounded-md w-full h-full">
                             <div ng-if="valuePS.post_file_data.length>3" class="absolute bg-gray-900 bg-opacity-30 flex justify-center items-center text-white rounded-md inset-0 text-2xl"> + {{valuePS.post_file_data.length-3}} more </div>
@@ -177,7 +177,7 @@ div.postWhenScrollContainer{
                         <div class="border-t py-4 space-y-4 dark:border-gray-600" ng-if='valuePS.limit_post_comment_data.length>0'>
                            <div class="flex" ng-repeat="(keyComments, valueComments) in valuePS.limit_post_comment_data">
                               <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                 <img src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="{{valueComments.first_name+' '+valueComments.last_name}}" class="absolute h-full rounded-full w-full">
+                                 <img ng-src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="{{valueComments.first_name+' '+valueComments.last_name}}" class="absolute h-full rounded-full w-full">
                               </div>
                               <div>
                                  <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
@@ -229,12 +229,17 @@ div.postWhenScrollContainer{
                       </div>
                       <div class="modal-body">
                         <div class="row">
-                          <div class="col-md-7">  
-                          <div class="slider-wrap">                       
-                            <span class="left-arrow"><i class="fa-solid fa-angle-left"></i></span>
-                            <span class="right-arrow"><i class="fa-solid fa-angle-right"></i></span>                         
-                           <img src="<?php echo base_url();?>assets/images/events/img-2.jpg" alt="loader" class="w-100">  
-                           </div>                 
+                          <div class="col-md-7" ng-if="(isNullOrEmptyOrUndefined(postFileDataObj.post_file_data.file_name)==false)">  
+                            <div class="slider-wrap">                       
+                              <span style="z-index: 9" class="left-arrow" ng-if="postFileDataObj.totPrev>0"  ng-click="getAllPostFileList(postFileDataObj.post_data.id,postFileDataObj.resultPrev[0].id,'prev')"><i class="fa-solid fa-angle-left" ></i></span>
+                              <span style="z-index: 9" class="right-arrow" ng-if="postFileDataObj.totNext>0" ng-click="getAllPostFileList(postFileDataObj.post_data.id,postFileDataObj.resultNext[0].id,'next')"><i class="fa-solid fa-angle-right"></i></span>
+
+                              <img ng-if="(CheckImageOrVideo(postFileDataObj.post_file_data.file_type)=='image')" ng-src="<?php echo IMAGE_URL;?>images/postfiles/{{postFileDataObj.post_file_data.file_name}}" class="w-100">  
+
+                              <video id="videoSource" ng-if="(CheckImageOrVideo(postFileDataObj.post_file_data.file_type)=='video')" class="w-full lg:h-64 h-40 uk-responsive-width" width="100%" height="200" controls >
+                                <source ng-src="{{postFileDataObj.post_file_data.file_type_url | trustUrl}}" >
+                              </video>
+                            </div>
                           </div>
                           <div class="col-md-5">
                             <div class="p-4 space-y-3">

@@ -348,6 +348,49 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		});
 	};
 
+	//16-1648135060.mp4
+	$scope.getAllPostFileList = function (post_id,post_file_id,nextPrevIdFire)
+    {
+		$scope.postFileData={}
+		$scope.postFileData.post_file_id=post_file_id;
+		$scope.postFileData.post_id=post_id;
+
+		if($scope.postFileData.post_id>0)
+		{
+			var formData = new FormData();
+			formData.append('postFileData',angular.toJson($scope.postFileData));
+			$http({
+	            method  : 'POST',
+	            url     : varBaseUrl+"post/ajaxGetPostFileList",
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined},                     
+	            data:formData, 
+	        }).success(function(returnData) {
+				aryreturnData=angular.fromJson(returnData);
+				if(aryreturnData.status=='1')
+	        	{
+		            $scope.postFileDataObj=aryreturnData.data.postFileData;
+		            if($rootScope.CheckImageOrVideo($scope.postFileDataObj.post_file_data.file_type)=='video')
+		            {
+		            	$('#videoSource').attr('src', $scope.postFileDataObj.post_file_data.file_type_url);
+		            }
+	        		if(nextPrevIdFire=='direct')
+		            {
+		            	$('#exampleModalLong').modal('show');
+		            }
+	        	}
+	        	else
+	        	{
+	        		// swal("Error!",
+		        	// 	"No Data Found!",
+		        	// 	"error"
+		        	// )
+	        	}	        	
+			});			
+	    }		
+	};	
+
+
 	/*$scope.GetLimitFriendForTimeline = function ()
 	{
 		if($scope.memberData.user_auto_id>0)

@@ -37,11 +37,7 @@ class Post extends CI_Controller
 			// (E) CHECK IF FILE HAS BEEN UPLOADED
 			if (!$chunks || $chunk == $chunks - 1){
 				$imarr=explode(".",$file_original_name);
-		    	$ext=end($imarr);
-				$file_name = time().'.'.$ext;
-
-				$filePathSysem = $fileBasePath . DIRECTORY_SEPARATOR . $file_name;
-				rename("{$filePath}.part", $filePathSysem);
+		    	$ext=end($imarr);				
 
 				$aryPostData=$this->Post_Model->getPostData($lastPostId);
 				$member_id=$aryPostData[0]['member_id'];
@@ -50,13 +46,27 @@ class Post extends CI_Controller
 		            'module_type'=>'post',
 		            'member_id'   => $member_id,
 		            'file_original_name'   =>$file_original_name,
-		            'file_name'   =>$file_name,
 		            'file_size'   =>$file_size,        
 		            'file_type'   =>$ext, 
 		            'create_date'   =>$current_date       
 		        );
 
                 $last_post_file_id = $this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+
+                if($last_post_file_id>0)
+                {
+                	$file_name = $last_post_file_id."-".time().'.'.$ext;
+	                $filePathSysem = $fileBasePath . DIRECTORY_SEPARATOR . $file_name;
+	                rename("{$filePath}.part", $filePathSysem);
+
+	                $menu_arr_post_file = array(
+			            'file_name'   =>$file_name     
+			        );
+	                $last_post_file_id = $this->Post_Model->addUpdatPostFile($last_post_file_id,$menu_arr_post_file);
+	            }
+
+				
+
 			}
 			$this->verbose(1, "Upload OK");
 		}		
@@ -202,7 +212,7 @@ class Post extends CI_Controller
 					$finalPost[$key]['member_comment']='';
 
 					//Start Get Post File Images/Video Data
-					$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='post' AND deleted='0'";
+					$sqlPostFile="SELECT id, file_name,file_type FROM tn_post_file WHERE module_id='".$value['post_id']."' AND module_type='post' AND deleted='0'";
 					$queryPostFile=$this->db->query($sqlPostFile);
 					$resultPostFile=$queryPostFile->result_array();
 
@@ -593,6 +603,120 @@ class Post extends CI_Controller
         echo json_encode($returnData);
         exit;
     }
+
+
+    public function ajaxGetPostFileList() 
+    {
+    	$finalPost=array();
+
+    	$postFileData = $this->input->post('postFileData');
+        $aryPostFileData=json_decode($postFileData, true);
+
+        $post_id=(isset($aryPostFileData['post_id']) && !empty($aryPostFileData['post_id']))? $aryPostFileData['post_id']:'0';
+        $post_file_id=(isset($aryPostFileData['post_file_id']) && !empty($aryPostFileData['post_file_id']))? $aryPostFileData['post_file_id']:6;
+
+
+        if($post_id>0 && $post_file_id>0)
+        {
+			//Start Get Post File Images/Video Data
+			$sqlPrev="SELECT id FROM tn_post_file WHERE module_id='".$post_id."' AND module_type='post' AND id < '".$post_file_id."' AND deleted='0' order by id DESC limit 1";
+			$queryPrev=$this->db->query($sqlPrev);
+			$resultPrev=$queryPrev->result_array();
+			$totPrev=count($resultPrev);
+
+			$finalPost['resultPrev']=$resultPrev;
+			$finalPost['totPrev']=$totPrev;
+
+			$sqlNext="SELECT id FROM tn_post_file WHERE module_id='".$post_id."' AND module_type='post' AND id > '".$post_file_id."' AND deleted='0' order by id ASC limit 1";
+			$queryNext=$this->db->query($sqlNext);
+			$resultNext=$queryNext->result_array();
+			$totNext=count($resultNext);
+
+			$finalPost['resultNext']=$resultNext;
+			$finalPost['totNext']=$totNext;
+
+
+			$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$post_id."' AND module_type='post' AND id='".$post_file_id."' AND deleted='0'";
+			$queryPostFile=$this->db->query($sqlPostFile);
+			$resultPostFile=$queryPostFile->result_array();
+
+			$finalPost['post_file_data']=array();
+			if(count($resultPostFile)>0)
+			{
+				$tempResultPostFile=$resultPostFile[0];
+				$tempResultPostFile['file_type_url']=IMAGE_URL.'images/postfiles/'.$resultPostFile[0]['file_name'];				
+				$finalPost['post_file_data']=$tempResultPostFile;			
+			}
+			//End Get Post File Images/Video Data
+
+			//Start Get tag to Friend Data
+			$sqlPostTagFriend="SELECT 
+			tmt.to_member_id,
+			tm.first_name,
+			tm.last_name
+			FROM tn_member_timeline as tmt 
+			LEFT JOIN tn_members as tm on tm.id=tmt.to_member_id
+			WHERE tmt.post_id='".$post_id."' AND tm.status='1' AND tm.deleted='0' AND tmt.post_type='tagged'";
+			$queryPostTagFriend=$this->db->query($sqlPostTagFriend);
+			$resultPostTagFriend=$queryPostTagFriend->result_array();
+
+			$finalPost['post_tag_friend_data']=array();
+			if(count($resultPostTagFriend)>0)
+			{
+				$finalPost['post_tag_friend_data']=$resultPostTagFriend;
+			}
+			//End Get tag to Friend Data
+
+			//Start Get Post Data
+			$sqlPost="SELECT 
+			tp.id,
+			tp.member_id,
+			tp.post,
+			tp.create_date,
+
+			tm.first_name,
+			tm.last_name,
+			tm.profile_image
+
+			FROM tn_post as tp
+			LEFT JOIN tn_members as tm on tm.id=tp.member_id
+			WHERE tp.id='".$post_id."' AND tp.status='1' AND tp.deleted='0' AND tm.status='1' and tm.deleted='0'";
+			$queryPost=$this->db->query($sqlPost);
+			$resultPost=$queryPost->result_array();
+
+			$finalPost['post_data']=array();
+			if(count($resultPost)>0)
+			{
+				$finalPost['post_data']=$resultPost[0];
+				$finalPost['post_data']['display_create_date']=date('d M Y h:i A',strtotime($resultPost[0]['create_date']));
+				if(count($finalPost['post_tag_friend_data'])>0)
+				{
+					$strFirstTagFriend=$finalPost['post_tag_friend_data'][0]['first_name']." ".$finalPost['post_tag_friend_data'][0]['last_name'];
+					$tag_string_dispaly=" is with ".$strFirstTagFriend;
+					if(count($finalPost['post_tag_friend_data'])>1)
+					{
+						$tag_string_dispaly.=" & ".(count($finalPost['post_tag_friend_data'])-1)." others";
+					}
+
+					$finalPost['post_data']['tag_string_dispaly']=$tag_string_dispaly;
+				}
+			}
+			//End Get Post Data
+		}
+
+		// echo "<pre>";
+		// print_r($finalPost);
+		// exit;
+
+		$returnData['status']='1';
+        $returnData['msg']='success';
+        $returnData['msgstring']='';
+        $returnData['data']=array('postFileData'=>$finalPost);
+        echo json_encode($returnData);
+        exit;
+
+    }
+
 
   //   public function ajaxGetPhotoList() 
   //   {
