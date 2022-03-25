@@ -604,7 +604,6 @@ class Post extends CI_Controller
         exit;
     }
 
-
     public function ajaxGetPostFileList() 
     {
     	$finalPost=array();
@@ -614,8 +613,7 @@ class Post extends CI_Controller
 
         $post_id=(isset($aryPostFileData['post_id']) && !empty($aryPostFileData['post_id']))? $aryPostFileData['post_id']:'0';
         $post_file_id=(isset($aryPostFileData['post_file_id']) && !empty($aryPostFileData['post_file_id']))? $aryPostFileData['post_file_id']:6;
-
-
+        $user_auto_id=$this->session->userdata('user_auto_id');
         if($post_id>0 && $post_file_id>0)
         {
 			//Start Get Post File Images/Video Data
@@ -636,7 +634,7 @@ class Post extends CI_Controller
 			$finalPost['totNext']=$totNext;
 
 
-			$sqlPostFile="SELECT file_name,file_type FROM tn_post_file WHERE module_id='".$post_id."' AND module_type='post' AND id='".$post_file_id."' AND deleted='0'";
+			$sqlPostFile="SELECT id,file_name,file_type FROM tn_post_file WHERE module_id='".$post_id."' AND module_type='post' AND id='".$post_file_id."' AND deleted='0'";
 			$queryPostFile=$this->db->query($sqlPostFile);
 			$resultPostFile=$queryPostFile->result_array();
 
@@ -702,6 +700,32 @@ class Post extends CI_Controller
 				}
 			}
 			//End Get Post Data
+
+
+			//Start Get Individual Post Like/Unlike Status
+			$sqlIndvPostLike="SELECT deleted FROM tn_post_like WHERE module_id='".$post_file_id."' AND module_type='postfile' AND member_id='".$user_auto_id."'";
+			$queryIndvPostLike=$this->db->query($sqlIndvPostLike);
+			$rowIndvPostLike=$queryIndvPostLike->row();
+
+			$finalPost['indv_post_like_unlike']=1;
+			if(count($rowIndvPostLike)>0)
+			{
+				$finalPost['indv_post_like_unlike']=$rowIndvPostLike->deleted;
+			}
+			//End Get Individual Post Like/Unlike Status
+
+			//Start Get Post Like data
+			$menu_argu_arr = array(
+	            'module_id'  =>$post_file_id,
+	            'module_type'  =>'postfile',
+	        );
+			$resultPostLikes = $this->Post_Model->getPostLikeData($menu_argu_arr);
+			$finalPost['post_like_data']=array();
+			if(count($resultPostLikes)>0)
+			{
+				$finalPost['post_like_data']=$resultPostLikes;
+			}
+			//End Get Post Like data
 		}
 
 		// echo "<pre>";

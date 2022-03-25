@@ -49,7 +49,7 @@ div.postWhenScrollContainer{
                            <img ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
                            </a>
                            <div class="flex-1 font-semibold capitalize">
-                              <span class="text-black dark:text-gray-100"> {{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} <font style="color:#4b8562">{{valuePS.post_data.tag_string_dispaly}} </font> </span>
+                              <a href="#" class="text-black dark:text-gray-100"> {{valuePS.post_data.first_name+' '+valuePS.post_data.last_name}} <font style="color:#000">{{valuePS.post_data.tag_string_dispaly}} </font> </a>
                               <div class="text-gray-700 flex items-center space-x-2">
                                  <span> {{valuePS.post_data.display_create_date}} </span> 
                                  <ion-icon name="people" role="img" class="md hydrated" aria-label="people"></ion-icon>
@@ -222,35 +222,13 @@ div.postWhenScrollContainer{
                   <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">
-
-                          <div class="flex flex-1 items-center space-x-4">
-                           <a href="#">
-                           <img ng-src="<?php echo IMAGE_URL;?>images/{{(postFileDataObj.post_data.profile_image == '' || !postFileDataObj.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+postFileDataObj.post_data.profile_image}}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
-                           </a>
-                           <div class="flex-1 font-semibold capitalize">
-                              <span class="text-black dark:text-gray-100"> {{postFileDataObj.post_data.first_name+' '+postFileDataObj.post_data.last_name}} <font style="color:#4b8562">{{postFileDataObj.post_data.tag_string_dispaly}} </font> </span>
-                              <div class="text-gray-700 flex items-center space-x-2">
-                                 <span> {{postFileDataObj.post_data.display_create_date}} </span> 
-                                 <ion-icon name="people" role="img" class="md hydrated" aria-label="people"></ion-icon>
-                              </div>
-                           </div>
-                        </div>
-                        </h5>
+                        <h5 class="modal-title">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class="modal-body">
                         <div class="row">
-                          <div class="col-md-12"> 
-                            <div class="p-4 space-y-3">
-                              <div class="flex space-x-4 lg:font-bold">
-                                <p><a href="javascript:void();">{{postFileDataObj.post_data.post}}</a></p>
-                              </div>
-                            </div> 
-
-                          </div>
                           <div class="col-md-7" ng-if="(isNullOrEmptyOrUndefined(postFileDataObj.post_file_data.file_name)==false)">  
                             <div class="slider-wrap">                       
                               <span style="z-index: 9" class="left-arrow" ng-if="postFileDataObj.totPrev>0"  ng-click="getAllPostFileList(postFileDataObj.post_data.id,postFileDataObj.resultPrev[0].id,'prev')"><i class="fa-solid fa-angle-left" ></i></span>
@@ -265,7 +243,7 @@ div.postWhenScrollContainer{
                           </div>
                           <div class="col-md-5">
                             <div class="p-4 space-y-3">
-                            <div class="flex space-x-4 lg:font-bold">
+                          <div class="flex space-x-4 lg:font-bold">
                              <a href="javascript:void()" ng-click="likeTimelinePost('','postfile',postFileDataObj)" class="flex items-center space-x-2">
                                 <div ng-class="(postFileDataObj.indv_post_like_unlike==0)?'text-black':'text-gray-400'" class="p-2 rounded-full   lg:bg-gray-100 dark:bg-gray-600 text-gray-400">
                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
@@ -618,7 +596,7 @@ div.postWhenScrollContainer{
             <div class="flex flex-1 items-start space-x-4 p-5">
                 <img ng-src="<?php echo IMAGE_URL;?>images/{{(loggedUserDataObj.profile_image  == '' || !loggedUserDataObj.profile_image )? 'member-no-imgage.jpg':'members/'+loggedUserDataObj.profile_image }}" class="bg-gray-200 border border-white rounded-full w-11 h-11">
                 <div class="flex-1 pt-2">
-                    <textarea class="uk-textare text-black shadow-none focus:shadow-none font-medium resize-none" rows="5" placeholder="What's Your Mind ? {{loggedUserDataObj.first_name}}!" maxlength="1500" ng-model="singlePostData.post"></textarea>
+                    <textarea class="uk-textare text-black shadow-none focus:shadow-none font-medium resize-none" rows="5" placeholder="What's Your Mind ? {{loggedUserDataObj.first_name}}!" ng-model="singlePostData.post"></textarea>
                 </div>
     
             </div>

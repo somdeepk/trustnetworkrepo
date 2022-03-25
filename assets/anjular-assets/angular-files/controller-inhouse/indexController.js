@@ -216,20 +216,25 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	// we call the function twice to populate the list
 	$scope.getMorePostOnScroll();
 
-	$scope.likeTimelinePost = function(valuePS,module_type,valueModule)
+	$scope.likeTimelinePost = function(valuePS="",module_type,valueModule)
     {
-    	var timelineId=valuePS.id;
-    	var post_id=valuePS.post_id;
-
+    	//console.log(valueModule)
 		$scope.postStatusData={}
 		if(module_type=='post')
 		{
-			$scope.postStatusData.module_id=post_id;
+			var timelineId=valuePS.id;
+			$scope.postStatusData.module_id=valuePS.post_id;
 		}
 		else if(module_type=='comment')
 		{
+			var timelineId=valuePS.id;
 			$scope.postStatusData.module_id=valueModule.id; //Comment table Auto Id
 		}
+		else if(module_type=='postfile')
+		{
+			$scope.postStatusData.module_id=valueModule.post_file_data.id; //Comment table Auto Id
+		}
+		//alert($scope.postStatusData.module_id)
 		$scope.postStatusData.module_type=module_type;
 		var formData = new FormData();
 		formData.append('postStatusData',angular.toJson($scope.postStatusData));
@@ -247,31 +252,36 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
         		var strDeleted=aryreturnData.data.strDeleted;
         		var postLikeData=aryreturnData.data.postLikeData;
 
-        		var result = $scope.aryPostScroll.filter(function(v,i)
-				{  
-				    if (v.id === timelineId)
-				    {
-				    	if(module_type=='post')
-						{
-							$scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
-							$scope.aryPostScroll[i].post_like_data=postLikeData ;
-						}
-						else if(module_type=='comment')
-						{
-							var result = $scope.aryPostScroll[i].limit_post_comment_data.filter(function(vC,iC)
-							{  
-							    if (vC.id === valueModule.id)
-							    {
-							    	$scope.aryPostScroll[i].limit_post_comment_data[iC].indv_comment_like_unlike=strDeleted ;
-							    	$scope.aryPostScroll[i].limit_post_comment_data[iC].comment_like_data=postLikeData ;				
-							 	} 
-							});
-							
-						}
-						
-				 	} 
-				});
-
+        		if(module_type=='post' || module_type=='comment')
+        		{
+	        		var result = $scope.aryPostScroll.filter(function(v,i)
+					{
+					    if (v.id === timelineId)
+					    {
+					    	if(module_type=='post')
+							{
+								$scope.aryPostScroll[i].indv_post_like_unlike=strDeleted ;
+								$scope.aryPostScroll[i].post_like_data=postLikeData ;
+							}
+							else if(module_type=='comment')
+							{
+								var result = $scope.aryPostScroll[i].limit_post_comment_data.filter(function(vC,iC)
+								{  
+								    if (vC.id === valueModule.id)
+								    {
+								    	$scope.aryPostScroll[i].limit_post_comment_data[iC].indv_comment_like_unlike=strDeleted ;
+								    	$scope.aryPostScroll[i].limit_post_comment_data[iC].comment_like_data=postLikeData ;				
+								 	} 
+								});							
+							}						
+					 	} 
+					});
+	        	}
+	        	else if(module_type=='postfile')
+	        	{
+	        		$scope.postFileDataObj.indv_post_like_unlike=strDeleted;
+	        		$scope.postFileDataObj.post_like_data=postLikeData;
+	        	}
         		//console.log($scope.aryPostScroll)
         	}
         	else
@@ -370,13 +380,15 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 				if(aryreturnData.status=='1')
 	        	{
 		            $scope.postFileDataObj=aryreturnData.data.postFileData;
+		            console.log('postFileDataObj')
+		            console.log($scope.postFileDataObj)
 		            if($rootScope.CheckImageOrVideo($scope.postFileDataObj.post_file_data.file_type)=='video')
 		            {
 		            	$('#videoSource').attr('src', $scope.postFileDataObj.post_file_data.file_type_url);
 		            }
 	        		if(nextPrevIdFire=='direct')
 		            {
-		            	$('#exampleModalLong').modal('show');
+		            	$('#modalPostFileList').modal('show');
 		            }
 	        	}
 	        	else
@@ -451,18 +463,21 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	
 	$scope.commentTimelinePost = function(valuePS,module_type)
     {	
-    	var timelineId=valuePS.id;
-    	var post_id=valuePS.post_id;
-    	var member_comment=$.trim(valuePS.member_comment);
-
-		$scope.postCommentData={}
-		$scope.postCommentData.module_id=post_id;
+    	$scope.postCommentData={}
+    	if(module_type=='post')
+		{
+			var timelineId=valuePS.id;
+    		$scope.postCommentData.module_id=valuePS.post_id;
+		}
+		else if(module_type=='postfile')
+		{
+			$scope.postCommentData.module_id=valuePS.post_file_data.id; //Comment table Auto Id
+		}    	
+		
 		$scope.postCommentData.module_type=module_type;
-		$scope.postCommentData.timelineId=timelineId;
+		$scope.postCommentData.member_comment=$.trim(valuePS.member_comment);
 
-		$scope.postCommentData.member_comment=member_comment;
-
-		if(member_comment!="")
+		if($scope.postCommentData.member_comment!="")
 		{
 			var formData = new FormData();
 			formData.append('postCommentData',angular.toJson($scope.postCommentData));
@@ -480,18 +495,23 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 	        		var limit_post_comment_data=aryreturnData.data.limit_post_comment_data;
 	        		var totComments=aryreturnData.data.totComments;
-	        		var result = $scope.aryPostScroll.filter(function(v,i)
-					{  
-					    if (v.id === timelineId)
-					    {
-					    	// alert(v.id+" -- "+timelineId)
-					    	// console.log("postCommentData");
-					    	// console.log(limit_post_comment_data);
-					    	$scope.aryPostScroll[i].limit_post_comment_data=limit_post_comment_data ;
-					    	$scope.aryPostScroll[i].totComments=totComments;
-					    	$scope.aryPostScroll[i].member_comment='' ;
-					 	} 
-					});
+
+	        		if(module_type=='post')
+					{
+		        		var result = $scope.aryPostScroll.filter(function(v,i)
+						{  
+						    if (v.id === timelineId)
+						    {
+						    	$scope.aryPostScroll[i].limit_post_comment_data=limit_post_comment_data ;
+						    	$scope.aryPostScroll[i].totComments=totComments;
+						    	$scope.aryPostScroll[i].member_comment='' ;
+						 	} 
+						});
+		        	}
+		        	else if(module_type=='postfile')
+		        	{
+		        		$scope.postFileDataObj.member_comment='';		        		
+		        	}
 	        	}
 	        	else
 	        	{
