@@ -67,8 +67,8 @@
 
     <script src="<?php echo base_url();?>assets/anjular-assets/angular-pages/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/anjular-assets/angular-files/css/jquery-ui.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.3/plupload.full.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.3/plupload.full.min.js"></script> -->
+    <script src="<?php echo base_url();?>assets/pulp-load/plupload.full.min.js"></script>
     <script>
         varGlobalAdminBaseUrl='<?php echo base_url();?>user/'
         varBaseUrl='<?php echo base_url();?>'

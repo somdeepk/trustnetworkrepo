@@ -375,7 +375,6 @@ class Post extends CI_Controller
 
     public function likeTimelinePost() 
     {
-
     	$returnData=array();
     	$postStatusData=$this->input->get_post('postStatusData');
     	$aryPostStatusData=json_decode($postStatusData, true);
@@ -397,8 +396,6 @@ class Post extends CI_Controller
 
 		$post_like_id=$array_return['post_like_id'];
 		$strDeleted=$array_return['strDeleted'];
-
-		
 
 		//Start Get Post Like data
 		$postLikeData = $this->Post_Model->getPostLikeData($menu_arr);
@@ -726,6 +723,55 @@ class Post extends CI_Controller
 				$finalPost['post_like_data']=$resultPostLikes;
 			}
 			//End Get Post Like data
+
+			//Start Get Post All Comment data
+			$aryArgu=array();
+			$aryArgu['module_id']=$post_file_id;
+			$aryArgu['module_type']='postfile';
+			$aryArgu['start']='';
+			$aryArgu['limit']='';
+			$postAllCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+			//End Get Post All Comment data	
+
+			//Start Get Post Limit Comment data
+			$aryArgu=array();
+			$aryArgu['module_id']=$post_file_id;
+			$aryArgu['module_type']='postfile';
+			$aryArgu['start']=0;
+			$aryArgu['limit']=3;
+			$postCommentData = $this->Post_Model->getPostCommentData($aryArgu);
+			//Start Get All Comment Like/Unlike Status
+			if(count($postCommentData)>0)
+			{
+				foreach($postCommentData as $keyPC => $valuePC)
+				{
+					$menu_comment_argu_arr = array(
+			            'module_id'  =>$valuePC['id'],
+			            'module_type'  =>'comment',
+			        );
+					$postCommentData[$keyPC]['comment_like_data']= $this->Post_Model->getPostLikeData($menu_comment_argu_arr);
+
+
+					//Start Get Individual Comment Like/Unlike Status
+					$sqlIndvCommentLike="SELECT deleted FROM tn_post_like WHERE module_id='".$valuePC['id']."' AND module_type='comment' AND member_id='".$user_auto_id."'";
+					$queryIndvCommentLike=$this->db->query($sqlIndvCommentLike);
+					$rowIndvCommentLike=$queryIndvCommentLike->row();
+
+					$postCommentData[$keyPC]['indv_comment_like_unlike']=1;
+					if(count($rowIndvCommentLike)>0)
+					{
+						$postCommentData[$keyPC]['indv_comment_like_unlike']=$rowIndvCommentLike->deleted;
+					}
+					//End Get Individual Comment Like/Unlike Status
+				}
+			}
+			//End Get All Comment Like/Unlike Status
+
+			//End Get Post Limit Comment data	
+
+			$finalPost['limit_post_comment_data']=$postCommentData;
+			$finalPost['totComments']=count($postAllCommentData);
+			//End Get Post All Comment data
 		}
 
 		// echo "<pre>";

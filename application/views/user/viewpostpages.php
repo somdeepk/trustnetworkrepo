@@ -45,7 +45,7 @@ div.postWhenScrollContainer{
                      <!-- post header-->
                      <div class="flex justify-between items-center lg:p-4 p-2.5">
                         <div class="flex flex-1 items-center space-x-4">
-                           <a href="#">
+                           <a href="javascript:void();">
                            <img ng-src="<?php echo IMAGE_URL;?>images/{{(valuePS.post_data.profile_image == '' || !valuePS.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+valuePS.post_data.profile_image}}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
                            </a>
                            <div class="flex-1 font-semibold capitalize">
@@ -57,16 +57,16 @@ div.postWhenScrollContainer{
                            </div>
                         </div>
                         <div>
-                           <a href="#" aria-expanded="false"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
+                           <a href="javascript:void();" aria-expanded="false"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
                            <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 uk-drop" uk-drop="mode: click;pos: bottom-right;animation: uk-animation-slide-bottom-small">
                               <ul class="space-y-1">
                                  <li> 
-                                    <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <a href="javascript:void();" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
                                     <i class="uil-share-alt mr-1"></i> Share
                                     </a> 
                                  </li>
                                  <!-- <li> 
-                                    <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <a href="javascript:void();" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
                                     <i class="uil-edit-alt mr-1"></i>  Edit Post 
                                     </a> 
                                  </li> -->
@@ -142,7 +142,7 @@ div.postWhenScrollContainer{
                               </div>
                               <div> Bless</div>
                            </a>
-                           <a ng-if="(isNullOrEmptyOrUndefined(valuePS.totComments)==false)" href="#" class="flex items-center space-x-2">
+                           <a ng-if="(isNullOrEmptyOrUndefined(valuePS.totComments)==false)" href="javascript:void();" class="flex items-center space-x-2">
                               <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                     <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
@@ -150,7 +150,7 @@ div.postWhenScrollContainer{
                               </div>
                               <div>{{valuePS.totComments}} Comments </div>
                            </a>
-                           <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
+                           <a href="javascript:void();" class="flex items-center space-x-2 flex-1 justify-end">
                               <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                     <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
@@ -188,7 +188,7 @@ div.postWhenScrollContainer{
                                  </div>
                                  <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
                                     <a href="javascript:void();" ng-click="likeTimelinePost(valuePS,'comment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid LikeColorBlue':'fa-regular'" ></i></a> <span class="LikeColorBlue" ng-if="valueComments.comment_like_data.length>0">{{valueComments.comment_like_data.length}}</span> 
-                                    <!-- <a href="#"> Replay </a> -->
+                                    <!-- <a href="javascript:void();"> Replay </a> -->
                                     <span> {{valueComments.comment_date}} </span>
                                  </div>
                               </div>
@@ -225,7 +225,7 @@ div.postWhenScrollContainer{
                         <h5 class="modal-title">
 
                           <div class="flex flex-1 items-center space-x-4">
-                           <a href="#">
+                           <a href="javascript:void();">
                            <img ng-src="<?php echo IMAGE_URL;?>images/{{(postFileDataObj.post_data.profile_image == '' || !postFileDataObj.post_data.profile_image)? 'member-no-imgage.jpg':'members/'+postFileDataObj.post_data.profile_image}}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
                            </a>
                            <div class="flex-1 font-semibold capitalize">
@@ -274,15 +274,15 @@ div.postWhenScrollContainer{
                                 </div>
                                 <div> {{(postFileDataObj.post_like_data.length>0)? postFileDataObj.post_like_data.length: ''}} Bless</div>
                              </a>
-                             <a href="#" class="flex items-center space-x-2">
+                             <a ng-if="(isNullOrEmptyOrUndefined(postFileDataObj.totComments)==false)" href="javascript:void();" class="flex items-center space-x-2">
                                 <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                       <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
                                    </svg>
                                 </div>
-                                <div> Comment</div>
+                                <div> {{postFileDataObj.totComments}} Comments</div>
                              </a>
-                             <a href="#" class="flex items-center space-x-2 flex-1 justify-end">
+                             <a href="javascript:void();" class="flex items-center space-x-2 flex-1 justify-end">
                                 <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600">
                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22" class="dark:text-gray-100">
                                       <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
@@ -290,57 +290,36 @@ div.postWhenScrollContainer{
                                 </div>
                                 
                              </a>
-                          </div>
+                            </div>
                           <!-- ngIf: valuePS.post_like_data.length>0 -->
-                          <div class="border-t py-4 space-y-4 dark:border-gray-600">
-                             <div class="flex">
+                            <div class="border-t py-4 space-y-4 dark:border-gray-600" ng-if='postFileDataObj.limit_post_comment_data.length>0'>
+                              <div class="flex" ng-repeat="(keyComments, valueComments) in postFileDataObj.limit_post_comment_data">
                                 <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                   <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
+                                   <img ng-src="<?php echo IMAGE_URL;?>images/{{(valueComments.profile_image == '' || !valueComments.profile_image)? 'member-no-imgage.jpg':'members/'+valueComments.profile_image}}" alt="{{valueComments.first_name+' '+valueComments.last_name}}" class="absolute h-full rounded-full w-full">
                                 </div>
                                 <div>
                                    <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
                                       <p class="leading-6">
-                                         In ut odio libero vulputate 
-                                         <urna class="i uil-heart"></urna>
-                                         <i class="uil-grin-tongue-wink"> </i> 
+                                         {{valueComments.member_comment}}
                                       </p>
                                       <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
                                    </div>
                                    <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
-                                      <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                      <a href="#"> Replay </a>
-                                      <span> 3d </span>
+                                      <a href="javascript:void();" ng-click="likeTimelinePost(postFileDataObj,'postfilecomment',valueComments)"> <i class=" fa-thumbs-up" ng-class="(valueComments.indv_comment_like_unlike==0)?'fa-solid LikeColorBlue':'fa-regular'" ></i></a> <span class="LikeColorBlue" ng-if="valueComments.comment_like_data.length>0">{{valueComments.comment_like_data.length}}</span> 
+                                      <!-- <a href="javascript:void();"> Replay </a> -->
+                                      <span> {{valueComments.comment_date}} </span>
                                    </div>
                                 </div>
-                             </div>
-                             <div class="flex">
-                                <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                   <img src="http://[::1]/christtube/assets/images/avatars/avatar-1.jpg" alt="" class="absolute h-full rounded-full w-full">
-                                </div>
-                                <div>
-                                   <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
-                                      <p class="leading-6"> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. David !<i class="uil-grin-tongue-wink-alt"></i> </p>
-                                      <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
-                                   </div>
-                                   <div class="text-xs flex items-center space-x-3 mt-2 ml-5">
-                                      <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
-                                      <a href="#"> Replay </a>
-                                      <span> 3d </span>
-                                   </div>
-                                </div>
-                             </div>
+                              </div>                           
+                            </div>
+                            <a href="javascript:void();" ng-if="(postFileDataObj.limit_post_comment_data.length<postFileDataObj.totComments)"  ng-click="showMoreComments(postFileDataObj,'postfile')" class="hover:text-blue-600 hover:underline">Veiw More Comments..</a>
+                            <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
+                               <input placeholder="Add your Comment.." ng-model="postFileDataObj.member_comment" maxlength="300" class="bg-transparent max-h-10 shadow-none px-5">
+                               <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
+                                  <a href="javascript:void();" ng-click="commentTimelinePost(postFileDataObj,'postfile')"><i class="fa-solid fa-paper-plane"></i></a>
+                               </div>
+                            </div>
                           </div>
-
-                          <a href="#" class="hover:text-blue-600 hover:underline">  Veiw 8 more Comments </a>
-                          <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
-                             <input placeholder="Add your Comment.." ng-model="postFileDataObj.member_comment" maxlength="300" class="bg-transparent max-h-10 shadow-none px-5">
-                             <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
-                                <a href="javascript:void();" ng-click="commentTimelinePost(postFileDataObj,'postfile')"><i class="fa-solid fa-paper-plane"></i></a>
-                             </div>
-                          </div>
-
-                          </div>
-
                           </div>
                         </div>
                       </div>
@@ -359,47 +338,47 @@ div.postWhenScrollContainer{
                                 <h4 class="text-lg font-semibold"> Church Members </h4>
                                 <p class="text-sm"> 451 Members</p>
                             </div>
-                            <a href="#" class="text-blue-600 ">See all</a>
+                            <a href="javascript:void();" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <!-- <a href="#">  
+                            <!-- <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Dennis Han </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Jones </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Stella Johnson </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Alex Dolgove</div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Jonathan Ali </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
                             </a> -->
                         </div>
-                      <a href="#" class="button gray mt-3 w-full">  See all </a>
+                      <a href="javascript:void();" class="button gray mt-3 w-full">  See all </a>
                     </div>
                     
                     
@@ -409,47 +388,47 @@ div.postWhenScrollContainer{
                                 <h4 class="text-lg font-semibold">Virtual Members</h4>
                                 <p class="text-sm"> 210 Members</p>
                             </div>
-                            <a href="#" class="text-blue-600 ">See all</a>
+                            <a href="javascript:void();" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <!-- <a href="#">  
+                            <!-- <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Dennis Han </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Jones </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Stella Johnson </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Alex Dolgove</div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Jonathan Ali </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
                             </a> -->
                         </div>
-                      <a href="#" class="button gray mt-3 w-full">  See all </a>
+                      <a href="javascript:void();" class="button gray mt-3 w-full">  See all </a>
                     </div>
                     
                     
@@ -459,47 +438,47 @@ div.postWhenScrollContainer{
                                 <h4 class="text-lg font-semibold">Churches</h4>
                                 <p class="text-sm"> 10 Church</p>
                             </div>
-                            <a href="#" class="text-blue-600 ">See all</a>
+                            <a href="javascript:void();" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <!-- <a href="#">  
+                            <!-- <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Dennis Han </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Jones </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Stella Johnson </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Alex Dolgove</div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Jonathan Ali </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
                             </a> -->
                         </div>
-                      <a href="#" class="button gray mt-3 w-full">  See all </a>
+                      <a href="javascript:void();" class="button gray mt-3 w-full">  See all </a>
                     </div>
                     
                                                 
@@ -509,47 +488,47 @@ div.postWhenScrollContainer{
                                 <h4 class="text-lg font-semibold">Favourite</h4>
                                 <p class="text-sm"> 143 Favourite</p>
                             </div>
-                            <a href="#" class="text-blue-600 ">See all</a>
+                            <a href="javascript:void();" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <!-- <a href="#">  
+                            <!-- <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Dennis Han </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Jones </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Stella Johnson </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Alex Dolgove</div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Jonathan Ali </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
                             </a> -->
                         </div>
-                      <a href="#" class="button gray mt-3 w-full">  See all </a>
+                      <a href="javascript:void();" class="button gray mt-3 w-full">  See all </a>
                     </div>
 
                     <div class="widget card p-5 border-t">
@@ -558,47 +537,47 @@ div.postWhenScrollContainer{
                                 <h4 class="text-lg font-semibold">Fans</h4>
                                 <p class="text-sm"> 143 Fans</p>
                             </div>
-                            <a href="#" class="text-blue-600 ">See all</a>
+                            <a href="javascript:void();" class="text-blue-600 ">See all</a>
                         </div>
                         <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
-                            <!-- <a href="#">  
+                            <!-- <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-1.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Dennis Han </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-2.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Jones </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-3.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Stella Johnson </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-4.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Alex Dolgove</div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-5.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Jonathan Ali </div>
                             </a>
-                            <a href="#">  
+                            <a href="javascript:void();">  
                                 <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2"> 
                                     <img src="<?php echo base_url();?>assets/images/avatars/avatar-6.jpg" alt="" class="w-full h-full object-cover absolute">
                                 </div>
                                 <div class="text-sm truncate"> Erica Han </div>
                             </a> -->
                         </div>
-                      <a href="#" class="button gray mt-3 w-full">  See all </a>
+                      <a href="javascript:void();" class="button gray mt-3 w-full">  See all </a>
                     </div>
                 </div>
             </div>                  
@@ -672,7 +651,7 @@ div.postWhenScrollContainer{
               </div>
     
                 <div class="flex space-x-2">
-                    <!-- <a href="#" class="bg-red-100 flex font-medium h-9 items-center justify-center px-5 rounded-md text-red-600 text-sm">
+                    <!-- <a href="javascript:void();" class="bg-red-100 flex font-medium h-9 items-center justify-center px-5 rounded-md text-red-600 text-sm">
                         <svg class="h-5 pr-1 rounded-full text-red-500 w-6 fill-current" id="veiw-more" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" style=""> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                         Live </a> -->
                         

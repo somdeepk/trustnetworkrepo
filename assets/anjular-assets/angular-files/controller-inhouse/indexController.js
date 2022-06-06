@@ -224,18 +224,26 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		{
 			var timelineId=valuePS.id;
 			$scope.postStatusData.module_id=valuePS.post_id;
+			$scope.postStatusData.module_type=module_type;
 		}
-		else if(module_type=='comment')
+		else if(module_type=='comment') //pots comment like
 		{
 			var timelineId=valuePS.id;
 			$scope.postStatusData.module_id=valueModule.id; //Comment table Auto Id
+			$scope.postStatusData.module_type=module_type;
 		}
 		else if(module_type=='postfile')
 		{
-			$scope.postStatusData.module_id=valueModule.post_file_data.id; //Comment table Auto Id
+			$scope.postStatusData.module_id=valueModule.post_file_data.id; //post file table Auto Id
+			$scope.postStatusData.module_type=module_type;
+		}
+		else if(module_type=='postfilecomment')
+		{
+			$scope.postStatusData.module_id=valueModule.id; //post file table Auto Id
+			$scope.postStatusData.module_type='comment';
 		}
 		//alert($scope.postStatusData.module_id)
-		$scope.postStatusData.module_type=module_type;
+		
 		var formData = new FormData();
 		formData.append('postStatusData',angular.toJson($scope.postStatusData));
 		$http({
@@ -281,6 +289,20 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 	        	{
 	        		$scope.postFileDataObj.indv_post_like_unlike=strDeleted;
 	        		$scope.postFileDataObj.post_like_data=postLikeData;
+	        	}
+	        	else if(module_type=='postfilecomment')
+	        	{
+	        		var result = $scope.postFileDataObj.limit_post_comment_data.filter(function(vC,iC)
+					{  
+					    if (vC.id === valueModule.id)
+					    {
+					    	$scope.postFileDataObj.limit_post_comment_data[iC].indv_comment_like_unlike=strDeleted ;
+					    	$scope.postFileDataObj.limit_post_comment_data[iC].comment_like_data=postLikeData ;				
+					 	} 
+					});	
+
+	        		// $scope.postFileDataObj.indv_post_like_unlike=strDeleted;
+	        		// $scope.postFileDataObj.post_like_data=postLikeData;
 	        	}
         		//console.log($scope.aryPostScroll)
         	}
@@ -471,11 +493,11 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		}
 		else if(module_type=='postfile')
 		{
-			$scope.postCommentData.module_id=valuePS.post_file_data.id; //Comment table Auto Id
+			$scope.postCommentData.module_id=valuePS.post_file_data.id; // post file table Auto Id
 		}    	
 		
-		$scope.postCommentData.module_type=module_type;
 		$scope.postCommentData.member_comment=$.trim(valuePS.member_comment);
+    	$scope.postCommentData.module_type=module_type;
 
 		if($scope.postCommentData.member_comment!="")
 		{
@@ -510,6 +532,8 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 		        	}
 		        	else if(module_type=='postfile')
 		        	{
+		        		$scope.postFileDataObj.limit_post_comment_data=limit_post_comment_data ;
+						$scope.postFileDataObj.totComments=totComments;
 		        		$scope.postFileDataObj.member_comment='';		        		
 		        	}
 	        	}
@@ -520,20 +544,27 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 			});
 	    }
 	};
+
 	
 	$scope.showMoreComments = function(valuePS,module_type)
     {	
-    	var timelineId=valuePS.id;
-    	var post_id=valuePS.post_id;
-
+  
 		$scope.postCommentData={}
-		$scope.postCommentData.module_id=post_id;
+  		if(module_type=='post')
+		{
+			var timelineId=valuePS.id;
+			$scope.postCommentData.module_id=valuePS.post_id;
+			$scope.postCommentData.timelineId=timelineId;
+		}
+		else if(module_type=='postfile')
+		{
+			$scope.postCommentData.module_id=valuePS.post_file_data.id; //post file table Auto Id
+		}    	
 		$scope.postCommentData.module_type=module_type;
-		$scope.postCommentData.timelineId=timelineId;
 		$scope.postCommentData.totStartRowComment=valuePS.limit_post_comment_data.length;
 
 
-		if(timelineId>0)
+		if($scope.postCommentData.module_id>0)
 		{
 			var formData = new FormData();
 			formData.append('postCommentData',angular.toJson($scope.postCommentData));
@@ -551,19 +582,29 @@ mainApp.controller('indexController', function ($rootScope, $timeout, $interval,
 
 	        		var limit_post_comment_data=aryreturnData.data.limit_post_comment_data;
 	        		var totComments=aryreturnData.data.totComments;
-	        		var result = $scope.aryPostScroll.filter(function(v,i)
-					{  
-					    if (v.id === timelineId)
-					    {
-					    	// alert(v.id+" -- "+timelineId)
-					    	// console.log("postCommentData");
-					    	$scope.aryPostScroll[i].limit_post_comment_data=$.merge( $scope.aryPostScroll[i].limit_post_comment_data, limit_post_comment_data );
-					    	//console.log('222');
-					    	//console.log($scope.aryPostScroll[i].limit_post_comment_data);
-					    	$scope.aryPostScroll[i].totComments=totComments;
-					    	$scope.aryPostScroll[i].member_comment='' ;
-					 	} 
-					});
+
+	        		if(module_type=='post')
+					{
+		        		var result = $scope.aryPostScroll.filter(function(v,i)
+						{  
+						    if (v.id === timelineId)
+						    {
+						    	// alert(v.id+" -- "+timelineId)
+						    	// console.log("postCommentData");
+						    	$scope.aryPostScroll[i].limit_post_comment_data=$.merge( $scope.aryPostScroll[i].limit_post_comment_data, limit_post_comment_data );
+						    	//console.log('222');
+						    	//console.log($scope.aryPostScroll[i].limit_post_comment_data);
+						    	$scope.aryPostScroll[i].totComments=totComments;
+						    	$scope.aryPostScroll[i].member_comment='' ;
+						 	} 
+						});
+					}
+					else if(module_type=='postfile')
+					{
+						$scope.postFileDataObj.limit_post_comment_data=$.merge( $scope.postFileDataObj.limit_post_comment_data, limit_post_comment_data );
+				    	$scope.postFileDataObj.totComments=totComments;
+				    	$scope.postFileDataObj.member_comment='' ;
+					}
 	        	}
 	        	else
 	        	{
