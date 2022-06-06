@@ -47,6 +47,7 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/leftMenuController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/notificationController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/taskController.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/videoController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/indexController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/supportController.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/anjular-assets/angular-files/photoController.js"></script>
@@ -65,6 +66,7 @@
    <!--  <script src="<?php //echo base_url();?>assets/agora-assets/bootstrap.bundle.min.js"></script> -->
     <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
     <!-- <script type="text/javascript" src="<?php //echo base_url();?>assets/agora-assets/basicLive.js"></script> -->
+    <script src="<?php echo base_url();?>assets/pulp-load/plupload.full.min.js"></script>
 
    </head>
    

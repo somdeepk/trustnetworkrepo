@@ -639,4 +639,67 @@ class Post extends CI_Controller
         exit;
 
     }
+
+
+    public function ajaxsubmitweeklfiles() 
+    {
+    	$lastPostId=$this->session->userdata('lastPostId');
+
+		if (!empty($_FILES) && !$_FILES["file"]["error"] && $lastPostId>0)
+		{
+			$file_original_name=isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
+			$file_size=$_FILES["file"]["size"];
+			$file_type=$_FILES["file"]["type"];
+			$current_date=date('Y-m-d H:i:s');  			
+
+		  	$fileBasePath = IMAGE_PATH.'weeklyvideo';
+		  	$filePath = $fileBasePath . DIRECTORY_SEPARATOR . $file_original_name;
+
+			// (D) DEAL WITH CHUNKS
+			$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+			$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+			$out = @fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
+			if ($out) {
+			  $in = @fopen($_FILES["file"]["tmp_name"], "rb");
+			  if ($in) { while ($buff = fread($in, 4096)) { fwrite($out, $buff); } }
+			  else { $this->verbose(0, "Failed to open input stream"); }
+			  @fclose($in);
+			  @fclose($out);
+			  @unlink($_FILES["file"]["tmp_name"]);
+			} else { $this->verbose(0, "Failed to open output stream"); }
+
+			// (E) CHECK IF FILE HAS BEEN UPLOADED
+			if (!$chunks || $chunk == $chunks - 1){
+				$imarr=explode(".",$file_original_name);
+		    	$ext=end($imarr);				
+
+				$aryPostData=$this->Post_Model->getPostData($lastPostId);
+				$member_id=$aryPostData[0]['member_id'];
+				$menu_arr_post_file = array(
+		            'module_id'=>$lastPostId,
+		            'module_type'=>'post',
+		            'member_id'   => $member_id,
+		            'file_original_name'   =>$file_original_name,
+		            'file_size'   =>$file_size,        
+		            'file_type'   =>$ext, 
+		            'create_date'   =>$current_date       
+		        );
+
+                $last_post_file_id = $this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+
+                if($last_post_file_id>0)
+                {
+                	$file_name = $last_post_file_id."-".time().'.'.$ext;
+	                $filePathSysem = $fileBasePath . DIRECTORY_SEPARATOR . $file_name;
+	                rename("{$filePath}.part", $filePathSysem);
+
+	                $menu_arr_post_file = array(
+			            'file_name'   =>$file_name     
+			        );
+	                $last_post_file_id = $this->Post_Model->addUpdatPostFile($last_post_file_id,$menu_arr_post_file);
+	            }
+			}
+			$this->verbose(1, "Upload OK");
+		}		
+    }
 }

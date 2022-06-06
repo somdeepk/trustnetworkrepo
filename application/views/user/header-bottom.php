@@ -74,7 +74,15 @@ exit;*/
                   <!-- <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
+                 <?php if($isAdmin=="Y"){ ?>
+                    <li <?php echo ($actionName=='weeklyvideo')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/weeklyvideo" class="iq-waves-effect"><i class="lab la-youtube"></i><span>Weekly Video</span></a></li>
+                  <?php } ?>
+
                   <li <?php echo ($actionName=='support')? 'class="active"' : '' ;?>  ><a href="<?php echo base_url();?>user/support" class="iq-waves-effect"><i class="las la-check-circle"></i><span>Support</span></a></li>
+
+                  
+
+
                 </ul>
              </nav>
              <div class="p-3"></div>

@@ -3698,6 +3698,30 @@ class User extends CI_Controller
         exit;
 	}
 
+	public function weeklyvideo()
+    {
+      authenticate_user();
+      $data=array();
+      $data['membershipType']=$this->session->userdata('membership_type');
+      $data['isAdmin']=$this->session->userdata('is_admin');
+      $data['user_auto_id']=$this->session->userdata('user_auto_id');
+      $data['parent_id']=$this->session->userdata('parent_id');
+      $data['parent_leader_id']=$this->session->userdata('parent_leader_id');
+
+      $msg=$this->input->post_get('msg');
+      if(!empty($msg))
+      {
+        $msg=base64_decode($msg);
+        $this->session->set_flashdata('success', $msg);
+      }
+      //$data['church_id']=$church_id;
+      $this->load->view('user/header-script');
+      $this->load->view('user/header-bottom');
+      $this->load->view('user/weeklyvideo', $data);
+      $this->load->view('user/footer-top');
+      $this->load->view('user/footer');
+    }
+
 }
 	
 
