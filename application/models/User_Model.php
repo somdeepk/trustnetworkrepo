@@ -1538,5 +1538,19 @@ class User_Model extends CI_Model
 		}
 	}
 
+	public function addUpdatWeeklyVideo($menu_arr=NULL,$id=NULL)
+	{
+		if(!empty($id) && $id>0)
+		{
+			$this->db->where('id',$id)->update('tn_weekly_video',$menu_arr);
+			return $id;
+		}
+		else
+		{			
+			$this->db->insert('tn_weekly_video',$menu_arr);
+			return $this->db->insert_id();
+		}
+	}
+
 }
 ?>

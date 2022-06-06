@@ -33,7 +33,7 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 	    runtimes: "html5",
 	    browse_button: "browseFileToUpload",
 	    container: document.getElementById('browsecontainer'), // ... or DOM Element itsel
-	    url: varBaseUrl+"post/ajaxsubmitweeklyvideofiles",
+	    url: varBaseUrl+"post/ajaxsubmitweeklvideofiles",
 	    chunk_size: "10mb",
 	    filters: {
 	      max_file_size: "5000mb",
@@ -116,14 +116,14 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 
 			$http({
                 method  : 'POST',
-                url     : varGlobalAdminBaseUrl+"ajaxaddupdatestreamvideoxx",
+                url     : varGlobalAdminBaseUrl+"ajaxaddupdateweeklyvideo",
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined},                     
                 data:formData, 
             }).success(function(returnData) {
 				aryreturnData=angular.fromJson(returnData);
-				$scope.lastPostId=aryreturnData.data.lastPostId;
-            	if(aryreturnData.status=='1' && aryreturnData.msg=='success' && $scope.lastPostId>0)
+				$scope.ls_video_id=aryreturnData.data.ls_video_id;
+            	if(aryreturnData.status=='1' && aryreturnData.msg=='success' && $scope.ls_video_id>0)
             	{            		
             		if($scope.weeklyVideoData.uploaddata.length>0)
 	        		{
@@ -137,11 +137,10 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
             	else
             	{
             		$scope.files = [];
-            		$scope.liveStreamData={}
-            		$('#file_ls_video_upload').val("");
+            		$scope.weeklyVideoData={} 
             		$scope.buttonSavingAnimation('zuploadWeeklyVideoz','Submit','onlytext');
-            		$('#uploadliveStreamVideoModal').modal('hide');
-            		console.log("Live Stream Video Set Failed!")		        	
+        			console.log("Something went wrong. Please try again later!")   
+            		$('#uploadWeeklyVideoModal').modal('hide');	        	
             	}
 			});
 		}

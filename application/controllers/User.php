@@ -3722,6 +3722,61 @@ class User extends CI_Controller
       $this->load->view('user/footer');
     }
 
+    public function ajaxaddupdateweeklyvideo() 
+    {
+
+        $LSVideoData = trim($this->input->post('weeklyVideoData'));
+        $aryLSVideoData=json_decode($LSVideoData, true);
+
+        
+        $id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
+        $user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0; 
+
+        $video_title=(isset($aryLSVideoData['video_title']) && !empty($aryLSVideoData['video_title']))? addslashes(trim($aryLSVideoData['video_title'])):'';
+        $video_type=(isset($aryLSVideoData['video_type']) && !empty($aryLSVideoData['video_type']))? addslashes(trim($aryLSVideoData['video_type'])):'';
+        $start_time=(isset($aryLSVideoData['start_time']) && !empty($aryLSVideoData['start_time']))? addslashes(trim($aryLSVideoData['start_time'])):'';
+        $end_time=(isset($aryLSVideoData['end_time']) && !empty($aryLSVideoData['end_time']))? addslashes(trim($aryLSVideoData['end_time'])):''; 
+
+		$current_date=date('Y-m-d H:i:s');   
+
+
+        $ls_video_id=0;
+        if($user_auto_id>0)
+        {
+	        $menu_arr = array(
+	            'member_id'=>$user_auto_id,
+	            'video_title'   =>$video_title,
+	            'video_type'   =>$video_type,
+	            'start_time'   =>date('Y-m-d H:i:s',strtotime($start_time)),
+	            'end_time'   =>date('Y-m-d H:i:s',strtotime($end_time)), 
+	            'create_date'   =>$current_date		            
+	        );
+ 
+	        $ls_video_id = $this->User_Model->addUpdatWeeklyVideo($menu_arr,$id);
+	    } 
+
+        $returnData=array();
+ 		if($ls_video_id>0)
+		{
+			$this->session->set_userdata('ls_video_id',$ls_video_id);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Video Added Successfully';
+	        $returnData['data']=array('lastVideoId'=>$ls_video_id);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Video Upload Failed';
+	        $returnData['data']=array();
+		}
+
+        echo json_encode($returnData);
+        exit;
+    }
+
 }
 	
 

@@ -641,11 +641,11 @@ class Post extends CI_Controller
     }
 
 
-    public function ajaxsubmitweeklfiles() 
+    public function ajaxsubmitweeklvideofiles() 
     {
-    	$lastPostId=$this->session->userdata('lastPostId');
+    	$ls_video_id=$this->session->userdata('ls_video_id');
 
-		if (!empty($_FILES) && !$_FILES["file"]["error"] && $lastPostId>0)
+		if (!empty($_FILES) && !$_FILES["file"]["error"] && $ls_video_id>0)
 		{
 			$file_original_name=isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
 			$file_size=$_FILES["file"]["size"];
@@ -673,8 +673,8 @@ class Post extends CI_Controller
 				$imarr=explode(".",$file_original_name);
 		    	$ext=end($imarr);				
 
-				$aryPostData=$this->Post_Model->getPostData($lastPostId);
-				$member_id=$aryPostData[0]['member_id'];
+				$aryWeeklyVideoData=$this->Post_Model->getPostData($ls_video_id);
+				$member_id=$aryWeeklyVideoData[0]['member_id'];
 				$menu_arr_post_file = array(
 		            'module_id'=>$lastPostId,
 		            'module_type'=>'post',
