@@ -73,8 +73,9 @@
          <div class="iq-card">
             <div class="iq-card-header d-flex justify-content-between">
                <div class="iq-header-title">
-                  <h4 class="card-title">Live Stream Schedule(s)</h4>
+                  <h4 class="card-title">List Of Weekly Video(s)</h4>
                </div>
+               <div id="jsonWeeklyVideoData" class="hiddenimportant"><?php echo $weeklyVideoData; ?></div>
                <a href="javascript:void();" ng-click="uploadWeeklyVideo();" ng-if="session_is_admin=='Y'" ng-class="(session_is_admin=='Y') ? 'btn-primary' : ''" class="mr-3 btn rounded"><i class="lab la-youtube"></i></i>Add New Video</a>
             </div>
             <div class="iq-card-body">
@@ -83,34 +84,35 @@
                 <thead>
                   <tr >
                     <th>Title</th>
+                    <th>Type</th>
                     <th>Star Time</th>
+                    <th>End Time</th>
                     <th>Action</th>                    
                   </tr>
                 </thead>
                 <tbody>
-                  <tr  ng-repeat="(key, value) in allLiveStreamVideoData">                    
+                  <tr  ng-repeat="(key, value) in allWeeklyVideoData">                    
                     <td><h6>{{value.video_title}}</h6></td>
+                    <td><h6>{{value.video_type}}</h6></td>
                     <td><h6>{{value.display_start_time}}</h6></td>
+                    <td><h6>{{value.display_end_time}}</h6></td>
                     <td>
                       <div class="d-flex align-items-center">
                         
-                        <a href="javascript:void();" ng-click="goLivePopup(value);" ng-class="(value.is_live=='Y') ? 'blink_me' : ''" ng-if="value.membership_type=='RM'" class="mr-3 btn btn-info rounded zgoLivez zgoLivez_{{value.id}}"><i class="ri-broadcast-fill"></i> Go Live</a>
-
-                        <a href="javascript:void();" ng-click="activeInactiveStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? (value.status=='1') ? 'cssdisabled btn-success' : 'cssdisabled btn-primary' : (value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveStreamVideoz zactiveInactiveStreamVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
+                        <a href="javascript:void();" ng-click="activeInactiveWeeklyVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.status=='1') ? 'btn-success' : 'btn-primary'" class="mr-3 btn rounded zactiveInactiveWeeklyVideoz zactiveInactiveWeeklyVideoz_{{value.id}}"><i ng-if="value.status=='0'" class="ri-lock-2-fill"></i><i ng-if="value.status=='1'" class="ri-lock-unlock-fill"></i>{{(value.status=='1')? 'Active' : 'Inactive'}}</a>
                         
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn btn-primary rounded zeditStreamVideoz zeditStreamVideoz_{{value.id}}">
+                       <!--  <a href="javascript:void();" ng-click="editStreamVideo(value);" class="mr-3 btn btn-primary rounded zeditStreamVideoz zeditStreamVideoz_{{value.id}}">
                           <i ng-if="session_is_admin=='Y'" class="ri-edit-2-fill"></i> Edit
-                        </a>
-                        <a href="javascript:void();" ng-click="editStreamVideo(value);" ng-if="session_is_admin=='N'" class="mr-3 btn btn-primary rounded zeditStreamVideoz_{{value.id}}"><i  class="ri-eye-line"></i>View
-                        </a>
+                        </a> -->
 
-                        <a href="javascript:void();" ng-click="deleteStreamVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteStreamVideoz zdeleteStreamVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
+
+                        <a href="javascript:void();" ng-click="deleteWeeklyVideo(value);" ng-if="session_is_admin=='Y'" ng-class="(value.is_live=='Y') ? 'cssdisabled' : ''" class="mr-3 btn  btn-danger rounded zdeleteWeeklyVideoz zdeleteWeeklyVideoz_{{value.id}}"><i class="ri-delete-bin-fill"></i>Delete</a>
                      </div>
                     </td>
                   </tr>
-                  <tr  ng-if="allLiveStreamVideoData.length<=0" >                    
-                    <td colspan="3">
-                      <?php if($argument['isAdmin']=='Y'){ echo "No Live Stream Schedule is Set by You."; }elseif($argument['membershipType']=="RM" && $argument['isAdmin']=="N"){ echo "Live Streaming is not started yet!"; }else{ echo "There is no Live Stream Schedule"; } ?>
+                  <tr  ng-if="allWeeklyVideoData.length<=0" >                    
+                    <td colspan="5">
+                      There is no Weekly Schedule
                     </td>
                     
                   </tr>

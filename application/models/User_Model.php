@@ -1552,5 +1552,24 @@ class User_Model extends CI_Model
 		}
 	}
 
+
+	public function get_weekly_video_by_member($member_id)
+	{		
+		$sql="SELECT twv.* FROM tn_weekly_video as twv WHERE twv.deleted='0' AND member_id=".$member_id." order by twv.id DESC";
+		$query=$this->db->query($sql);
+		$resultData=$query->result_array();
+
+		if(count($resultData)>0)
+		{
+			foreach($resultData as $k=>$v)
+			{	
+				$resultData[$k]['is_admin']=$str_is_admin;
+				$resultData[$k]['display_start_time']=date('m-d-Y h:i A',strtotime($v['start_time']));
+				$resultData[$k]['display_end_time']=date('m-d-Y h:i A',strtotime($v['end_time'])); 
+			}
+		} 
+		return $resultData;
+	}
+
 }
 ?>

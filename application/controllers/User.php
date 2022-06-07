@@ -3714,6 +3714,10 @@ class User extends CI_Controller
         $msg=base64_decode($msg);
         $this->session->set_flashdata('success', $msg);
       }
+
+      $weeklyVideoData = $this->User_Model->get_weekly_video_by_member($data['user_auto_id']);
+	  $data['weeklyVideoData']=json_encode($weeklyVideoData);
+
       //$data['church_id']=$church_id;
       $this->load->view('user/header-script');
       $this->load->view('user/header-bottom');
@@ -3740,7 +3744,7 @@ class User extends CI_Controller
 		$current_date=date('Y-m-d H:i:s');   
 
 
-        $ls_video_id=0;
+        $lastVideoId=0;
         if($user_auto_id>0)
         {
 	        $menu_arr = array(
@@ -3752,18 +3756,18 @@ class User extends CI_Controller
 	            'create_date'   =>$current_date		            
 	        );
  
-	        $ls_video_id = $this->User_Model->addUpdatWeeklyVideo($menu_arr,$id);
+	        $lastVideoId = $this->User_Model->addUpdatWeeklyVideo($menu_arr,$id);
 	    } 
 
         $returnData=array();
- 		if($ls_video_id>0)
+ 		if($lastVideoId>0)
 		{
-			$this->session->set_userdata('ls_video_id',$ls_video_id);
+			$this->session->set_userdata('lastVideoId',$lastVideoId);
 
 	        $returnData['status']='1';
 	        $returnData['msg']='success';
 	        $returnData['msgstring']='Video Added Successfully';
-	        $returnData['data']=array('lastVideoId'=>$ls_video_id);
+	        $returnData['data']=array('lastVideoId'=>$lastVideoId);
 		}
 		else
 		{
@@ -3773,6 +3777,79 @@ class User extends CI_Controller
 	        $returnData['data']=array();
 		}
 
+        echo json_encode($returnData);
+        exit;
+    }
+
+     public function ajaxActiveInactiveWeeklyVideo() 
+    {
+
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+  		$id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
+		$strStatus=(isset($aryLSVideoData['strStatus']) && !empty($aryLSVideoData['strStatus']))? addslashes(trim($aryLSVideoData['strStatus'])):'0';
+		
+		$menu_arr = array(
+            'status'  =>$strStatus
+        );
+
+		$lastId = $this->User_Model->addUpdatWeeklyVideo($menu_arr,$id);
+
+ 		if($lastId>0)
+		{
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Status Changed Successfully';
+	        $returnData['data']=array('lastId'=>$lastId);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Status Changed Failed';
+	        $returnData['data']=array();
+		}
+       
+        echo json_encode($returnData);
+        exit;
+    }
+
+    public function ajaxDeleteWeeklyVideo() 
+    {
+    	$returnData=array();
+    	$LSVideoData=$this->input->get_post('LSVideoData');
+    	$aryLSVideoData=json_decode($LSVideoData, true);
+  
+  		$id=(isset($aryLSVideoData['id']) && !empty($aryLSVideoData['id']))? addslashes(trim($aryLSVideoData['id'])):0;
+		$user_auto_id=(isset($aryLSVideoData['user_auto_id']) && !empty($aryLSVideoData['user_auto_id']))? addslashes(trim($aryLSVideoData['user_auto_id'])):0;
+
+		$menu_arr = array(
+            'deleted'  =>'1'
+        );
+        /*echo $id."ss<pre>";
+        print_r($menu_arr);
+        exit;*/
+		$lastId = $this->User_Model->addUpdatWeeklyVideo($menu_arr,$id);
+
+ 		if($lastId>0)
+		{			
+			$weeklyVideoData = $this->User_Model->get_weekly_video_by_member($user_auto_id);
+	 		$data['weeklyVideoData']=json_encode($weeklyVideoData);
+
+	        $returnData['status']='1';
+	        $returnData['msg']='success';
+	        $returnData['msgstring']='Deleted Successfully';
+	        $returnData['data']=array('lastId'=>$lastId,'weeklyVideoData'=>$weeklyVideoData);
+		}
+		else
+		{
+			$returnData['status']='0';
+	        $returnData['msg']='error';
+	        $returnData['msgstring']='Deletion Failed';
+	        $returnData['data']=array();
+		}
         echo json_encode($returnData);
         exit;
     }

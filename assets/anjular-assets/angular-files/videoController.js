@@ -8,11 +8,11 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 
     $scope.initiateVideo = function (user_auto_id,parent_id,membership_type,is_admin)
 	{
-		// jsonLiveStreamVideoData=$('#jsonLiveStreamVideoData').html();	
-		// if (($scope.isNullOrEmptyOrUndefined(jsonLiveStreamVideoData)==false))
-		// {
-		// 	$scope.allLiveStreamVideoData=jQuery.parseJSON(jsonLiveStreamVideoData);
-		// }
+		jsonWeeklyVideoData=$('#jsonWeeklyVideoData').html();	
+		if (($scope.isNullOrEmptyOrUndefined(jsonWeeklyVideoData)==false))
+		{
+			$scope.allWeeklyVideoData=jQuery.parseJSON(jsonWeeklyVideoData);
+		}
 
 		$scope.session_is_admin=is_admin;  
 		$scope.videoData.user_auto_id=user_auto_id;
@@ -73,6 +73,7 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 			$scope.buttonSavingAnimation('zuploadWeeklyVideoz','Submit','onlytext');
 			$scope.weeklyVideoData={}; 
 			$("#post_image_preview_container").html('');
+			$('#uploadWeeklyVideoModal').modal('hide');	        	
 			$scope.weeklyVideoData.uploaddata=[]; 
 		},1200);
   	};
@@ -122,8 +123,8 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
                 data:formData, 
             }).success(function(returnData) {
 				aryreturnData=angular.fromJson(returnData);
-				$scope.ls_video_id=aryreturnData.data.ls_video_id;
-            	if(aryreturnData.status=='1' && aryreturnData.msg=='success' && $scope.ls_video_id>0)
+				$scope.lastVideoId=aryreturnData.data.lastVideoId;
+            	if(aryreturnData.status=='1' && aryreturnData.msg=='success' && $scope.lastVideoId>0)
             	{            		
             		if($scope.weeklyVideoData.uploaddata.length>0)
 	        		{
@@ -147,12 +148,12 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 	};
 
 
-	$scope.activeInactiveStreamVideo = function(valobj)
+	$scope.activeInactiveWeeklyVideo = function(valobj)
     {	
     	var id=valobj.id;
     	var status=valobj.status;
 
-    	if($(".zactiveInactiveStreamVideoz_"+id).hasClass('btn-success')){
+    	if($(".zactiveInactiveWeeklyVideoz_"+id).hasClass('btn-success')){
     		strText="Inactivating..";
     		strStatus='0';
     	}else{
@@ -160,18 +161,18 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
     		strStatus='1';
     	}
 
-    	$scope.buttonSavingAnimation('zactiveInactiveStreamVideoz_'+id,strText,'loader');		
+    	$scope.buttonSavingAnimation('zactiveInactiveWeeklyVideoz_'+id,strText,'loader');		
 		$timeout(function()
 		{
-			$scope.liveStreamStatusData={}
-			$scope.liveStreamStatusData.id=id;
-			$scope.liveStreamStatusData.strStatus=strStatus;
+			$scope.liveWeeklyStatusData={}
+			$scope.liveWeeklyStatusData.id=id;
+			$scope.liveWeeklyStatusData.strStatus=strStatus;
 			var formData = new FormData();
-			formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+			formData.append('LSVideoData',angular.toJson($scope.liveWeeklyStatusData));
 			//alert("fd")
 			$http({
 	            method  : 'POST',
-	            url     : varGlobalAdminBaseUrl+"ajaxActiveInactiveStreamVideo",
+	            url     : varGlobalAdminBaseUrl+"ajaxActiveInactiveWeeklyVideo",
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': undefined},                     
 	            data:formData, 
@@ -181,26 +182,26 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 	        	{
 	        		if(strStatus=='1')
 	        		{
-	        			$(".zactiveInactiveStreamVideoz_"+id).removeClass('btn-primary');
-    					$(".zactiveInactiveStreamVideoz_"+id).addClass('btn-success');
-						$(".zactiveInactiveStreamVideoz_"+id).css("background-color",'#49f0d3');
-						$(".zactiveInactiveStreamVideoz_"+id).css("bordr-color",'#49f0d3');
-	        			$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).removeClass('btn-primary');
+    					$(".zactiveInactiveWeeklyVideoz_"+id).addClass('btn-success');
+						$(".zactiveInactiveWeeklyVideoz_"+id).css("background-color",'#49f0d3');
+						$(".zactiveInactiveWeeklyVideoz_"+id).css("bordr-color",'#49f0d3');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active');
 	        		}else{
-	        			$(".zactiveInactiveStreamVideoz_"+id).removeClass('btn-success');
-	        			$(".zactiveInactiveStreamVideoz_"+id).addClass('btn-primary');
-	        			$(".zactiveInactiveStreamVideoz_"+id).css("background-color",'#50b5ff');
-	        			$(".zactiveInactiveStreamVideoz_"+id).css("bordr-color",'#2aa3fb');
-	        			$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).removeClass('btn-success');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).addClass('btn-primary');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).css("background-color",'#50b5ff');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).css("bordr-color",'#2aa3fb');
+	        			$(".zactiveInactiveWeeklyVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
 	        		};     		
 	        	}
 	        	else
 	        	{
-	        		if($(".zactiveInactiveStreamVideoz_"+id).hasClass('btn-success'))
+	        		if($(".zactiveInactiveWeeklyVideoz_"+id).hasClass('btn-success'))
 	        		{
-			    		$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active')
+			    		$(".zactiveInactiveWeeklyVideoz_"+id).html('<i class="ri-lock-unlock-fill"></i>Active')
 			    	}else{
-			    		$(".zactiveInactiveStreamVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
+			    		$(".zactiveInactiveWeeklyVideoz_"+id).html('<i class="ri-lock-2-fill"></i>Inactive')
 			    	}
 	        		console.log("Status Changed Failed!")
 	        	}
@@ -208,11 +209,11 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 		},1200);
 	};
 
-	$scope.deleteStreamVideo = function(valobj)
+	$scope.deleteWeeklyVideo = function(valobj)
     {	
     	swal({
 	      title: "Attention",
-	      text: "Are you sure to delete this schedule",
+	      text: "Are you sure to delete this Video",
 	      icon: "warning",
 	      buttons: true,
 	      dangerMode: true,
@@ -223,24 +224,19 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 	    	{
 		    	var id=valobj.id;
 
-		    	$scope.buttonSavingAnimation('zdeleteStreamVideoz_'+id,"Deleting..",'loader');		
+		    	$scope.buttonSavingAnimation('zdeleteWeeklyVideoz_'+id,"Deleting..",'loader');		
 				$timeout(function()
 				{
 
-					$scope.liveStreamStatusData={}
-					$scope.liveStreamStatusData.id=id;
-					$scope.liveStreamStatusData.course_id=$scope.taskData.course_id;
-					$scope.liveStreamStatusData.task_level=$scope.taskData.task_level;
-					$scope.liveStreamStatusData.user_auto_id=$scope.taskData.user_auto_id;
-					$scope.liveStreamStatusData.parent_id=$scope.taskData.parent_id;
-					$scope.liveStreamStatusData.membership_type=$scope.taskData.membership_type;
-
+					$scope.liveWeeklyStatusData={}
+					$scope.liveWeeklyStatusData.id=id;
+					$scope.liveWeeklyStatusData.user_auto_id=$scope.videoData.user_auto_id;
 					var formData = new FormData();
-					formData.append('LSVideoData',angular.toJson($scope.liveStreamStatusData));
+					formData.append('LSVideoData',angular.toJson($scope.liveWeeklyStatusData));
 					//alert("fd")
 					$http({
 			            method  : 'POST',
-			            url     : varGlobalAdminBaseUrl+"ajaxDeleteStreamVideo",
+			            url     : varGlobalAdminBaseUrl+"ajaxDeleteWeeklyVideo",
 			            transformRequest: angular.identity,
 			            headers: {'Content-Type': undefined},                     
 			            data:formData, 
@@ -248,11 +244,11 @@ mainApp.controller('videoController', function ($rootScope, $timeout, $interval,
 						aryreturnData=angular.fromJson(returnData);
 			        	if(aryreturnData.status=='1')
 			        	{
-			        		$scope.allLiveStreamVideoData=aryreturnData.data.liveStreamVideoData;
+			        		$scope.allWeeklyVideoData=aryreturnData.data.weeklyVideoData;
 			        	}
 			        	else
 			        	{
-			        		$(".zdeleteStreamVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
+			        		$(".zdeleteWeeklyVideoz_"+id).html('<i class="ri-delete-bin-fill"></i>Delete')
 			        		console.log("Deletion Failed!")
 			        	}
 					});

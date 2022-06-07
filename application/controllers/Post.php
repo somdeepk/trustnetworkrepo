@@ -640,12 +640,16 @@ class Post extends CI_Controller
 
     }
 
-
+    public function verbose ($ok=1, $info="")
+	{
+	  if ($ok==0) { http_response_code(400); }
+	  exit(json_encode(["ok"=>$ok, "info"=>$info]));
+	}
     public function ajaxsubmitweeklvideofiles() 
     {
-    	$ls_video_id=$this->session->userdata('ls_video_id');
+    	$lastVideoId=$this->session->userdata('lastVideoId');
 
-		if (!empty($_FILES) && !$_FILES["file"]["error"] && $ls_video_id>0)
+		if (!empty($_FILES) && !$_FILES["file"]["error"] && $lastVideoId>0)
 		{
 			$file_original_name=isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
 			$file_size=$_FILES["file"]["size"];
@@ -673,11 +677,10 @@ class Post extends CI_Controller
 				$imarr=explode(".",$file_original_name);
 		    	$ext=end($imarr);				
 
-				$aryWeeklyVideoData=$this->Post_Model->getPostData($ls_video_id);
+				$aryWeeklyVideoData=$this->Post_Model->getWeeklyVideData($lastVideoId);
 				$member_id=$aryWeeklyVideoData[0]['member_id'];
 				$menu_arr_post_file = array(
-		            'module_id'=>$lastPostId,
-		            'module_type'=>'post',
+		            'video_id'=>$lastVideoId, 
 		            'member_id'   => $member_id,
 		            'file_original_name'   =>$file_original_name,
 		            'file_size'   =>$file_size,        
@@ -685,18 +688,18 @@ class Post extends CI_Controller
 		            'create_date'   =>$current_date       
 		        );
 
-                $last_post_file_id = $this->Post_Model->addUpdatPostFile(0,$menu_arr_post_file);
+                $last_video_file_id = $this->Post_Model->addUpdatWeeklyVideoFile(0,$menu_arr_post_file);
 
-                if($last_post_file_id>0)
+                if($last_video_file_id>0)
                 {
-                	$file_name = $last_post_file_id."-".time().'.'.$ext;
+                	$file_name = $last_video_file_id."-".time().'.'.$ext;
 	                $filePathSysem = $fileBasePath . DIRECTORY_SEPARATOR . $file_name;
 	                rename("{$filePath}.part", $filePathSysem);
 
 	                $menu_arr_post_file = array(
 			            'file_name'   =>$file_name     
 			        );
-	                $last_post_file_id = $this->Post_Model->addUpdatPostFile($last_post_file_id,$menu_arr_post_file);
+	                $last_video_file_id = $this->Post_Model->addUpdatWeeklyVideoFile($last_video_file_id,$menu_arr_post_file);
 	            }
 			}
 			$this->verbose(1, "Upload OK");

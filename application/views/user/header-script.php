@@ -66,6 +66,7 @@
    <!--  <script src="<?php //echo base_url();?>assets/agora-assets/bootstrap.bundle.min.js"></script> -->
     <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
     <!-- <script type="text/javascript" src="<?php //echo base_url();?>assets/agora-assets/basicLive.js"></script> -->
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/plupload/3.1.3/plupload.full.min.js"></script> -->
     <script src="<?php echo base_url();?>assets/pulp-load/plupload.full.min.js"></script>
 
    </head>
