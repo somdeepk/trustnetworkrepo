@@ -74,7 +74,7 @@ exit;*/
                   <!-- <li><a href="javascript:void();" class="iq-waves-effect"><i class="las la-video"></i><span>Awards</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Messenger</span></a></li> -->
                  <!--  <li><a href="javascript:void();" class="iq-waves-effect"><i class="ri-compasses-line"></i><span>Community Forum</span></a></li> -->
-                 <?php if($isAdmin=="Y"){ ?>
+                 <?php if($isAdmin=="Y" || ($membershipType=="RM" && $isAdmin=="N")){ ?>
                     <li <?php echo ($actionName=='weeklyvideo')? 'class="active"' : '' ;?> ><a href="<?php echo base_url();?>user/weeklyvideo" class="iq-waves-effect"><i class="lab la-youtube"></i><span>Weekly Video</span></a></li>
                   <?php } ?>
 

@@ -3700,30 +3700,42 @@ class User extends CI_Controller
 
 	public function weeklyvideo()
     {
-      authenticate_user();
-      $data=array();
-      $data['membershipType']=$this->session->userdata('membership_type');
-      $data['isAdmin']=$this->session->userdata('is_admin');
-      $data['user_auto_id']=$this->session->userdata('user_auto_id');
-      $data['parent_id']=$this->session->userdata('parent_id');
-      $data['parent_leader_id']=$this->session->userdata('parent_leader_id');
+		authenticate_user();
+		$data=array();
+		$data['membershipType']=$this->session->userdata('membership_type');
+		$data['isAdmin']=$this->session->userdata('is_admin');
+		$data['user_auto_id']=$this->session->userdata('user_auto_id');
+		$data['parent_id']=$this->session->userdata('parent_id');
+		$data['parent_leader_id']=$this->session->userdata('parent_leader_id');
 
-      $msg=$this->input->post_get('msg');
-      if(!empty($msg))
-      {
-        $msg=base64_decode($msg);
-        $this->session->set_flashdata('success', $msg);
-      }
+		$msg=$this->input->post_get('msg');
+		if(!empty($msg))
+		{
+			$msg=base64_decode($msg);
+			$this->session->set_flashdata('success', $msg);
+		}
 
-      $weeklyVideoData = $this->User_Model->get_weekly_video_by_member($data['user_auto_id']);
-	  $data['weeklyVideoData']=json_encode($weeklyVideoData);
+		if($data['membershipType']=="RM" && $data['isAdmin']=="N")
+		{
+			$weeklyVideoData = $this->User_Model->get_weekly_video_to_watch($data['parent_leader_id']);
+			$data['weeklyVideoData']=json_encode($weeklyVideoData);
+		}
+		elseif($data['isAdmin']=="Y")
+		{
+			$weeklyVideoData = $this->User_Model->get_weekly_video_by_member($data['user_auto_id']);
+			$data['weeklyVideoData']=json_encode($weeklyVideoData);
+		}
 
-      //$data['church_id']=$church_id;
-      $this->load->view('user/header-script');
-      $this->load->view('user/header-bottom');
-      $this->load->view('user/weeklyvideo', $data);
-      $this->load->view('user/footer-top');
-      $this->load->view('user/footer');
+		// echo "Tona<pre>";
+		// print_r($weeklyVideoData);
+		// exit;
+
+		//$data['church_id']=$church_id;
+		$this->load->view('user/header-script');
+		$this->load->view('user/header-bottom');
+		$this->load->view('user/weeklyvideo', $data);
+		$this->load->view('user/footer-top');
+		$this->load->view('user/footer');
     }
 
     public function ajaxaddupdateweeklyvideo() 

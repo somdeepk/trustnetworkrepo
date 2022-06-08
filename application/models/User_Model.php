@@ -1571,5 +1571,38 @@ class User_Model extends CI_Model
 		return $resultData;
 	}
 
+
+	public function get_weekly_video_to_watch($parent_leader_id)
+	{		
+		$sql="SELECT * FROM tn_weekly_video WHERE ( UNIX_TIMESTAMP(now())>=UNIX_TIMESTAMP(start_time) AND UNIX_TIMESTAMP(now())<=UNIX_TIMESTAMP(end_time)) AND status='1' AND deleted='0' AND member_id=".$parent_leader_id." order by start_time"; 
+		$query=$this->db->query($sql);
+		$result=$query->result_array();
+
+		$finalData=array();
+		if(count($result)>0)
+		{
+			$incree=0;
+			foreach($result as $k=>$v)
+			{	
+				$sqlFile="SELECT * FROM tn_weekly_video_file WHERE deleted='0' AND video_id=".$v['id']."";
+				$queryFile=$this->db->query($sqlFile);
+				$resultFileData=$queryFile->result_array(); 
+				
+				if(count($resultFileData)>0)
+				{
+					$finalData[$incree]=$v;
+					foreach($resultFileData as $k1=>$v1)
+					{
+						
+						$finalData[$incree]['resultFileData'][$k1]=$v1;
+						$finalData[$incree]['resultFileData'][$k1]['video_path_with_video']=IMAGE_URL.'weeklyvideo/'.$v1['file_name'];
+					}
+					$incree++;
+				} 
+			}
+		} 
+		return $finalData;
+	}
+
 }
 ?>
